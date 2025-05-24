@@ -1,0 +1,16 @@
+{
+  "short_name": "ProofPix",
+  "name": "ProofPix - Privacy-focused EXIF metadata extraction",
+  "icons": [
+    {
+      "src": "proofpixtoplogo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1f2937",
+  "background_color": "#111827",
+  "description": "Extract EXIF metadata from your images with complete privacy. All processing happens locally in your browser."
+} 
