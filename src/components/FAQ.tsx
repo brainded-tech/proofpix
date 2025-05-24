@@ -76,7 +76,7 @@ export const FAQ: React.FC = () => {
               <ul className="list-none pl-5 mb-4 space-y-2">
                 <li className="relative">
                   <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                  Visit ProofPix.app/upload
+                  Visit upload.proofpixapp.com
                 </li>
                 <li className="relative">
                   <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>

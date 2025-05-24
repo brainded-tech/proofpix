@@ -20,11 +20,15 @@ exports.handler = async (event, context) => {
     
     return {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         success: true,
         uploadId: uploadId,
-        message: 'Upload received',
-        viewUrl: `https://proofpixapp.com/view/${uploadId}`
+        viewUrl: `https://upload.proofpixapp.com/view/${uploadId}`
       })
     };
   } catch (error) {
