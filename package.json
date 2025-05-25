@@ -64,6 +64,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "nodemon": "^3.1.10",
+    "nodemon": "^3.1.10"
   }
 }
