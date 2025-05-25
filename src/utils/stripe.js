@@ -177,15 +177,17 @@ export const createCheckoutSession = async (priceId, successUrl, cancelUrl) => {
     
     const endpoint = isSubscription ? '/api/create-subscription-checkout' : '/api/create-checkout-session';
     
-    // API URL configuration
-    const apiUrl = process.env.NODE_ENV === 'production' 
+    // API URL configuration - more robust detection
+    const isProduction = window.location.hostname !== 'localhost';
+    const apiUrl = isProduction 
       ? '/.netlify/functions' 
       : 'http://localhost:3002';
     
-    const fullEndpoint = process.env.NODE_ENV === 'production'
+    const fullEndpoint = isProduction
       ? `${apiUrl}/create-checkout`
       : `${apiUrl}${endpoint}`;
     
+    console.log('🔧 Environment:', { isProduction, hostname: window.location.hostname });
     console.log('🔧 API URL:', fullEndpoint);
     
     const response = await fetch(fullEndpoint, {
@@ -201,7 +203,17 @@ export const createCheckoutSession = async (priceId, successUrl, cancelUrl) => {
       }),
     });
 
+    console.log('🔧 Response status:', response.status);
+    console.log('🔧 Response headers:', Object.fromEntries(response.headers.entries()));
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('🔧 Response error:', errorText);
+      throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+    }
+
     const session = await response.json();
+    console.log('🔧 Response data:', session);
     
     if (session.error) {
       // Handle development errors gracefully
@@ -242,7 +254,7 @@ export const redirectToCheckout = async (priceId) => {
     // Real Stripe checkout
     const stripe = await stripePromise;
     const result = await stripe.redirectToCheckout({
-      sessionId: session.id,
+      sessionId: session.sessionId || session.id,
     });
 
     if (result.error) {
