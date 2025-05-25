@@ -8,8 +8,11 @@ import { ImagePreview } from './ImagePreview';
 import { MetadataPanel } from './MetadataPanel';
 import { Sponsorship } from './Sponsorships';
 import SocialShare from './SocialShare';
+import EnhancedExportDialog from './EnhancedExportDialog';
 import { ProcessedImage, ImageOutputOptions } from '../types';
 import { analytics, trackTimestampOverlay, trackPDFExport, trackJSONExport, trackImageExport, usageTracker } from '../utils/analytics';
+import SessionManager from '../utils/sessionManager';
+import PaymentProtection from './PaymentProtection';
 
 interface ProcessingInterfaceProps {
   processedImage: ProcessedImage;
@@ -29,6 +32,7 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
     format: 'jpeg',
     quality: 0.9
   });
+  const [showEnhancedExport, setShowEnhancedExport] = useState(false);
   
   const navigate = useNavigate();
 
@@ -108,6 +112,17 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
   const handleExportPDF = useCallback(async () => {
     if (!currentImage) return;
 
+    // 🔒 PAYMENT PROTECTION: Check PDF generation limits
+    const canUseUnlimitedPDF = SessionManager.canPerformAction('unlimited_pdf');
+    const currentPlan = SessionManager.getCurrentPlan();
+    
+    // For free users, track usage and show upgrade prompt after 3 PDFs
+    if (!canUseUnlimitedPDF && currentPlan.usage && currentPlan.usage.pdfDownloads >= 3) {
+      analytics.trackFeatureUsage('Payment Protection', 'PDF Limit Reached');
+      navigate('/pricing');
+      return;
+    }
+
     try {
       setIsLoading(true);
       const pdfBlob = await generatePDF(currentImage, showTimestamp);
@@ -125,6 +140,12 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
       
       // Update usage stats
       usageTracker.incrementPdfDownload();
+      SessionManager.updateUsage('pdf');
+      
+      // Show upgrade hint for free users approaching limit
+      if (!canUseUnlimitedPDF && currentPlan.usage && currentPlan.usage.pdfDownloads >= 2) {
+        console.log('💡 Upgrade hint: You have 1 PDF download remaining. Upgrade for unlimited PDFs!');
+      }
     } catch (err) {
       console.error('Error generating PDF:', err);
       setError('Failed to generate PDF report.');
@@ -132,7 +153,7 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [currentImage, showTimestamp]);
+  }, [currentImage, showTimestamp, navigate]);
 
   const handleExportJSON = useCallback(() => {
     if (!currentImage) return;
@@ -205,6 +226,32 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
     window.location.href = 'https://proofpixapp.com/#contact';
   };
 
+  // 🔒 PAYMENT PROTECTION: Check if user can access enhanced export
+  const canUseAdvancedExport = SessionManager.canPerformAction('advanced_export');
+
+  const handleEnhancedExport = useCallback(() => {
+    if (!canUseAdvancedExport) {
+      analytics.trackFeatureUsage('Payment Protection', 'Advanced Export Blocked');
+      navigate('/pricing');
+      return;
+    }
+    
+    setShowEnhancedExport(true);
+    analytics.trackFeatureUsage('Enhanced Export', 'Dialog Opened');
+  }, [canUseAdvancedExport, navigate]);
+
+  const handleEnhancedExportComplete = useCallback((filename: string, format: string) => {
+    analytics.trackFeatureUsage('Enhanced Export', `${format.toUpperCase()} Generated`);
+    usageTracker.incrementDataExport();
+    
+    // Show success message
+    console.log(`✅ Enhanced export completed: ${filename}`);
+  }, []);
+
+  const handleEnhancedExportClose = useCallback(() => {
+    setShowEnhancedExport(false);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -265,6 +312,7 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
                 onDownload={handleDownload}
                 onExportPDF={handleExportPDF}
                 onExportJSON={handleExportJSON}
+                onEnhancedExport={canUseAdvancedExport ? handleEnhancedExport : undefined}
                 outputOptions={outputOptions}
                 onOutputOptionsChange={handleOutputOptionsChange}
               />
@@ -288,13 +336,13 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
           <div className="mt-12 mb-12 flex justify-center">
             <div className="w-full max-w-2xl px-4">
               <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-                <SocialShare 
-                  variant="prominent"
-                  onShare={(platform) => {
-                    analytics.trackFeatureUsage('Social Share', `Processing Interface - ${platform}`);
-                  }}
+            <SocialShare 
+              variant="prominent"
+              onShare={(platform) => {
+                analytics.trackFeatureUsage('Social Share', `Processing Interface - ${platform}`);
+              }}
                   className="mx-auto"
-                />
+            />
               </div>
             </div>
           </div>
@@ -332,6 +380,27 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
           </div>
         </div>
       </footer>
+
+      {/* Enhanced Export Dialog */}
+      {showEnhancedExport && canUseAdvancedExport && (
+        <EnhancedExportDialog
+          {...{
+            isOpen: showEnhancedExport,
+            onClose: handleEnhancedExportClose,
+            data: currentImage,
+            onExportComplete: handleEnhancedExportComplete
+          }}
+        />
+      )}
+
+      {/* Payment Protection for Enhanced Export */}
+      {showEnhancedExport && !canUseAdvancedExport && (
+        <PaymentProtection
+          feature="advanced_export"
+          variant="modal"
+          onClose={handleEnhancedExportClose}
+        />
+      )}
     </div>
   );
 }; 

@@ -1,19 +1,25 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, FileImage, Layers, Shield, Clock } from 'lucide-react';
+import { Camera, Upload, FileImage, Layers, Shield, Clock, Lock } from 'lucide-react';
 import { analytics, trackFileUpload, usageTracker } from '../utils/analytics';
 import { Sponsorship, SponsorshipGrid } from './Sponsorships';
 import SocialShare from './SocialShare';
 import SessionStatus from './SessionStatus';
+import BatchProcessor from './BatchProcessor';
+// import BatchProcessor from './test-minimal-batch';
+import { ProcessedImage } from '../types';
+import SessionManager from '../utils/sessionManager';
 
 interface HomePageProps {
   onFileSelect: (file: File) => void;
+  onBatchComplete?: (images: ProcessedImage[]) => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplete }) => {
   const [isDragActive, setIsDragActive] = useState(false);
   const [usageStats, setUsageStats] = useState(usageTracker.getUsageStats());
+  const [processingMode, setProcessingMode] = useState<'single' | 'batch'>('single');
   const navigate = useNavigate();
 
   // Update usage stats on component mount and periodically
@@ -79,6 +85,45 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
     navigate('/pricing');
   };
 
+  const handleAnalyticsClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Analytics - Footer');
+    navigate('/analytics');
+  };
+
+  const handleBatchManagementClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Batch Management - Footer');
+    navigate('/batch');
+  };
+
+  const handleTermsClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Terms - Footer');
+    navigate('/terms');
+  };
+
+  const handleSupportClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Support - Footer');
+    navigate('/support');
+  };
+
+  const handleBatchComplete = useCallback((images: ProcessedImage[]) => {
+    analytics.trackFeatureUsage('Batch Processing', `Completed ${images.length} images`);
+    onBatchComplete?.(images);
+  }, [onBatchComplete]);
+
+  // 🔒 PAYMENT PROTECTION: Check if user can access batch processing
+  const canUseBatch = SessionManager.canPerformAction('batch');
+  const currentPlan = SessionManager.getCurrentPlan();
+
+  const handleBatchModeClick = useCallback(() => {
+    if (!canUseBatch) {
+      analytics.trackFeatureUsage('Payment Protection', 'Batch Mode Blocked');
+      navigate('/pricing');
+      return;
+    }
+    setProcessingMode('batch');
+    analytics.trackFeatureUsage('Navigation', 'Batch Mode Activated');
+  }, [canUseBatch, navigate]);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -114,42 +159,81 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
 
         {/* Mode Toggle */}
         <div className="flex justify-center mb-8">
-          <div className="bg-gray-800 rounded-lg p-1 flex items-center space-x-4">
-            <div className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-md">
+          <div className="bg-gray-800 rounded-lg p-1 flex items-center space-x-1">
+            <button
+              onClick={() => setProcessingMode('single')}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${
+                processingMode === 'single'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
               <FileImage className="h-4 w-4" />
               <span>Single File</span>
-            </div>
-            <div className="flex items-center space-x-2 px-4 py-2 text-gray-400">
-              <Layers className="h-4 w-4" />
-              <span>Bulk Processing</span>
-              <span className="bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-medium">
-                COMING SOON
-              </span>
-            </div>
+            </button>
+            <button
+              onClick={handleBatchModeClick}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${
+                processingMode === 'batch'
+                  ? 'bg-blue-600 text-white'
+                  : canUseBatch 
+                    ? 'text-gray-400 hover:text-white'
+                    : 'text-gray-500 hover:text-yellow-400'
+              }`}
+            >
+              {canUseBatch ? (
+                <Layers className="h-4 w-4" />
+              ) : (
+                <Lock className="h-4 w-4" />
+              )}
+              <span>Batch Processing</span>
+              {canUseBatch ? (
+                <span className="bg-green-500 text-black text-xs px-2 py-1 rounded-full font-medium ml-2">
+                  NEW
+                </span>
+              ) : (
+                <span className="bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-medium ml-2">
+                  PRO
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
-        {/* Upload Area */}
-        <div className="max-w-2xl mx-auto mb-8">
-          <div
-            {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-12 text-center transition-all cursor-pointer ${
-              isDragActive
-                ? 'border-blue-500 bg-blue-500 bg-opacity-10'
-                : 'border-gray-600 hover:border-gray-500'
-            }`}
-          >
-            <input {...getInputProps()} />
-            <Upload className="h-12 w-12 text-blue-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">
-              {isDragActive ? 'Drop your image here' : 'Drag & drop an image here'}
-            </h3>
-            <p className="text-gray-400 mb-2">or click to select a file</p>
-            <p className="text-sm text-gray-500">
-              JPG • PNG • HEIC • TIFF • and more
-            </p>
+        {/* Upload Area - Single File Mode */}
+        {processingMode === 'single' && (
+          <div className="max-w-2xl mx-auto mb-8">
+            <div
+              {...getRootProps()}
+              className={`border-2 border-dashed rounded-lg p-12 text-center transition-all cursor-pointer ${
+                isDragActive
+                  ? 'border-blue-500 bg-blue-500 bg-opacity-10'
+                  : 'border-gray-600 hover:border-gray-500'
+              }`}
+            >
+              <input {...getInputProps()} />
+              <Upload className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">
+                {isDragActive ? 'Drop your image here' : 'Drag & drop an image here'}
+              </h3>
+              <p className="text-gray-400 mb-2">or click to select a file</p>
+              <p className="text-sm text-gray-500">
+                JPG • PNG • HEIC • TIFF • and more
+              </p>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Batch Processing Mode */}
+        {processingMode === 'batch' && (
+          <div className="max-w-4xl mx-auto mb-8">
+            <BatchProcessor 
+              onComplete={handleBatchComplete}
+              maxFiles={10}
+              maxFileSize={50 * 1024 * 1024}
+            />
+          </div>
+        )}
 
         {/* Real-time Usage Stats */}
         <div className="bg-gray-800 rounded-lg p-6 mb-12 max-w-md mx-auto">
@@ -202,7 +286,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
             </div>
             <h3 className="text-lg font-semibold mb-2">🔐 Privacy-Respecting</h3>
             <p className="text-gray-400 text-sm">
-              All processing happens locally in your browser. Your photos never leave your device.
+              All processing happens locally in your browser. Your photos never leave your device. Open source and auditable.
             </p>
           </div>
 
@@ -218,19 +302,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
           </div>
 
           {/* Bulk Processing Feature */}
-          <div className="text-center bg-yellow-500 bg-opacity-10 border border-yellow-500 border-opacity-30 rounded-lg p-6">
-            <div className="bg-yellow-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Layers className="h-8 w-8 text-yellow-400" />
+          <div className="text-center bg-green-500 bg-opacity-10 border border-green-500 border-opacity-30 rounded-lg p-6">
+            <div className="bg-green-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Layers className="h-8 w-8 text-green-400" />
             </div>
             <h3 className="text-lg font-semibold mb-2">
-              🚀 Bulk Processing
-              <span className="ml-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-medium">
-                COMING SOON
+              🚀 Batch Processing
+              <span className="ml-2 bg-green-500 text-black text-xs px-2 py-1 rounded-full font-medium">
+                NEW
               </span>
             </h3>
-            <p className="text-gray-400 text-sm">
-              Process multiple images simultaneously with advanced export options.
+            <p className="text-gray-400 text-sm mb-3">
+              Process multiple images simultaneously with advanced export options. Now available!
             </p>
+            <button
+              onClick={handleBatchManagementClick}
+              className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+            >
+              → Open Batch Manager
+            </button>
             </div>
           </div>
         </div>
@@ -253,7 +343,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
         <div className="text-center text-gray-400 text-sm mb-8">
           <p>Built with React, TypeScript, and exifr for metadata extraction.</p>
           <p>Analytics by Plausible (privacy-respecting) • Direct sponsorships only</p>
-          <p>All image processing happens locally in your browser.</p>
+          <p>All image processing happens locally in your browser. Open source on GitHub.</p>
         </div>
       </main>
 
@@ -263,7 +353,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.6.0</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.6.0 • Open Source</p>
               
               {/* Minimal Social Share */}
               <div className="mt-3">
@@ -275,13 +365,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
                 />
               </div>
             </div>
-            <nav className="flex space-x-6 text-sm">
+            <nav className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 text-sm">
               <button onClick={() => window.location.reload()} className="text-gray-400 hover:text-white">Home</button>
               <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
               <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
+              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
+              <button onClick={handleSupportClick} className="text-gray-400 hover:text-white">Support</button>
               <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
               <button onClick={handlePricingClick} className="text-gray-400 hover:text-white">Pricing</button>
+              <button onClick={handleAnalyticsClick} className="text-gray-400 hover:text-white">Analytics</button>
+              <button onClick={handleBatchManagementClick} className="text-gray-400 hover:text-white">Batch Manager</button>
             </nav>
           </div>
         </div>
