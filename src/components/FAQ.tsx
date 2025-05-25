@@ -224,7 +224,7 @@ export const FAQ: React.FC = () => {
                 </li>
                 <li className="relative">
                   <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                  <strong>Privacy-safe advertising:</strong> Ads are completely separate from your photo processing
+                  <strong>Privacy-focused sponsorships:</strong> Partnerships with relevant tools, completely separate from your photo processing
                 </li>
                 <li className="relative">
                   <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
@@ -658,7 +658,11 @@ export const FAQ: React.FC = () => {
   };
 
   const handleContactClick = () => {
-    navigate('/privacy#contact');
+    window.location.href = 'https://proofpixapp.com/#contact';
+  };
+
+  const handleContactSupportClick = () => {
+    window.location.href = 'mailto:support@proofpixapp.com';
   };
 
   const handleStartNowClick = () => {
@@ -796,7 +800,7 @@ export const FAQ: React.FC = () => {
             Can't find what you're looking for? We're here to help with any questions about ProofPix, photo metadata, or privacy.
           </p>
           <button
-            onClick={handleContactClick}
+            onClick={handleContactSupportClick}
             className="inline-block bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30"
           >
             Contact Support

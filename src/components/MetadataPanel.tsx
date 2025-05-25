@@ -111,45 +111,45 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
 
         {/* Location Data Section */}
         {hasGpsData && (
-          <div className="metadata-section">
+        <div className="metadata-section">
             <h3 className="text-lg font-semibold text-gray-300 mb-3 flex items-center">
-              <Map size={16} className="mr-2" /> 
-              Location Data
-            </h3>
-            <div className="metadata-content space-y-2">
+            <Map size={16} className="mr-2" /> 
+            Location Data
+          </h3>
+          <div className="metadata-content space-y-2">
               <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
                 <span className="metadata-label text-sm font-medium text-gray-400">Latitude</span>
                 <span className="metadata-value text-sm text-gray-200">
-                  {formatGpsCoordinate(metadata.gpsLatitude, 'lat')}
-                </span>
-              </div>
+                {formatGpsCoordinate(metadata.gpsLatitude, 'lat')}
+              </span>
+            </div>
               <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
                 <span className="metadata-label text-sm font-medium text-gray-400">Longitude</span>
                 <span className="metadata-value text-sm text-gray-200">
-                  {formatGpsCoordinate(metadata.gpsLongitude, 'long')}
-                </span>
-              </div>
+                {formatGpsCoordinate(metadata.gpsLongitude, 'long')}
+              </span>
+            </div>
               <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
                 <span className="metadata-label text-sm font-medium text-gray-400">Altitude</span>
                 <span className="metadata-value text-sm text-gray-200">
                   {metadata.gpsAltitude ? `${metadata.gpsAltitude}m` : 'N/A'}
-                </span>
-              </div>
+              </span>
+            </div>
               {getGoogleMapsUrl() && (
                 <div className="mt-3">
-                  <a 
-                    href={getGoogleMapsUrl()!} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                <a 
+                  href={getGoogleMapsUrl()!} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
                     className="inline-flex items-center text-blue-400 hover:text-blue-300 text-sm"
-                  >
-                    <Map size={14} className="mr-1" />
-                    View on Google Maps
-                  </a>
-                </div>
-              )}
-            </div>
+                >
+                  <Map size={14} className="mr-1" />
+                  View on Google Maps
+                </a>
+              </div>
+            )}
           </div>
+        </div>
         )}
 
         {/* File Details Section */}

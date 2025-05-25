@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera } from 'lucide-react';
 import { analytics } from '../utils/analytics';
-import { EthicalAd } from './EthicalAds';
+import { Sponsorship } from './Sponsorships';
 
 export const AboutUs: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +21,16 @@ export const AboutUs: React.FC = () => {
     navigate('/privacy');
   };
 
+  const handleFAQClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'FAQ - About Page Footer');
+    navigate('/faq');
+  };
+
+  const handleContactClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Contact - About Page Footer');
+    window.location.href = 'https://proofpixapp.com/#contact';
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -32,9 +42,9 @@ export const AboutUs: React.FC = () => {
               <h1 className="text-xl font-bold">ProofPix</h1>
             </div>
             
-            {/* Header Ad */}
+            {/* Header Sponsorship */}
             <div className="hidden lg:block">
-              <EthicalAd placement="header" className="max-w-md" />
+              <Sponsorship placement="header" className="max-w-md" />
             </div>
           </div>
         </div>
@@ -104,7 +114,7 @@ export const AboutUs: React.FC = () => {
               <span className="text-5xl mb-5 block">🔐</span>
               <h3 className="text-2xl font-semibold mb-4">Privacy-Respecting</h3>
               <p className="text-gray-400 leading-relaxed">
-                Your photos never leave your device. All processing happens in your browser, with privacy-friendly analytics and contextual advertising only.
+                Your photos never leave your device. All processing happens in your browser, with privacy-friendly analytics and direct sponsorships only.
               </p>
             </div>
 
@@ -142,9 +152,9 @@ export const AboutUs: React.FC = () => {
           </div>
         </section>
 
-        {/* Content Ad */}
+        {/* Content Sponsorship */}
         <div className="py-8">
-          <EthicalAd placement="content" className="max-w-2xl mx-auto" />
+          <Sponsorship placement="content" className="max-w-2xl mx-auto" />
         </div>
 
         {/* The ProofPix Difference Section */}
@@ -198,9 +208,9 @@ export const AboutUs: React.FC = () => {
           </button>
         </section>
 
-        {/* Bottom Ad */}
+        {/* Bottom Sponsorship */}
         <div className="py-8">
-          <EthicalAd placement="bottom" className="max-w-3xl mx-auto" />
+          <Sponsorship placement="bottom" className="max-w-3xl mx-auto" />
         </div>
       </div>
 
@@ -214,10 +224,10 @@ export const AboutUs: React.FC = () => {
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>
-              <a href="#faq" className="text-gray-400 hover:text-white">F.A.Q.</a>
+              <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <span className="text-blue-400 font-medium">About</span>
               <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <a href="#contact" className="text-gray-400 hover:text-white">Contact</a>
+              <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
             </nav>
           </div>
         </div>

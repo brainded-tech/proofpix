@@ -6,6 +6,8 @@ import { ProofPix } from './ProofPix';
 import { AboutUs } from './components/AboutUs';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { FAQ } from './components/FAQ';
+import PricingPage from './components/PricingPage';
+import SuccessPage from './components/SuccessPage';
 
 export function App() {
   const location = useLocation();
@@ -22,6 +24,8 @@ export function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/success" element={<SuccessPage />} />
         {/* Catch all route for debugging */}
         <Route path="*" element={
           <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">

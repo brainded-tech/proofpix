@@ -1,9 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, FileImage, Shield, Clock, Layers } from 'lucide-react';
+import { Camera, Upload, FileImage, Layers, Shield, Clock } from 'lucide-react';
 import { analytics, trackFileUpload, usageTracker } from '../utils/analytics';
-import { EthicalAd, EthicalAdGrid } from './EthicalAds';
+import { Sponsorship, SponsorshipGrid } from './Sponsorships';
+import SocialShare from './SocialShare';
+import SessionStatus from './SessionStatus';
 
 interface HomePageProps {
   onFileSelect: (file: File) => void;
@@ -67,6 +69,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
     navigate('/faq');
   };
 
+  const handleContactClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Contact - Footer');
+    window.location.href = 'https://proofpixapp.com/#contact';
+  };
+
+  const handlePricingClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Pricing - Footer');
+    navigate('/pricing');
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -78,9 +90,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
               <h1 className="text-xl font-bold">ProofPix</h1>
             </div>
             
-            {/* Header Ad - Privacy-friendly advertising */}
+            {/* Header Sponsorship - Privacy-friendly partnerships */}
             <div className="hidden lg:block">
-              <EthicalAd placement="header" className="max-w-md" />
+              <Sponsorship placement="header" className="max-w-md" />
             </div>
           </div>
         </div>
@@ -96,7 +108,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
             Extract and view EXIF metadata from your images, locally.
           </p>
           <p className="text-gray-400">
-            Privacy-respecting analytics • Contextual advertising • Local processing
+            Privacy-respecting analytics • Direct sponsorships • Local processing
           </p>
         </div>
 
@@ -165,6 +177,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
           </div>
         </div>
 
+        {/* Session Status - Show if user has active premium session */}
+        <SessionStatus className="max-w-md mx-auto mb-12" />
+
         {/* Divider */}
         <div className="border-t border-gray-700 mb-12"></div>
 
@@ -180,64 +195,64 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
           </div>
           
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Privacy Feature */}
-            <div className="text-center">
-              <div className="bg-blue-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Shield className="h-8 w-8 text-blue-400" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">🔐 Privacy-Respecting</h3>
-              <p className="text-gray-400 text-sm">
-                Local image processing with privacy-friendly analytics. Your photos stay on your device.
-              </p>
+          {/* Privacy Feature */}
+          <div className="text-center">
+            <div className="bg-blue-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Shield className="h-8 w-8 text-blue-400" />
             </div>
+            <h3 className="text-lg font-semibold mb-2">🔐 Privacy-Respecting</h3>
+            <p className="text-gray-400 text-sm">
+              All processing happens locally in your browser. Your photos never leave your device.
+            </p>
+          </div>
 
-            {/* Instant Results Feature */}
-            <div className="text-center">
-              <div className="bg-green-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Clock className="h-8 w-8 text-green-400" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">⚡ Instant Results</h3>
-              <p className="text-gray-400 text-sm">
-                Upload, inspect, and export your metadata in seconds — no account needed.
-              </p>
+          {/* Instant Results Feature */}
+          <div className="text-center">
+            <div className="bg-green-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Clock className="h-8 w-8 text-green-400" />
             </div>
+            <h3 className="text-lg font-semibold mb-2">⚡ Instant Results</h3>
+            <p className="text-gray-400 text-sm">
+              Upload, inspect, and export your metadata in seconds — no photo storage, ever.
+            </p>
+          </div>
 
-            {/* Bulk Processing Feature */}
-            <div className="text-center bg-yellow-500 bg-opacity-10 border border-yellow-500 border-opacity-30 rounded-lg p-6">
-              <div className="bg-yellow-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Layers className="h-8 w-8 text-yellow-400" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">
-                🚀 Bulk Processing
-                <span className="ml-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-medium">
-                  COMING SOON
-                </span>
-              </h3>
-              <p className="text-gray-400 text-sm">
-                Process multiple images simultaneously with advanced export options.
-              </p>
+          {/* Bulk Processing Feature */}
+          <div className="text-center bg-yellow-500 bg-opacity-10 border border-yellow-500 border-opacity-30 rounded-lg p-6">
+            <div className="bg-yellow-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Layers className="h-8 w-8 text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">
+              🚀 Bulk Processing
+              <span className="ml-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-medium">
+                COMING SOON
+              </span>
+            </h3>
+            <p className="text-gray-400 text-sm">
+              Process multiple images simultaneously with advanced export options.
+            </p>
             </div>
           </div>
         </div>
 
-        {/* Ethical Ads Grid - Updated heading */}
+        {/* Sponsorship Grid - Updated heading */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold text-center mb-6">Related Resources</h3>
-          <EthicalAdGrid className="max-w-4xl mx-auto" />
+          <h3 className="text-xl font-semibold text-center mb-6">Featured Partners</h3>
+          <SponsorshipGrid className="max-w-4xl mx-auto" />
           <div className="text-center text-xs text-gray-500 mt-4">
-            Contextual recommendations • No user tracking
+            Direct partnerships • No user tracking
           </div>
         </div>
 
-        {/* Bottom Educational Ad */}
+        {/* Bottom Educational Sponsorship */}
         <div className="mb-12">
-          <EthicalAd placement="bottom" className="max-w-2xl mx-auto" />
+          <Sponsorship placement="bottom" className="max-w-2xl mx-auto" />
         </div>
 
         {/* Tech Details */}
         <div className="text-center text-gray-400 text-sm mb-8">
           <p>Built with React, TypeScript, and exifr for metadata extraction.</p>
-          <p>Analytics by Plausible (privacy-respecting) • Contextual ads only</p>
+          <p>Analytics by Plausible (privacy-respecting) • Direct sponsorships only</p>
           <p>All image processing happens locally in your browser.</p>
         </div>
       </main>
@@ -249,13 +264,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect }) => {
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
               <p>Privacy-respecting EXIF metadata tool - v1.6.0</p>
+              
+              {/* Minimal Social Share */}
+              <div className="mt-3">
+                <SocialShare 
+                  variant="minimal"
+                  onShare={(platform) => {
+                    analytics.trackFeatureUsage('Social Share', `HomePage Footer - ${platform}`);
+                  }}
+                />
+              </div>
             </div>
             <nav className="flex space-x-6 text-sm">
-              <a href="#home" className="text-gray-400 hover:text-white">Home</a>
+              <button onClick={() => window.location.reload()} className="text-gray-400 hover:text-white">Home</button>
               <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
               <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <a href="#contact" className="text-gray-400 hover:text-white">Contact</a>
+              <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
+              <button onClick={handlePricingClick} className="text-gray-400 hover:text-white">Pricing</button>
             </nav>
           </div>
         </div>

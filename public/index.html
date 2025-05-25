@@ -19,7 +19,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <!-- Privacy-Focused Analytics - Plausible -->
-    <script defer data-domain="proofpixapp.com/upload" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.tagged-events.js"></script>
+    <script>
+      // Auto-detect domain for Plausible
+      const domain = window.location.hostname === 'localhost' ? 'localhost:3001' : 'upload.proofpixapp.com';
+      const script = document.createElement('script');
+      script.defer = true;
+      script.setAttribute('data-domain', domain);
+      script.src = 'https://plausible.io/js/script.file-downloads.hash.outbound-links.tagged-events.js';
+      document.head.appendChild(script);
+    </script>
     <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
     
     <title>ProofPix - Privacy-Focused EXIF Metadata Extraction</title>

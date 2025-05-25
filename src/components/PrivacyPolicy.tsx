@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera } from 'lucide-react';
 import { analytics } from '../utils/analytics';
-import { EthicalAd } from './EthicalAds';
+import { Sponsorship } from './Sponsorships';
 
 export const PrivacyPolicy: React.FC = () => {
   const navigate = useNavigate();
@@ -19,8 +19,18 @@ export const PrivacyPolicy: React.FC = () => {
 
   const handleContactClick = () => {
     analytics.trackFeatureUsage('CTA Click', 'Contact Us - Privacy Policy');
-    // Link to contact section as requested
-    window.location.href = 'http://localhost:3000/privacy#contact';
+    // Link to contact section on main site
+    window.location.href = 'https://proofpixapp.com/#contact';
+  };
+
+  const handleFAQClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'FAQ - Privacy Policy');
+    navigate('/faq');
+  };
+
+  const handleContactFooterClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Contact - Privacy Policy Footer');
+    window.location.href = 'https://proofpixapp.com/#contact';
   };
 
   return (
@@ -34,9 +44,9 @@ export const PrivacyPolicy: React.FC = () => {
               <h1 className="text-xl font-bold">ProofPix</h1>
             </div>
             
-            {/* Header Ad */}
+            {/* Header Sponsorship */}
             <div className="hidden lg:block">
-              <EthicalAd placement="header" className="max-w-md" />
+              <Sponsorship placement="header" className="max-w-md" />
             </div>
           </div>
         </div>
@@ -178,37 +188,41 @@ export const PrivacyPolicy: React.FC = () => {
             </div>
           </section>
 
-          {/* Section 4: Ethical Advertising */}
+          {/* Section 4: Direct Sponsorships */}
           <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-4xl">💰</span>
-              <h2 className="text-2xl font-bold">Ethical Advertising</h2>
+              <span className="text-4xl">🤝</span>
+              <h2 className="text-2xl font-bold">Direct Sponsorships</h2>
             </div>
             <div className="space-y-4">
-              <p className="text-gray-300">ProofPix is supported by ethical, contextual advertising to keep the service free for basic usage. Our advertising implementation prioritizes your privacy:</p>
+              <p className="text-gray-300">ProofPix is supported by direct sponsorships from privacy-focused companies to keep the service free for basic usage. Our sponsorship model prioritizes your privacy:</p>
               
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
-                <h4 className="text-yellow-400 text-lg font-semibold mb-2">⚠️ Important: No User Tracking</h4>
-                <p className="text-gray-300">Our advertising is contextual, not personalized. We show relevant ads based on the content, not based on tracking your behavior.</p>
+              <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6">
+                <h4 className="text-green-400 text-lg font-semibold mb-2">✅ Privacy-First Partnerships</h4>
+                <p className="text-gray-300">We only partner with companies that share our commitment to privacy and user respect. No tracking, no data sharing.</p>
               </div>
 
               <ul className="space-y-3 text-gray-300">
                 <li className="flex items-start gap-3">
                   <span className="text-blue-500 text-xl">•</span>
-                  <span><strong>Contextual Advertising:</strong> We display ads relevant to photography and professional tools, without tracking your behavior.</span>
+                  <span><strong>Curated Partnerships:</strong> We carefully select sponsors that offer relevant tools for photographers and developers.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-blue-500 text-xl">•</span>
-                  <span><strong>No Behavioral Tracking:</strong> Ads are not personalized based on your browsing history or personal data.</span>
+                  <span><strong>No User Tracking:</strong> Sponsors cannot track your behavior or access any of your data.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-blue-500 text-xl">•</span>
-                  <span><strong>Clear Labeling:</strong> All sponsored content is clearly labeled as "Sponsored" or "Ad".</span>
+                  <span><strong>Clear Labeling:</strong> All sponsored content is clearly labeled as "Sponsored" or "Partnership".</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-blue-500 text-xl">•</span>
-                  <span><strong>Data Separation:</strong> Advertising systems are completely isolated from your image processing activities.</span>
+                  <span><strong>Complete Separation:</strong> Sponsorship systems are completely isolated from your image processing activities.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-blue-500 text-xl">•</span>
+                  <span><strong>Direct Relationships:</strong> We work directly with sponsors, avoiding ad networks that compromise privacy.</span>
                 </li>
               </ul>
             </div>
@@ -305,9 +319,9 @@ export const PrivacyPolicy: React.FC = () => {
           </section>
         </div>
 
-        {/* Content Ad */}
+        {/* Content Sponsorship */}
         <div className="py-8">
-          <EthicalAd placement="content" className="max-w-2xl mx-auto" />
+          <Sponsorship placement="content" className="max-w-2xl mx-auto" />
         </div>
 
         {/* Contact Section */}
@@ -327,15 +341,15 @@ export const PrivacyPolicy: React.FC = () => {
         {/* Agreement Notice */}
         <div className="bg-green-500/10 border border-green-500/20 rounded-2xl p-8 mb-16">
           <p className="text-gray-300 text-center text-lg leading-relaxed">
-            <strong>By using ProofPix, you agree to this privacy policy and our use of privacy-respecting analytics and ethical advertising as described above.</strong>
+            <strong>By using ProofPix, you agree to this privacy policy and our use of privacy-respecting analytics and direct sponsorships as described above.</strong>
             <br /><br />
             We're committed to transparency and protecting your privacy while providing you with powerful photo verification tools.
           </p>
         </div>
 
-        {/* Bottom Ad */}
+        {/* Bottom Sponsorship */}
         <div className="py-8">
-          <EthicalAd placement="bottom" className="max-w-3xl mx-auto" />
+          <Sponsorship placement="bottom" className="max-w-3xl mx-auto" />
         </div>
       </div>
 
@@ -349,10 +363,10 @@ export const PrivacyPolicy: React.FC = () => {
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>
-              <a href="#faq" className="text-gray-400 hover:text-white">F.A.Q.</a>
+              <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
               <span className="text-blue-400 font-medium">Privacy</span>
-              <a href="#contact" className="text-gray-400 hover:text-white">Contact</a>
+              <button onClick={handleContactFooterClick} className="text-gray-400 hover:text-white">Contact</button>
             </nav>
           </div>
         </div>

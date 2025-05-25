@@ -1,17 +1,25 @@
 import React, { memo, useEffect, useState } from 'react';
 import * as LucideIcons from 'lucide-react';
+import SocialShare from './SocialShare';
 
 const ExportSuccess = memo(({ 
   isVisible, 
   onClose, 
   exportType, 
   fileName = null,
-  duration = 3000 
+  duration = 3000,
+  showSocialShare = true  // New prop to control social sharing visibility
 }) => {
   const [progress, setProgress] = useState(100);
+  const [showShareButtons, setShowShareButtons] = useState(false);
 
   useEffect(() => {
     if (!isVisible) return;
+
+    // Show social share buttons after a short delay
+    const shareTimer = setTimeout(() => {
+      setShowShareButtons(true);
+    }, 1000);
 
     const interval = setInterval(() => {
       setProgress(prev => {
@@ -25,8 +33,19 @@ const ExportSuccess = memo(({
       });
     }, 100);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(shareTimer);
+    };
   }, [isVisible, duration, onClose]);
+
+  const handleShareAction = (platform) => {
+    // Analytics tracking happens in SocialShare component
+    // Optional: Close the toast after sharing
+    setTimeout(() => {
+      onClose();
+    }, 500);
+  };
 
   if (!isVisible) return null;
 
@@ -40,6 +59,8 @@ const ExportSuccess = memo(({
         return fileName ? `Raw EXIF file "${fileName}" downloaded successfully` : 'Raw EXIF data exported successfully';
       case 'clipboard':
         return 'EXIF data copied to clipboard successfully';
+      case 'pdf':
+        return fileName ? `PDF report "${fileName}" downloaded successfully` : 'PDF report downloaded successfully';
       default:
         return 'Data exported successfully';
     }
@@ -55,6 +76,8 @@ const ExportSuccess = memo(({
         return LucideIcons.Code;
       case 'clipboard':
         return LucideIcons.Clipboard;
+      case 'pdf':
+        return LucideIcons.FileDown;
       default:
         return LucideIcons.Download;
     }
@@ -80,6 +103,17 @@ const ExportSuccess = memo(({
           <LucideIcons.X size={16} />
         </button>
       </div>
+      
+      {/* Social Share Section */}
+      {showSocialShare && showShareButtons && (
+        <SocialShare 
+          variant="success"
+          exportType={exportType}
+          onShare={handleShareAction}
+          className="mt-3"
+        />
+      )}
+      
       <div className="toast-progress">
         <div 
           className="toast-progress-bar" 

@@ -6,7 +6,8 @@ import { generatePDF, downloadPDF } from '../utils/pdfUtils';
 import { formatDateTime } from '../utils/formatters';
 import { ImagePreview } from './ImagePreview';
 import { MetadataPanel } from './MetadataPanel';
-import { EthicalAd } from './EthicalAds';
+import { Sponsorship } from './Sponsorships';
+import SocialShare from './SocialShare';
 import { ProcessedImage, ImageOutputOptions } from '../types';
 import { analytics, trackTimestampOverlay, trackPDFExport, trackJSONExport, trackImageExport, usageTracker } from '../utils/analytics';
 
@@ -199,6 +200,11 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
     navigate('/faq');
   };
 
+  const handleContactClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Contact - Processing Interface Footer');
+    window.location.href = 'https://proofpixapp.com/#contact';
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -210,9 +216,9 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
               <h1 className="text-xl font-bold text-white">ProofPix</h1>
             </div>
             
-            {/* Header Ad for Processing Interface */}
+            {/* Header Sponsorship for Processing Interface */}
             <div className="hidden lg:block">
-              <EthicalAd placement="header" className="max-w-md" />
+              <Sponsorship placement="header" className="max-w-md" />
             </div>
           </div>
         </div>
@@ -272,10 +278,27 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
           </div>
         )}
 
-        {/* Content Ad between main interface and footer */}
+        {/* Content Sponsorship between main interface and footer */}
         <div className="mt-12 mb-8">
-          <EthicalAd placement="content" className="max-w-2xl mx-auto" />
+          <Sponsorship placement="content" className="max-w-2xl mx-auto" />
         </div>
+
+        {/* Social Share Section - Show after successful processing */}
+        {currentImage && !isLoading && (
+          <div className="mt-12 mb-12 flex justify-center">
+            <div className="w-full max-w-2xl px-4">
+              <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
+                <SocialShare 
+                  variant="prominent"
+                  onShare={(platform) => {
+                    analytics.trackFeatureUsage('Social Share', `Processing Interface - ${platform}`);
+                  }}
+                  className="mx-auto"
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* New Image Button */}
         <div className="mt-8 text-center">
@@ -297,14 +320,14 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
               ProofPix processes images locally in your browser. No personal data is collected.
             </p>
             <p className="mb-4">
-              Privacy-respecting analytics • Contextual advertising • Local EXIF processing
+              Privacy-respecting analytics • Direct sponsorships • Local EXIF processing
             </p>
             <nav className="flex justify-center space-x-6">
               <button onClick={onBackToHome} className="text-gray-400 hover:text-white">Home</button>
               <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
               <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <a href="#contact" className="text-gray-400 hover:text-white">Contact</a>
+              <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
             </nav>
           </div>
         </div>

@@ -9,14 +9,14 @@ export const generatePDF = async (
   console.log('Starting PDF generation...', { processedImage, showTimestamp });
   
   try {
-    const pdf = new jsPDF();
+  const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const margin = 20;
     const footerHeight = 25; // Reserve space for footer
     const maxContentHeight = pageHeight - footerHeight;
-    const { metadata } = processedImage;
-    
+  const { metadata } = processedImage;
+  
     console.log('PDF initialized, loading banner...');
     
     // Load banner graphic with better error handling
@@ -78,8 +78,8 @@ export const generatePDF = async (
       yPosition = margin;
       
       // Add simple header on new page
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(16);
+  pdf.setFont('helvetica', 'bold');
+  pdf.setFontSize(16);
       pdf.setTextColor(59, 130, 246);
       pdf.text('ProofPix Field Report (continued)', margin, yPosition);
       yPosition += 20;
@@ -88,7 +88,7 @@ export const generatePDF = async (
     let yPosition = margin;
     
     console.log('Adding header section...');
-    
+  
     // Header section with banner graphic or text fallback
     if (bannerDataUrl) {
       try {
@@ -129,7 +129,7 @@ export const generatePDF = async (
       } catch (bannerError) {
         console.warn('Error adding banner, falling back to text header:', bannerError);
         // Fall back to text header if banner fails
-        pdf.setFont('helvetica', 'bold');
+  pdf.setFont('helvetica', 'bold');
         pdf.setFontSize(24);
         pdf.setTextColor(59, 130, 246);
         pdf.text('ProofPix', margin, yPosition);
@@ -152,7 +152,7 @@ export const generatePDF = async (
     pdf.setLineWidth(1);
     pdf.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 15;
-    
+  
     // Main title
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(20);
@@ -296,19 +296,19 @@ export const generatePDF = async (
         addNewPage();
       }
       
-      pdf.setFont('helvetica', 'bold');
+    pdf.setFont('helvetica', 'bold');
       pdf.setFontSize(14);
       pdf.setTextColor(17, 24, 39);
       pdf.text('Camera Information', margin, yPosition);
-      yPosition += 10;
+    yPosition += 10;
       
       pdf.setFillColor(249, 250, 251);
       pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 25, 'F');
       pdf.setDrawColor(229, 231, 235);
       pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 25, 'S');
-      
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(10);
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(10);
       pdf.setTextColor(55, 65, 81);
       
       const cameraInfo = [
@@ -325,10 +325,10 @@ export const generatePDF = async (
         const labelWidth = pdf.getTextWidth(String(label));
         pdf.text(String(value), margin + 5 + labelWidth + 3, y);
       });
-      
-      yPosition += 35;
-    }
     
+      yPosition += 35;
+  }
+  
     // Camera Settings Section (if available)
     if (metadata.exposureTime || metadata.fNumber || metadata.iso || metadata.focalLength) {
       console.log('Adding camera settings...');
@@ -382,19 +382,19 @@ export const generatePDF = async (
         addNewPage();
       }
       
-      pdf.setFont('helvetica', 'bold');
+    pdf.setFont('helvetica', 'bold');
       pdf.setFontSize(14);
       pdf.setTextColor(17, 24, 39);
       pdf.text('Timestamp Information', margin, yPosition);
-      yPosition += 10;
+    yPosition += 10;
       
       pdf.setFillColor(249, 250, 251);
       pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 15, 'F');
       pdf.setDrawColor(229, 231, 235);
       pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 15, 'S');
-      
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(10);
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(10);
       pdf.setTextColor(55, 65, 81);
       
       pdf.text('Date Taken:', margin + 5, yPosition);
@@ -428,14 +428,14 @@ export const generatePDF = async (
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
       pdf.setTextColor(55, 65, 81);
-      
-      const formatCoord = (value: number, type: 'lat' | 'lng') => {
-        const direction = type === 'lat' ? (value >= 0 ? 'N' : 'S') : (value >= 0 ? 'E' : 'W');
-        return `${Math.abs(value).toFixed(6)}° ${direction}`;
-      };
-      
-      const gpsInfo = [
-        ['Latitude:', formatCoord(metadata.gpsLatitude, 'lat')],
+    
+    const formatCoord = (value: number, type: 'lat' | 'lng') => {
+      const direction = type === 'lat' ? (value >= 0 ? 'N' : 'S') : (value >= 0 ? 'E' : 'W');
+      return `${Math.abs(value).toFixed(6)}° ${direction}`;
+    };
+    
+    const gpsInfo = [
+      ['Latitude:', formatCoord(metadata.gpsLatitude, 'lat')],
         ['Longitude:', formatCoord(metadata.gpsLongitude, 'lng')]
       ];
       
