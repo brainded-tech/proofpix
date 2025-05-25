@@ -93,3 +93,5 @@ Thumbs.db
 # Backup files
 *.backup
 *.bak 
+# Deployment documentation and personal instructions
+deployment-docs/

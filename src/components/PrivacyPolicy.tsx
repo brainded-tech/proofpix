@@ -33,6 +33,16 @@ export const PrivacyPolicy: React.FC = () => {
     window.location.href = 'https://proofpixapp.com/#contact';
   };
 
+  const handleTermsClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Terms - Privacy Policy Footer');
+    navigate('/terms');
+  };
+
+  const handleSupportClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Support - Privacy Policy Footer');
+    navigate('/support');
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -68,7 +78,7 @@ export const PrivacyPolicy: React.FC = () => {
             🔒 Our Privacy-Respecting Commitment
           </h2>
           <p className="text-gray-300 text-lg leading-relaxed">
-            ProofPix was built with privacy as a core principle. We believe you shouldn't have to choose between powerful features and privacy. Here's our comprehensive privacy policy explaining exactly how we protect your data and respect your privacy.
+            ProofPix was built with privacy as a core principle. We believe you shouldn't have to choose between powerful features and privacy. As an open source project, our privacy claims are fully auditable and transparent. Here's our comprehensive privacy policy explaining exactly how we protect your data and respect your privacy.
           </p>
         </div>
 
@@ -359,14 +369,15 @@ export const PrivacyPolicy: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.7.1</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.7.1 • Open Source</p>
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>
               <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
               <span className="text-blue-400 font-medium">Privacy</span>
-              <button onClick={handleContactFooterClick} className="text-gray-400 hover:text-white">Contact</button>
+              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
+              <button onClick={handleSupportClick} className="text-gray-400 hover:text-white">Support</button>
             </nav>
           </div>
         </div>

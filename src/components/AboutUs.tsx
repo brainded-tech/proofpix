@@ -26,6 +26,16 @@ export const AboutUs: React.FC = () => {
     navigate('/faq');
   };
 
+  const handleTermsClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Terms - About Page Footer');
+    navigate('/terms');
+  };
+
+  const handleSupportClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Support - About Page Footer');
+    navigate('/support');
+  };
+
   const handleContactClick = () => {
     analytics.trackFeatureUsage('Navigation', 'Contact - About Page Footer');
     window.location.href = 'https://proofpixapp.com/#contact';
@@ -176,6 +186,15 @@ export const AboutUs: React.FC = () => {
 
             <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:transform hover:-translate-y-2 transition-all duration-300 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/10 relative overflow-hidden group">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span className="text-5xl mb-5 block">🔓</span>
+              <h3 className="text-2xl font-semibold mb-4">Open Source & Transparent</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Complete transparency with open source code. Audit our privacy claims, contribute improvements, or fork for your own use. No hidden functionality or backdoors.
+              </p>
+            </div>
+
+            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:transform hover:-translate-y-2 transition-all duration-300 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/10 relative overflow-hidden group">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <span className="text-5xl mb-5 block">📊</span>
               <h3 className="text-2xl font-semibold mb-4">Professional Reports</h3>
               <p className="text-gray-400 leading-relaxed">
@@ -220,14 +239,15 @@ export const AboutUs: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.7.0</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.7.0 • Open Source</p>
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>
               <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <span className="text-blue-400 font-medium">About</span>
               <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
+              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
+              <button onClick={handleSupportClick} className="text-gray-400 hover:text-white">Support</button>
             </nav>
           </div>
         </div>

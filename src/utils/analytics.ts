@@ -147,6 +147,10 @@ export class UsageTracker {
     this.incrementStat('dataExports');
   }
 
+  resetStats() {
+    localStorage.removeItem(this.storageKey);
+  }
+
   private incrementStat(statName: keyof ReturnType<typeof this.getUsageStats>) {
     const stats = this.getUsageStats();
     if (typeof stats[statName] === 'number') {

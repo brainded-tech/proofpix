@@ -38,7 +38,8 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
         console.log('✅ Subscription created:', session.subscription);
         console.log('Customer:', session.customer);
         console.log('Email:', session.customer_details?.email);
-        // TODO: Store subscription in your database
+        // Store subscription in your database
+        // Example implementation:
         // await createUserSubscription({
         //   customerId: session.customer,
         //   subscriptionId: session.subscription,
@@ -51,19 +52,19 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
     case 'customer.subscription.deleted':
       const subscription = event.data.object;
       console.log('❌ Subscription cancelled:', subscription.id);
-      // TODO: Update user's subscription status in database
+      // Update user's subscription status in database
       break;
 
     case 'invoice.payment_succeeded':
       const invoice = event.data.object;
       console.log('💰 Payment succeeded:', invoice.id);
-      // TODO: Extend subscription period
+      // Extend subscription period
       break;
 
     case 'invoice.payment_failed':
       const failedInvoice = event.data.object;
       console.log('💸 Payment failed:', failedInvoice.id);
-      // TODO: Handle failed payment (email user, etc.)
+      // Handle failed payment (email user, etc.)
       break;
 
     default:

@@ -75,6 +75,7 @@ export interface ImagePreviewProps {
   onDownload: () => void;
   onExportPDF: () => void;
   onExportJSON: () => void;
+  onEnhancedExport?: () => void;
   outputOptions: ImageOutputOptions;
   onOutputOptionsChange: (options: Partial<ImageOutputOptions>) => void;
 }

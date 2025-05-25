@@ -147,9 +147,19 @@ export const extractMetadata = async (file: File): Promise<ImageMetadata> => {
           // Additional GPS metadata
           if (exif.GPSTimeStamp) {
             try {
-              metadata.gpsTimeStamp = new Date(exif.GPSTimeStamp).toISOString();
+              // Handle GPS timestamp more safely
+              if (Array.isArray(exif.GPSTimeStamp) && exif.GPSTimeStamp.length >= 3) {
+                // GPS timestamp is usually [hours, minutes, seconds]
+                const [hours, minutes, seconds] = exif.GPSTimeStamp;
+                metadata.gpsTimeStamp = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(Math.floor(seconds)).padStart(2, '0')}`;
+              } else if (typeof exif.GPSTimeStamp === 'string') {
+                metadata.gpsTimeStamp = exif.GPSTimeStamp;
+              } else {
+                metadata.gpsTimeStamp = String(exif.GPSTimeStamp);
+              }
             } catch (gpsTimeError) {
               console.warn('GPS time parsing error:', gpsTimeError);
+              // Continue without GPS timestamp
             }
           }
           if (exif.GPSDateStamp) metadata.gpsDateStamp = exif.GPSDateStamp;

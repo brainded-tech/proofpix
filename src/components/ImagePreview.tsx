@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, FileDown, FileJson, Clock, Image, Settings } from 'lucide-react';
+import { Download, FileDown, FileJson, Clock, Image, Settings, Sparkles } from 'lucide-react';
 import { ImagePreviewProps, OutputSize, ImageFormat } from '../types';
 
 export const ImagePreview = ({ 
@@ -9,6 +9,7 @@ export const ImagePreview = ({
   onDownload,
   onExportPDF,
   onExportJSON,
+  onEnhancedExport,
   outputOptions,
   onOutputOptionsChange
 }: ImagePreviewProps): JSX.Element => {
@@ -127,6 +128,17 @@ export const ImagePreview = ({
             <Download size={16} className="mr-2" />
             Download Image
           </button>
+          
+          {/* Enhanced Export Button */}
+          {onEnhancedExport && (
+            <button 
+              className="action-button flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg"
+              onClick={onEnhancedExport}
+            >
+              <Sparkles size={16} className="mr-2" />
+              Enhanced Export
+            </button>
+          )}
           
           <button 
             className="action-button flex items-center px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"

@@ -1,0 +1,566 @@
+/* Enhanced Loading States CSS */
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.loading-spinner-small {
+  gap: 8px;
+}
+
+.loading-spinner-large {
+  gap: 16px;
+}
+
+.spinner {
+  position: relative;
+  display: inline-block;
+}
+
+.spinner-circle {
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+.loading-spinner-small .spinner-circle {
+  width: 16px;
+  height: 16px;
+}
+
+.loading-spinner-medium .spinner-circle {
+  width: 24px;
+  height: 24px;
+}
+
+.loading-spinner-large .spinner-circle {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+.spinner-primary .spinner-circle {
+  border-top-color: #3b82f6;
+}
+
+.spinner-success .spinner-circle {
+  border-top-color: #10b981;
+}
+
+.spinner-warning .spinner-circle {
+  border-top-color: #f59e0b;
+}
+
+.spinner-error .spinner-circle {
+  border-top-color: #ef4444;
+}
+
+.loading-message {
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.loading-spinner-small .loading-message {
+  font-size: 12px;
+}
+
+.loading-spinner-large .loading-message {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-message {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.progress-percentage {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-animated {
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-fill-primary {
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+}
+
+.progress-fill-success {
+  background: linear-gradient(90deg, #10b981, #047857);
+}
+
+.progress-fill-warning {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.progress-fill-error {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* Step Progress */
+.step-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.step-current {
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.step-completed {
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.step-error {
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.step-upcoming {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.step-current .step-indicator {
+  background: #3b82f6;
+  color: white;
+}
+
+.step-completed .step-indicator {
+  background: #10b981;
+  color: white;
+}
+
+.step-error .step-indicator {
+  background: #ef4444;
+  color: white;
+}
+
+.step-upcoming .step-indicator {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.step-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.step-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.step-description {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.step-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* File Processing Indicator */
+.file-processing-indicator {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.file-processing-indicator:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-icon {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.file-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: #111827;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-stage {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.file-status {
+  flex-shrink: 0;
+}
+
+.status-icon.success {
+  color: #10b981;
+}
+
+.status-icon.error {
+  color: #ef4444;
+}
+
+.status-icon.cancelled {
+  color: #9ca3af;
+}
+
+.cancel-button {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cancel-button:hover {
+  color: #6b7280;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.file-progress {
+  margin-top: 12px;
+  height: 4px;
+  background: #f3f4f6;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.file-progress-fill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Skeleton Loader */
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-line,
+.skeleton-image,
+.skeleton-block {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-line {
+  height: 16px;
+}
+
+.skeleton-image {
+  border-radius: 8px;
+}
+
+.skeleton-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skeleton-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Pulsing Dots */
+.pulsing-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pulsing-dots-small .dot {
+  width: 4px;
+  height: 4px;
+}
+
+.pulsing-dots-medium .dot {
+  width: 6px;
+  height: 6px;
+}
+
+.pulsing-dots-large .dot {
+  width: 8px;
+  height: 8px;
+}
+
+.dot {
+  border-radius: 50%;
+  animation: pulse-dot 1.4s infinite ease-in-out;
+}
+
+.dot-primary {
+  background: #3b82f6;
+}
+
+.dot-success {
+  background: #10b981;
+}
+
+.dot-warning {
+  background: #f59e0b;
+}
+
+.dot-error {
+  background: #ef4444;
+}
+
+@keyframes pulse-dot {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fade-in 0.2s ease;
+}
+
+.loading-overlay-blur {
+  backdrop-filter: blur(4px);
+}
+
+.loading-overlay-content {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.loading-cancel-button {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #374151;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.loading-cancel-button:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mini Spinner */
+.mini-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .file-processing-indicator {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .file-name {
+    color: #f9fafb;
+  }
+  
+  .file-stage {
+    color: #d1d5db;
+  }
+  
+  .step-title {
+    color: #f9fafb;
+  }
+  
+  .step-description {
+    color: #d1d5db;
+  }
+  
+  .progress-message {
+    color: #f9fafb;
+  }
+  
+  .progress-percentage {
+    color: #d1d5db;
+  }
+  
+  .progress-bar {
+    background: #374151;
+  }
+  
+  .loading-overlay {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  .loading-overlay-content {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .skeleton-line,
+  .skeleton-image,
+  .skeleton-block {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200% 100%;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .spinner-circle,
+  .mini-spinner {
+    animation: none;
+    border-top-color: transparent;
+    border-right-color: #3b82f6;
+  }
+  
+  .progress-fill {
+    transition: none;
+  }
+  
+  .skeleton-line,
+  .skeleton-image,
+  .skeleton-block {
+    animation: none;
+    background: #f3f4f6;
+  }
+  
+  .dot {
+    animation: none;
+    opacity: 0.7;
+  }
+} 

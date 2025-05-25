@@ -38,7 +38,7 @@ export const PRICING_PLANS = {
     interval: 'day',
     popular: false,
     stripeProductId: 'prod_SNGnjs8yTz6sK9',
-    stripePriceId: 'price_1RSYUNRwqAvTbIKupFqRBx9G',
+    stripePriceId: 'price_1RSWGB2Llp3EL08qcHedWKOU',
     accountRequired: false,
     sessionBased: true,
     features: [
@@ -62,7 +62,7 @@ export const PRICING_PLANS = {
     interval: 'week',
     popular: false,
     stripeProductId: 'prod_SNGoGcPZx4L3yl',
-    stripePriceId: 'price_1RSYVRRwqAvTbIKuZVcBsBk6',
+    stripePriceId: 'price_1RSWGv2Llp3EL08q0vOOSJTZ',
     accountRequired: false,
     sessionBased: true,
     features: [
@@ -86,7 +86,7 @@ export const PRICING_PLANS = {
     interval: 'month',
     popular: false,
     stripeProductId: 'prod_SNGpEP63JB0Dg5',
-    stripePriceId: 'price_1RSYWARwqAvTbIKuaX1vyPnD',
+    stripePriceId: 'price_1RSWHb2Llp3EL08qGvoJXVXz',
     accountRequired: true,
     sessionBased: false,
     features: [
@@ -109,7 +109,7 @@ export const PRICING_PLANS = {
     price: 14.99,
     interval: 'month',
     stripeProductId: 'prod_SNHfxSR543UcUs',
-    stripePriceId: 'price_1RSYWNRwqAvTbIKu1NWwozWi',
+    stripePriceId: 'price_1RSX6e2Llp3EL08qGBdLauKT',
     popular: true,
     accountRequired: true,
     sessionBased: false,
@@ -136,7 +136,7 @@ export const PRICING_PLANS = {
     interval: 'month',
     popular: false,
     stripeProductId: 'prod_SNHgHMK0ClZshZ',
-    stripePriceId: 'price_1RSYX8RwqAvTbIKuM11UVwIG',
+    stripePriceId: 'price_1RSX7T2Llp3EL08qSMntcBFN',
     accountRequired: true,
     sessionBased: false,
     features: [
@@ -181,7 +181,7 @@ export const createCheckoutSession = async (priceId, successUrl, cancelUrl) => {
     const isProduction = window.location.hostname !== 'localhost';
     const apiUrl = isProduction 
       ? '/.netlify/functions' 
-      : 'http://localhost:3002';
+      : 'http://localhost:3001';
     
     const fullEndpoint = isProduction
       ? `${apiUrl}/create-checkout`

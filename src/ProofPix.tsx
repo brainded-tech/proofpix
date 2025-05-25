@@ -159,5 +159,17 @@ export const ProofPix: React.FC = () => {
   }
 
   // Render homepage by default
-  return <HomePage onFileSelect={handleFileSelect} />;
+  return (
+    <HomePage 
+      onFileSelect={handleFileSelect}
+      onBatchComplete={(images) => {
+        // For now, just process the first image in batch mode
+        // In the future, we could create a batch results view
+        if (images.length > 0) {
+          setProcessedImage(images[0]);
+          analytics.trackFeatureUsage('Batch Processing', `Selected first of ${images.length} images`);
+        }
+      }}
+    />
+  );
 }; 

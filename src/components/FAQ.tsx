@@ -202,6 +202,10 @@ export const FAQ: React.FC = () => {
                   <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
                   <strong>Works offline:</strong> Once loaded, ProofPix works without internet
                 </li>
+                <li className="relative">
+                  <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                  <strong>Open source:</strong> Our code is publicly auditable for complete transparency
+                </li>
               </ul>
               <p>This privacy-first approach means your sensitive photos — whether personal, professional, or legal — remain completely under your control.</p>
             </div>
@@ -230,8 +234,47 @@ export const FAQ: React.FC = () => {
                   <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
                   <strong>No data selling:</strong> We never sell user data or photo information
                 </li>
+                <li className="relative">
+                  <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                  <strong>Open source transparency:</strong> All code is publicly available for audit and contribution
+                </li>
               </ul>
               <p>Our business model is designed to keep your data private while providing sustainable, professional-grade tools.</p>
+            </div>
+          ),
+          category: "privacy"
+        },
+        {
+          question: "Is ProofPix really open source? Where can I see the code?",
+          answer: (
+            <div>
+              <div className="bg-green-500 bg-opacity-10 border border-green-500 border-opacity-20 rounded-lg p-4 mb-4">
+                <p className="font-semibold text-white">Yes! ProofPix is fully open source under the MIT License.</p>
+              </div>
+              <p className="mb-4">Complete transparency means you can:</p>
+              <ul className="list-none pl-5 mb-4 space-y-2">
+                <li className="relative">
+                  <span className="absolute left-[-15px] text-green-400 font-bold">•</span>
+                  <strong>View all source code:</strong> Every line of code is publicly available on GitHub
+                </li>
+                <li className="relative">
+                  <span className="absolute left-[-15px] text-green-400 font-bold">•</span>
+                  <strong>Audit privacy claims:</strong> Verify that we actually do local processing only
+                </li>
+                <li className="relative">
+                  <span className="absolute left-[-15px] text-green-400 font-bold">•</span>
+                  <strong>Contribute improvements:</strong> Submit bug fixes, features, or suggestions
+                </li>
+                <li className="relative">
+                  <span className="absolute left-[-15px] text-green-400 font-bold">•</span>
+                  <strong>Fork for your needs:</strong> Create your own version with custom features
+                </li>
+                <li className="relative">
+                  <span className="absolute left-[-15px] text-green-400 font-bold">•</span>
+                  <strong>Self-host:</strong> Run your own instance for maximum control
+                </li>
+              </ul>
+              <p>This level of transparency builds trust and ensures ProofPix remains privacy-focused forever.</p>
             </div>
           ),
           category: "privacy"
@@ -657,6 +700,14 @@ export const FAQ: React.FC = () => {
     navigate('/privacy');
   };
 
+  const handleTermsClick = () => {
+    navigate('/terms');
+  };
+
+  const handleSupportClick = () => {
+    navigate('/support');
+  };
+
   const handleContactClick = () => {
     window.location.href = 'https://proofpixapp.com/#contact';
   };
@@ -814,14 +865,15 @@ export const FAQ: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.6.0</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.6.0 • Open Source</p>
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={() => navigate('/')} className="text-gray-400 hover:text-white">Home</button>
-              <button onClick={() => navigate('/faq')} className="text-blue-400 hover:text-white">F.A.Q.</button>
+              <span className="text-blue-400 font-medium">F.A.Q.</span>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
               <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
+              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
+              <button onClick={handleSupportClick} className="text-gray-400 hover:text-white">Support</button>
             </nav>
           </div>
         </div>

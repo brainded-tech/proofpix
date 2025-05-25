@@ -1,8 +1,8 @@
-# ProofPix - Privacy-Focused EXIF Metadata Extraction
+# ProofPix - Privacy-Focused Open Source EXIF Metadata Extraction
 
 ## 🔒 Don't Just Send a Photo — Send Proof.
 
-ProofPix is a privacy-focused web application that extracts and displays EXIF metadata from your images. All processing happens locally in your browser, ensuring your photos never leave your device.
+ProofPix is a privacy-focused, open source web application that extracts and displays EXIF metadata from your images. All processing happens locally in your browser, ensuring your photos never leave your device.
 
 ## ✨ Features
 
@@ -40,8 +40,9 @@ ProofPix is a privacy-focused web application that extracts and displays EXIF me
 
 ### Installation
 ```bash
-# Clone or download the project
-cd proofpixfinal
+# Clone the repository
+git clone https://github.com/yourusername/proofpix.git
+cd proofpix
 
 # Install dependencies
 npm install
@@ -50,7 +51,7 @@ npm install
 npm start
 ```
 
-The application will open at `http://localhost:3000`
+The application will open at `http://localhost:3001`
 
 ### Production Build
 ```bash
@@ -64,22 +65,29 @@ npm run build
 
 ### Project Structure
 ```
-proofpixfinal/
+proofpix/
 ├── src/
 │   ├── components/          # React components
 │   │   ├── HomePage.tsx     # Landing page
 │   │   ├── ProcessingInterface.tsx  # Main processing UI
 │   │   ├── ImagePreview.tsx # Image display and controls
-│   │   └── MetadataPanel.tsx # EXIF data display
+│   │   ├── MetadataPanel.tsx # EXIF data display
+│   │   ├── PricingPage.tsx  # Subscription plans
+│   │   └── Sponsorships.tsx # Direct sponsorship system
 │   ├── utils/               # Utility functions
 │   │   ├── metadata.ts      # EXIF extraction logic
 │   │   ├── imageUtils.ts    # Image processing
 │   │   ├── pdfUtils.ts      # PDF generation
-│   │   └── errorLogger.ts   # Error tracking
+│   │   ├── errorLogger.ts   # Error tracking
+│   │   └── stripe.js        # Payment processing
 │   ├── types.ts            # TypeScript interfaces
 │   └── ProofPix.tsx        # Main app component
 ├── public/                  # Static assets
+├── netlify/                 # Netlify functions
 ├── ProofPixPhoenix_DevLogs/ # Development logging
+├── server.js               # Backend server (development)
+├── LICENSE                 # MIT License
+├── CONTRIBUTING.md         # Contribution guidelines
 └── package.json            # Dependencies and scripts
 ```
 
@@ -95,6 +103,8 @@ proofpixfinal/
 - **exifr** for EXIF extraction
 - **jsPDF** for PDF generation
 - **Lucide React** for icons
+- **Stripe** for payment processing
+- **Netlify Functions** for serverless backend
 
 ## 📋 Supported Formats
 
@@ -107,7 +117,17 @@ proofpixfinal/
 ## 🔧 Configuration
 
 ### Environment Variables
-No environment variables required - the app runs entirely client-side.
+For development with payment processing:
+```bash
+# .env file (not included in repository)
+REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+REACT_APP_API_URL=http://localhost:3002
+PORT=3001
+```
+
+**Note**: The core EXIF extraction functionality runs entirely client-side and requires no environment variables.
 
 ### Browser Compatibility
 - Chrome 90+
@@ -187,13 +207,14 @@ See `src/types.ts` for complete TypeScript interface definitions.
 
 ## 🤝 Contributing
 
-ProofPix is designed to be privacy-focused and maintainable:
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
-1. Maintain client-side only processing
+Key principles:
+1. Maintain client-side only processing for EXIF extraction
 2. Add comprehensive error handling
 3. Update documentation and changelog
 4. Test on multiple browsers and devices
-5. Ensure no data leaves the user's device
+5. Ensure no user data leaves the device without explicit consent
 
 ## 📄 License
 
