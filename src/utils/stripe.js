@@ -109,7 +109,7 @@ export const PRICING_PLANS = {
     price: 14.99,
     interval: 'month',
     stripeProductId: 'prod_SNHfxSR543UcUs',
-    stripePriceId: 'price_1RSWI92Llp3EL08qYQGJKGvH',
+    stripePriceId: 'price_1RSX6e2Llp3EL08qGBdLauKT',
     popular: true,
     accountRequired: true,
     sessionBased: false,
@@ -136,7 +136,7 @@ export const PRICING_PLANS = {
     interval: 'month',
     popular: false,
     stripeProductId: 'prod_SNHgHMK0ClZshZ',
-    stripePriceId: 'price_1RSWIj2Llp3EL08qhCJhJGvH',
+    stripePriceId: 'price_1RSX7T2Llp3EL08qSMntcBFN',
     accountRequired: true,
     sessionBased: false,
     features: [
