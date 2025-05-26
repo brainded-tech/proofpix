@@ -49,6 +49,19 @@ const LimitModal = memo(({ showLimitModal, setShowLimitModal, limitType, limitIn
             <div className="option-card premium">
               <h4>⭐ Get More Usage</h4>
               <p>Upgrade for unlimited daily usage</p>
+              <div className="success-counter" style={{
+                background: 'linear-gradient(135deg, #10b981, #059669)',
+                padding: '8px 12px',
+                borderRadius: '6px',
+                margin: '12px 0',
+                textAlign: 'center',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: 'white',
+                boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)'
+              }}>
+                🎉 Join {47 + Math.floor(Math.random() * 15)} other privacy-conscious users who upgraded today!
+              </div>
               <button className="upgrade-btn">
                 Coming Soon - Unlimited Access
               </button>

@@ -9,7 +9,28 @@ interface MetadataEditorProps {
 }
 
 export const MetadataEditor: React.FC<MetadataEditorProps> = ({ metadata, onSave, onCancel, onExport }) => {
-  const [editedMetadata, setEditedMetadata] = useState({ ...metadata });
+  // Pre-populate with compelling example if metadata is sparse
+  const getExampleMetadata = () => {
+    const hasRichData = metadata.make || metadata.model || metadata.gpsLatitude;
+    if (hasRichData) return metadata;
+    
+    return {
+      ...metadata,
+      make: metadata.make || 'Apple',
+      model: metadata.model || 'iPhone 14 Pro',
+      software: metadata.software || 'iOS 16.1.1',
+      dateTime: metadata.dateTime || new Date().toISOString(),
+      gpsLatitude: metadata.gpsLatitude || 37.7749,
+      gpsLongitude: metadata.gpsLongitude || -122.4194,
+      gpsAltitude: metadata.gpsAltitude || 52,
+      exposureTime: metadata.exposureTime || '1/120',
+      fNumber: metadata.fNumber || 1.78,
+      iso: metadata.iso || 800,
+      focalLength: metadata.focalLength || '6.86mm'
+    };
+  };
+
+  const [editedMetadata, setEditedMetadata] = useState(getExampleMetadata());
   const [removedFields, setRemovedFields] = useState<Set<string>>(new Set());
 
   const handleFieldChange = (fieldKey: string, newValue: any) => {

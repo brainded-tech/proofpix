@@ -67,11 +67,19 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
         <h2 className="text-xl font-bold text-white">Image Metadata</h2>
         <button
           onClick={() => setIsEditing(true)}
-          className="flex items-center space-x-2 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          className="relative flex items-center space-x-2 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
           title="Edit Metadata"
         >
           <Edit3 size={16} />
           <span>Edit</span>
+          <span 
+            className="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-black rounded-full animate-pulse shadow-lg"
+            style={{
+              animation: 'pulse 2s infinite, glow 2s ease-in-out infinite alternate'
+            }}
+          >
+            ✨ NEW
+          </span>
         </button>
       </div>
       
