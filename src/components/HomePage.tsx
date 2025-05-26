@@ -10,6 +10,7 @@ import BatchProcessor from './BatchProcessor';
 // import BatchProcessor from './test-minimal-batch';
 import { ProcessedImage } from '../types';
 import SessionManager from '../utils/sessionManager';
+import { ComparisonTool } from './ComparisonTool';
 
 interface HomePageProps {
   onFileSelect: (file: File) => void;
@@ -20,6 +21,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
   const [isDragActive, setIsDragActive] = useState(false);
   const [usageStats, setUsageStats] = useState(usageTracker.getUsageStats());
   const [processingMode, setProcessingMode] = useState<'single' | 'batch'>('single');
+  const [showComparisonTool, setShowComparisonTool] = useState(false);
   const navigate = useNavigate();
 
   // Update usage stats on component mount and periodically
@@ -103,6 +105,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
   const handleSupportClick = () => {
     analytics.trackFeatureUsage('Navigation', 'Support - Footer');
     navigate('/support');
+  };
+
+  const handleComparisonToolClick = () => {
+    setShowComparisonTool(true);
+    analytics.trackFeatureUsage('Navigation', 'Comparison Tool Opened');
   };
 
   const handleBatchComplete = useCallback((images: ProcessedImage[]) => {
@@ -309,22 +316,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
           </div>
 
           {/* Image Comparison Feature */}
-          <div className="text-center bg-gray-600 bg-opacity-20 border border-gray-500 border-opacity-30 rounded-lg p-6 relative">
-            <div className="bg-gray-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Layers className="h-8 w-8 text-gray-400" />
+          <div className="text-center bg-purple-500 bg-opacity-10 border border-purple-500 border-opacity-30 rounded-lg p-6">
+            <div className="bg-purple-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Layers className="h-8 w-8 text-purple-400" />
             </div>
             <h3 className="text-lg font-semibold mb-2">
               🔍 Image Comparison
-              <span className="ml-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                COMING SOON
+              <span className="ml-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs px-2 py-1 rounded-full font-medium animate-pulse">
+                NEW
               </span>
             </h3>
             <p className="text-gray-400 text-sm mb-3">
               Side-by-side metadata comparison for forensic analysis and verification workflows.
             </p>
-            <div className="absolute inset-0 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center">
-              <Lock className="h-6 w-6 text-gray-400" />
-            </div>
+            <button
+              onClick={handleComparisonToolClick}
+              className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors"
+            >
+              → Open Comparison Tool
+            </button>
           </div>
 
 
@@ -408,6 +418,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
           </div>
         </div>
       </footer>
+
+      {/* Comparison Tool Modal */}
+      {showComparisonTool && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 rounded-lg max-w-7xl w-full max-h-[90vh] overflow-y-auto">
+            <ComparisonTool onClose={() => setShowComparisonTool(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }; 
