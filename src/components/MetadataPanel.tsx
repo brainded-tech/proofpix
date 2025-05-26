@@ -1,9 +1,13 @@
-import React from 'react';
-import { Camera, Map, Info, Settings, Calendar } from 'lucide-react';
+import React, { useState } from 'react';
+import { Camera, Map, Info, Settings, Calendar, Edit3 } from 'lucide-react';
 import { MetadataPanelProps } from '../types';
 import { formatDateTime } from '../utils/formatters';
+import { MetadataEditor } from './ExifEditor';
 
 export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentMetadata, setCurrentMetadata] = useState(metadata);
+
   if (!metadata) {
     return (
       <div className="metadata-panel bg-gray-800 rounded-lg shadow-lg p-6">
@@ -15,11 +19,38 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
     );
   }
 
-  const hasGpsData = metadata.gpsLatitude !== undefined && metadata.gpsLongitude !== undefined;
+  const handleSave = (modifiedMetadata: any, removedFields: string[]) => {
+    setCurrentMetadata(modifiedMetadata);
+    setIsEditing(false);
+    // TODO: Implement actual metadata saving to file
+    console.log('Saving metadata:', modifiedMetadata, 'Removed fields:', removedFields);
+  };
+
+  const handleExport = (modifiedMetadata: any, removedFields: string[]) => {
+    // TODO: Implement metadata export functionality
+    console.log('Exporting with metadata:', modifiedMetadata, 'Removed fields:', removedFields);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <MetadataEditor
+        metadata={currentMetadata}
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onExport={handleExport}
+      />
+    );
+  }
+
+  const hasGpsData = currentMetadata.gpsLatitude !== undefined && currentMetadata.gpsLongitude !== undefined;
   
   const getGoogleMapsUrl = () => {
     if (!hasGpsData) return null;
-    return `https://www.google.com/maps?q=${metadata.gpsLatitude},${metadata.gpsLongitude}`;
+    return `https://www.google.com/maps?q=${currentMetadata.gpsLatitude},${currentMetadata.gpsLongitude}`;
   };
 
   const formatGpsCoordinate = (value: number | undefined, type: 'lat' | 'long'): string => {
@@ -32,7 +63,17 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
 
   return (
     <div className="metadata-panel bg-gray-800 rounded-lg shadow-lg p-6">
-      <h2 className="text-xl font-bold mb-4 text-white">Image Metadata</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-white">Image Metadata</h2>
+        <button
+          onClick={() => setIsEditing(true)}
+          className="flex items-center space-x-2 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          title="Edit Metadata"
+        >
+          <Edit3 size={16} />
+          <span>Edit</span>
+        </button>
+      </div>
       
       <div className="metadata-sections space-y-6">
         {/* Timestamp Section */}
@@ -45,12 +86,12 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Date Taken</span>
               <span className="metadata-value text-sm text-gray-200">
-                {metadata.dateTime ? formatDateTime(metadata.dateTime) : 'N/A'}
+                {currentMetadata.dateTime ? formatDateTime(currentMetadata.dateTime) : 'N/A'}
               </span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Last Modified</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.lastModified || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.lastModified || 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -64,19 +105,19 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
           <div className="metadata-content space-y-2">
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Camera Make</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.make || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.make || 'N/A'}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Camera Model</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.model || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.model || 'N/A'}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Lens</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.lens || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.lens || 'N/A'}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Software</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.software || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.software || 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -90,21 +131,21 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
           <div className="metadata-content space-y-2">
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Exposure Time</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.exposureTime || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.exposureTime || 'N/A'}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">F-Number</span>
               <span className="metadata-value text-sm text-gray-200">
-                {metadata.fNumber ? `f/${metadata.fNumber}` : 'N/A'}
+                {currentMetadata.fNumber ? `f/${currentMetadata.fNumber}` : 'N/A'}
               </span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">ISO</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.iso || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.iso || 'N/A'}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Focal Length</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.focalLength || 'N/A'}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.focalLength || 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -120,19 +161,19 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
               <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
                 <span className="metadata-label text-sm font-medium text-gray-400">Latitude</span>
                 <span className="metadata-value text-sm text-gray-200">
-                {formatGpsCoordinate(metadata.gpsLatitude, 'lat')}
+                {formatGpsCoordinate(currentMetadata.gpsLatitude, 'lat')}
               </span>
             </div>
               <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
                 <span className="metadata-label text-sm font-medium text-gray-400">Longitude</span>
                 <span className="metadata-value text-sm text-gray-200">
-                {formatGpsCoordinate(metadata.gpsLongitude, 'long')}
+                {formatGpsCoordinate(currentMetadata.gpsLongitude, 'long')}
               </span>
             </div>
               <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
                 <span className="metadata-label text-sm font-medium text-gray-400">Altitude</span>
                 <span className="metadata-value text-sm text-gray-200">
-                  {metadata.gpsAltitude ? `${metadata.gpsAltitude}m` : 'N/A'}
+                  {currentMetadata.gpsAltitude ? `${currentMetadata.gpsAltitude}m` : 'N/A'}
               </span>
             </div>
               {getGoogleMapsUrl() && (
@@ -161,21 +202,21 @@ export const MetadataPanel: React.FC<MetadataPanelProps> = ({ metadata }) => {
           <div className="metadata-content space-y-2">
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">File Name</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.fileName}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.fileName}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">File Size</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.fileSize}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.fileSize}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">File Type</span>
-              <span className="metadata-value text-sm text-gray-200">{metadata.fileType}</span>
+              <span className="metadata-value text-sm text-gray-200">{currentMetadata.fileType}</span>
             </div>
             <div className="metadata-row flex justify-between py-2 border-b border-gray-600">
               <span className="metadata-label text-sm font-medium text-gray-400">Dimensions</span>
               <span className="metadata-value text-sm text-gray-200">
-                {metadata.imageWidth && metadata.imageHeight 
-                  ? `${metadata.imageWidth} × ${metadata.imageHeight}`
+                {currentMetadata.imageWidth && currentMetadata.imageHeight 
+                  ? `${currentMetadata.imageWidth} × ${currentMetadata.imageHeight}`
                   : 'N/A'
                 }
               </span>
