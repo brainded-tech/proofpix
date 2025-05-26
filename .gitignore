@@ -95,3 +95,6 @@ Thumbs.db
 *.bak 
 # Deployment documentation and personal instructions
 deployment-docs/
+
+# Local Netlify folder
+.netlify
