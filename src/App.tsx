@@ -17,12 +17,30 @@ import GettingStarted from './pages/docs/GettingStarted';
 import PrivacyGuide from './pages/docs/PrivacyGuide';
 import MetadataGuide from './pages/docs/MetadataGuide';
 import ApiDocs from './pages/docs/ApiDocs';
+import DocumentationIndex from './pages/docs/DocumentationIndex';
 
 // Import enhanced systems for global access (development/testing)
 import { errorHandler } from './utils/errorHandler';
 import { performanceOptimizer } from './utils/performanceOptimizer';
 import { enhancedPdfGenerator } from './utils/enhancedPdfGenerator';
 import { enhancedDataExporter } from './utils/enhancedDataExporter';
+
+// Redirect component for external documentation
+const RedirectComponent: React.FC<{ url: string; title: string }> = ({ url, title }) => {
+  React.useEffect(() => {
+    window.location.href = url;
+  }, [url]);
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold mb-4">Redirecting to {title}...</h2>
+        <p className="mb-4">You'll be redirected to our comprehensive documentation.</p>
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    </div>
+  );
+};
 
 export function App() {
   const location = useLocation();
@@ -58,10 +76,17 @@ export function App() {
         <Route path="/batch" element={<BatchManagementPage onBackToHome={() => window.location.href = '/'} />} />
         
         {/* Documentation Routes */}
+        <Route path="/docs" element={<DocumentationIndex />} />
         <Route path="/docs/getting-started" element={<GettingStarted />} />
         <Route path="/docs/privacy-guide" element={<PrivacyGuide />} />
         <Route path="/docs/metadata-guide" element={<MetadataGuide />} />
         <Route path="/docs/api" element={<ApiDocs />} />
+        
+        {/* External Documentation Links - These will redirect to GitHub */}
+        <Route path="/docs/enterprise" element={<RedirectComponent url="https://github.com/brainded-tech/proofpix/blob/main/ENTERPRISE_GUIDE.md" title="Enterprise Guide" />} />
+        <Route path="/docs/pro" element={<RedirectComponent url="https://github.com/brainded-tech/proofpix/blob/main/PRO_USER_GUIDE.md" title="Pro User Guide" />} />
+        <Route path="/docs/compliance" element={<RedirectComponent url="https://github.com/brainded-tech/proofpix/blob/main/COMPLIANCE_GUIDE.md" title="Compliance Guide" />} />
+        <Route path="/docs/integration" element={<RedirectComponent url="https://github.com/brainded-tech/proofpix/blob/main/INTEGRATION_GUIDE.md" title="Integration Guide" />} />
         
         {/* Catch all route for debugging */}
         <Route path="*" element={

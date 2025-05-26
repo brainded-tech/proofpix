@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Upload, X, Share2, AlertTriangle, CheckCircle, Copy, Layers } from 'lucide-react';
 import { ProcessedImage } from '../types';
 import { analytics } from '../utils/analytics';
+import { extractMetadata } from '../utils/metadata';
 
 interface ComparisonToolProps {
   onClose?: () => void;
@@ -24,36 +25,46 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
 
-  const handleImageUpload = useCallback((side: 'left' | 'right', file: File) => {
-    // Simulate image processing - in real app, this would use the existing EXIF extraction
-    const mockMetadata = {
-      fileName: file.name,
-      fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
-      fileType: file.type,
-      lastModified: new Date(file.lastModified).toISOString(),
-      make: side === 'left' ? 'Apple' : 'Canon',
-      model: side === 'left' ? 'iPhone 14 Pro' : 'EOS R5',
-      dateTime: new Date().toISOString(),
-      gpsLatitude: side === 'left' ? 37.7749 : 40.7128,
-      gpsLongitude: side === 'left' ? -122.4194 : -74.0060,
-      iso: side === 'left' ? 800 : 1600,
-      fNumber: side === 'left' ? 1.78 : 2.8,
-      exposureTime: side === 'left' ? '1/120' : '1/60',
-      focalLength: side === 'left' ? '6.86mm' : '24mm'
-    };
+  const handleImageUpload = useCallback(async (side: 'left' | 'right', file: File) => {
+    try {
+      // Use real EXIF extraction instead of mock data
+      const metadata = await extractMetadata(file);
+      
+      const processedImage: ProcessedImage = {
+        file,
+        metadata,
+        previewUrl: URL.createObjectURL(file)
+      };
 
-    const processedImage: ProcessedImage = {
-      file,
-      metadata: mockMetadata,
-      previewUrl: URL.createObjectURL(file)
-    };
+      setComparison(prev => ({
+        ...prev,
+        [side === 'left' ? 'leftImage' : 'rightImage']: processedImage
+      }));
 
-    setComparison(prev => ({
-      ...prev,
-      [side === 'left' ? 'leftImage' : 'rightImage']: processedImage
-    }));
+      analytics.trackFeatureUsage('Image Comparison', `${side} Image Uploaded`);
+    } catch (error) {
+      console.error('Error extracting metadata:', error);
+      // Fallback to basic file info if EXIF extraction fails
+      const basicMetadata = {
+        fileName: file.name,
+        fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+        fileType: file.type,
+        lastModified: new Date(file.lastModified).toISOString(),
+      };
+      
+      const processedImage: ProcessedImage = {
+        file,
+        metadata: basicMetadata,
+        previewUrl: URL.createObjectURL(file)
+      };
 
-    analytics.trackFeatureUsage('Image Comparison', `${side} Image Uploaded`);
+      setComparison(prev => ({
+        ...prev,
+        [side === 'left' ? 'leftImage' : 'rightImage']: processedImage
+      }));
+
+      analytics.trackFeatureUsage('Image Comparison', `${side} Image Uploaded (Basic Info Only)`);
+    }
   }, []);
 
   const analyzeComparison = useCallback(() => {
@@ -61,21 +72,118 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
 
     setIsAnalyzing(true);
     
-    // Simulate analysis
+    // Real dynamic analysis based on actual metadata
     setTimeout(() => {
-      const differences = [
-        'Camera manufacturer differs (Apple vs Canon)',
-        'GPS locations are 2,500 miles apart',
-        'ISO settings vary significantly (800 vs 1600)',
-        'Focal lengths indicate different lens types',
-        'File sizes suggest different compression'
-      ];
+      const leftMeta = comparison.leftImage!.metadata;
+      const rightMeta = comparison.rightImage!.metadata;
+      
+      const differences: string[] = [];
+      const similarities: string[] = [];
 
-      const similarities = [
-        'Both images taken within same time period',
-        'Similar exposure settings for lighting conditions',
-        'Both use professional camera equipment'
-      ];
+      // Compare camera make/model
+      if (leftMeta.make && rightMeta.make) {
+        if (leftMeta.make !== rightMeta.make) {
+          differences.push(`Camera manufacturer differs (${leftMeta.make} vs ${rightMeta.make})`);
+        } else {
+          similarities.push(`Both images taken with ${leftMeta.make} cameras`);
+        }
+      }
+
+      if (leftMeta.model && rightMeta.model) {
+        if (leftMeta.model !== rightMeta.model) {
+          differences.push(`Camera model differs (${leftMeta.model} vs ${rightMeta.model})`);
+        } else {
+          similarities.push(`Both images taken with ${leftMeta.model}`);
+        }
+      }
+
+      // Compare GPS coordinates
+      if (leftMeta.gpsLatitude && leftMeta.gpsLongitude && rightMeta.gpsLatitude && rightMeta.gpsLongitude) {
+        const distance = Math.sqrt(
+          Math.pow(leftMeta.gpsLatitude - rightMeta.gpsLatitude, 2) + 
+          Math.pow(leftMeta.gpsLongitude - rightMeta.gpsLongitude, 2)
+        ) * 69; // Rough miles conversion
+        
+        if (distance > 1) {
+          differences.push(`GPS locations are ${distance.toFixed(0)} miles apart`);
+        } else {
+          similarities.push('Both images taken at similar locations');
+        }
+      }
+
+      // Compare ISO settings
+      if (leftMeta.iso && rightMeta.iso) {
+        const isoDiff = Math.abs(leftMeta.iso - rightMeta.iso);
+        if (isoDiff > 200) {
+          differences.push(`ISO settings vary significantly (${leftMeta.iso} vs ${rightMeta.iso})`);
+        } else if (isoDiff === 0) {
+          similarities.push(`Both images use identical ISO ${leftMeta.iso}`);
+        } else {
+          similarities.push(`Similar ISO settings (${leftMeta.iso} vs ${rightMeta.iso})`);
+        }
+      }
+
+      // Compare focal length
+      if (leftMeta.focalLength && rightMeta.focalLength) {
+        if (leftMeta.focalLength !== rightMeta.focalLength) {
+          differences.push(`Focal lengths differ (${leftMeta.focalLength} vs ${rightMeta.focalLength})`);
+        } else {
+          similarities.push(`Both images shot at ${leftMeta.focalLength} focal length`);
+        }
+      }
+
+      // Compare aperture (f-number)
+      if (leftMeta.fNumber && rightMeta.fNumber) {
+        const fDiff = Math.abs(leftMeta.fNumber - rightMeta.fNumber);
+        if (fDiff > 0.5) {
+          differences.push(`Aperture settings differ (f/${leftMeta.fNumber} vs f/${rightMeta.fNumber})`);
+        } else {
+          similarities.push(`Similar aperture settings (f/${leftMeta.fNumber} vs f/${rightMeta.fNumber})`);
+        }
+      }
+
+      // Compare exposure time
+      if (leftMeta.exposureTime && rightMeta.exposureTime) {
+        if (leftMeta.exposureTime !== rightMeta.exposureTime) {
+          differences.push(`Exposure times differ (${leftMeta.exposureTime} vs ${rightMeta.exposureTime})`);
+        } else {
+          similarities.push(`Identical exposure time (${leftMeta.exposureTime})`);
+        }
+      }
+
+      // Compare file sizes
+      if (leftMeta.fileSize && rightMeta.fileSize) {
+        const leftSize = parseFloat(leftMeta.fileSize.replace(' MB', ''));
+        const rightSize = parseFloat(rightMeta.fileSize.replace(' MB', ''));
+        const sizeDiff = Math.abs(leftSize - rightSize);
+        
+        if (sizeDiff > 1) {
+          differences.push(`File sizes differ significantly (${leftMeta.fileSize} vs ${rightMeta.fileSize})`);
+        } else {
+          similarities.push(`Similar file sizes (${leftMeta.fileSize} vs ${rightMeta.fileSize})`);
+        }
+      }
+
+      // Compare date/time
+      if (leftMeta.dateTime && rightMeta.dateTime) {
+        const leftDate = new Date(leftMeta.dateTime);
+        const rightDate = new Date(rightMeta.dateTime);
+        const timeDiff = Math.abs(leftDate.getTime() - rightDate.getTime()) / (1000 * 60 * 60); // hours
+        
+        if (timeDiff > 24) {
+          differences.push(`Images taken ${Math.floor(timeDiff / 24)} days apart`);
+        } else if (timeDiff > 1) {
+          differences.push(`Images taken ${Math.floor(timeDiff)} hours apart`);
+        } else {
+          similarities.push('Both images taken within the same hour');
+        }
+      }
+
+      // Add fallback messages if no metadata available
+      if (differences.length === 0 && similarities.length === 0) {
+        differences.push('Limited metadata available for comparison');
+        similarities.push('Both images are valid image files');
+      }
 
       setComparison(prev => ({
         ...prev,

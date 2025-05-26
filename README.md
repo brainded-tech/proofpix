@@ -41,7 +41,7 @@ ProofPix is a privacy-focused, open source web application that extracts and dis
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/proofpix.git
+git clone https://github.com/brainded-tech/proofpix.git
 cd proofpix
 
 # Install dependencies
@@ -73,19 +73,30 @@ proofpix/
 │   │   ├── ImagePreview.tsx # Image display and controls
 │   │   ├── MetadataPanel.tsx # EXIF data display
 │   │   ├── PricingPage.tsx  # Subscription plans
-│   │   └── Sponsorships.tsx # Direct sponsorship system
+│   │   └── Support.tsx      # Support and documentation hub
+│   ├── pages/docs/          # User-facing documentation
+│   │   ├── GettingStarted.tsx # Getting started guide
+│   │   ├── PrivacyGuide.tsx # Privacy best practices
+│   │   ├── MetadataGuide.tsx # Metadata explanation
+│   │   └── ApiDocs.tsx      # API documentation
 │   ├── utils/               # Utility functions
 │   │   ├── metadata.ts      # EXIF extraction logic
 │   │   ├── imageUtils.ts    # Image processing
 │   │   ├── pdfUtils.ts      # PDF generation
-│   │   ├── errorLogger.ts   # Error tracking
-│   │   └── stripe.js        # Payment processing
+│   │   └── analytics.ts     # Privacy-friendly analytics
 │   ├── types.ts            # TypeScript interfaces
 │   └── ProofPix.tsx        # Main app component
+├── docs/                    # Comprehensive documentation suite
+│   ├── ENTERPRISE_GUIDE.md  # Enterprise features and workflows
+│   ├── PRO_USER_GUIDE.md    # Pro user documentation
+│   ├── COMPLIANCE_GUIDE.md  # Regulatory compliance guide
+│   ├── INTEGRATION_GUIDE.md # System integration documentation
+│   ├── ARCHITECTURE.md      # System architecture
+│   ├── API_REFERENCE.md     # Complete API reference
+│   ├── TESTING_GUIDE.md     # Testing strategies
+│   └── DEPLOYMENT_GUIDE.md  # Deployment documentation
 ├── public/                  # Static assets
 ├── netlify/                 # Netlify functions
-├── ProofPixPhoenix_DevLogs/ # Development logging
-├── server.js               # Backend server (development)
 ├── LICENSE                 # MIT License
 ├── CONTRIBUTING.md         # Contribution guidelines
 └── package.json            # Dependencies and scripts
@@ -189,9 +200,27 @@ npm run build
 - **No Temporary Storage**: Files not saved to disk
 - **User Control**: Complete control over data export
 
-## 📖 API Reference
+## 📖 Documentation
 
-### Core Functions
+### User Documentation
+- **[Getting Started Guide](src/pages/docs/GettingStarted.tsx)** - Complete setup and usage guide
+- **[Privacy Best Practices](src/pages/docs/PrivacyGuide.tsx)** - Privacy protection guidelines
+- **[Metadata Types Explained](src/pages/docs/MetadataGuide.tsx)** - Understanding EXIF data
+- **[Pro User Guide](PRO_USER_GUIDE.md)** - Advanced features for Pro subscribers
+
+### Enterprise Documentation
+- **[Enterprise Guide](ENTERPRISE_GUIDE.md)** - Complete enterprise features and workflows
+- **[API Documentation](src/pages/docs/ApiDocs.tsx)** - Enterprise API reference
+- **[Integration Guide](INTEGRATION_GUIDE.md)** - System integration documentation
+- **[Compliance Guide](COMPLIANCE_GUIDE.md)** - Regulatory compliance and audit procedures
+
+### Technical Documentation
+- **[System Architecture](ARCHITECTURE.md)** - Complete system design and architecture
+- **[API Reference](API_REFERENCE.md)** - Comprehensive API documentation
+- **[Testing Guide](TESTING_GUIDE.md)** - Testing strategies and procedures
+- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Deployment and DevOps documentation
+
+### Quick API Reference
 
 #### `extractMetadata(file: File): Promise<ImageMetadata>`
 Extracts EXIF metadata from an image file.

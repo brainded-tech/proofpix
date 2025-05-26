@@ -331,6 +331,8 @@ export const Support: React.FC = () => {
                   <li>• Custom deployment options</li>
                   <li>• Priority support SLA</li>
                   <li>• Training and onboarding</li>
+                  <li>• <button onClick={() => navigate('/docs/enterprise')} className="text-blue-400 hover:text-blue-300 underline">Enterprise Guide</button></li>
+                  <li>• <button onClick={() => navigate('/docs/compliance')} className="text-blue-400 hover:text-blue-300 underline">Compliance Documentation</button></li>
                 </ul>
                 <button
                   onClick={() => handleEmailClick('enterprise')}
@@ -350,6 +352,8 @@ export const Support: React.FC = () => {
                   <li>• White-label solutions</li>
                   <li>• Integration opportunities</li>
                   <li>• Reseller programs</li>
+                  <li>• <button onClick={() => navigate('/docs/integration')} className="text-blue-400 hover:text-blue-300 underline">Integration Guide</button></li>
+                  <li>• <button onClick={() => navigate('/docs/api')} className="text-blue-400 hover:text-blue-300 underline">API Documentation</button></li>
                 </ul>
                 <button
                   onClick={() => handleEmailClick('partners')}
@@ -372,12 +376,22 @@ export const Support: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                  <h4 className="text-blue-400 text-lg font-semibold mb-3">📚 Documentation</h4>
+                  <h4 className="text-blue-400 text-lg font-semibold mb-3">📚 User Documentation</h4>
                   <ul className="space-y-2 text-gray-300">
                     <li>• <button onClick={() => navigate('/docs/getting-started')} className="text-blue-400 hover:text-blue-300 underline">Getting Started Guide</button></li>
-                    <li>• <button onClick={() => navigate('/docs/api')} className="text-blue-400 hover:text-blue-300 underline">API Documentation</button> <span className="text-gray-400">[Enterprise]</span></li>
                     <li>• <button onClick={() => navigate('/docs/privacy-guide')} className="text-blue-400 hover:text-blue-300 underline">Privacy Best Practices</button></li>
                     <li>• <button onClick={() => navigate('/docs/metadata-guide')} className="text-blue-400 hover:text-blue-300 underline">Metadata Types Explained</button></li>
+                    <li>• <button onClick={() => navigate('/docs/pro')} className="text-blue-400 hover:text-blue-300 underline">Pro User Guide</button> <span className="text-green-400">[Pro]</span></li>
+                  </ul>
+                </div>
+
+                <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-6">
+                  <h4 className="text-purple-400 text-lg font-semibold mb-3">🏢 Enterprise Documentation</h4>
+                  <ul className="space-y-2 text-gray-300">
+                    <li>• <button onClick={() => navigate('/docs/enterprise')} className="text-blue-400 hover:text-blue-300 underline">Enterprise Guide</button> <span className="text-purple-400">[Enterprise]</span></li>
+                    <li>• <button onClick={() => navigate('/docs/api')} className="text-blue-400 hover:text-blue-300 underline">API Documentation</button> <span className="text-purple-400">[Enterprise]</span></li>
+                    <li>• <button onClick={() => navigate('/docs/integration')} className="text-blue-400 hover:text-blue-300 underline">Integration Guide</button> <span className="text-purple-400">[Enterprise]</span></li>
+                    <li>• <button onClick={() => navigate('/docs/compliance')} className="text-blue-400 hover:text-blue-300 underline">Compliance Guide</button> <span className="text-purple-400">[Enterprise]</span></li>
                   </ul>
                 </div>
 
@@ -391,6 +405,19 @@ export const Support: React.FC = () => {
                   </ul>
                   <p className="text-sm text-gray-400 mt-3 italic">
                     📹 Video tutorials will be hosted on YouTube and embedded in our documentation
+                  </p>
+                </div>
+
+                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
+                  <h4 className="text-yellow-400 text-lg font-semibold mb-3">⚙️ Technical Documentation</h4>
+                  <ul className="space-y-2 text-gray-300">
+                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">System Architecture</a> <span className="text-gray-400">[Developers]</span></li>
+                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/API_REFERENCE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">API Reference</a> <span className="text-gray-400">[Developers]</span></li>
+                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/TESTING_GUIDE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Testing Guide</a> <span className="text-gray-400">[Developers]</span></li>
+                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/DEPLOYMENT_GUIDE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Deployment Guide</a> <span className="text-gray-400">[DevOps]</span></li>
+                  </ul>
+                  <p className="text-sm text-gray-400 mt-3 italic">
+                    🔧 Complete technical documentation for developers and system administrators
                   </p>
                 </div>
               </div>
@@ -409,6 +436,7 @@ export const Support: React.FC = () => {
                 <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
                   <h4 className="text-yellow-400 text-lg font-semibold mb-3">🔍 Quick Links</h4>
                   <ul className="space-y-2 text-gray-300">
+                    <li>• <button onClick={() => navigate('/docs')} className="text-blue-400 hover:text-blue-300 underline">📚 Documentation Hub</button></li>
                     <li>• <button onClick={handleFAQClick} className="text-blue-400 hover:text-blue-300 underline">Frequently Asked Questions</button></li>
                     <li>• <button onClick={handlePrivacyClick} className="text-blue-400 hover:text-blue-300 underline">Privacy Policy</button></li>
                     <li>• <button onClick={handleTermsClick} className="text-blue-400 hover:text-blue-300 underline">Terms of Service</button></li>
