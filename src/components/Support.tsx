@@ -245,9 +245,9 @@ export const Support: React.FC = () => {
                 <button
                   onClick={() => handleEmailClick('product')}
                   className="text-indigo-400 hover:text-indigo-300 underline text-sm"
-                                  >
-                    product@proofpixapp.com
-                  </button>
+                >
+                  product@proofpixapp.com
+                </button>
               </div>
 
               {/* Bug Reports */}
@@ -335,9 +335,9 @@ export const Support: React.FC = () => {
                 <button
                   onClick={() => handleEmailClick('enterprise')}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                                  >
-                    enterprise@proofpixapp.com
-                  </button>
+                >
+                  enterprise@proofpixapp.com
+                </button>
               </div>
 
               <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6">
@@ -354,9 +354,9 @@ export const Support: React.FC = () => {
                 <button
                   onClick={() => handleEmailClick('partners')}
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                                  >
-                    partners@proofpixapp.com
-                  </button>
+                >
+                  partners@proofpixapp.com
+                </button>
               </div>
             </div>
           </section>
@@ -469,13 +469,13 @@ export const Support: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-gray-700/50 border border-gray-600 rounded-xl p-6">
                 <h4 className="text-gray-300 text-lg font-semibold mb-3">🏢 Company Details</h4>
-                          <div className="text-gray-400 space-y-1">
-            <p><strong>ProofPix</strong></p>
+                <div className="text-gray-400 space-y-1">
+                  <p><strong>ProofPix</strong></p>
             <p>ProofPix</p>
             <p>2501 Wharton St Unit S RLA 502</p>
             <p>Philadelphia, PA 19146</p>
             <p>United States</p>
-          </div>
+                </div>
               </div>
 
               <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">

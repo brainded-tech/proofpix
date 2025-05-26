@@ -178,12 +178,16 @@ export const createCheckoutSession = async (priceId, successUrl, cancelUrl) => {
     const endpoint = isSubscription ? '/api/create-subscription-checkout' : '/api/create-checkout-session';
     
     // API URL configuration - more robust detection
-    // Use environment variable for API URL
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001'; // OLD: isProduction 
+    const isProduction = window.location.hostname !== 'localhost';
+    const apiUrl = isProduction 
+      ? '/.netlify/functions' 
+      : 'http://localhost:3001';
     
-    const fullEndpoint = `${apiUrl}${endpoint}`; // OLD: isProduction
+    const fullEndpoint = isProduction
+      ? `${apiUrl}/create-checkout`
+      : `${apiUrl}${endpoint}`;
     
-    console.log('🔧 Environment:', { hostname: window.location.hostname });
+    console.log('🔧 Environment:', { isProduction, hostname: window.location.hostname });
     console.log('🔧 API URL:', fullEndpoint);
     
     const response = await fetch(fullEndpoint, {
