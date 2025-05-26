@@ -18,6 +18,10 @@ export const AnalyticsDashboard: React.FC = () => {
   const [currentStats, setCurrentStats] = useState(usageTracker.getUsageStats());
   const [historicalData, setHistoricalData] = useState<UsageData[]>([]);
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | 'all'>('7d');
+  
+  // Check for Pro tier access - Analytics is Pro+ only
+  const userTier = localStorage.getItem('proofpix_user_tier') || 'free';
+  const hasProAccess = userTier === 'pro' || userTier === 'enterprise';
 
   const handleBackHome = () => {
     analytics.trackFeatureUsage('Navigation', 'Home - Analytics');
@@ -166,6 +170,48 @@ export const AnalyticsDashboard: React.FC = () => {
     if (percentage >= 70) return { level: 'medium', color: 'text-yellow-500', bg: 'bg-yellow-500' };
     return { level: 'low', color: 'text-green-500', bg: 'bg-green-500' };
   };
+
+  // If not Pro tier, show upgrade prompt
+  if (!hasProAccess) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white">
+        <div className="max-w-4xl mx-auto px-4 py-12">
+          <div className="text-center">
+            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-8 rounded-2xl mb-8">
+              <BarChart3 size={64} className="mx-auto mb-4 text-white" />
+              <h1 className="text-3xl font-bold mb-4">Analytics Dashboard</h1>
+              <div className="bg-yellow-500 bg-opacity-20 border border-yellow-500 border-opacity-30 rounded-lg p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-2">🔒 Pro Feature</h2>
+                <p className="text-gray-200 mb-4">
+                  Analytics and usage insights are available to Pro tier users and above.
+                </p>
+                <div className="space-y-2 text-sm text-gray-300">
+                  <p>✨ Detailed usage statistics</p>
+                  <p>📊 Historical data tracking</p>
+                  <p>📈 Performance insights</p>
+                  <p>📋 Data export capabilities</p>
+                </div>
+              </div>
+              <div className="space-x-4">
+                <button
+                  onClick={() => navigate('/pricing')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                >
+                  Upgrade to Pro
+                </button>
+                <button
+                  onClick={() => navigate('/')}
+                  className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                >
+                  Back to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, FileImage, Layers, Shield, Clock, Lock } from 'lucide-react';
+import { Camera, Upload, FileImage, Layers, Shield, Lock } from 'lucide-react';
 import { analytics, trackFileUpload, usageTracker } from '../utils/analytics';
 import { Sponsorship, SponsorshipGrid } from './Sponsorships';
 import SocialShare from './SocialShare';
@@ -277,7 +277,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
             <p className="text-gray-400">Professional-grade features designed for privacy and reliability</p>
           </div>
           
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Privacy Feature */}
           <div className="text-center">
             <div className="bg-blue-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
@@ -289,16 +289,45 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
             </p>
           </div>
 
-          {/* Instant Results Feature */}
-          <div className="text-center">
-            <div className="bg-green-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Clock className="h-8 w-8 text-green-400" />
+          {/* EXIF Editor Feature */}
+          <div className="text-center bg-blue-500 bg-opacity-10 border border-blue-500 border-opacity-30 rounded-lg p-6">
+            <div className="bg-blue-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <FileImage className="h-8 w-8 text-blue-400" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">⚡ Instant Results</h3>
-            <p className="text-gray-400 text-sm">
-              Upload, inspect, and export your metadata in seconds — no photo storage, ever.
+            <h3 className="text-lg font-semibold mb-2">
+              ✨ EXIF Editor
+              <span className="ml-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs px-2 py-1 rounded-full font-medium animate-pulse">
+                NEW
+              </span>
+            </h3>
+            <p className="text-gray-400 text-sm mb-3">
+              Edit, remove, or modify metadata fields. Perfect for privacy protection and forensic analysis.
+            </p>
+            <p className="text-blue-400 text-xs">
+              → Upload a photo to access
             </p>
           </div>
+
+          {/* Image Comparison Feature */}
+          <div className="text-center bg-gray-600 bg-opacity-20 border border-gray-500 border-opacity-30 rounded-lg p-6 relative">
+            <div className="bg-gray-500 bg-opacity-20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Layers className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">
+              🔍 Image Comparison
+              <span className="ml-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                COMING SOON
+              </span>
+            </h3>
+            <p className="text-gray-400 text-sm mb-3">
+              Side-by-side metadata comparison for forensic analysis and verification workflows.
+            </p>
+            <div className="absolute inset-0 bg-gray-900 bg-opacity-50 rounded-lg flex items-center justify-center">
+              <Lock className="h-6 w-6 text-gray-400" />
+            </div>
+          </div>
+
+
 
           {/* Bulk Processing Feature */}
           <div className="text-center bg-green-500 bg-opacity-10 border border-green-500 border-opacity-30 rounded-lg p-6">
