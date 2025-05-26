@@ -259,11 +259,16 @@ export const BatchManagementPage: React.FC<BatchManagementPageProps> = ({
             <p className="mb-2">
               Batch management processes images locally in your browser. No data is sent to external servers.
             </p>
-            <nav className="flex justify-center space-x-6">
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
               <button onClick={onBackToHome} className="text-gray-400 hover:text-white">Home</button>
-              <button onClick={() => navigate('/analytics')} className="text-gray-400 hover:text-white">Analytics</button>
+              <button onClick={() => navigate('/faq')} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={() => navigate('/about')} className="text-gray-400 hover:text-white">About</button>
               <button onClick={() => navigate('/privacy')} className="text-gray-400 hover:text-white">Privacy</button>
+              <button onClick={() => navigate('/terms')} className="text-gray-400 hover:text-white">Terms</button>
+              <button onClick={() => navigate('/support')} className="text-gray-400 hover:text-white">Support</button>
+              <button onClick={() => window.location.href = 'https://proofpixapp.com/#contact'} className="text-gray-400 hover:text-white">Contact</button>
+              <button onClick={() => navigate('/pricing')} className="text-gray-400 hover:text-white">Pricing</button>
+              <button onClick={() => navigate('/analytics')} className="text-gray-400 hover:text-white">Analytics</button>
             </nav>
           </div>
         </div>

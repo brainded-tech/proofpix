@@ -226,6 +226,31 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
     window.location.href = 'https://proofpixapp.com/#contact';
   };
 
+  const handleTermsClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Terms - Processing Interface');
+    navigate('/terms');
+  };
+
+  const handleSupportClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Support - Processing Interface');
+    navigate('/support');
+  };
+
+  const handlePricingClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Pricing - Processing Interface');
+    navigate('/pricing');
+  };
+
+  const handleAnalyticsClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Analytics - Processing Interface');
+    navigate('/analytics');
+  };
+
+  const handleBatchManagementClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Batch Management - Processing Interface');
+    navigate('/batch');
+  };
+
   // 🔒 PAYMENT PROTECTION: Check if user can access enhanced export
   const canUseAdvancedExport = SessionManager.canPerformAction('advanced_export');
 
@@ -370,12 +395,17 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
             <p className="mb-4">
               Privacy-respecting analytics • Direct sponsorships • Local EXIF processing
             </p>
-            <nav className="flex justify-center space-x-6">
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
               <button onClick={onBackToHome} className="text-gray-400 hover:text-white">Home</button>
               <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
               <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
+              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
+              <button onClick={handleSupportClick} className="text-gray-400 hover:text-white">Support</button>
               <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
+              <button onClick={handlePricingClick} className="text-gray-400 hover:text-white">Pricing</button>
+              <button onClick={handleAnalyticsClick} className="text-gray-400 hover:text-white">Analytics</button>
+              <button onClick={handleBatchManagementClick} className="text-gray-400 hover:text-white">Batch Manager</button>
             </nav>
           </div>
         </div>

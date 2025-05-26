@@ -455,7 +455,7 @@ export const AnalyticsDashboard: React.FC = () => {
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
               <p>Privacy-respecting EXIF metadata tool - v1.6.0 • Open Source</p>
             </div>
-            <nav className="flex space-x-6 text-sm">
+            <nav className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>
               <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
               <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
