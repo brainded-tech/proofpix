@@ -134,7 +134,7 @@ export const useMemoizedExifProcessing = (exifData, image) => {
     };
     
     return processed;
-  }, [exifData, image?.name, image?.lastModified]);
+  }, [exifData, image]);
 };
 
 // Memoized file analysis
@@ -150,7 +150,7 @@ export const useMemoizedFileAnalysis = (file) => {
       lastModifiedFormatted: new Date(file.lastModified).toLocaleString(),
       uploadedAt: new Date().toISOString()
     };
-  }, [file?.name, file?.size, file?.type, file?.lastModified]);
+  }, [file]);
 };
 
 // ===== HELPER FUNCTIONS =====
@@ -455,7 +455,7 @@ export const handleExifError = (error, context = {}) => {
 };
 
 // Export all functions as default object for easier importing
-export default {
+const exifUtils = {
   convertDMSToDD,
   formatExifDate,
   hasRichExifData,
@@ -471,3 +471,5 @@ export default {
   compareExifData,
   handleExifError
 };
+
+export default exifUtils;

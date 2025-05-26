@@ -150,6 +150,9 @@ export class SessionManager {
       case 'advanced_export':
         usage.advancedExports++;
         break;
+      default:
+        console.warn(`Unknown action type: ${actionType}`);
+        break;
     }
 
     localStorage.setItem(USAGE_STORAGE_KEY, JSON.stringify(usage));
@@ -243,8 +246,6 @@ export class SessionManager {
 
   // 🔒 PAYMENT PROTECTION: Get upgrade message for blocked features
   static getUpgradeMessage(actionType) {
-    const currentPlan = this.getCurrentPlan();
-    
     const messages = {
       batch: {
         title: 'Batch Processing - Premium Feature',

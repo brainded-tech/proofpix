@@ -28,10 +28,7 @@ export const PrivacyPolicy: React.FC = () => {
     navigate('/faq');
   };
 
-  const handleContactFooterClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Contact - Privacy Policy Footer');
-    window.location.href = 'https://proofpixapp.com/#contact';
-  };
+
 
   const handleTermsClick = () => {
     analytics.trackFeatureUsage('Navigation', 'Terms - Privacy Policy Footer');

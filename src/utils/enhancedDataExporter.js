@@ -1,7 +1,6 @@
 // Enhanced Data Exporter for CSV and JSON with Custom Field Selection
 import React from 'react';
 import { memoizedFormatters } from './performanceOptimizer';
-import { convertDMSToDD } from './exifUtils';
 
 export class EnhancedDataExporter {
   constructor() {

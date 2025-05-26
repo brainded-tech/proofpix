@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Camera, 
-  MapPin, 
   Clock, 
   FileText, 
   Smartphone, 
@@ -12,16 +11,12 @@ import {
   CheckCircle, 
   Info,
   Shield,
-  Palette,
   Aperture,
-  Zap,
   Globe,
   Edit,
   Copyright,
   Tag,
-  User,
-  Calendar,
-  Monitor
+  User
 } from 'lucide-react';
 
 const MetadataGuide: React.FC = () => {

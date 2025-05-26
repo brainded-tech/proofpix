@@ -36,10 +36,7 @@ export const AboutUs: React.FC = () => {
     navigate('/support');
   };
 
-  const handleContactClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Contact - About Page Footer');
-    window.location.href = 'https://proofpixapp.com/#contact';
-  };
+
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">

@@ -112,7 +112,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
 
   // 🔒 PAYMENT PROTECTION: Check if user can access batch processing
   const canUseBatch = SessionManager.canPerformAction('batch');
-  const currentPlan = SessionManager.getCurrentPlan();
 
   const handleBatchModeClick = useCallback(() => {
     if (!canUseBatch) {

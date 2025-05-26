@@ -1,0 +1,5 @@
+🚀 ProofPix Stripe server running on port 3001
+📊 Health check: http://localhost:3001/health
+🔗 Webhook endpoint: http://localhost:3001/webhook
+Creating session-based checkout for price: price_1RSWGB2Llp3EL08qcHedWKOU
+✅ Session created: cs_live_a118t08q3aOtXQhAWtPUFRpXGWXhLrCIdEddADUf7ns50r7Ov1JygMmiB3

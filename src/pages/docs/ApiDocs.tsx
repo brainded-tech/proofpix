@@ -8,11 +8,9 @@ import {
   Globe, 
   Clock, 
   CheckCircle, 
-  AlertTriangle,
   Mail,
   FileText,
   Terminal,
-  Database,
   Settings
 } from 'lucide-react';
 

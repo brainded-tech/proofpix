@@ -11,7 +11,6 @@ import {
   Eye, 
   Lock,
   Globe,
-  Home,
   Briefcase,
   Heart,
   ShoppingCart,

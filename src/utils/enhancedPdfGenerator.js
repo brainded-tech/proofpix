@@ -1,7 +1,6 @@
 // Enhanced PDF Generator with Custom Templates and Watermarking
 import React from 'react';
 import { jsPDF } from 'jspdf';
-import { convertDMSToDD } from './exifUtils';
 import { memoizedFormatters } from './performanceOptimizer';
 
 export class EnhancedPdfGenerator {
@@ -24,7 +23,7 @@ export class EnhancedPdfGenerator {
 
   // Professional template for business use
   async professionalTemplate(pdf, data, options = {}) {
-    const { pageWidth, pageHeight, margin } = this.getPageDimensions(pdf);
+    const { margin } = this.getPageDimensions(pdf);
     let y = margin;
 
     // Header with company branding
@@ -68,7 +67,7 @@ export class EnhancedPdfGenerator {
 
   // Forensic template for legal/investigative use
   async forensicTemplate(pdf, data, options = {}) {
-    const { pageWidth, pageHeight, margin } = this.getPageDimensions(pdf);
+    const { margin } = this.getPageDimensions(pdf);
     let y = margin;
 
     // Forensic header with case information
@@ -104,7 +103,7 @@ export class EnhancedPdfGenerator {
 
   // Minimal template for quick reports
   async minimalTemplate(pdf, data, options = {}) {
-    const { pageWidth, pageHeight, margin } = this.getPageDimensions(pdf);
+    const { margin } = this.getPageDimensions(pdf);
     let y = margin;
 
     // Simple header
@@ -127,7 +126,7 @@ export class EnhancedPdfGenerator {
 
   // Detailed template with comprehensive analysis
   async detailedTemplate(pdf, data, options = {}) {
-    const { pageWidth, pageHeight, margin } = this.getPageDimensions(pdf);
+    const { margin } = this.getPageDimensions(pdf);
     let y = margin;
 
     // Comprehensive header
@@ -348,7 +347,7 @@ export class EnhancedPdfGenerator {
   }
 
   async addMetadataTable(pdf, data, y, options = {}) {
-    const { pageWidth, margin } = this.getPageDimensions(pdf);
+    const { margin } = this.getPageDimensions(pdf);
     const { metadata } = data;
 
     pdf.setFont('helvetica', 'bold');
@@ -374,7 +373,7 @@ export class EnhancedPdfGenerator {
         pdf.setFontSize(10);
         pdf.setTextColor(0, 0, 0);
 
-        fields.forEach(([key, value]) => {
+        for (const [key, value] of fields) {
           if (y > 270) { // Check for page break
             pdf.addPage();
             y = margin;
@@ -386,7 +385,7 @@ export class EnhancedPdfGenerator {
           const keyWidth = pdf.getTextWidth(`${key}: `);
           pdf.text(String(value), margin + 5 + keyWidth, y);
           y += 6;
-        });
+        }
 
         y += 5; // Space between categories
       }

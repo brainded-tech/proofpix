@@ -708,9 +708,7 @@ export const FAQ: React.FC = () => {
     navigate('/support');
   };
 
-  const handleContactClick = () => {
-    window.location.href = 'https://proofpixapp.com/#contact';
-  };
+
 
   const handleContactSupportClick = () => {
     window.location.href = 'mailto:support@proofpixapp.com';
