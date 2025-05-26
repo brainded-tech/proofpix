@@ -168,10 +168,17 @@ export class SessionManager {
 
   // 🔒 ENHANCED PAYMENT PROTECTION: Check if user can perform specific actions
   static canPerformAction(actionType) {
+    // Development override - allow all features in localhost
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.log('🔧 Development mode: Allowing all premium features');
+      return true;
+    }
+
     const session = this.getActiveSession();
     if (!session) {
       // Free tier limitations
       return this.checkFreeAction(actionType);
+
     }
 
     const usage = this.getSessionUsage();
