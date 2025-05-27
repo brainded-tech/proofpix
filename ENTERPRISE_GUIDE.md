@@ -91,8 +91,8 @@ class ProofPixEnterpriseAPI {
   constructor(apiKey: string, environment: 'staging' | 'production' = 'production') {
     this.apiKey = apiKey;
     this.baseUrl = environment === 'production' 
-      ? 'https://api.proofpixapp.com/v1'
-      : 'https://api-staging.proofpixapp.com/v1';
+              ? 'https://api.proofpixapp.com/v2'
+              : 'https://api-staging.proofpixapp.com/v2';
   }
   
   // Batch processing endpoint

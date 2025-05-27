@@ -33,7 +33,7 @@ export const ImagePreview = ({
         <div className="relative bg-gray-700 rounded-lg overflow-hidden">
           <img 
             src={showTimestamp && image.timestampedUrl ? image.timestampedUrl : image.previewUrl} 
-            alt={image.file.name}
+            alt={image.file?.name || 'Processed image'}
             className="w-full h-auto max-h-96 object-contain"
           />
         </div>

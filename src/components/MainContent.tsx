@@ -95,7 +95,7 @@ const MainContent: React.FC = () => {
             <p>Image preview would go here</p>
             <p>File: {selectedFile?.name}</p>
           </div>
-          <MetadataPanel metadata={exifData} />
+          <MetadataPanel metadata={exifData} originalFile={selectedFile} />
         </div>
       )}
 

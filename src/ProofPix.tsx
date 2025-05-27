@@ -10,6 +10,7 @@ export const ProofPix: React.FC = () => {
   const [processedImage, setProcessedImage] = useState<ProcessedImage | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isFromBatchResults, setIsFromBatchResults] = useState(false);
 
   const handleFileSelect = useCallback(async (file: File) => {
     // Define supported formats
@@ -107,9 +108,18 @@ export const ProofPix: React.FC = () => {
   const handleBackToHome = useCallback(() => {
     setProcessedImage(null);
     setError(null);
+    setIsFromBatchResults(false);
     
     // Track navigation (privacy-friendly)
     analytics.trackFeatureUsage('Navigation', 'Back to Home');
+  }, []);
+
+  const handleBackToBatch = useCallback(() => {
+    setProcessedImage(null);
+    setIsFromBatchResults(false);
+    
+    // Track navigation (privacy-friendly)
+    analytics.trackFeatureUsage('Navigation', 'Back to Batch Results');
   }, []);
 
   // Show loading screen
@@ -154,6 +164,8 @@ export const ProofPix: React.FC = () => {
       <ProcessingInterface 
         processedImage={processedImage}
         onBackToHome={handleBackToHome}
+        onBackToBatch={isFromBatchResults ? handleBackToBatch : undefined}
+        showBatchBackButton={isFromBatchResults}
       />
     );
   }
@@ -163,12 +175,15 @@ export const ProofPix: React.FC = () => {
     <HomePage 
       onFileSelect={handleFileSelect}
       onBatchComplete={(images) => {
-        // For now, just process the first image in batch mode
-        // In the future, we could create a batch results view
-        if (images.length > 0) {
-          setProcessedImage(images[0]);
-          analytics.trackFeatureUsage('Batch Processing', `Selected first of ${images.length} images`);
-        }
+        // Stay in batch mode and show results - don't auto-navigate to single image view
+        analytics.trackFeatureUsage('Batch Processing', `Completed ${images.length} images`);
+        // The HomePage will handle showing the batch results
+      }}
+      onImageSelect={(image) => {
+        // Navigate to individual image view from batch results
+        setProcessedImage(image);
+        setIsFromBatchResults(true);
+        analytics.trackFeatureUsage('Batch Results', 'Navigate to Individual Image');
       }}
     />
   );

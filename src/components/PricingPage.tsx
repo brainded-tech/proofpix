@@ -20,6 +20,13 @@ const PricingPage: React.FC = () => {
       return;
     }
 
+    // Enterprise plans should go to contact/enterprise page
+    if (planId === 'enterprise') {
+      analytics.trackFeatureUsage('Navigation', 'Enterprise Contact - Pricing');
+      navigate('/enterprise');
+      return;
+    }
+
     setIsLoading(planId);
     analytics.trackFeatureUsage('Subscription', `Upgrade Attempt - ${planId}`);
 
@@ -41,6 +48,7 @@ const PricingPage: React.FC = () => {
       case 'weekpass': return <Star className="h-8 w-8 text-orange-400" />;
       case 'starter': return <Star className="h-8 w-8 text-green-400" />;
       case 'pro': return <Zap className="h-8 w-8 text-purple-400" />;
+      case 'teams': return <Users className="h-8 w-8 text-blue-400" />;
       case 'enterprise': return <Crown className="h-8 w-8 text-yellow-400" />;
       default: return <Shield className="h-8 w-8 text-blue-400" />;
     }
@@ -219,7 +227,7 @@ const PricingPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {plans.filter(plan => plan.accountRequired).map((plan) => {
               const isPopular = plan.popular || false;
-              const yearlyPrice = billingInterval === 'yearly' ? (plan.price * 12 * 0.8) : plan.price;
+              const yearlyPrice = billingInterval === 'yearly' ? ((plan.price as number) * 12 * 0.8) : (plan.price as number);
               const displayPrice = billingInterval === 'yearly' ? yearlyPrice : plan.price;
               
               return (
@@ -259,7 +267,7 @@ const PricingPage: React.FC = () => {
 
                     {billingInterval === 'yearly' && plan.price > 0 && (
                       <div className="text-sm text-green-400 mb-4">
-                        Save ${((plan.price * 12) - yearlyPrice).toFixed(2)} per year
+                        Save ${(((plan.price as number) * 12) - yearlyPrice).toFixed(2)} per year
                       </div>
                     )}
                   </div>
@@ -293,6 +301,8 @@ const PricingPage: React.FC = () => {
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                         Processing...
                       </div>
+                    ) : plan.id === 'enterprise' ? (
+                      'Contact Sales'
                     ) : (
                       `Upgrade to ${plan.name}`
                     )}

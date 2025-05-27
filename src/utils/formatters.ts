@@ -17,7 +17,7 @@ export const formatDateTime = (dateTime: string | Date): string => {
       second: '2-digit',
       hour12: true
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error formatting date:', error);
     return typeof dateTime === 'string' ? dateTime : 'Error';
   }

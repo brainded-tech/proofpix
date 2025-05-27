@@ -1,26 +1,38 @@
-# Dependencies
-node_modules/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
 /.pnp
 .pnp.js
 
-# Testing
+# testing
 /coverage
 
-# Production build
+# production
 /build
 
-# Environment variables
-.env
+# misc
+.DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Logs
+*.log
 
 # Runtime data
 pids
@@ -30,7 +42,6 @@ pids
 
 # Coverage directory used by tools like istanbul
 coverage/
-*.lcov
 
 # nyc test coverage
 .nyc_output
@@ -39,14 +50,8 @@ coverage/
 node_modules/
 jspm_packages/
 
-# TypeScript cache
-*.tsbuildinfo
-
 # Optional npm cache directory
 .npm
-
-# Optional eslint cache
-.eslintcache
 
 # Optional REPL history
 .node_repl_history
@@ -59,42 +64,73 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
-.env.test
 
-# Stores VSCode versions used for testing VSCode extensions
-.vscode-test
-
-# yarn v2
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Temporary files
-*.tmp
-*.temp
-
-# Backup files
-*.backup
-*.bak 
-# Deployment documentation and personal instructions
+# Internal documentation and development files
+internal-docs/
+development-files/
+archived-files/
 deployment-docs/
 
-# Local Netlify folder
-.netlify
+# Generated PDFs and test files
+*.pdf
+test-*.js
+temp_*.js
+
+# Development server files
+server*.js
+new_server.js
+rest_of_server.js
+
+# Deployment configuration files
+.railwayignore
+railway.json
+server.log
+netlify.toml.backup
+Procfile
+render.yaml
+
+# IDE workspace files
+*.code-workspace
+
+# Compressed files
+*.tar.gz
+*.zip
+
+# Temporary files
+temp_*
+*.tmp
+
+# Build artifacts
+build/
+dist/
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Netlify
+.netlify/
+
+# Internal documentation files (moved to deployment-docs)
+TECH_DOCUMENTATION_*.md
+DOCUMENTATION_PERFECTION_*.md
+PRIVACY_COMPLIANCE_*.md
+UX_TEAM_*.md
+CODEBASE.md
+*_IMPLEMENTATION_*.md
+*_SUMMARY.md
+*_TASKS.md
+*_PROMPT.md
+*_BRIEFING.md
+*_STATUS.md
+
+# Development and test scripts
+deploy-to-netlify.sh
+carrd-footer.html
+generate-template-previews.js
+
+# Stripe development files
+stripe/
+stripe-cli.tar.gz
+setup-stripe-products.sh
+STRIPE_*.md

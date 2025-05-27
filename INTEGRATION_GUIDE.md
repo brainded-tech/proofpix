@@ -33,7 +33,7 @@ const processFiles = async (files: File[]) => {
 ```typescript
 // API client configuration
 class ProofPixAPIClient {
-  private baseUrl = 'https://api.proofpixapp.com/v1';
+  private baseUrl = 'https://api.proofpixapp.com/v2';
   private apiKey: string;
   
   constructor(apiKey: string) {

@@ -1,7 +1,7 @@
 // Enhanced Export Dialog with Custom Options
 import React, { useState, useCallback, memo } from 'react';
 import * as LucideIcons from 'lucide-react';
-import { useEnhancedPdfGenerator } from '../utils/enhancedPdfGenerator';
+import useEnhancedPdfGenerator from '../utils/enhancedPdfGenerator';
 import { useEnhancedDataExporter } from '../utils/enhancedDataExporter';
 import { LoadingSpinner, ProgressBar } from './LoadingStates';
 import './EnhancedExportDialog.css';
@@ -13,7 +13,7 @@ const EnhancedExportDialog = memo(({
   onExportComplete 
 }) => {
   const [exportType, setExportType] = useState('pdf');
-  const [pdfTemplate, setPdfTemplate] = useState('professional');
+  const [pdfTemplate, setPdfTemplate] = useState('standard');
   const [selectedFields, setSelectedFields] = useState([]);
   const [exportOptions, setExportOptions] = useState({
     includeSummary: true,
@@ -154,18 +154,123 @@ const EnhancedExportDialog = memo(({
               <h3 className="export-section-title">PDF Template</h3>
               <div className="pdf-template-grid">
                 {[
-                  { id: 'professional', label: 'Professional', description: 'Business-ready report with branding' },
-                  { id: 'forensic', label: 'Forensic', description: 'Legal/investigative format' },
-                  { id: 'minimal', label: 'Minimal', description: 'Clean and simple layout' },
-                  { id: 'detailed', label: 'Detailed', description: 'Comprehensive analysis' }
+                  { 
+                    id: 'standard', 
+                    label: 'Standard', 
+                    tagline: 'Complete Professional Report',
+                    description: 'Everything you need in a clean, organized format',
+                    detailedFeatures: [
+                      'Full metadata table with all available EXIF data',
+                      'High-resolution image thumbnail for reference', 
+                      'GPS location with coordinates and map reference',
+                      'Complete camera settings and technical specifications',
+                      'File information including size, format, and creation date',
+                      'Professional formatting suitable for client delivery'
+                    ],
+                    useCase: 'Perfect for photographers, real estate professionals, and general documentation needs where you want comprehensive information presented professionally.',
+                    fileSize: 'Typically 1-2 pages, 200-400KB',
+                    preview: '/templates/standard-preview.svg'
+                  },
+                  { 
+                    id: 'forensic', 
+                    label: 'Forensic', 
+                    tagline: 'Legal-Grade Analysis Report',
+                    description: 'Court-ready documentation with authenticity verification',
+                    detailedFeatures: [
+                      'Metadata integrity analysis and verification',
+                      'Chain of custody documentation section',
+                      'Timestamp verification and timezone analysis', 
+                      'File hash verification (MD5, SHA-256)',
+                      'Digital signature validation',
+                      'Authenticity assessment with confidence scoring',
+                      'Technical appendix with raw EXIF data'
+                    ],
+                    useCase: 'Essential for legal proceedings, insurance claims, digital forensics investigations, and any situation requiring court-admissible documentation.',
+                    fileSize: 'Typically 3-5 pages, 400-800KB',
+                    preview: '/templates/forensic-preview.svg'
+                  },
+                  { 
+                    id: 'minimal', 
+                    label: 'Minimal', 
+                    tagline: 'Quick Facts Summary',
+                    description: 'Key information only - fast and focused',
+                    detailedFeatures: [
+                      'Essential metadata only (camera, date, location)',
+                      'Compact single-page layout',
+                      'Key camera settings (aperture, shutter, ISO)',
+                      'Timestamp and GPS coordinates', 
+                      'File basics (size, format, dimensions)',
+                      'Quick-scan formatting for rapid review'
+                    ],
+                    useCase: 'Ideal for social media verification, quick reference documentation, or when you need essential facts without overwhelming detail.',
+                    fileSize: 'Always 1 page, under 150KB',
+                    preview: '/templates/minimal-preview.svg'
+                  },
+                  { 
+                    id: 'comparison', 
+                    label: 'Comparison', 
+                    tagline: 'Side-by-Side Analysis',
+                    description: 'Compare two images with difference highlighting',
+                    detailedFeatures: [
+                      'Side-by-side metadata comparison table',
+                      'Visual difference highlighting in yellow',
+                      'Similarity percentage calculation',
+                      'Timestamp and location variance analysis',
+                      'Camera setting comparison',
+                      'Authenticity assessment for both images',
+                      'Professional conclusion section'
+                    ],
+                    useCase: 'Perfect for authentication verification, before/after documentation, duplicate detection, and forensic comparison analysis.',
+                    fileSize: 'Typically 2-3 pages, 300-600KB',
+                    preview: '/templates/comparison-preview.svg'
+                  }
                 ].map(template => (
                   <div 
                     key={template.id}
                     className={`pdf-template-option ${pdfTemplate === template.id ? 'selected' : ''}`}
                     onClick={() => setPdfTemplate(template.id)}
+                    title={template.useCase}
                   >
+                    <div className="pdf-template-preview">
+                      <img 
+                        src={template.preview} 
+                        alt={`${template.label} template preview`}
+                        className="template-preview-image"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                      <div className="template-preview-fallback" style={{display: 'none'}}>
+                        <div className="preview-placeholder">
+                          <span>{template.label}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="pdf-template-content">
+                      <div className="pdf-template-header">
                     <div className="pdf-template-label">{template.label}</div>
+                        <div className="pdf-template-tagline">{template.tagline}</div>
+                      </div>
                     <div className="pdf-template-description">{template.description}</div>
+                      <div className="pdf-template-filesize">{template.fileSize}</div>
+                      <div className="pdf-template-features">
+                        <div className="features-toggle" onClick={(e) => {
+                          e.stopPropagation();
+                          const featuresContent = e.target.nextSibling;
+                          featuresContent.style.display = featuresContent.style.display === 'none' ? 'block' : 'none';
+                        }}>
+                          ▼ View Features
+                        </div>
+                        <div className="features-content" style={{display: 'none'}}>
+                          <ul>
+                            {template.detailedFeatures.map((feature, index) => (
+                              <li key={index}>{feature}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

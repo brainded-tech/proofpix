@@ -236,7 +236,7 @@ export const AboutUs: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.7.0 • Open Source</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.8.0 • Open Source</p>
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>

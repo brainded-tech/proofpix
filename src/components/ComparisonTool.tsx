@@ -67,18 +67,21 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
     }
   }, []);
 
-  const analyzeComparison = useCallback(() => {
+  const analyzeComparison = useCallback(async () => {
     if (!comparison.leftImage || !comparison.rightImage) return;
 
     setIsAnalyzing(true);
     
-    // Real dynamic analysis based on actual metadata
-    setTimeout(() => {
-      const leftMeta = comparison.leftImage!.metadata;
-      const rightMeta = comparison.rightImage!.metadata;
+    try {
+      // Real dynamic analysis based on actual metadata
+      const leftMeta = comparison.leftImage.metadata;
+      const rightMeta = comparison.rightImage.metadata;
       
       const differences: string[] = [];
       const similarities: string[] = [];
+
+      console.log('Left metadata:', leftMeta);
+      console.log('Right metadata:', rightMeta);
 
       // Compare camera make/model
       if (leftMeta.make && rightMeta.make) {
@@ -87,6 +90,8 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         } else {
           similarities.push(`Both images taken with ${leftMeta.make} cameras`);
         }
+      } else if (leftMeta.make || rightMeta.make) {
+        differences.push(`Camera make available for only one image (${leftMeta.make || 'Unknown'} vs ${rightMeta.make || 'Unknown'})`);
       }
 
       if (leftMeta.model && rightMeta.model) {
@@ -95,6 +100,8 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         } else {
           similarities.push(`Both images taken with ${leftMeta.model}`);
         }
+      } else if (leftMeta.model || rightMeta.model) {
+        differences.push(`Camera model available for only one image (${leftMeta.model || 'Unknown'} vs ${rightMeta.model || 'Unknown'})`);
       }
 
       // Compare GPS coordinates
@@ -105,22 +112,29 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         ) * 69; // Rough miles conversion
         
         if (distance > 1) {
-          differences.push(`GPS locations are ${distance.toFixed(0)} miles apart`);
+          differences.push(`GPS locations are ${distance.toFixed(1)} miles apart`);
         } else {
           similarities.push('Both images taken at similar locations');
         }
+      } else if ((leftMeta.gpsLatitude && leftMeta.gpsLongitude) || (rightMeta.gpsLatitude && rightMeta.gpsLongitude)) {
+        differences.push('GPS data available for only one image');
       }
 
       // Compare ISO settings
       if (leftMeta.iso && rightMeta.iso) {
-        const isoDiff = Math.abs(leftMeta.iso - rightMeta.iso);
+        const leftIso = typeof leftMeta.iso === 'string' ? parseInt(leftMeta.iso) : leftMeta.iso;
+        const rightIso = typeof rightMeta.iso === 'string' ? parseInt(rightMeta.iso) : rightMeta.iso;
+        const isoDiff = Math.abs(leftIso - rightIso);
+        
         if (isoDiff > 200) {
-          differences.push(`ISO settings vary significantly (${leftMeta.iso} vs ${rightMeta.iso})`);
+          differences.push(`ISO settings vary significantly (${leftIso} vs ${rightIso})`);
         } else if (isoDiff === 0) {
-          similarities.push(`Both images use identical ISO ${leftMeta.iso}`);
+          similarities.push(`Both images use identical ISO ${leftIso}`);
         } else {
-          similarities.push(`Similar ISO settings (${leftMeta.iso} vs ${rightMeta.iso})`);
+          similarities.push(`Similar ISO settings (${leftIso} vs ${rightIso})`);
         }
+      } else if (leftMeta.iso || rightMeta.iso) {
+        differences.push(`ISO data available for only one image (${leftMeta.iso || 'Unknown'} vs ${rightMeta.iso || 'Unknown'})`);
       }
 
       // Compare focal length
@@ -130,6 +144,8 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         } else {
           similarities.push(`Both images shot at ${leftMeta.focalLength} focal length`);
         }
+      } else if (leftMeta.focalLength || rightMeta.focalLength) {
+        differences.push(`Focal length available for only one image (${leftMeta.focalLength || 'Unknown'} vs ${rightMeta.focalLength || 'Unknown'})`);
       }
 
       // Compare aperture (f-number)
@@ -140,6 +156,8 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         } else {
           similarities.push(`Similar aperture settings (f/${leftMeta.fNumber} vs f/${rightMeta.fNumber})`);
         }
+      } else if (leftMeta.fNumber || rightMeta.fNumber) {
+        differences.push(`Aperture data available for only one image (f/${leftMeta.fNumber || 'Unknown'} vs f/${rightMeta.fNumber || 'Unknown'})`);
       }
 
       // Compare exposure time
@@ -149,12 +167,16 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         } else {
           similarities.push(`Identical exposure time (${leftMeta.exposureTime})`);
         }
+      } else if (leftMeta.exposureTime || rightMeta.exposureTime) {
+        differences.push(`Exposure time available for only one image (${leftMeta.exposureTime || 'Unknown'} vs ${rightMeta.exposureTime || 'Unknown'})`);
       }
 
       // Compare file sizes
       if (leftMeta.fileSize && rightMeta.fileSize) {
-        const leftSize = parseFloat(leftMeta.fileSize.replace(' MB', ''));
-        const rightSize = parseFloat(rightMeta.fileSize.replace(' MB', ''));
+        const leftSizeStr = leftMeta.fileSize.toString();
+        const rightSizeStr = rightMeta.fileSize.toString();
+        const leftSize = parseFloat(leftSizeStr.replace(/[^\d.]/g, ''));
+        const rightSize = parseFloat(rightSizeStr.replace(/[^\d.]/g, ''));
         const sizeDiff = Math.abs(leftSize - rightSize);
         
         if (sizeDiff > 1) {
@@ -164,26 +186,48 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         }
       }
 
+      // Compare file types
+      if (leftMeta.fileType && rightMeta.fileType) {
+        if (leftMeta.fileType !== rightMeta.fileType) {
+          differences.push(`File formats differ (${leftMeta.fileType} vs ${rightMeta.fileType})`);
+        } else {
+          similarities.push(`Both images are ${leftMeta.fileType} format`);
+        }
+      }
+
       // Compare date/time
       if (leftMeta.dateTime && rightMeta.dateTime) {
         const leftDate = new Date(leftMeta.dateTime);
         const rightDate = new Date(rightMeta.dateTime);
-        const timeDiff = Math.abs(leftDate.getTime() - rightDate.getTime()) / (1000 * 60 * 60); // hours
         
-        if (timeDiff > 24) {
-          differences.push(`Images taken ${Math.floor(timeDiff / 24)} days apart`);
-        } else if (timeDiff > 1) {
-          differences.push(`Images taken ${Math.floor(timeDiff)} hours apart`);
-        } else {
-          similarities.push('Both images taken within the same hour');
+        if (!isNaN(leftDate.getTime()) && !isNaN(rightDate.getTime())) {
+          const timeDiff = Math.abs(leftDate.getTime() - rightDate.getTime()) / (1000 * 60 * 60); // hours
+          
+          if (timeDiff > 24) {
+            differences.push(`Images taken ${Math.floor(timeDiff / 24)} days apart`);
+          } else if (timeDiff > 1) {
+            differences.push(`Images taken ${Math.floor(timeDiff)} hours apart`);
+          } else {
+            similarities.push('Both images taken within the same hour');
+          }
         }
+      } else if (leftMeta.dateTime || rightMeta.dateTime) {
+        differences.push('Date/time information available for only one image');
       }
 
-      // Add fallback messages if no metadata available
+      // Always ensure we have some results
       if (differences.length === 0 && similarities.length === 0) {
-        differences.push('Limited metadata available for comparison');
-        similarities.push('Both images are valid image files');
+        differences.push('Limited metadata available for detailed comparison');
+        similarities.push('Both files are valid image files');
+        similarities.push(`File names: ${leftMeta.fileName} vs ${rightMeta.fileName}`);
       }
+
+      // Ensure we have at least one similarity
+      if (similarities.length === 0) {
+        similarities.push('Both files are image files suitable for comparison');
+      }
+
+      console.log('Analysis results:', { differences, similarities });
 
       setComparison(prev => ({
         ...prev,
@@ -191,9 +235,17 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ onClose }) => {
         similarities
       }));
 
-      setIsAnalyzing(false);
       analytics.trackFeatureUsage('Image Comparison', 'Analysis Completed');
-    }, 2000);
+    } catch (error) {
+      console.error('Error during comparison analysis:', error);
+      setComparison(prev => ({
+        ...prev,
+        differences: ['Error occurred during analysis'],
+        similarities: ['Both files were successfully uploaded']
+      }));
+    } finally {
+      setIsAnalyzing(false);
+    }
   }, [comparison.leftImage, comparison.rightImage]);
 
   const generateShareableReport = useCallback(() => {

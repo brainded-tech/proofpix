@@ -82,4 +82,5 @@ export interface ImagePreviewProps {
 
 export interface MetadataPanelProps {
   metadata: ImageMetadata;
+  originalFile?: File;
 } 

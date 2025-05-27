@@ -1,6 +1,5 @@
 // Enhanced Data Exporter for CSV and JSON with Custom Field Selection
 import React from 'react';
-import { memoizedFormatters } from './performanceOptimizer';
 
 export class EnhancedDataExporter {
   constructor() {
@@ -153,10 +152,7 @@ export class EnhancedDataExporter {
               latitude: fileData.metadata.gpsLatitude,
               longitude: fileData.metadata.gpsLongitude
             },
-            dms: memoizedFormatters.gpsCoordinates(
-              fileData.metadata.gpsLatitude, 
-              fileData.metadata.gpsLongitude
-            )
+            dms: `${fileData.metadata.gpsLatitude}°, ${fileData.metadata.gpsLongitude}°`
           }
         };
       }
@@ -339,11 +335,11 @@ export class EnhancedDataExporter {
 
     switch (key) {
       case 'fileSize':
-        return typeof value === 'number' ? memoizedFormatters.fileSize(value) : value;
+        return typeof value === 'number' ? `${(value / (1024 * 1024)).toFixed(2)} MB` : value;
       case 'dateTime':
       case 'dateTimeOriginal':
       case 'dateTimeDigitized':
-        return memoizedFormatters.dateTime(value);
+        return new Date(value).toLocaleString();
       case 'fNumber':
         return typeof value === 'number' ? `f/${value}` : value;
       case 'exposureTime':

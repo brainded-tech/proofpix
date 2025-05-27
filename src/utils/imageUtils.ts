@@ -152,7 +152,7 @@ export const processImage = async (
           height,
           size
         });
-      } catch (error) {
+      } catch (error: unknown) {
         reject(error);
       }
     };

@@ -1,0 +1,13 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="white" rx="8"/>
+        <text x="200" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1f2937">Image Metadata Summary</text>
+        <text x="50" y="80" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#374151">Camera:</text>
+        <text x="300" y="80" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">Canon EOS R5</text>
+        <text x="50" y="100" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#374151">Date:</text>
+        <text x="300" y="100" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">Jan 15, 2024</text>
+        <text x="50" y="120" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#374151">Location:</text>
+        <text x="250" y="120" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">San Francisco, CA</text>
+        <text x="50" y="140" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#374151">Settings:</text>
+        <text x="220" y="140" font-family="Arial, sans-serif" font-size="11" fill="#6b7280">f/2.8, 1/250s, ISO 400</text>
+        <text x="20" y="280" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3b82f6">Minimal Template</text>
+      </svg>

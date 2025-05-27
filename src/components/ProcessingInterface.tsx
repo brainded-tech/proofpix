@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, AlertCircle } from 'lucide-react';
+import { Camera, Upload, AlertCircle, ArrowLeft } from 'lucide-react';
 import { overlayTimestamp, processImage, downloadImage } from '../utils/imageUtils';
 import { generatePDF, downloadPDF } from '../utils/pdfUtils';
 import { formatDateTime } from '../utils/formatters';
@@ -17,11 +17,15 @@ import PaymentProtection from './PaymentProtection';
 interface ProcessingInterfaceProps {
   processedImage: ProcessedImage;
   onBackToHome: () => void;
+  onBackToBatch?: () => void;
+  showBatchBackButton?: boolean;
 }
 
 export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
   processedImage,
-  onBackToHome
+  onBackToHome,
+  onBackToBatch,
+  showBatchBackButton = false
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -88,7 +92,7 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
       const processed = await processImage(sourceUrl, outputOptions);
       
       // Generate filename
-      const baseName = currentImage.file.name.replace(/\.[^/.]+$/, '');
+      const baseName = currentImage.file?.name?.replace(/\.[^/.]+$/, '') || 'image';
       const timestamp = showTimestamp ? '_timestamped' : '';
       const filename = `${baseName}${timestamp}_proofpix.${outputOptions.format}`;
       
@@ -173,7 +177,7 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
       const blob = new Blob([jsonString], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       
-      const baseName = currentImage.file.name.replace(/\.[^/.]+$/, '');
+      const baseName = currentImage.file?.name?.replace(/\.[^/.]+$/, '') || 'image';
       const filename = `${baseName}_metadata.json`;
       
       const link = document.createElement('a');
@@ -288,6 +292,17 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
               <h1 className="text-xl font-bold text-white">ProofPix</h1>
             </div>
             
+            {/* Back to Batch Results Button */}
+            {showBatchBackButton && onBackToBatch && (
+              <button
+                onClick={onBackToBatch}
+                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back to Batch Results</span>
+              </button>
+            )}
+            
             {/* Header Sponsorship for Processing Interface */}
             <div className="hidden lg:block">
               <Sponsorship placement="header" className="max-w-md" />
@@ -296,8 +311,8 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Content - Mobile Optimized */}
+      <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
         {/* Error Alert */}
         {error && (
           <div className="mb-6 bg-red-900 bg-opacity-50 border border-red-500 p-4 rounded-md">
@@ -324,12 +339,12 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
           </div>
         )}
 
-        {/* Image Processing Interface */}
+        {/* Image Processing Interface - Mobile Optimized */}
         {currentImage && !isLoading && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Image Preview */}
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4 text-white">Image Preview</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
+            {/* Image Preview - Mobile First */}
+            <div className="bg-gray-800 rounded-lg p-3 sm:p-6 order-1">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-white">Image Preview</h2>
               <ImagePreview
                 image={currentImage}
                 showTimestamp={showTimestamp}
@@ -343,10 +358,10 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
               />
             </div>
 
-            {/* Metadata Panel */}
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4 text-white">Image Metadata</h2>
-              <MetadataPanel metadata={currentImage.metadata} />
+            {/* Metadata Panel - Mobile Responsive */}
+            <div className="bg-gray-800 rounded-lg p-3 sm:p-6 order-2">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-white">Image Metadata</h2>
+              <MetadataPanel metadata={currentImage.metadata} originalFile={currentImage.file} />
             </div>
           </div>
         )}

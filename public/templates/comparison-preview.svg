@@ -1,0 +1,15 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="white" rx="8"/>
+        <text x="200" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1f2937">Image Comparison Report</text>
+        <text x="100" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#374151">Image A</text>
+        <text x="300" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#374151">Image B</text>
+        <rect x="60" y="70" width="80" height="60" fill="#e5e7eb" rx="4"/>
+        <rect x="260" y="70" width="80" height="60" fill="#e5e7eb" rx="4"/>
+        <text x="100" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#6b7280">Original</text>
+        <text x="300" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#6b7280">Modified</text>
+        <text x="50" y="160" font-family="Arial, sans-serif" font-size="8" fill="#374151">Canon EOS R5</text>
+        <rect x="250" y="152" width="80" height="12" fill="#fef3c7" rx="2"/>
+        <text x="255" y="160" font-family="Arial, sans-serif" font-size="8" fill="#374151">Canon EOS R6</text>
+        <text x="320" y="280" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#10b981">Similarity: 87%</text>
+        <text x="20" y="280" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3b82f6">Comparison Template</text>
+      </svg>

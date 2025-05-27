@@ -171,6 +171,26 @@ export class SessionManager {
 
   // 🔒 ENHANCED PAYMENT PROTECTION: Check if user can perform specific actions
   static canPerformAction(actionType) {
+    // 🚀 LOCAL DEVELOPMENT BYPASS: Allow all actions in local development
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      const isLocalhost = hostname === 'localhost' || 
+                         hostname === '127.0.0.1' || 
+                         hostname.includes('localhost');
+      
+      console.log(`🔍 SessionManager Debug:`, {
+        actionType,
+        hostname,
+        isLocalhost,
+        fullUrl: window.location.href
+      });
+      
+      if (isLocalhost) {
+        console.log(`🚀 Local development bypass: Allowing ${actionType}`);
+        return true;
+      }
+    }
+
     const session = this.getActiveSession();
     if (!session) {
       // Free tier limitations

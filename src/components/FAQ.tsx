@@ -302,15 +302,19 @@ export const FAQ: React.FC = () => {
                 </ul>
               </div>
               <div className="bg-yellow-500 bg-opacity-10 border border-yellow-500 border-opacity-20 rounded-lg p-4">
-                <h4 className="text-yellow-400 font-semibold mb-2">⭐ Coming Soon (Pro Feature):</h4>
+                <h4 className="text-green-400 font-semibold mb-2">✅ Available Now (Pro Feature):</h4>
+                <ul className="list-none pl-5 space-y-1">
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-green-400 font-bold">•</span>
+                    Bulk processing for multiple photos
+                  </li>
+                </ul>
+                
+                <h4 className="text-yellow-400 font-semibold mb-2 mt-4">⭐ Coming Soon (Pro Feature):</h4>
                 <ul className="list-none pl-5 space-y-1">
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
                     One-click metadata removal
-                  </li>
-                  <li className="relative">
-                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Bulk processing for multiple photos
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
@@ -366,44 +370,151 @@ export const FAQ: React.FC = () => {
                 <ul className="list-none pl-5 space-y-1">
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    10 photos per day
+                    5 images per session
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Full metadata viewing
+                    2 PDF exports per day
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Basic PDF reports
+                    1 data export per day (JSON/CSV)
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Timestamp overlays
+                    3 comparisons per day
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Basic analytics only
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Privacy-focused processing
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-green-500 bg-opacity-10 border border-green-500 border-opacity-20 rounded-lg p-4 mb-4">
+                <h4 className="text-green-400 font-semibold mb-2">🚀 Day Pass ($2.99/day):</h4>
+                <ul className="list-none pl-5 space-y-1">
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Unlimited photos for 24 hours
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Batch processing (up to 10)
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    All EXIF data extraction
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    No account required
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Session-based access
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-blue-500 bg-opacity-10 border border-blue-500 border-opacity-20 rounded-lg p-4 mb-4">
+                <h4 className="text-blue-400 font-semibold mb-2">📅 Week Pass ($9.99/week):</h4>
+                <ul className="list-none pl-5 space-y-1">
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Unlimited photos for 7 days
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Batch processing (up to 25)
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    All EXIF data extraction
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Priority processing
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    No account required
                   </li>
                 </ul>
               </div>
               <div className="bg-yellow-500 bg-opacity-10 border border-yellow-500 border-opacity-20 rounded-lg p-4 mb-4">
-                <h4 className="text-yellow-400 font-semibold mb-2">⭐ Pro ($4.99/month):</h4>
+                <h4 className="text-yellow-400 font-semibold mb-2">⭐ Starter ($4.99/month):</h4>
                 <ul className="list-none pl-5 space-y-1">
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Unlimited photo processing
+                    25 images per session
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Bulk processing tools
+                    5 PDF exports per day
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Advanced PDF reports
+                    3 data exports per day (JSON/CSV)
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Metadata removal tools
+                    10 comparisons per day
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Professional templates
+                    Enhanced analytics
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Basic batch processing (up to 25 images)
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Email support
+                  </li>
+                </ul>
+              </div>
+                <div className="bg-purple-500 bg-opacity-10 border border-purple-500 border-opacity-20 rounded-lg p-4 mb-4">
+                <h4 className="text-purple-400 font-semibold mb-2">💎 Pro ($9.99/month):</h4>
+                <ul className="list-none pl-5 space-y-1">
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    50 images per session
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Unlimited PDF exports
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Unlimited data exports (all formats)
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Unlimited comparison tool
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Full analytics suite
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Batch processing (up to 100 images)
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Enhanced exports (all templates)
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Metadata editing (full access)
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Priority email support
                   </li>
                 </ul>
               </div>
@@ -412,19 +523,35 @@ export const FAQ: React.FC = () => {
                 <ul className="list-none pl-5 space-y-1">
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    API access
+                    Unlimited images per session
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    White-label solutions
+                    Unlimited PDF exports
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Advanced compliance features
+                    Unlimited data exports (all formats + custom)
                   </li>
                   <li className="relative">
                     <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                    Priority support
+                    Advanced analytics + API
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Unlimited batch processing
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Custom export templates
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Full REST API access
+                  </li>
+                  <li className="relative">
+                    <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
+                    Dedicated support + SLA
                   </li>
                 </ul>
               </div>
@@ -863,7 +990,7 @@ export const FAQ: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.6.0 • Open Source</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.8.0 • Open Source</p>
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={() => navigate('/')} className="text-gray-400 hover:text-white">Home</button>

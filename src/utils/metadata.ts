@@ -207,7 +207,7 @@ export const extractMetadata = async (file: File): Promise<ImageMetadata> => {
 
     console.log('Processed metadata:', metadata); // Debug log
     return metadata;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('EXIF extraction error:', error);
     
     // Return basic file metadata if EXIF parsing fails

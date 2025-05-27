@@ -1,8 +1,8 @@
-# ProofPix - Privacy-Focused Open Source EXIF Metadata Extraction
+# ProofPix - Enterprise-Grade Privacy-Focused EXIF Metadata Extraction
 
 ## 🔒 Don't Just Send a Photo — Send Proof.
 
-ProofPix is a privacy-focused, open source web application that extracts and displays EXIF metadata from your images. All processing happens locally in your browser, ensuring your photos never leave your device.
+ProofPix is a privacy-focused, enterprise-grade web application that extracts and displays EXIF metadata from your images. All processing happens locally in your browser, ensuring your photos never leave your device. Now featuring AI-driven enterprise sales, custom branding, and comprehensive compliance documentation.
 
 ## ✨ Features
 
@@ -31,6 +31,14 @@ ProofPix is a privacy-focused, open source web application that extracts and dis
 - **Responsive Design**: Works on desktop and mobile
 - **Real-time Processing**: Instant metadata extraction
 
+### 🏢 **Enterprise Features**
+- **AI-Driven Pricing**: Intelligent customer segmentation and instant quotes
+- **Custom Branding**: Upload logos, colors, and white-label deployment
+- **Interactive Demo**: Full enterprise demo environment at `/enterprise/demo`
+- **Compliance Documentation**: SOC2, GDPR, HIPAA templates and guides
+- **Team Management**: Multi-user access with role-based permissions
+- **API Access**: RESTful API with comprehensive documentation
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -52,6 +60,13 @@ npm start
 ```
 
 The application will open at `http://localhost:3001`
+
+### Enterprise Demo
+Visit `/enterprise/demo` to explore the full enterprise feature set including:
+- Interactive TechCorp Industries simulation
+- Team management interface
+- API management dashboard
+- Custom branding preview
 
 ### Production Build
 ```bash

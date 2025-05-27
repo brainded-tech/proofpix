@@ -507,16 +507,24 @@ export const Support: React.FC = () => {
               </div>
 
               <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                <h4 className="text-blue-400 text-lg font-semibold mb-3">📋 Legal Information</h4>
-                <div className="text-gray-300 space-y-2">
-                  <p><strong>Business Registration:</strong> [Your Business Registration Number]</p>
-                  <p><strong>VAT/Tax ID:</strong> [Your Tax ID]</p>
-                  <button
-                    onClick={() => handleEmailClick('legal')}
-                    className="text-blue-400 hover:text-blue-300 underline"
-                  >
-                    legal@proofpixapp.com
-                  </button>
+                <h4 className="text-blue-400 text-lg font-semibold mb-3">📋 Legal & Compliance</h4>
+                <div className="text-gray-300 space-y-3">
+                  <p className="text-sm">
+                    ProofPix operates as a privacy-first service with client-side processing architecture. 
+                    For legal inquiries, compliance questions, or business documentation requests, please contact our legal team.
+                  </p>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gray-400">Legal Contact:</span>
+                    <button
+                      onClick={() => handleEmailClick('legal')}
+                      className="text-blue-400 hover:text-blue-300 underline font-medium"
+                    >
+                      legal@proofpixapp.com
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-400">
+                    Business registration and tax information available upon request for enterprise customers.
+                  </p>
                 </div>
               </div>
             </div>
@@ -571,7 +579,7 @@ export const Support: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.7.1 • Open Source</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.8.0 • Open Source</p>
             </div>
             <nav className="flex space-x-6 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>

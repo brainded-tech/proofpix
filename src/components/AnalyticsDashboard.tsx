@@ -13,11 +13,165 @@ interface UsageData {
   processingTime: number;
 }
 
+interface AnalyticsData {
+  totalImages: number;
+  totalSessions: number;
+  averageProcessingTime: number;
+  topCameraBrands: Array<{ brand: string; count: number }>;
+  fileFormats: Array<{ format: string; count: number }>;
+  processingTrends: Array<{ date: string; count: number }>;
+  errorRates: Array<{ type: string; count: number }>;
+  userEngagement: {
+    avgSessionDuration: number;
+    bounceRate: number;
+    returnUsers: number;
+  };
+  geographicData: Array<{ country: string; count: number }>;
+  deviceTypes: Array<{ type: string; count: number }>;
+}
+
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  change?: number;
+  icon: string;
+  color: string;
+  subtitle?: string;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ 
+  title, 
+  value, 
+  change, 
+  icon, 
+  color, 
+  subtitle 
+}) => (
+  <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-gray-400 text-sm font-medium">{title}</p>
+        <p className="text-2xl font-bold text-white mt-1">{value}</p>
+        {subtitle && (
+          <p className="text-gray-500 text-xs mt-1">{subtitle}</p>
+        )}
+      </div>
+      <div className={`text-3xl ${color}`}>
+        {icon}
+      </div>
+    </div>
+    {change !== undefined && (
+      <div className="mt-4 flex items-center">
+        <span className={`text-sm font-medium ${
+          change >= 0 ? 'text-green-400' : 'text-red-400'
+        }`}>
+          {change >= 0 ? '↗️' : '↘️'} {Math.abs(change)}%
+        </span>
+        <span className="text-gray-500 text-sm ml-2">vs last period</span>
+      </div>
+    )}
+  </div>
+);
+
+interface ChartProps {
+  data: Array<{ label: string; value: number }>;
+  title: string;
+  type: 'bar' | 'pie' | 'line';
+  color?: string;
+}
+
+const SimpleChart: React.FC<ChartProps> = ({ data, title, type, color = '#3b82f6' }) => {
+  const maxValue = Math.max(...data.map(d => d.value));
+  
+  if (type === 'bar') {
+    return (
+      <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <h3 className="text-lg font-semibold text-white mb-4">{title}</h3>
+        <div className="space-y-3">
+          {data.slice(0, 5).map((item, index) => (
+            <div key={index} className="flex items-center">
+              <div className="w-20 text-sm text-gray-400 truncate">
+                {item.label}
+              </div>
+              <div className="flex-1 mx-3">
+                <div className="bg-gray-700 rounded-full h-2">
+                  <div
+                    className="h-2 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${(item.value / maxValue) * 100}%`,
+                      backgroundColor: color
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="w-12 text-sm text-white text-right">
+                {item.value}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (type === 'pie') {
+    const total = data.reduce((sum, item) => sum + item.value, 0);
+    return (
+      <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <h3 className="text-lg font-semibold text-white mb-4">{title}</h3>
+        <div className="space-y-2">
+          {data.slice(0, 5).map((item, index) => {
+            const percentage = ((item.value / total) * 100).toFixed(1);
+            return (
+              <div key={index} className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div
+                    className="w-3 h-3 rounded-full mr-2"
+                    style={{ backgroundColor: `hsl(${index * 60}, 70%, 50%)` }}
+                  />
+                  <span className="text-sm text-gray-300">{item.label}</span>
+                </div>
+                <span className="text-sm text-white">{percentage}%</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // Line chart (simplified)
+  return (
+    <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+      <h3 className="text-lg font-semibold text-white mb-4">{title}</h3>
+      <div className="h-32 flex items-end space-x-1">
+        {data.map((item, index) => (
+          <div key={index} className="flex-1 flex flex-col items-center">
+            <div
+              className="w-full rounded-t transition-all duration-500"
+              style={{
+                height: `${(item.value / maxValue) * 100}%`,
+                backgroundColor: color,
+                minHeight: '2px'
+              }}
+            />
+            <span className="text-xs text-gray-400 mt-1 truncate">
+              {item.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export const AnalyticsDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [currentStats, setCurrentStats] = useState(usageTracker.getUsageStats());
   const [historicalData, setHistoricalData] = useState<UsageData[]>([]);
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | 'all'>('7d');
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Check for Pro tier access - Analytics is Pro+ only
   const userTier = localStorage.getItem('proofpix_user_tier') || 'free';
@@ -91,6 +245,76 @@ export const AnalyticsDashboard: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Load analytics data
+  useEffect(() => {
+    const loadAnalytics = async () => {
+      setIsLoading(true);
+      try {
+        // Simulate API call - replace with actual analytics service
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        const data: AnalyticsData = {
+          totalImages: 15847,
+          totalSessions: 3421,
+          averageProcessingTime: 2.3,
+          topCameraBrands: [
+            { brand: 'Canon', count: 4521 },
+            { brand: 'Nikon', count: 3892 },
+            { brand: 'Sony', count: 3156 },
+            { brand: 'Apple', count: 2847 },
+            { brand: 'Samsung', count: 1431 }
+          ],
+          fileFormats: [
+            { format: 'JPEG', count: 12456 },
+            { format: 'PNG', count: 2134 },
+            { format: 'TIFF', count: 987 },
+            { format: 'RAW', count: 270 }
+          ],
+          processingTrends: [
+            { date: '2024-01-01', count: 234 },
+            { date: '2024-01-02', count: 456 },
+            { date: '2024-01-03', count: 389 },
+            { date: '2024-01-04', count: 567 },
+            { date: '2024-01-05', count: 432 },
+            { date: '2024-01-06', count: 678 },
+            { date: '2024-01-07', count: 543 }
+          ],
+          errorRates: [
+            { type: 'Metadata Missing', count: 45 },
+            { type: 'File Corrupted', count: 23 },
+            { type: 'Unsupported Format', count: 12 },
+            { type: 'Processing Timeout', count: 8 }
+          ],
+          userEngagement: {
+            avgSessionDuration: 8.5,
+            bounceRate: 23.4,
+            returnUsers: 67.8
+          },
+          geographicData: [
+            { country: 'United States', count: 5432 },
+            { country: 'United Kingdom', count: 2134 },
+            { country: 'Germany', count: 1876 },
+            { country: 'Canada', count: 1543 },
+            { country: 'Australia', count: 987 }
+          ],
+          deviceTypes: [
+            { type: 'Desktop', count: 8934 },
+            { type: 'Mobile', count: 4567 },
+            { type: 'Tablet', count: 2346 }
+          ]
+        };
+        
+        setAnalyticsData(data);
+      } catch (error) {
+        console.error('Failed to load analytics:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadAnalytics();
+  }, [timeRange]);
+
   // Calculate trends and insights
   const insights = useMemo(() => {
     const totalFiles = currentStats.uploads;
@@ -120,6 +344,19 @@ export const AnalyticsDashboard: React.FC = () => {
       avgProcessingTime
     };
   }, [currentStats, historicalData]);
+
+  // Calculate derived metrics
+  const derivedMetrics = useMemo(() => {
+    if (!analyticsData) return null;
+
+    return {
+      avgImagesPerSession: (analyticsData.totalImages / analyticsData.totalSessions).toFixed(1),
+      successRate: ((analyticsData.totalImages / (analyticsData.totalImages + 
+        analyticsData.errorRates.reduce((sum, err) => sum + err.count, 0))) * 100).toFixed(1),
+      topCameraBrand: analyticsData.topCameraBrands[0]?.brand || 'N/A',
+      mostCommonFormat: analyticsData.fileFormats[0]?.format || 'N/A'
+    };
+  }, [analyticsData]);
 
   // Filter historical data based on time range
   const filteredData = useMemo(() => {
@@ -208,6 +445,40 @@ export const AnalyticsDashboard: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-900 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-700 rounded w-64 mb-8"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-32 bg-gray-700 rounded-lg"></div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-64 bg-gray-700 rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!analyticsData) {
+    return (
+      <div className="min-h-screen bg-gray-900 p-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">📊</div>
+          <h2 className="text-2xl font-bold text-white mb-2">Analytics Unavailable</h2>
+          <p className="text-gray-400">Unable to load analytics data. Please try again later.</p>
         </div>
       </div>
     );
@@ -453,7 +724,7 @@ export const AnalyticsDashboard: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.6.0 • Open Source</p>
+              <p>Privacy-respecting EXIF metadata tool - v1.8.0 • Open Source</p>
             </div>
             <nav className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 text-sm">
               <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>

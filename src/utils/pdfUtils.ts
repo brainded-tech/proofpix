@@ -2,6 +2,87 @@ import jsPDF from 'jspdf';
 import { ProcessedImage } from '../types';
 import { formatDateTime } from './formatters';
 
+// Helper function to convert blob URL or file to base64 with better error handling
+const convertImageToBase64 = async (imageSource: string | File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    console.log('Converting image to base64:', typeof imageSource, imageSource instanceof File ? imageSource.name : imageSource);
+    
+    if (typeof imageSource === 'string') {
+      // Handle blob URL or data URL
+      if (imageSource.startsWith('data:')) {
+        // Already a data URL
+        console.log('Image is already a data URL');
+        resolve(imageSource);
+        return;
+      }
+      
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      
+      // Add timeout to prevent hanging
+      const timeout = setTimeout(() => {
+        reject(new Error('Image loading timeout after 10 seconds'));
+      }, 10000);
+      
+      img.onload = () => {
+        clearTimeout(timeout);
+        try {
+          console.log('Image loaded, dimensions:', img.naturalWidth, 'x', img.naturalHeight);
+          
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Could not get canvas context'));
+            return;
+          }
+          
+          // Set canvas size to image size
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          
+          // Draw image to canvas
+          ctx.drawImage(img, 0, 0);
+          
+          // Convert to base64 with high quality
+          const base64 = canvas.toDataURL('image/jpeg', 0.9);
+          console.log('Image converted to base64, size:', base64.length);
+          resolve(base64);
+        } catch (error) {
+          clearTimeout(timeout);
+          console.error('Canvas conversion error:', error);
+          reject(error);
+        }
+      };
+      
+      img.onerror = (error) => {
+        clearTimeout(timeout);
+        console.error('Image loading error:', error);
+        reject(new Error('Failed to load image from URL'));
+      };
+      
+      img.src = imageSource;
+    } else {
+      // Handle File object
+      console.log('Converting File object:', imageSource.name, imageSource.type, imageSource.size);
+      
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          console.log('File converted to base64, size:', reader.result.length);
+          resolve(reader.result);
+        } else {
+          reject(new Error('Failed to read file as base64'));
+        }
+      };
+      reader.onerror = (error) => {
+        console.error('FileReader error:', error);
+        reject(new Error('Failed to read file'));
+      };
+      reader.readAsDataURL(imageSource);
+    }
+  });
+};
+
 export const generatePDF = async (
   processedImage: ProcessedImage,
   showTimestamp: boolean = false
@@ -13,8 +94,8 @@ export const generatePDF = async (
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const margin = 20;
-    const footerHeight = 25; // Reserve space for footer
-    const maxContentHeight = pageHeight - footerHeight;
+    const footerHeight = 30; // Reserve space for footer
+    const maxContentHeight = pageHeight - footerHeight - margin; // Account for both footer and bottom margin
   const { metadata } = processedImage;
   
     console.log('PDF initialized, loading banner...');
@@ -60,7 +141,7 @@ export const generatePDF = async (
       });
       
       await bannerPromise;
-    } catch (error) {
+    } catch (error: unknown) {
       console.warn('Could not load PDF report banner:', error);
       bannerDataUrl = ''; // Ensure it's empty for fallback
     }
@@ -69,20 +150,24 @@ export const generatePDF = async (
     
     // Helper function to check if we need a new page
     const checkPageBreak = (requiredHeight: number): boolean => {
-      return yPosition + requiredHeight > maxContentHeight;
+      const available = maxContentHeight - yPosition;
+      console.log(`Page break check: yPosition=${yPosition}, required=${requiredHeight}, available=${available}`);
+      return available < requiredHeight;
     };
     
     // Helper function to add a new page with header
     const addNewPage = () => {
+      console.log('Adding new page, current yPosition:', yPosition);
       pdf.addPage();
       yPosition = margin;
       
       // Add simple header on new page
-  pdf.setFont('helvetica', 'bold');
-  pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(16);
       pdf.setTextColor(59, 130, 246);
       pdf.text('ProofPix Field Report (continued)', margin, yPosition);
       yPosition += 20;
+      console.log('New page added, yPosition reset to:', yPosition);
     };
     
     let yPosition = margin;
@@ -176,35 +261,40 @@ export const generatePDF = async (
     pdf.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 15;
     
-    // Add image section
-    const imageHeight = 100; // Estimated height including title and spacing
-    if (checkPageBreak(imageHeight)) {
-      addNewPage();
-    }
+    // Add image section with proper sizing
+    console.log('Starting image section...');
     
     try {
-      const imageUrl = showTimestamp && processedImage.timestampedUrl 
-        ? processedImage.timestampedUrl 
-        : processedImage.previewUrl;
+      console.log('Processing image for PDF...');
       
-      console.log('Adding image preview...');
+      // Determine image source
+      let imageSource: string | File;
+      if (showTimestamp && processedImage.timestampedUrl) {
+        imageSource = processedImage.timestampedUrl;
+        console.log('Using timestamped image URL:', imageSource);
+      } else if (processedImage.previewUrl) {
+        imageSource = processedImage.previewUrl;
+        console.log('Using preview URL:', imageSource);
+      } else {
+        imageSource = processedImage.file;
+        console.log('Using original file:', imageSource?.name || 'unknown');
+      }
       
-      // Create a proper image section
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(14);
-      pdf.setTextColor(17, 24, 39);
-      pdf.text('Image Preview', margin, yPosition);
-      yPosition += 10;
+      // Convert image to base64
+      const imageBase64 = await convertImageToBase64(imageSource);
+      console.log('Image converted to base64 successfully, length:', imageBase64.length);
       
-      // Calculate optimal image size
+      // Calculate optimal image size first
       const maxImageWidth = pageWidth - (margin * 2);
-      const maxImageHeight = 80;
+      const maxImageHeight = 120; // Increased from 80 for better visibility
       
       let imgWidth = maxImageWidth;
       let imgHeight = maxImageHeight;
       
       if (metadata.imageWidth && metadata.imageHeight) {
         const aspectRatio = metadata.imageWidth / metadata.imageHeight;
+        console.log('Image aspect ratio:', aspectRatio, `(${metadata.imageWidth}x${metadata.imageHeight})`);
+        
         if (aspectRatio > 1) {
           // Landscape
           imgHeight = imgWidth / aspectRatio;
@@ -222,30 +312,94 @@ export const generatePDF = async (
         }
       }
       
+      console.log('Calculated image dimensions for PDF:', imgWidth, 'x', imgHeight);
+      
+      // Calculate total height needed for image section
+      const totalImageSectionHeight = 15 + imgHeight + 20; // title + image + spacing
+      
+      // Check if we need a new page for the image section
+      if (checkPageBreak(totalImageSectionHeight)) {
+        addNewPage();
+      }
+      
+      // Create image section header
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(14);
+      pdf.setTextColor(17, 24, 39);
+      pdf.text('Image Preview', margin, yPosition);
+      yPosition += 15;
+      
       // Center the image
       const imgX = (pageWidth - imgWidth) / 2;
       
       // Add a border around the image
       pdf.setFillColor(249, 250, 251);
-      pdf.rect(imgX - 2, yPosition - 2, imgWidth + 4, imgHeight + 4, 'F');
+      pdf.rect(imgX - 3, yPosition - 3, imgWidth + 6, imgHeight + 6, 'F');
       pdf.setDrawColor(209, 213, 219);
-      pdf.rect(imgX - 2, yPosition - 2, imgWidth + 4, imgHeight + 4, 'S');
+      pdf.setLineWidth(1);
+      pdf.rect(imgX - 3, yPosition - 3, imgWidth + 6, imgHeight + 6, 'S');
       
-      pdf.addImage(imageUrl, 'JPEG', imgX, yPosition, imgWidth, imgHeight);
-      yPosition += imgHeight + 15;
-      console.log('Image preview added successfully');
+      // Add the image using base64 - try different formats
+      try {
+        // Determine image format from base64 header
+        let format = 'JPEG';
+        if (imageBase64.includes('data:image/png')) {
+          format = 'PNG';
+        } else if (imageBase64.includes('data:image/gif')) {
+          format = 'GIF';
+        }
+        
+        console.log('Adding image to PDF with format:', format);
+        pdf.addImage(imageBase64, format, imgX, yPosition, imgWidth, imgHeight);
+        console.log('Image added successfully to PDF');
+        
+      } catch (imageError) {
+        console.error('Error adding image to PDF:', imageError);
+        // Fallback: try as JPEG
+        try {
+          pdf.addImage(imageBase64, 'JPEG', imgX, yPosition, imgWidth, imgHeight);
+          console.log('Image added successfully as JPEG fallback');
+        } catch (fallbackError) {
+          console.error('Fallback image addition failed:', fallbackError);
+          throw fallbackError;
+        }
+      }
       
-    } catch (error) {
-      console.warn('Could not add image to PDF:', error);
+      yPosition += imgHeight + 20;
+      console.log('Image section completed, new yPosition:', yPosition);
+      
+    } catch (error: unknown) {
+      console.error('Could not add image to PDF:', error);
+      
+      // Check if we need space for error message
+      if (checkPageBreak(30)) {
+        addNewPage();
+      }
+      
+      // Add error section header
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(14);
+      pdf.setTextColor(17, 24, 39);
+      pdf.text('Image Preview', margin, yPosition);
+      yPosition += 15;
+      
+      // Add error message
       pdf.setFont('helvetica', 'italic');
       pdf.setFontSize(10);
       pdf.setTextColor(156, 163, 175);
       pdf.text('Image could not be embedded in this report', margin, yPosition);
-      yPosition += 15;
+      yPosition += 8;
+      pdf.text('(Image processing error - metadata analysis continues below)', margin, yPosition);
+      yPosition += 8;
+      
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      pdf.text(`Error: ${errorMsg}`, margin, yPosition);
+      yPosition += 20;
     }
     
     // File Information Section
-    const fileInfoHeight = 55;
+    console.log('Adding file information section...');
+    const fileInfoHeight = 60; // Increased for better spacing
     if (checkPageBreak(fileInfoHeight)) {
       addNewPage();
     }
@@ -254,22 +408,23 @@ export const generatePDF = async (
     pdf.setFontSize(14);
     pdf.setTextColor(17, 24, 39);
     pdf.text('File Information', margin, yPosition);
-    yPosition += 10;
+    yPosition += 15;
     
     // Create a styled info box
+    const boxHeight = 40;
     pdf.setFillColor(249, 250, 251);
-    pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 35, 'F');
+    pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), boxHeight, 'F');
     pdf.setDrawColor(229, 231, 235);
-    pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 35, 'S');
+    pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), boxHeight, 'S');
     
     pdf.setFont('helvetica', 'normal');
     pdf.setFontSize(10);
     pdf.setTextColor(55, 65, 81);
     
     const fileInfo = [
-      ['File Name:', String(metadata.fileName || 'Unknown')],
-      ['File Size:', String(metadata.fileSize || 'Unknown')],
-      ['File Type:', String(metadata.fileType || 'Unknown')],
+      ['File Name:', String(metadata.fileName || processedImage.file?.name || 'Unknown')],
+      ['File Size:', String(metadata.fileSize || (processedImage.file?.size ? `${Math.round(processedImage.file.size / 1024)} KB` : 'Unknown'))],
+      ['File Type:', String(metadata.fileType || processedImage.file?.type || 'Unknown')],
       ['Dimensions:', metadata.imageWidth && metadata.imageHeight 
         ? `${metadata.imageWidth} × ${metadata.imageHeight} pixels`
         : 'Unknown']
@@ -277,7 +432,7 @@ export const generatePDF = async (
     
     fileInfo.forEach(([label, value], index) => {
       const x = index < 2 ? margin + 5 : pageWidth / 2 + 5;
-      const y = yPosition + (index % 2) * 8;
+      const y = yPosition + (index % 2) * 12; // Increased spacing
       pdf.setFont('helvetica', 'bold');
       pdf.text(String(label), x, y);
       pdf.setFont('helvetica', 'normal');
@@ -285,30 +440,31 @@ export const generatePDF = async (
       pdf.text(String(value), x + labelWidth + 3, y);
     });
     
-    yPosition += 45;
+    yPosition += boxHeight + 15;
     
     // Camera Information Section (if available)
     if (metadata.make || metadata.model || metadata.software) {
       console.log('Adding camera information...');
       
-      const cameraInfoHeight = 45;
+      const cameraInfoHeight = 50;
       if (checkPageBreak(cameraInfoHeight)) {
         addNewPage();
       }
       
-    pdf.setFont('helvetica', 'bold');
+      pdf.setFont('helvetica', 'bold');
       pdf.setFontSize(14);
       pdf.setTextColor(17, 24, 39);
       pdf.text('Camera Information', margin, yPosition);
-    yPosition += 10;
+      yPosition += 15;
       
+      const cameraBoxHeight = 30;
       pdf.setFillColor(249, 250, 251);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 25, 'F');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), cameraBoxHeight, 'F');
       pdf.setDrawColor(229, 231, 235);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 25, 'S');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), cameraBoxHeight, 'S');
     
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(10);
       pdf.setTextColor(55, 65, 81);
       
       const cameraInfo = [
@@ -318,7 +474,7 @@ export const generatePDF = async (
       ];
       
       cameraInfo.forEach(([label, value], index) => {
-        const y = yPosition + index * 6;
+        const y = yPosition + index * 8; // Increased spacing
         pdf.setFont('helvetica', 'bold');
         pdf.text(String(label), margin + 5, y);
         pdf.setFont('helvetica', 'normal');
@@ -326,14 +482,14 @@ export const generatePDF = async (
         pdf.text(String(value), margin + 5 + labelWidth + 3, y);
       });
     
-      yPosition += 35;
-  }
+      yPosition += cameraBoxHeight + 15;
+    }
   
     // Camera Settings Section (if available)
     if (metadata.exposureTime || metadata.fNumber || metadata.iso || metadata.focalLength) {
       console.log('Adding camera settings...');
       
-      const cameraSettingsHeight = 55;
+      const cameraSettingsHeight = 60;
       if (checkPageBreak(cameraSettingsHeight)) {
         addNewPage();
       }
@@ -342,12 +498,13 @@ export const generatePDF = async (
       pdf.setFontSize(14);
       pdf.setTextColor(17, 24, 39);
       pdf.text('Camera Settings', margin, yPosition);
-      yPosition += 10;
+      yPosition += 15;
       
+      const settingsBoxHeight = 35;
       pdf.setFillColor(249, 250, 251);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 35, 'F');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), settingsBoxHeight, 'F');
       pdf.setDrawColor(229, 231, 235);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 35, 'S');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), settingsBoxHeight, 'S');
       
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
@@ -362,7 +519,7 @@ export const generatePDF = async (
       
       settingsInfo.forEach(([label, value], index) => {
         const x = index < 2 ? margin + 5 : pageWidth / 2 + 5;
-        const y = yPosition + (index % 2) * 8;
+        const y = yPosition + (index % 2) * 12; // Increased spacing for consistency
         pdf.setFont('helvetica', 'bold');
         pdf.text(String(label), x, y);
         pdf.setFont('helvetica', 'normal');
@@ -370,46 +527,49 @@ export const generatePDF = async (
         pdf.text(String(value), x + labelWidth + 3, y);
       });
       
-      yPosition += 45;
+      yPosition += settingsBoxHeight + 15;
     }
     
     // Timestamp Information Section (if available)
     if (metadata.dateTime) {
       console.log('Adding timestamp information...');
       
-      const timestampHeight = 35;
+      const timestampHeight = 40;
       if (checkPageBreak(timestampHeight)) {
         addNewPage();
       }
       
-    pdf.setFont('helvetica', 'bold');
+      pdf.setFont('helvetica', 'bold');
       pdf.setFontSize(14);
       pdf.setTextColor(17, 24, 39);
       pdf.text('Timestamp Information', margin, yPosition);
-    yPosition += 10;
+      yPosition += 15;
       
+      const timestampBoxHeight = 20;
       pdf.setFillColor(249, 250, 251);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 15, 'F');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), timestampBoxHeight, 'F');
       pdf.setDrawColor(229, 231, 235);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 15, 'S');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), timestampBoxHeight, 'S');
     
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(10);
       pdf.setTextColor(55, 65, 81);
       
+      pdf.setFont('helvetica', 'bold');
       pdf.text('Date Taken:', margin + 5, yPosition);
       const dateLabel = 'Date Taken:';
       const labelWidth = pdf.getTextWidth(dateLabel);
+      pdf.setFont('helvetica', 'normal');
       pdf.text(formatDateTime(metadata.dateTime), margin + 5 + labelWidth + 3, yPosition);
       
-      yPosition += 25;
+      yPosition += timestampBoxHeight + 15;
     }
     
     // GPS Information Section (if available)
     if (metadata.gpsLatitude !== undefined && metadata.gpsLongitude !== undefined) {
       console.log('Adding GPS information...');
       
-      const gpsHeight = 45;
+      const gpsHeight = 50;
       if (checkPageBreak(gpsHeight)) {
         addNewPage();
       }
@@ -418,29 +578,30 @@ export const generatePDF = async (
       pdf.setFontSize(14);
       pdf.setTextColor(17, 24, 39);
       pdf.text('Location Information', margin, yPosition);
-      yPosition += 10;
+      yPosition += 15;
       
+      const gpsBoxHeight = 25;
       pdf.setFillColor(249, 250, 251);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 25, 'F');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), gpsBoxHeight, 'F');
       pdf.setDrawColor(229, 231, 235);
-      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), 25, 'S');
+      pdf.rect(margin, yPosition - 5, pageWidth - (margin * 2), gpsBoxHeight, 'S');
       
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
       pdf.setTextColor(55, 65, 81);
     
-    const formatCoord = (value: number, type: 'lat' | 'lng') => {
-      const direction = type === 'lat' ? (value >= 0 ? 'N' : 'S') : (value >= 0 ? 'E' : 'W');
-      return `${Math.abs(value).toFixed(6)}° ${direction}`;
-    };
+      const formatCoord = (value: number, type: 'lat' | 'lng') => {
+        const direction = type === 'lat' ? (value >= 0 ? 'N' : 'S') : (value >= 0 ? 'E' : 'W');
+        return `${Math.abs(value).toFixed(6)}° ${direction}`;
+      };
     
-    const gpsInfo = [
-      ['Latitude:', formatCoord(metadata.gpsLatitude, 'lat')],
+      const gpsInfo = [
+        ['Latitude:', formatCoord(metadata.gpsLatitude, 'lat')],
         ['Longitude:', formatCoord(metadata.gpsLongitude, 'lng')]
       ];
       
       gpsInfo.forEach(([label, value], index) => {
-        const y = yPosition + index * 8;
+        const y = yPosition + index * 10; // Increased spacing for consistency
         pdf.setFont('helvetica', 'bold');
         pdf.text(String(label), margin + 5, y);
         pdf.setFont('helvetica', 'normal');
@@ -448,29 +609,13 @@ export const generatePDF = async (
         pdf.text(String(value), margin + 5 + labelWidth + 3, y);
       });
       
-      yPosition += 30;
+      yPosition += gpsBoxHeight + 15;
     }
     
-    // Add detailed metadata section if there's space or on a new page
-    const detailedMetadataHeight = 80;
-    if (checkPageBreak(detailedMetadataHeight)) {
-      addNewPage();
-    }
-    
+    // Technical Details Section
     console.log('Adding technical details...');
     
-    // Additional Technical Details Section
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(14);
-    pdf.setTextColor(17, 24, 39);
-    pdf.text('Technical Details', margin, yPosition);
-    yPosition += 10;
-    
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(9);
-    pdf.setTextColor(55, 65, 81);
-    
-    // Add more detailed technical information (only using properties that exist on ImageMetadata)
+    // Calculate required height for technical details
     const technicalDetails = [
       ['Color Space:', String(metadata.colorSpace || 'N/A')],
       ['Orientation:', String(metadata.orientation || 'N/A')],
@@ -480,8 +625,25 @@ export const generatePDF = async (
       ['Exposure Program:', String(metadata.exposureProgram || 'N/A')]
     ];
     
+    const technicalDetailsHeight = 15 + (technicalDetails.length * 10) + 15; // title + items + spacing
+    if (checkPageBreak(technicalDetailsHeight)) {
+      addNewPage();
+    }
+    
+    // Additional Technical Details Section
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(14);
+    pdf.setTextColor(17, 24, 39);
+    pdf.text('Technical Details', margin, yPosition);
+    yPosition += 15;
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(10);
+    pdf.setTextColor(55, 65, 81);
+    
     technicalDetails.forEach(([label, value], index) => {
-      if (checkPageBreak(8)) {
+      // Check if we need a new page for this item
+      if (checkPageBreak(12)) {
         addNewPage();
       }
       
@@ -490,8 +652,10 @@ export const generatePDF = async (
       pdf.setFont('helvetica', 'normal');
       const labelWidth = pdf.getTextWidth(String(label) + ' ');
       pdf.text(String(value), margin + 5 + labelWidth, yPosition);
-      yPosition += 7;
+      yPosition += 10; // Increased spacing for better readability
     });
+    
+    yPosition += 15; // Add spacing after technical details
     
     console.log('Adding footers...');
     
@@ -517,9 +681,9 @@ export const generatePDF = async (
     console.log('PDF generation completed successfully');
     return pdf.output('blob');
     
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('PDF generation failed:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    const errorMessage = error instanceof Error ? error instanceof Error ? error.message : String(error) : 'Unknown error occurred';
     throw new Error(`PDF generation failed: ${errorMessage}`);
   }
 };

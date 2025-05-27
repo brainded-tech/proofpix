@@ -84,7 +84,7 @@ class ErrorLogger {
       timestamp: new Date().toISOString(),
       priority: error.priority || 'Medium',
       category: error.category || 'Unknown',
-      message: error.message || 'Unknown error',
+      message: error instanceof Error ? error.message : String(error) || 'Unknown error',
       stack: error.stack,
       file: error.file,
       function: error.function,
@@ -124,7 +124,7 @@ class ErrorLogger {
 **Status:** 🔍 OPEN  
 
 **Description:**
-- ${error.message}
+- ${error instanceof Error ? error.message : String(error)}
 - Location: ${error.file || 'Unknown file'}
 - Function: ${error.function || 'Unknown function'}
 
@@ -269,7 +269,7 @@ export const logComponentError = (error: Error, errorInfo: any, componentName: s
   errorLogger.logError({
     priority: 'High',
     category: 'React Component Error',
-    message: `Error in ${componentName}: ${error.message}`,
+    message: `Error in ${componentName}: ${error instanceof Error ? error.message : String(error)}`,
     stack: error.stack,
     function: componentName,
     context: {
@@ -284,7 +284,7 @@ export const logAsyncError = (operation: string, error: Error, context?: any) =>
   errorLogger.logError({
     priority: 'Medium',
     category: 'Async Operation Error',
-    message: `Error in ${operation}: ${error.message}`,
+    message: `Error in ${operation}: ${error instanceof Error ? error.message : String(error)}`,
     stack: error.stack,
     function: operation,
     context

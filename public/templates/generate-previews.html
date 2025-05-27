@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProofPix Template Previews</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .preview-container {
+            display: inline-block;
+            margin: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .template-preview {
+            width: 400px;
+            height: 300px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Standard Template */
+        .standard-template {
+            padding: 20px;
+            background: linear-gradient(to bottom, #f8fafc 0%, white 100%);
+        }
+        
+        .standard-template .header {
+            text-align: center;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .standard-template .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .standard-template .subtitle {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .standard-template .content {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .standard-template .image-thumb {
+            width: 120px;
+            height: 80px;
+            background: linear-gradient(45deg, #e5e7eb, #d1d5db);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #6b7280;
+        }
+        
+        .standard-template .metadata {
+            flex: 1;
+            font-size: 10px;
+        }
+        
+        .standard-template .metadata-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .standard-template .metadata-label {
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .standard-template .metadata-value {
+            color: #6b7280;
+        }
+        
+        /* Forensic Template */
+        .forensic-template {
+            padding: 20px;
+            background: linear-gradient(to bottom, #fef2f2 0%, white 100%);
+        }
+        
+        .forensic-template .header {
+            text-align: center;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .forensic-template .title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #991b1b;
+            margin-bottom: 5px;
+        }
+        
+        .forensic-template .case-info {
+            font-size: 10px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+        
+        .forensic-template .integrity-section {
+            background: #fef2f2;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 4px solid #dc2626;
+        }
+        
+        .forensic-template .integrity-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #991b1b;
+            margin-bottom: 5px;
+        }
+        
+        .forensic-template .hash-info {
+            font-size: 9px;
+            color: #6b7280;
+            font-family: monospace;
+        }
+        
+        .forensic-template .metadata-table {
+            font-size: 9px;
+            width: 100%;
+        }
+        
+        .forensic-template .metadata-table td {
+            padding: 2px 4px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        /* Minimal Template */
+        .minimal-template {
+            padding: 20px;
+            background: white;
+        }
+        
+        .minimal-template .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .minimal-template .title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .minimal-template .key-facts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 11px;
+        }
+        
+        .minimal-template .fact-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .minimal-template .fact-label {
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .minimal-template .fact-value {
+            color: #6b7280;
+        }
+        
+        /* Comparison Template */
+        .comparison-template {
+            padding: 15px;
+            background: white;
+        }
+        
+        .comparison-template .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .comparison-template .title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .comparison-template .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 9px;
+        }
+        
+        .comparison-template .image-column {
+            text-align: center;
+        }
+        
+        .comparison-template .image-label {
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+        
+        .comparison-template .comparison-thumb {
+            width: 80px;
+            height: 60px;
+            background: linear-gradient(45deg, #e5e7eb, #d1d5db);
+            border-radius: 4px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #6b7280;
+        }
+        
+        .comparison-template .metadata-comparison {
+            font-size: 8px;
+        }
+        
+        .comparison-template .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            padding: 2px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .comparison-template .difference {
+            background: #fef3c7;
+            padding: 1px 3px;
+            border-radius: 2px;
+        }
+        
+        .label {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <h1>ProofPix Template Previews</h1>
+    <p>Right-click each preview and "Save image as..." to save as PNG files.</p>
+    
+    <!-- Standard Template Preview -->
+    <div class="preview-container">
+        <div class="template-preview standard-template">
+            <div class="header">
+                <div class="title">ProofPix Metadata Report</div>
+                <div class="subtitle">Professional Analysis Report</div>
+            </div>
+            <div class="content">
+                <div class="image-thumb">
+                    Image<br>Thumbnail
+                </div>
+                <div class="metadata">
+                    <div class="metadata-row">
+                        <span class="metadata-label">Camera:</span>
+                        <span class="metadata-value">Canon EOS R5</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Date:</span>
+                        <span class="metadata-value">2024-01-15 14:30:22</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Location:</span>
+                        <span class="metadata-value">37.7749°N, 122.4194°W</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Aperture:</span>
+                        <span class="metadata-value">f/2.8</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">Shutter:</span>
+                        <span class="metadata-value">1/250s</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">ISO:</span>
+                        <span class="metadata-value">400</span>
+                    </div>
+                    <div class="metadata-row">
+                        <span class="metadata-label">File Size:</span>
+                        <span class="metadata-value">8.2 MB</span>
+                    </div>
+                </div>
+            </div>
+            <div class="label">Standard Template</div>
+        </div>
+    </div>
+    
+    <!-- Forensic Template Preview -->
+    <div class="preview-container">
+        <div class="template-preview forensic-template">
+            <div class="header">
+                <div class="title">Digital Forensic Analysis Report</div>
+                <div class="case-info">Case ID: CASE-2024-001 | Investigator: ProofPix Analysis</div>
+            </div>
+            <div class="integrity-section">
+                <div class="integrity-title">Metadata Integrity Verification</div>
+                <div class="hash-info">MD5: a1b2c3d4e5f6789...</div>
+                <div class="hash-info">SHA-256: 9f8e7d6c5b4a321...</div>
+            </div>
+            <table class="metadata-table">
+                <tr><td><strong>Timestamp Analysis:</strong></td><td>Verified ✓</td></tr>
+                <tr><td><strong>GPS Coordinates:</strong></td><td>37.7749°N, 122.4194°W</td></tr>
+                <tr><td><strong>Camera Model:</strong></td><td>Canon EOS R5</td></tr>
+                <tr><td><strong>Authenticity Score:</strong></td><td>95% Confidence</td></tr>
+                <tr><td><strong>Chain of Custody:</strong></td><td>Documented</td></tr>
+            </table>
+            <div class="label">Forensic Template</div>
+        </div>
+    </div>
+    
+    <!-- Minimal Template Preview -->
+    <div class="preview-container">
+        <div class="template-preview minimal-template">
+            <div class="header">
+                <div class="title">Image Metadata Summary</div>
+            </div>
+            <div class="key-facts">
+                <div class="fact-item">
+                    <span class="fact-label">Camera:</span>
+                    <span class="fact-value">Canon EOS R5</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">Date:</span>
+                    <span class="fact-value">Jan 15, 2024</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">Location:</span>
+                    <span class="fact-value">San Francisco, CA</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">Settings:</span>
+                    <span class="fact-value">f/2.8, 1/250s, ISO 400</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">Size:</span>
+                    <span class="fact-value">8.2 MB</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">Format:</span>
+                    <span class="fact-value">JPEG</span>
+                </div>
+            </div>
+            <div class="label">Minimal Template</div>
+        </div>
+    </div>
+    
+    <!-- Comparison Template Preview -->
+    <div class="preview-container">
+        <div class="template-preview comparison-template">
+            <div class="header">
+                <div class="title">Image Comparison Report</div>
+            </div>
+            <div class="comparison-grid">
+                <div class="image-column">
+                    <div class="image-label">Image A</div>
+                    <div class="comparison-thumb">Original</div>
+                </div>
+                <div class="image-column">
+                    <div class="image-label">Image B</div>
+                    <div class="comparison-thumb">Modified</div>
+                </div>
+            </div>
+            <div class="metadata-comparison">
+                <div class="comparison-row">
+                    <span>Canon EOS R5</span>
+                    <span class="difference">Canon EOS R6</span>
+                </div>
+                <div class="comparison-row">
+                    <span>2024-01-15 14:30:22</span>
+                    <span>2024-01-15 14:30:22</span>
+                </div>
+                <div class="comparison-row">
+                    <span>37.7749°N, 122.4194°W</span>
+                    <span class="difference">37.7849°N, 122.4294°W</span>
+                </div>
+                <div class="comparison-row">
+                    <span>f/2.8, 1/250s, ISO 400</span>
+                    <span>f/2.8, 1/250s, ISO 400</span>
+                </div>
+            </div>
+            <div style="position: absolute; bottom: 10px; right: 20px; font-size: 10px; color: #10b981;">
+                <strong>Similarity: 87%</strong>
+            </div>
+            <div class="label">Comparison Template</div>
+        </div>
+    </div>
+    
+    <script>
+        // Instructions for generating images
+        console.log('To generate preview images:');
+        console.log('1. Open this HTML file in a browser');
+        console.log('2. Right-click each preview and select "Save image as..."');
+        console.log('3. Save as:');
+        console.log('   - standard-preview.png');
+        console.log('   - forensic-preview.png');
+        console.log('   - minimal-preview.png');
+        console.log('   - comparison-preview.png');
+        console.log('4. Place files in public/templates/ directory');
+    </script>
+</body>
+</html> 

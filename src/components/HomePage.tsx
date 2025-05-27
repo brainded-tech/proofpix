@@ -1,27 +1,31 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, FileImage, Layers, Shield, Lock } from 'lucide-react';
+import { Camera, FileImage, Layers, Lock, Upload, Shield, Building2, Eye } from 'lucide-react';
 import { analytics, trackFileUpload, usageTracker } from '../utils/analytics';
-import { Sponsorship, SponsorshipGrid } from './Sponsorships';
+import { Sponsorship } from './Sponsorships';
 import SocialShare from './SocialShare';
 import SessionStatus from './SessionStatus';
 import BatchProcessor from './BatchProcessor';
-// import BatchProcessor from './test-minimal-batch';
+import { BatchResultsView } from './BatchResultsView';
 import { ProcessedImage } from '../types';
-import SessionManager from '../utils/sessionManager';
+import SecureSessionManager from '../utils/secureSessionManager';
+import SecureFileValidator from '../utils/secureFileValidator';
 import { ComparisonTool } from './ComparisonTool';
 
 interface HomePageProps {
   onFileSelect: (file: File) => void;
   onBatchComplete?: (images: ProcessedImage[]) => void;
+  onImageSelect?: (image: ProcessedImage) => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplete }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplete, onImageSelect }) => {
   const [isDragActive, setIsDragActive] = useState(false);
   const [usageStats, setUsageStats] = useState(usageTracker.getUsageStats());
   const [processingMode, setProcessingMode] = useState<'single' | 'batch'>('single');
   const [showComparisonTool, setShowComparisonTool] = useState(false);
+  const [batchResults, setBatchResults] = useState<ProcessedImage[]>([]);
+  const [showBatchResults, setShowBatchResults] = useState(false);
   const navigate = useNavigate();
 
   // Update usage stats on component mount and periodically
@@ -41,15 +45,33 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
     
     const file = files[0];
     
-    // Track analytics (privacy-friendly)
-    trackFileUpload(file.type, file.size);
-    analytics.trackFeatureUsage('File Upload', 'HomePage');
-    
-    // Update usage stats
-    usageTracker.incrementUpload();
-    setUsageStats(usageTracker.getUsageStats());
-    
-    onFileSelect(file);
+    try {
+      // 🔒 SECURE FILE VALIDATION: Comprehensive security validation
+      const validationResult = await SecureFileValidator.validateFile(file);
+      
+      if (!validationResult.valid) {
+        console.error('File validation failed:', validationResult.errors);
+        alert(`File validation failed: ${validationResult.errors?.join(', ')}`);
+        return;
+      }
+
+      if (validationResult.warnings && validationResult.warnings.length > 0) {
+        console.warn('File validation warnings:', validationResult.warnings);
+      }
+
+      // Track analytics (privacy-friendly)
+      trackFileUpload(file.type, file.size);
+      analytics.trackFeatureUsage('File Upload', 'HomePage');
+      
+      // Update usage stats
+      usageTracker.incrementUpload();
+      setUsageStats(usageTracker.getUsageStats());
+      
+      onFileSelect(file);
+    } catch (error) {
+      console.error('File validation error:', error);
+      alert('File validation failed. Please try a different image.');
+    }
   }, [onFileSelect]);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -97,6 +119,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
     navigate('/batch');
   };
 
+  const handleEnterpriseClick = () => {
+    analytics.trackFeatureUsage('Navigation', 'Enterprise - Footer');
+    navigate('/enterprise');
+  };
+
   const handleTermsClick = () => {
     analytics.trackFeatureUsage('Navigation', 'Terms - Footer');
     navigate('/terms');
@@ -112,13 +139,38 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
     analytics.trackFeatureUsage('Navigation', 'Comparison Tool Opened');
   };
 
-  const handleBatchComplete = useCallback((images: ProcessedImage[]) => {
-    analytics.trackFeatureUsage('Batch Processing', `Completed ${images.length} images`);
-    onBatchComplete?.(images);
+  const handleBatchComplete = useCallback((results: any[]) => {
+    analytics.trackFeatureUsage('Batch Processing', `Completed ${results.length} files`);
+    // Convert BatchFile[] to ProcessedImage[] if needed
+    const processedImages = results.filter(r => r.status === 'completed').map(r => ({
+      file: r.file,
+      metadata: r.metadata,
+      previewUrl: URL.createObjectURL(r.file)
+    }));
+    
+    // Store batch results and show them instead of navigating away
+    setBatchResults(processedImages);
+    setShowBatchResults(true);
+    
+    onBatchComplete?.(processedImages);
   }, [onBatchComplete]);
 
-  // 🔒 PAYMENT PROTECTION: Check if user can access batch processing
-  const canUseBatch = SessionManager.canPerformAction('batch');
+      // 🔒 SECURE PAYMENT PROTECTION: Server-side validated batch access
+    const [canUseBatch, setCanUseBatch] = useState(false);
+    
+    useEffect(() => {
+      const checkBatchAccess = async () => {
+        try {
+          const hasAccess = await SecureSessionManager.canPerformAction('batch');
+          setCanUseBatch(hasAccess);
+        } catch (error) {
+          console.warn('Batch access check failed:', error);
+          setCanUseBatch(false);
+        }
+      };
+      
+      checkBatchAccess();
+    }, []);
 
   const handleBatchModeClick = useCallback(() => {
     if (!canUseBatch) {
@@ -127,8 +179,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
       return;
     }
     setProcessingMode('batch');
+    setShowBatchResults(false); // Hide results when switching to batch mode
     analytics.trackFeatureUsage('Navigation', 'Batch Mode Activated');
   }, [canUseBatch, navigate]);
+
+  const handleImageSelectFromBatch = useCallback((image: ProcessedImage) => {
+    analytics.trackFeatureUsage('Batch Results', 'Individual Image Selected');
+    onImageSelect?.(image);
+  }, [onImageSelect]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -141,9 +199,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
               <h1 className="text-xl font-bold">ProofPix</h1>
             </div>
             
-            {/* Header Sponsorship - Privacy-friendly partnerships */}
-            <div className="hidden lg:block">
-              <Sponsorship placement="header" className="max-w-md" />
+            <div className="flex items-center space-x-4">
+              {/* Security Navigation */}
+              <button
+                onClick={() => navigate('/security')}
+                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2"
+              >
+                <Shield className="h-4 w-4" />
+                <span>Security</span>
+              </button>
+              
+              {/* Enterprise Navigation */}
+              <button
+                onClick={handleEnterpriseClick}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2"
+              >
+                <Building2 className="h-4 w-4" />
+                <span>Enterprise</span>
+              </button>
+              
+              {/* Enterprise Demo */}
+              <button
+                onClick={() => navigate('/enterprise/demo')}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2"
+              >
+                <Eye className="h-4 w-4" />
+                <span>Try Demo</span>
+              </button>
+              
+
             </div>
           </div>
         </div>
@@ -161,6 +245,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
           <p className="text-gray-400">
             Privacy-respecting analytics • Direct sponsorships • Local processing
           </p>
+          
+          {/* Security Badges */}
+          <div className="flex justify-center space-x-4 mt-6">
+            <div className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
+              ✓ Zero Server Storage
+            </div>
+            <div className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
+              ✓ SOC 2 Ready
+            </div>
+            <div className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
+              ✓ GDPR Compliant
+            </div>
+          </div>
         </div>
 
         {/* Mode Toggle */}
@@ -231,35 +328,55 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
         )}
 
         {/* Batch Processing Mode */}
-        {processingMode === 'batch' && (
+        {processingMode === 'batch' && !showBatchResults && (
           <div className="max-w-4xl mx-auto mb-8">
             <BatchProcessor 
               onComplete={handleBatchComplete}
               maxFiles={10}
-              maxFileSize={50 * 1024 * 1024}
+            />
+          </div>
+        )}
+
+        {/* Batch Results View */}
+        {processingMode === 'batch' && showBatchResults && batchResults.length > 0 && (
+          <div className="max-w-6xl mx-auto mb-8">
+            <div className="mb-4">
+              <button
+                onClick={() => setShowBatchResults(false)}
+                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                ← Process More Images
+              </button>
+            </div>
+            <BatchResultsView
+              images={batchResults}
+              onImageSelect={handleImageSelectFromBatch}
+              onImageDelete={(image) => {
+                setBatchResults(prev => prev.filter(img => img.file.name !== image.file.name));
+              }}
             />
           </div>
         )}
 
         {/* Real-time Usage Stats */}
         <div className="bg-gray-800 rounded-lg p-6 mb-12 max-w-md mx-auto">
-          <h3 className="text-lg font-semibold mb-4">Today's Usage</h3>
+          <h3 className="text-lg font-semibold mb-4">Today's Usage (Free Tier)</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-400">Uploads:</span>
-              <span>{usageStats.uploads}/10</span>
+              <span className="text-gray-400">Images per session:</span>
+              <span>{usageStats.uploads}/5</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">PDF Downloads:</span>
-              <span>{usageStats.pdfDownloads}/3</span>
+              <span className="text-gray-400">PDF exports:</span>
+              <span>{usageStats.pdfDownloads}/2</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Image Downloads:</span>
-              <span>{usageStats.imageDownloads}/15</span>
+              <span className="text-gray-400">Data exports:</span>
+              <span>{usageStats.dataExports}/1</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Data Exports:</span>
-              <span>{usageStats.dataExports}/20</span>
+              <span className="text-gray-400">Comparisons:</span>
+              <span>0/3</span>
             </div>
           </div>
           <div className="text-xs text-gray-500 mt-2">
@@ -273,7 +390,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
         {/* Divider */}
         <div className="border-t border-gray-700 mb-12"></div>
 
-        {/* Features Grid - Enhanced with border and styling */}
+                  {/* Enterprise Banner */}
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6 mb-8 text-center">
+            <div className="flex items-center justify-center space-x-3 mb-3">
+              <Building2 className="h-6 w-6 text-blue-400" />
+              <h3 className="text-xl font-bold text-white">Enterprise Ready</h3>
+              <Building2 className="h-6 w-6 text-blue-400" />
+            </div>
+            <p className="text-gray-300 mb-4">
+              Secure, scalable, and compliant. Perfect for teams and organizations.
+            </p>
+            <button
+              onClick={handleEnterpriseClick}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200"
+            >
+              Learn More About Enterprise
+            </button>
+          </div>
+
+          {/* Features Grid - Enhanced with border and styling */}
         <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8 mb-12 relative">
           {/* Optional subtle background pattern */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-gray-500/5 rounded-2xl"></div>
@@ -363,19 +498,58 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
           </div>
         </div>
 
-        {/* Sponsorship Grid - Updated heading */}
-        <div className="mb-12">
-          <h3 className="text-xl font-semibold text-center mb-6">Featured Partners</h3>
-          <SponsorshipGrid className="max-w-4xl mx-auto" />
-          <div className="text-center text-xs text-gray-500 mt-4">
-            Direct partnerships • No user tracking
+        {/* Security Comparison Section */}
+        <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8 mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-white mb-2">ProofPix vs Traditional SaaS Security</h2>
+            <p className="text-gray-400">See how our client-side architecture eliminates traditional security risks</p>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full bg-gray-900 rounded-lg">
+              <thead className="bg-gray-800">
+                <tr>
+                  <th className="px-6 py-4 text-left font-bold text-white">Security Aspect</th>
+                  <th className="px-6 py-4 text-center font-bold text-red-400">Traditional SaaS</th>
+                  <th className="px-6 py-4 text-center font-bold text-green-400">ProofPix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t border-gray-700">
+                  <td className="px-6 py-4 font-medium text-white">Data Breach Risk</td>
+                  <td className="px-6 py-4 text-center text-red-400">HIGH<br/><small className="text-gray-400">Server storage vulnerable</small></td>
+                  <td className="px-6 py-4 text-center text-green-400">ELIMINATED<br/><small className="text-gray-400">No server data storage</small></td>
+                </tr>
+                <tr className="border-t border-gray-700 bg-gray-800/50">
+                  <td className="px-6 py-4 font-medium text-white">Compliance Complexity</td>
+                  <td className="px-6 py-4 text-center text-red-400">COMPLEX<br/><small className="text-gray-400">Extensive data handling</small></td>
+                  <td className="px-6 py-4 text-center text-green-400">SIMPLE<br/><small className="text-gray-400">Minimal compliance scope</small></td>
+                </tr>
+                <tr className="border-t border-gray-700">
+                  <td className="px-6 py-4 font-medium text-white">User Privacy</td>
+                  <td className="px-6 py-4 text-center text-red-400">POLICY-BASED<br/><small className="text-gray-400">Trust our promises</small></td>
+                  <td className="px-6 py-4 text-center text-green-400">ARCHITECTURE-BASED<br/><small className="text-gray-400">Impossible to violate</small></td>
+                </tr>
+                <tr className="border-t border-gray-700 bg-gray-800/50">
+                  <td className="px-6 py-4 font-medium text-white">Audit Requirements</td>
+                  <td className="px-6 py-4 text-center text-red-400">EXTENSIVE<br/><small className="text-gray-400">Complex data flows</small></td>
+                  <td className="px-6 py-4 text-center text-green-400">STREAMLINED<br/><small className="text-gray-400">Minimal audit scope</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div className="text-center mt-6">
+            <button
+              onClick={() => navigate('/docs/security-architecture')}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              Learn More About Our Security Architecture
+            </button>
           </div>
         </div>
 
-        {/* Bottom Educational Sponsorship */}
-        <div className="mb-12">
-          <Sponsorship placement="bottom" className="max-w-2xl mx-auto" />
-        </div>
+
 
         {/* Tech Details */}
         <div className="text-center text-gray-400 text-sm mb-8">
@@ -386,35 +560,67 @@ export const HomePage: React.FC<HomePageProps> = ({ onFileSelect, onBatchComplet
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 border-t border-gray-700 py-6">
+      <footer className="bg-gray-800 border-t border-gray-700 py-8">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-sm text-gray-400 mb-4 md:mb-0">
-              <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.6.0 • Open Source</p>
-              
-              {/* Minimal Social Share */}
-              <div className="mt-3">
-                <SocialShare 
-                  variant="minimal"
-                  onShare={(platform) => {
-                    analytics.trackFeatureUsage('Social Share', `HomePage Footer - ${platform}`);
-                  }}
-                />
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            {/* Company Info */}
+            <div className="md:col-span-2">
+              <div className="text-sm text-gray-400">
+                <p className="font-semibold text-white mb-2">ProofPix</p>
+                <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
+                <p>Privacy-respecting EXIF metadata tool - v1.8.0 • Open Source</p>
+                
+                {/* Social Share */}
+                <div className="mt-4">
+                  <SocialShare 
+                    variant="minimal"
+                    onShare={(platform) => {
+                      analytics.trackFeatureUsage('Social Share', `HomePage Footer - ${platform}`);
+                    }}
+                  />
+                </div>
               </div>
             </div>
-            <nav className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 text-sm">
-              <button onClick={() => window.location.reload()} className="text-gray-400 hover:text-white">Home</button>
-              <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
-              <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
-              <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
-              <button onClick={handleSupportClick} className="text-gray-400 hover:text-white">Support</button>
-              <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
-              <button onClick={handlePricingClick} className="text-gray-400 hover:text-white">Pricing</button>
-              <button onClick={handleAnalyticsClick} className="text-gray-400 hover:text-white">Analytics</button>
-              <button onClick={handleBatchManagementClick} className="text-gray-400 hover:text-white">Batch Manager</button>
-            </nav>
+
+            {/* Navigation Links */}
+            <div>
+              <h4 className="font-semibold text-white mb-3">Product</h4>
+              <nav className="flex flex-col space-y-2 text-sm">
+                <button onClick={() => window.location.reload()} className="text-gray-400 hover:text-white text-left">Home</button>
+                <button onClick={() => navigate('/security')} className="text-gray-400 hover:text-white text-left">Security</button>
+                <button onClick={handlePricingClick} className="text-gray-400 hover:text-white text-left">Pricing</button>
+                <button onClick={handleEnterpriseClick} className="text-gray-400 hover:text-white text-left">Enterprise</button>
+                <button onClick={handleAnalyticsClick} className="text-gray-400 hover:text-white text-left">Analytics</button>
+                <button onClick={handleBatchManagementClick} className="text-gray-400 hover:text-white text-left">Batch Manager</button>
+              </nav>
+            </div>
+
+            {/* Support Links */}
+            <div>
+              <h4 className="font-semibold text-white mb-3">Support</h4>
+              <nav className="flex flex-col space-y-2 text-sm">
+                <button onClick={handleFAQClick} className="text-gray-400 hover:text-white text-left">F.A.Q.</button>
+                <button onClick={handleAboutClick} className="text-gray-400 hover:text-white text-left">About</button>
+                <button onClick={handleSupportClick} className="text-gray-400 hover:text-white text-left">Support</button>
+                <button onClick={handleContactClick} className="text-gray-400 hover:text-white text-left">Contact</button>
+                <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white text-left">Privacy</button>
+                <button onClick={handleTermsClick} className="text-gray-400 hover:text-white text-left">Terms</button>
+              </nav>
+            </div>
+          </div>
+
+          {/* Partnership Section */}
+          <div className="border-t border-gray-700 pt-6">
+            <div className="text-center mb-4">
+              <h4 className="font-semibold text-white mb-2">Partnership Opportunities</h4>
+              <p className="text-sm text-gray-400">Direct sponsorships • Privacy-focused partnerships • No user tracking</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Sponsorship placement="header" className="max-w-full" />
+              <Sponsorship placement="content" className="max-w-full" />
+              <Sponsorship placement="bottom" className="max-w-full" />
+            </div>
           </div>
         </div>
       </footer>
