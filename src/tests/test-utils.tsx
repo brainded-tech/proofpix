@@ -66,7 +66,7 @@ export const createMockAPIEndpoint = (overrides: Partial<APIEndpoint> = {}): API
   name: 'Mock API',
   description: 'A mock API endpoint for testing',
   version: '1.0.0',
-  category: 'Core',
+  category: 'document',
   authentication: 'api-key',
   rateLimit: { requests: 1000, window: 3600 },
   pricing: {
