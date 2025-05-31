@@ -67,21 +67,23 @@ export const createMockAPIEndpoint = (overrides: Partial<APIEndpoint> = {}): API
   description: 'A mock API endpoint for testing',
   version: '1.0.0',
   category: 'document',
+  method: 'POST',
+  endpoint: '/api/mock',
   authentication: 'api-key',
   rateLimit: { requests: 1000, window: '1h', tier: 'free' },
   pricing: {
     model: 'free',
-    price: 0,
-    currency: 'USD'
+    cost: 0
   },
   parameters: [],
   responses: [],
   documentation: 'https://docs.mock.com',
   examples: [],
   metrics: {
-    usage: 1000,
+    totalRequests: 1000,
     successRate: 99.0,
-    avgResponseTime: 200
+    avgResponseTime: 200,
+    popularityScore: 4.5
   },
   status: 'active',
   ...overrides
@@ -91,9 +93,10 @@ export const createMockWorkflowTemplate = (overrides: Partial<WorkflowTemplate> 
   id: 'mock-workflow-1',
   name: 'Mock Workflow',
   description: 'A mock workflow template for testing',
-  category: 'General',
-  complexity: 'beginner',
-  estimatedTime: 60,
+  version: '1.0.0',
+  category: 'document-processing',
+  complexity: 'simple',
+  estimatedTime: '60 minutes',
   steps: [],
   triggers: [],
   conditions: [],
@@ -102,10 +105,12 @@ export const createMockWorkflowTemplate = (overrides: Partial<WorkflowTemplate> 
   permissions: [],
   author: {
     name: 'Mock Author',
-    email: 'author@mock.com'
+    type: 'community',
+    verified: true
   },
   metrics: {
     usage: 100,
+    rating: 4.5,
     successRate: 95.0,
     avgExecutionTime: 30
   },
@@ -113,7 +118,10 @@ export const createMockWorkflowTemplate = (overrides: Partial<WorkflowTemplate> 
     model: 'free'
   },
   tags: ['mock'],
-  industry: 'general',
+  industry: ['general'],
+  status: 'active',
+  createdAt: new Date(),
+  updatedAt: new Date(),
   ...overrides
 });
 

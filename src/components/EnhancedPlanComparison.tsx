@@ -303,7 +303,7 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
     
     // Delay the completion to allow for animation
     setTimeout(() => {
-      onComparisonComplete?.(planId);
+    onComparisonComplete?.(planId);
     }, 1000);
   };
 
@@ -417,14 +417,14 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
     const isComparing = selectedPlans.length > 0;
     
     if (!isComparing) {
-      return (
+    return (
         <div className="text-center p-8 bg-gray-50 rounded-lg">
           <p className="text-gray-600">Select at least one plan to compare features</p>
-        </div>
-      );
-    }
+      </div>
+    );
+  }
 
-    return (
+  return (
       <div className="overflow-x-auto mt-8">
         <table className="w-full border-collapse">
           <thead>
@@ -432,7 +432,7 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
               <th className="w-1/4 text-left p-4 bg-gray-50">Features</th>
               {selectedPlans.map(plan => (
                 <th 
-                  key={plan.id}
+            key={plan.id}
                   className={`w-1/4 p-4 text-center ${
                     plan.recommended ? 'bg-purple-50' : 'bg-gray-50'
                   } ${animatePlanSelection === plan.id ? 'animate-pulse bg-green-100' : ''}`}
@@ -441,26 +441,26 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
                     <span className="font-semibold text-lg">{plan.name}</span>
                     <span className="text-2xl font-bold mt-2">
                       ${getPrice(plan).toFixed(2)}
-                      {plan.type === 'subscription' && (
+                {plan.type === 'subscription' && (
                         <span className="text-sm font-normal text-gray-600">
-                          /{billingCycle === 'monthly' ? 'mo' : 'yr'}
-                        </span>
-                      )}
+                    /{billingCycle === 'monthly' ? 'mo' : 'yr'}
+                  </span>
+                )}
                     </span>
                     {billingCycle === 'annual' && getSavings(plan) > 0 && (
                       <span className="text-sm text-green-600 mt-1">
                         Save {getSavings(plan)}%
                       </span>
                     )}
-                    <button
-                      onClick={() => handlePlanSelect(plan.id)}
+            <button
+              onClick={() => handlePlanSelect(plan.id)}
                       className={`mt-4 px-4 py-2 rounded-lg text-white ${
                         plan.color ? `bg-${plan.color}-600 hover:bg-${plan.color}-700` : 'bg-blue-600 hover:bg-blue-700'
                       } transition-colors w-full`}
-                    >
-                      {plan.cta}
-                    </button>
-                  </div>
+            >
+              {plan.cta}
+            </button>
+      </div>
                 </th>
               ))}
             </tr>
@@ -504,15 +504,15 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
                         onMouseLeave={handleFeatureMouseLeave}
                       >
                         <td className="p-4 relative">
-                          <div className="flex items-center">
+                  <div className="flex items-center">
                             <span>{feature.name}</span>
-                            <button 
-                              className="ml-2 text-gray-400 hover:text-gray-600"
+                      <button
+                        className="ml-2 text-gray-400 hover:text-gray-600"
                               onClick={() => handleTooltipToggle(feature.name)}
-                            >
+                      >
                               <Info size={14} />
-                            </button>
-                          </div>
+                      </button>
+                  </div>
                           {showTooltip === feature.name && (
                             <div 
                               ref={tooltipRef}
@@ -541,16 +541,16 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
                               {isIncluded ? (
                                 <div className="flex justify-center">
                                   <CheckCircle className="text-green-500" size={20} />
-                                </div>
-                              ) : (
+                        </div>
+                      ) : (
                                 <div className="flex justify-center">
                                   <X className="text-gray-300" size={20} />
                                 </div>
-                              )}
-                            </td>
-                          );
-                        })}
-                      </tr>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
                     );
                   })}
                 </React.Fragment>
@@ -600,11 +600,11 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
           />
           <span className="ml-2 text-gray-700">Show only differences</span>
         </label>
-      </div>
-      
+          </div>
+          
       {/* Billing cycle toggle */}
       <div className="flex items-center rounded-lg border border-gray-200 p-1">
-        <button
+            <button
           onClick={() => handleBillingCycleChange('monthly')}
           className={`px-4 py-1 rounded-md text-sm ${
             billingCycle === 'monthly' 
@@ -613,8 +613,8 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
           }`}
         >
           Monthly
-        </button>
-        <button
+            </button>
+            <button
           onClick={() => handleBillingCycleChange('annual')}
           className={`px-4 py-1 rounded-md text-sm ${
             billingCycle === 'annual' 

@@ -81,15 +81,15 @@ export class SecurityHardeningSystem {
       const meta = document.createElement('meta');
       meta.httpEquiv = 'Content-Security-Policy';
       meta.content = [
-        "default-src 'self'",
+      "default-src 'self'",
         "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-        "font-src 'self' https://fonts.gstatic.com",
-        "img-src 'self' data: blob: https:",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: blob: https:",
         "connect-src 'self' https://api.proofpix.com",
         "frame-ancestors 'none'",
-        "base-uri 'self'",
-        "form-action 'self'"
+      "base-uri 'self'",
+      "form-action 'self'"
       ].join('; ');
       
       document.head.appendChild(meta);
@@ -428,24 +428,24 @@ export class SecurityHardeningSystem {
   private setupXSSDetection(): void {
     if (typeof window !== 'undefined') {
       // Monitor for DOM manipulation attempts
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach((node) => {
-              if (node.nodeType === Node.ELEMENT_NODE) {
-                const element = node as Element;
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              const element = node as Element;
                 this.checkElementForXSS(element);
-              }
-            });
-          }
-        });
+            }
+          });
+        }
       });
+    });
 
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-    }
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
   }
 
   private checkElementForXSS(element: Element): void {

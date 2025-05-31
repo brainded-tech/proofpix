@@ -55,7 +55,7 @@ const BulkUploadArea = memo(({
     maxFiles,
     disabled: !canUpload || isProcessing,
     onDragEnter: () => setDragCounter(prev => prev + 1),
-    onDragLeave: () => setDragCounter(prev => prev - 1)
+    onDragLeave: () => setDragCounter(prev => Math.max(0, prev - 1))
   });
 
   const getUploadText = () => {

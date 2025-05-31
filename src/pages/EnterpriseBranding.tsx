@@ -24,7 +24,7 @@ export default function EnterpriseBranding() {
     console.error('Branding error:', error);
     alert(`Error: ${error.message}`);
   };
-  
+
   return (
     <EnterpriseLayout
       showHero
@@ -54,14 +54,14 @@ export default function EnterpriseBranding() {
                 placeholder="Enter your API key"
                 required
               />
-            </div>
+        </div>
             
-            <button
+              <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
             >
               Continue
-            </button>
+              </button>
           </form>
         </div>
       ) : (
@@ -80,7 +80,7 @@ export default function EnterpriseBranding() {
               </pre>
             </div>
           )}
-        </div>
+          </div>
       )}
     </EnterpriseLayout>
   );

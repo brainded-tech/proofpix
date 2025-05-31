@@ -245,9 +245,9 @@ class EnterpriseIntegrationsService {
     ];
 
     defaultIntegrations.forEach(integration => {
-      this.integrations.set(integration.id, integration);
-    });
-  }
+          this.integrations.set(integration.id, integration);
+        });
+      }
 
   // Salesforce Integration Methods
   async connectSalesforce(config: SalesforceConfig): Promise<boolean> {
@@ -684,7 +684,7 @@ class EnterpriseIntegrationsService {
       }
 
       return true;
-    } catch (error) {
+        } catch (error) {
       console.error('Microsoft Teams connection failed:', error);
       return false;
     }
@@ -870,7 +870,7 @@ class EnterpriseIntegrationsService {
               break;
             // Slack, Teams, and Zapier are real-time, no sync needed
           }
-        } catch (error) {
+    } catch (error) {
           console.error(`Sync failed for ${id}:`, error);
         }
       }
@@ -960,8 +960,8 @@ class EnterpriseIntegrationsService {
 
   async deleteIntegration(id: string): Promise<boolean> {
     try {
-      const integration = this.integrations.get(id);
-      if (!integration) {
+    const integration = this.integrations.get(id);
+    if (!integration) {
         return false;
       }
 

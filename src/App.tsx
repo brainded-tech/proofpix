@@ -384,18 +384,18 @@ export function App() {
         <Route path="/docs/deployment" element={<DeploymentGuide />} />
         <Route path="/docs/enterprise-security" element={<EnterpriseSecurity />} />
         <Route path="/docs/security-faq" element={<SecurityFAQ />} />
-            <Route path="/docs/enterprise-api" element={<EnterpriseApiDocumentation />} />
-            <Route path="/docs/enterprise-deployment" element={<EnterpriseDeploymentGuide />} />
-            <Route path="/docs/security-architecture" element={<SecurityArchitectureOverview />} />
-            <Route path="/docs/compliance-templates" element={<ComplianceDocumentationTemplates />} />
-            <Route path="/docs/enterprise-security-faq" element={<EnterpriseSecurityFAQ />} />
-            <Route path="/docs/compliance-checklist" element={<ComplianceChecklist />} />
+        <Route path="/docs/enterprise-api" element={<EnterpriseApiDocumentation />} />
+        <Route path="/docs/enterprise-deployment" element={<EnterpriseDeploymentGuide />} />
+        <Route path="/docs/security-architecture" element={<SecurityArchitectureOverview />} />
+        <Route path="/docs/compliance-templates" element={<ComplianceDocumentationTemplates />} />
+        <Route path="/docs/enterprise-security-faq" element={<EnterpriseSecurityFAQ />} />
+        <Route path="/docs/compliance-checklist" element={<ComplianceChecklist />} />
             <Route path="/docs/security-architecture-doc" element={<SecurityArchitectureDocument />} />
             <Route path="/docs/security-onepager" element={<SecurityOnePager />} />
-            <Route path="/docs/ciso-presentation" element={<CISOPresentationDeck />} />
-            <Route path="/docs/security-questionnaire" element={<SecurityQuestionnaireResponses />} />
+        <Route path="/docs/ciso-presentation" element={<CISOPresentationDeck />} />
+        <Route path="/docs/security-questionnaire" element={<SecurityQuestionnaireResponses />} />
             <Route path="/docs/competitive-security" element={<CompetitiveSecurityAnalysis />} />
-            <Route path="/docs/ai-pricing" element={<AIDrivenPricing />} />
+                    <Route path="/docs/ai-pricing" element={<AIDrivenPricing />} />
             <Route path="/docs/custom-branding" element={<CustomBranding />} />
             <Route path="/docs/implementation-status" element={<ImplementationStatus />} />
             <Route path="/docs/demo-walkthrough" element={<EnterpriseDemoWalkthrough />} />
@@ -619,6 +619,6 @@ const NotFoundPage: React.FC = () => (
       </EnterpriseButton>
     </div>
   </EnterpriseLayout>
-);
+  );
 
 export default App;

@@ -415,8 +415,8 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
   const EnhancedQuickStartOverlay = () => {
     const currentSteps = getOnboardingSteps(userType);
     const currentProfile = userTypeProfiles.find(p => p.id === userType);
-
-  return (
+    
+    return (
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           {showUserTypeSelection ? (
@@ -425,7 +425,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mx-auto mb-6">
                   <Target className="w-8 h-8 text-white" />
-        </div>
+                </div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">Welcome to ProofPix!</h2>
                 <p className="text-lg text-slate-600 mb-2">Let's personalize your experience</p>
                 <p className="text-sm text-slate-500">Choose your role to get a customized onboarding experience</p>
@@ -441,20 +441,20 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     <div className="flex items-start space-x-4">
                       <div className={`p-3 rounded-lg bg-${profile.color}-100 text-${profile.color}-600 group-hover:bg-${profile.color}-500 group-hover:text-white transition-colors`}>
                         {profile.icon}
-              </div>
+                      </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-slate-900 mb-2">{profile.title}</h3>
                         <p className="text-slate-600 text-sm mb-3">{profile.description}</p>
                         <div className="flex items-center text-xs text-slate-500">
                           <Clock className="w-3 h-3 mr-1" />
                           {profile.estimatedTime}
-              </div>
+                        </div>
                       </div>
                       <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
                     </div>
                   </div>
                 ))}
-            </div>
+              </div>
 
               <div className="text-center">
                 <button 
@@ -484,22 +484,22 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                <button 
+                  <button 
                     onClick={() => setShowUserTypeSelection(true)}
                     className="text-slate-500 hover:text-slate-700 text-sm flex items-center"
-                >
+                  >
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     Change Role
-                </button>
-                <button 
+                  </button>
+                  <button 
                     onClick={() => setShowQuickStart(false)}
                     className="text-slate-400 hover:text-slate-600 p-2"
-                >
+                  >
                     <X className="w-6 h-6" />
-                </button>
+                  </button>
                 </div>
               </div>
-              
+
               {/* Progress Bar */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-2">
@@ -512,7 +512,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     style={{ width: `${getProgressPercentage()}%` }}
                   ></div>
                 </div>
-            </div>
+              </div>
 
               {/* Primary Goals */}
               <div className="mb-8 p-4 bg-slate-50 rounded-lg">
@@ -522,10 +522,10 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     <div key={index} className="flex items-center text-sm text-slate-600">
                       <Target className="w-3 h-3 mr-2 text-slate-400" />
                       {goal}
-            </div>
+                    </div>
                   ))}
-          </div>
-        </div>
+                </div>
+              </div>
 
               {/* Onboarding Steps */}
               <div className="space-y-4 mb-8">
@@ -568,7 +568,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                             </div>
                           </div>
                         </div>
-              <button 
+                        <button
                           onClick={() => handleStepAction(step)}
                           disabled={isCompleted}
                           className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
@@ -578,7 +578,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                           }`}
                         >
                           {isCompleted ? 'Completed' : step.action}
-              </button>
+                        </button>
                       </div>
                     </div>
                   );
@@ -587,12 +587,12 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
 
               {/* Quick Actions */}
               <div className="flex flex-col sm:flex-row gap-3">
-              <button 
+                <button 
                   onClick={() => setShowQuickStart(false)}
                   className={`flex-1 bg-${currentProfile?.color}-600 hover:bg-${currentProfile?.color}-700 text-white px-6 py-3 rounded-lg font-medium transition-colors`}
-              >
+                >
                   Start Exploring
-              </button>
+                </button>
                 <button 
                   onClick={() => {
                     setShowQuickStart(false);
@@ -603,10 +603,10 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                   <BookOpen className="w-4 h-4 inline mr-2" />
                   View All Docs
                 </button>
+              </div>
             </div>
-          </div>
-        )}
-            </div>
+          )}
+        </div>
       </div>
     );
   };
@@ -650,7 +650,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                 <Sparkles className="w-4 h-4" />
                 Get Started
               </motion.button>
-              </div>
+            </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden">
@@ -661,9 +661,9 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </motion.button>
-              </div>
-              </div>
             </div>
+          </div>
+        </div>
 
         {/* Enhanced Mobile Navigation */}
         <AnimatePresence>
@@ -678,14 +678,14 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                 <Link to="/#features" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Features</Link>
                 <Link to="/#enterprise" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Enterprise</Link>
                 <Link to="/#pricing" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Pricing</Link>
-              <button
+              <button 
                   onClick={() => setShowQuickStart(true)}
                   className="w-full pp-btn pp-btn-primary pp-btn-md"
               >
                   <Sparkles className="w-4 h-4" />
                   Get Started
-              </button>
-            </div>
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -777,7 +777,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                 >
                   <div className={`w-16 h-16 bg-${feature.color}-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <span className={`text-${feature.color}-400`}>{feature.icon}</span>
-          </div>
+            </div>
                   <h3 className="pp-text-heading-md mb-4">{feature.title}</h3>
                   <p className="pp-text-body-md text-slate-400 mb-4 leading-relaxed">{feature.description}</p>
                   <div className={`pp-text-caption text-${feature.color}-400 font-bold`}>
