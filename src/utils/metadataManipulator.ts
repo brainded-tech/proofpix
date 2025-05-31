@@ -1,4 +1,4 @@
-import { EnhancedDataExporter } from './enhancedDataExporter';
+import { enhancedDataExporter } from './enhancedDataExporter';
 
 export interface MetadataField {
   key: string;
@@ -16,10 +16,8 @@ export interface MetadataSaveResult {
 }
 
 export class MetadataManipulator {
-  private exporter: EnhancedDataExporter;
-
   constructor() {
-    this.exporter = new EnhancedDataExporter();
+    // Use the singleton instance
   }
 
   async saveMetadataToFile(
@@ -87,10 +85,24 @@ export class MetadataManipulator {
           break;
 
         case 'csv':
-          const csvData = await this.exporter.exportAsCSV([exportData]);
-          blob = new Blob([csvData], { type: 'text/csv' });
-          filename = `metadata_export_${Date.now()}.csv`;
-          break;
+          // Use the enhanced data exporter for CSV
+          const success = await enhancedDataExporter.exportData({
+            format: 'csv',
+            fileName: `metadata_export_${Date.now()}`,
+            dateRange: {
+              start: new Date(),
+              end: new Date()
+            }
+          });
+          
+          if (success) {
+            return {
+              success: true,
+              message: `Metadata exported successfully as ${format.toUpperCase()}!`
+            };
+          } else {
+            throw new Error('CSV export failed');
+          }
 
         default:
           throw new Error(`Unsupported export format: ${format}`);

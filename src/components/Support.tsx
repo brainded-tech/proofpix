@@ -1,597 +1,513 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Mail, Clock, HelpCircle, FileText, Users, AlertCircle, CheckCircle, MessageSquare, Shield, Zap, Globe } from 'lucide-react';
-import { analytics } from '../utils/analytics';
-import { Sponsorship } from './Sponsorships';
+import { 
+  Mail, 
+  MessageCircle, 
+  Phone, 
+  Clock, 
+  CheckCircle, 
+  AlertCircle,
+  FileText,
+  HelpCircle,
+  Building2,
+  Shield,
+  Zap,
+  Users,
+  Send,
+  ExternalLink
+} from 'lucide-react';
+import { EnterpriseLayout } from './ui/EnterpriseLayout';
 
 export const Support: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    category: 'general',
+    priority: 'normal',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const handleBackHome = () => {
-    analytics.trackFeatureUsage('Navigation', 'Home - Support');
-    navigate('/');
+  const supportChannels = [
+    {
+      icon: Mail,
+      title: 'Email Support',
+      description: 'Get detailed help via email',
+      response: '< 24 hours',
+      action: 'Send Email',
+      color: 'blue',
+      available: 'Always available'
+    },
+    {
+      icon: MessageCircle,
+      title: 'Live Chat',
+      description: 'Real-time assistance',
+      response: '< 5 minutes',
+      action: 'Start Chat',
+      color: 'emerald',
+      available: 'Mon-Fri 9AM-6PM EST'
+    },
+    {
+      icon: Phone,
+      title: 'Phone Support',
+      description: 'Direct phone assistance',
+      response: 'Immediate',
+      action: 'Schedule Call',
+      color: 'purple',
+      available: 'Professional customers'
+    }
+  ];
+
+  const quickHelp = [
+    {
+      icon: HelpCircle,
+      title: 'FAQ',
+      description: 'Find answers to common questions',
+      link: '/faq'
+    },
+    {
+      icon: FileText,
+      title: 'About ProofPix',
+      description: 'Learn about our photo metadata tool',
+      link: '/about'
+    },
+    {
+      icon: Shield,
+      title: 'Privacy Guide',
+      description: 'How we protect your photos',
+      link: '/privacy'
+    },
+    {
+      icon: Building2,
+      title: 'Professional Features',
+      description: 'Advanced photo analysis tools',
+      link: '/pricing'
+    }
+  ];
+
+  const categories = [
+    { value: 'general', label: 'General Question' },
+    { value: 'technical', label: 'Technical Issue' },
+    { value: 'photo-analysis', label: 'Photo Analysis Help' },
+    { value: 'metadata', label: 'Metadata Questions' },
+    { value: 'privacy', label: 'Privacy & Security' },
+    { value: 'feature', label: 'Feature Request' },
+    { value: 'bug', label: 'Bug Report' }
+  ];
+
+  const priorities = [
+    { value: 'low', label: 'Low - General inquiry' },
+    { value: 'normal', label: 'Normal - Standard support' },
+    { value: 'high', label: 'High - Urgent issue' },
+    { value: 'critical', label: 'Critical - System down' }
+  ];
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const handleAboutClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'About Us - Support');
-    navigate('/about');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setIsSubmitting(false);
+    setSubmitted(true);
   };
 
-  const handlePrivacyClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Privacy Policy - Support');
-    navigate('/privacy');
-  };
-
-  const handleFAQClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'FAQ - Support');
-    navigate('/faq');
-  };
-
-  const handleTermsClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Terms - Support');
-    navigate('/terms');
-  };
-
-  const handleEmailClick = (type: string) => {
-    analytics.trackFeatureUsage('CTA Click', `Email Contact - ${type} - Support`);
-    const emails = {
-      support: 'support@proofpixapp.com', // Cloudflare
-      enterprise: 'enterprise@proofpixapp.com', // Cloudflare
-      security: 'security@proofpixapp.com', // Cloudflare
-      product: 'product@proofpixapp.com', // Cloudflare
-      partners: 'partners@proofpixapp.com', // Cloudflare
-      billing: 'billing@proofpixapp.com', // Cloudflare
-      legal: 'legal@proofpixapp.com' // Cloudflare
+  const getColorClasses = (color: string) => {
+    const colors = {
+      blue: {
+        bg: 'bg-blue-50',
+        border: 'border-blue-200',
+        icon: 'text-blue-600',
+        button: 'bg-blue-600 hover:bg-blue-700 text-white'
+      },
+      emerald: {
+        bg: 'bg-emerald-50',
+        border: 'border-emerald-200',
+        icon: 'text-emerald-600',
+        button: 'bg-emerald-600 hover:bg-emerald-700 text-white'
+      },
+      purple: {
+        bg: 'bg-purple-50',
+        border: 'border-purple-200',
+        icon: 'text-purple-600',
+        button: 'bg-purple-600 hover:bg-purple-700 text-white'
+      }
     };
-    window.location.href = `mailto:${emails[type as keyof typeof emails]}`;
+    return colors[color as keyof typeof colors] || colors.blue;
   };
 
-  const handleFAQNavClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'FAQ Link - Support');
-    navigate('/faq');
-  };
-
+  if (submitted) {
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center cursor-pointer" onClick={handleBackHome}>
-              <Camera className="h-8 w-8 text-blue-500 mr-3" />
-              <h1 className="text-xl font-bold">ProofPix</h1>
-            </div>
-            
-            {/* Header Sponsorship */}
-            <div className="hidden lg:block">
-              <Sponsorship placement="header" className="max-w-md" />
-            </div>
+      <EnterpriseLayout
+        showHero
+        title="Thank You!"
+        description="Your support request has been submitted successfully."
+        maxWidth="4xl"
+      >
+        <div className="text-center py-12">
+          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-10 h-10 text-emerald-600" />
           </div>
-        </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto px-4">
-        {/* Hero Section */}
-        <section className="py-20 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-radial from-blue-500/10 via-transparent to-transparent"></div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent animate-pulse">
-            Support Center
-          </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            We're here to help with any questions about ProofPix
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">
+            We've received your message
+          </h2>
+          <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+            Our support team will review your request and get back to you within 24 hours. 
+            You'll receive a confirmation email shortly.
           </p>
-        </section>
-
-        {/* Quick Status */}
-        <div className="bg-green-500/10 border border-green-500/20 rounded-2xl p-8 mb-16">
-          <div className="flex items-center gap-4 mb-4">
-            <CheckCircle className="h-8 w-8 text-green-500" />
-            <h2 className="text-green-400 text-2xl font-bold">System Status</h2>
-          </div>
-          <p className="text-gray-300 text-lg">
-            ✅ All systems operational • ProofPix is running smoothly
-          </p>
-        </div>
-
-        {/* Contact Methods */}
-        <div className="space-y-10 mb-16">
-          {/* Primary Contact */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <Mail className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Contact Methods</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Email Support */}
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                <h4 className="text-blue-400 text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Mail className="h-5 w-5" />
-                  Email Support
-                </h4>
-                <div className="space-y-3">
-                  <button
-                    onClick={() => handleEmailClick('support')}
-                    className="block w-full text-left bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition-colors"
-                  >
-                    <div className="font-semibold">support@proofpixapp.com</div>
-                    <div className="text-sm text-blue-100">24-48 hour response time</div>
-                  </button>
-                  <div className="text-gray-300 text-sm">
-                    <p><strong>Best for:</strong> General questions, technical issues, billing support</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Self-Service */}
-              <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6">
-                <h4 className="text-green-400 text-lg font-semibold mb-3 flex items-center gap-2">
-                  <HelpCircle className="h-5 w-5" />
-                  Self-Service
-                </h4>
-                <div className="space-y-3">
-                  <button
-                    onClick={handleFAQNavClick}
-                    className="block w-full text-left bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition-colors"
-                  >
-                    <div className="font-semibold">Check Our FAQ</div>
-                    <div className="text-sm text-green-100">Instant answers to common questions</div>
-                  </button>
-                  <div className="text-gray-300 text-sm">
-                    <p><strong>Best for:</strong> Quick answers, how-to guides, troubleshooting</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Support Hours */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <Clock className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Support Hours</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                <h4 className="text-blue-400 text-lg font-semibold mb-3">📅 Regular Business Hours</h4>
-                <ul className="space-y-2 text-gray-300">
-                  <li><strong>Monday - Friday:</strong> 9:00 AM - 5:00 PM EST</li>
-                  <li><strong>Saturday - Sunday:</strong> Limited support (48-72 hour response)</li>
-                  <li><strong>Response Time:</strong> 24-48 hours during business days</li>
-                </ul>
-              </div>
-
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
-                <h4 className="text-yellow-400 text-lg font-semibold mb-3">🎄 Holidays (Office Closed)</h4>
-                <ul className="space-y-1 text-gray-300 text-sm">
-                  <li>• New Year's Day</li>
-                  <li>• Memorial Day</li>
-                  <li>• Independence Day</li>
-                  <li>• Labor Day</li>
-                  <li>• Thanksgiving Day</li>
-                  <li>• Christmas Day</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6 mt-6">
-              <p className="text-green-400 font-semibold">
-                🌐 ProofPix service remains fully operational 24/7, even when support is unavailable.
-              </p>
-            </div>
-          </section>
-
-          {/* Common Support Topics */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <MessageSquare className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Common Support Topics</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              {/* Refund Requests */}
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                <h4 className="text-blue-400 text-lg font-semibold mb-3">💰 Refund Requests</h4>
-                <p className="text-gray-300 mb-3">Need a refund? We offer a 30-day money-back guarantee for first-time premium subscribers.</p>
-                <button
-                  onClick={() => handleEmailClick('support')}
-                  className="text-blue-400 hover:text-blue-300 underline"
-                >
-                  Email support@proofpixapp.com
-                </button>
-              </div>
-
-              {/* Billing Questions */}
-              <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6">
-                <h4 className="text-green-400 text-lg font-semibold mb-3">💳 Billing Questions</h4>
-                <ul className="text-gray-300 text-sm space-y-1">
-                  <li>• Subscription management</li>
-                  <li>• Payment method updates</li>
-                  <li>• Invoice requests</li>
-                  <li>• Pricing inquiries</li>
-                </ul>
-              </div>
-
-              {/* Technical Issues */}
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
-                <h4 className="text-yellow-400 text-lg font-semibold mb-3">🔧 Technical Issues</h4>
-                <ul className="text-gray-300 text-sm space-y-1">
-                  <li>• Image processing problems</li>
-                  <li>• Browser compatibility</li>
-                  <li>• Export failures</li>
-                  <li>• Metadata detection issues</li>
-                </ul>
-              </div>
-
-              {/* Account Management */}
-              <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-6">
-                <h4 className="text-purple-400 text-lg font-semibold mb-3">👤 Account Management</h4>
-                <ul className="text-gray-300 text-sm space-y-1">
-                  <li>• Password reset</li>
-                  <li>• Email changes</li>
-                  <li>• Subscription upgrades/downgrades</li>
-                  <li>• Account deletion requests</li>
-                </ul>
-              </div>
-
-              {/* Feature Requests */}
-              <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-6">
-                <h4 className="text-indigo-400 text-lg font-semibold mb-3">💡 Feature Requests</h4>
-                <p className="text-gray-300 text-sm mb-2">We love hearing your ideas! Send suggestions for new features or improvements.</p>
-                <button
-                  onClick={() => handleEmailClick('product')}
-                  className="text-indigo-400 hover:text-indigo-300 underline text-sm"
-                >
-                  product@proofpixapp.com
-                </button>
-              </div>
-
-              {/* Bug Reports */}
-              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-6">
-                <h4 className="text-red-400 text-lg font-semibold mb-3">🐛 Bug Reports</h4>
-                <p className="text-gray-300 text-sm">Found a bug? Help us fix it by providing detailed information about the issue.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Before You Contact Us */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <AlertCircle className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Before You Contact Us</h2>
-            </div>
-            
-            <p className="text-gray-300 mb-6">Try these quick fixes first - they solve most common issues:</p>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
-                  <h4 className="text-blue-400 font-semibold mb-2">🧹 Clear Browser Cache</h4>
-                  <ul className="text-gray-300 text-sm space-y-1">
-                    <li>• Chrome: Settings → Privacy → Clear browsing data</li>
-                    <li>• Firefox: Settings → Privacy & Security → Clear Data</li>
-                    <li>• Safari: Preferences → Privacy → Manage Website Data</li>
-                  </ul>
-                </div>
-
-                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4">
-                  <h4 className="text-green-400 font-semibold mb-2">🌐 Check Browser Compatibility</h4>
-                  <ul className="text-gray-300 text-sm space-y-1">
-                    <li>• Chrome 90+ (Recommended)</li>
-                    <li>• Firefox 88+</li>
-                    <li>• Safari 14+</li>
-                    <li>• Edge 90+</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
-                  <h4 className="text-yellow-400 font-semibold mb-2">📁 Verify File Format</h4>
-                  <ul className="text-gray-300 text-sm space-y-1">
-                    <li>• Supported: JPEG, PNG, HEIC, HEIF, WebP</li>
-                    <li>• Maximum file size: 50MB per image</li>
-                    <li>• Bulk processing: Up to 100 images (Premium)</li>
-                  </ul>
-                </div>
-
-                <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4">
-                  <h4 className="text-purple-400 font-semibold mb-2">🔌 Disable Browser Extensions</h4>
-                  <ul className="text-gray-300 text-sm space-y-1">
-                    <li>• Ad blockers may interfere with processing</li>
-                    <li>• Try incognito/private mode</li>
-                    <li>• Check internet connection stability</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Business & Enterprise */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <Users className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Business & Enterprise</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                <h4 className="text-blue-400 text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Zap className="h-5 w-5" />
-                  Enterprise Support
-                </h4>
-                <ul className="space-y-2 text-gray-300 text-sm mb-4">
-                  <li>• Volume licensing available</li>
-                  <li>• Custom deployment options</li>
-                  <li>• Priority support SLA</li>
-                  <li>• Training and onboarding</li>
-                  <li>• <button onClick={() => navigate('/docs/enterprise')} className="text-blue-400 hover:text-blue-300 underline">Enterprise Guide</button></li>
-                  <li>• <button onClick={() => navigate('/docs/compliance')} className="text-blue-400 hover:text-blue-300 underline">Compliance Documentation</button></li>
-                </ul>
-                <button
-                  onClick={() => handleEmailClick('enterprise')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                >
-                  enterprise@proofpixapp.com
-                </button>
-              </div>
-
-              <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6">
-                <h4 className="text-green-400 text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Globe className="h-5 w-5" />
-                  Partnership Inquiries
-                </h4>
-                <ul className="space-y-2 text-gray-300 text-sm mb-4">
-                  <li>• API access</li>
-                  <li>• White-label solutions</li>
-                  <li>• Integration opportunities</li>
-                  <li>• Reseller programs</li>
-                  <li>• <button onClick={() => navigate('/docs/integration')} className="text-blue-400 hover:text-blue-300 underline">Integration Guide</button></li>
-                  <li>• <button onClick={() => navigate('/docs/api')} className="text-blue-400 hover:text-blue-300 underline">API Documentation</button></li>
-                </ul>
-                <button
-                  onClick={() => handleEmailClick('partners')}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                >
-                  partners@proofpixapp.com
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* Self-Service Resources */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <FileText className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Self-Service Resources</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                  <h4 className="text-blue-400 text-lg font-semibold mb-3">📚 User Documentation</h4>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• <button onClick={() => navigate('/docs/getting-started')} className="text-blue-400 hover:text-blue-300 underline">Getting Started Guide</button></li>
-                    <li>• <button onClick={() => navigate('/docs/privacy-guide')} className="text-blue-400 hover:text-blue-300 underline">Privacy Best Practices</button></li>
-                    <li>• <button onClick={() => navigate('/docs/metadata-guide')} className="text-blue-400 hover:text-blue-300 underline">Metadata Types Explained</button></li>
-                    <li>• <button onClick={() => navigate('/docs/pro')} className="text-blue-400 hover:text-blue-300 underline">Pro User Guide</button> <span className="text-green-400">[Pro]</span></li>
-                  </ul>
-                </div>
-
-                <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-6">
-                  <h4 className="text-purple-400 text-lg font-semibold mb-3">🏢 Enterprise Documentation</h4>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• <button onClick={() => navigate('/docs/enterprise')} className="text-blue-400 hover:text-blue-300 underline">Enterprise Guide</button> <span className="text-purple-400">[Enterprise]</span></li>
-                    <li>• <button onClick={() => navigate('/docs/api')} className="text-blue-400 hover:text-blue-300 underline">API Documentation</button> <span className="text-purple-400">[Enterprise]</span></li>
-                    <li>• <button onClick={() => navigate('/docs/integration')} className="text-blue-400 hover:text-blue-300 underline">Integration Guide</button> <span className="text-purple-400">[Enterprise]</span></li>
-                    <li>• <button onClick={() => navigate('/docs/compliance')} className="text-blue-400 hover:text-blue-300 underline">Compliance Guide</button> <span className="text-purple-400">[Enterprise]</span></li>
-                  </ul>
-                </div>
-
-                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6">
-                  <h4 className="text-green-400 text-lg font-semibold mb-3">🎥 Video Tutorials</h4>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• <span className="text-gray-400">[Coming Soon]</span> How to Remove GPS Data (5 min)</li>
-                    <li>• <span className="text-gray-400">[Coming Soon]</span> Bulk Processing Guide (8 min)</li>
-                    <li>• <span className="text-gray-400">[Coming Soon]</span> Understanding EXIF Data (12 min)</li>
-                    <li>• <span className="text-gray-400">[Coming Soon]</span> Privacy Best Practices (10 min)</li>
-                  </ul>
-                  <p className="text-sm text-gray-400 mt-3 italic">
-                    📹 Video tutorials will be hosted on YouTube and embedded in our documentation
-                  </p>
-                </div>
-
-                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
-                  <h4 className="text-yellow-400 text-lg font-semibold mb-3">⚙️ Technical Documentation</h4>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">System Architecture</a> <span className="text-gray-400">[Developers]</span></li>
-                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/API_REFERENCE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">API Reference</a> <span className="text-gray-400">[Developers]</span></li>
-                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/TESTING_GUIDE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Testing Guide</a> <span className="text-gray-400">[Developers]</span></li>
-                    <li>• <a href="https://github.com/brainded-tech/proofpix/blob/main/DEPLOYMENT_GUIDE.md" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Deployment Guide</a> <span className="text-gray-400">[DevOps]</span></li>
-                  </ul>
-                  <p className="text-sm text-gray-400 mt-3 italic">
-                    🔧 Complete technical documentation for developers and system administrators
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-6">
-                  <h4 className="text-purple-400 text-lg font-semibold mb-3">🌐 Community</h4>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• <a href="https://blog.proofpixapp.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">ProofPix Blog</a></li>
-                    <li>• <a href="https://medium.com/proofpix" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Medium Publication</a></li>
-                    <li>• <span className="text-gray-400">[Coming Soon]</span> Privacy Tips Newsletter</li>
-                    <li>• <span className="text-gray-400">[Coming Soon]</span> User Forum</li>
-                  </ul>
-                </div>
-
-                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
-                  <h4 className="text-yellow-400 text-lg font-semibold mb-3">🔍 Quick Links</h4>
-                  <ul className="space-y-2 text-gray-300">
-                    <li>• <button onClick={() => navigate('/docs')} className="text-blue-400 hover:text-blue-300 underline">📚 Documentation Hub</button></li>
-                    <li>• <button onClick={handleFAQClick} className="text-blue-400 hover:text-blue-300 underline">Frequently Asked Questions</button></li>
-                    <li>• <button onClick={handlePrivacyClick} className="text-blue-400 hover:text-blue-300 underline">Privacy Policy</button></li>
-                    <li>• <button onClick={handleTermsClick} className="text-blue-400 hover:text-blue-300 underline">Terms of Service</button></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Report Issues */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <Shield className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Report Issues</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-6">
-                <h4 className="text-red-400 text-lg font-semibold mb-3">🔒 Security Vulnerabilities</h4>
-                <p className="text-gray-300 mb-3">Please do not publicly disclose security issues. We offer responsible disclosure rewards.</p>
-                <button
-                  onClick={() => handleEmailClick('security')}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                >
-                  security@proofpixapp.com
-                </button>
-              </div>
-
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6">
-                <h4 className="text-yellow-400 text-lg font-semibold mb-3">🐛 Bug Reports</h4>
-                <p className="text-gray-300 mb-3">When reporting bugs, please include:</p>
-                <ul className="text-gray-300 text-sm space-y-1 mb-3">
-                  <li>• Browser version</li>
-                  <li>• Operating system</li>
-                  <li>• Steps to reproduce</li>
-                  <li>• Error messages (if any)</li>
-                  <li>• Screenshots (helpful but not required)</li>
-                </ul>
-                <button
-                  onClick={() => handleEmailClick('support')}
-                  className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                >
-                  Report Bug
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* Business Information */}
-          <section className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8 hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="flex items-center gap-4 mb-6">
-              <Globe className="h-8 w-8 text-blue-500" />
-              <h2 className="text-2xl font-bold">Business Information</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gray-700/50 border border-gray-600 rounded-xl p-6">
-                <h4 className="text-gray-300 text-lg font-semibold mb-3">🏢 Company Details</h4>
-                <div className="text-gray-400 space-y-1">
-                  <p><strong>ProofPix</strong></p>
-            <p>ProofPix</p>
-            <p>2501 Wharton St Unit S RLA 502</p>
-            <p>Philadelphia, PA 19146</p>
-            <p>United States</p>
-                </div>
-              </div>
-
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                <h4 className="text-blue-400 text-lg font-semibold mb-3">📋 Legal & Compliance</h4>
-                <div className="text-gray-300 space-y-3">
-                  <p className="text-sm">
-                    ProofPix operates as a privacy-first service with client-side processing architecture. 
-                    For legal inquiries, compliance questions, or business documentation requests, please contact our legal team.
-                  </p>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-400">Legal Contact:</span>
-                    <button
-                      onClick={() => handleEmailClick('legal')}
-                      className="text-blue-400 hover:text-blue-300 underline font-medium"
-                    >
-                      legal@proofpixapp.com
-                    </button>
-                  </div>
-                  <p className="text-xs text-gray-400">
-                    Business registration and tax information available upon request for enterprise customers.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        {/* Content Sponsorship */}
-        <div className="py-8">
-          <Sponsorship placement="content" className="max-w-2xl mx-auto" />
-        </div>
-
-        {/* Feedback Section */}
-        <div className="bg-gradient-to-r from-blue-500/10 via-blue-600/5 to-blue-500/10 rounded-3xl p-10 text-center mb-10">
-          <h2 className="text-3xl font-bold mb-4">We Value Your Feedback</h2>
-          <p className="text-xl text-gray-400 mb-8">
-            Your feedback shapes ProofPix. We read every message and use your input to improve our service.
-          </p>
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => handleEmailClick('product')}
-              className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/25"
+              onClick={() => setSubmitted(false)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
-              Product Feedback
+              Submit Another Request
             </button>
             <button
-              onClick={() => handleEmailClick('support')}
-              className="bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/25"
+              onClick={() => navigate('/')}
+              className="border border-slate-300 hover:border-slate-400 text-slate-700 px-6 py-3 rounded-lg font-medium transition-colors bg-white"
             >
-              General Inquiries
+              Back to ProofPix
             </button>
           </div>
         </div>
+      </EnterpriseLayout>
+    );
+  }
 
-        {/* Privacy Notice */}
-        <div className="bg-green-500/10 border border-green-500/20 rounded-2xl p-8 mb-16">
-          <p className="text-gray-300 text-center text-lg leading-relaxed">
-            <strong>ProofPix is committed to protecting your privacy through local, browser-based photo processing.</strong>
-            <br />
-            We never upload or store your images on our servers.
+  return (
+    <EnterpriseLayout
+      showHero
+      title="How can we help you?"
+      description="Get the support you need to make the most of ProofPix photo metadata analysis. Our team is here to help."
+      maxWidth="7xl"
+    >
+      {/* Support Channels */}
+      <section className="mb-20">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+            Choose Your Support Channel
+          </h2>
+          <p className="text-lg text-slate-600">
+            Multiple ways to get help, tailored to your needs
           </p>
         </div>
 
-        {/* Bottom Sponsorship */}
-        <div className="py-8">
-          <Sponsorship placement="bottom" className="max-w-3xl mx-auto" />
-        </div>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {supportChannels.map((channel, index) => {
+            const colorClasses = getColorClasses(channel.color);
+            
+            return (
+              <div
+                key={index}
+                className={`${colorClasses.bg} ${colorClasses.border} border rounded-2xl p-8 hover:shadow-lg transition-shadow`}
+              >
+                <div className="text-center">
+                  <div className={`w-16 h-16 bg-white rounded-xl flex items-center justify-center mx-auto mb-6 shadow-sm`}>
+                    <channel.icon className={`w-8 h-8 ${colorClasses.icon}`} />
+                  </div>
+                  
+                  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                    {channel.title}
+                  </h3>
+                  <p className="text-slate-600 mb-4">
+                    {channel.description}
+                  </p>
+                  
+                  <div className="space-y-2 mb-6">
+                    <div className="flex items-center justify-center space-x-2">
+                      <Clock className="w-4 h-4 text-slate-500" />
+                      <span className="text-sm text-slate-600">Response: {channel.response}</span>
+                    </div>
+                    <div className="text-sm text-slate-500">
+                      {channel.available}
+                </div>
+              </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 border-t border-gray-700 py-6 mt-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-sm text-gray-400 mb-4 md:mb-0">
-              <p>© 2025 ProofPix. Built for professionals, by professionals.</p>
-              <p>Privacy-respecting EXIF metadata tool - v1.8.0 • Open Source</p>
+                  <button
+                    onClick={() => {
+                      if (channel.title === 'Email Support') {
+                        document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+                      } else if (channel.title === 'Live Chat') {
+                        // Implement chat widget
+                        alert('Live chat will be available soon!');
+                      } else {
+                        navigate('/pricing');
+                      }
+                    }}
+                    className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${colorClasses.button}`}
+                  >
+                    {channel.action}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
             </div>
-            <nav className="flex space-x-6 text-sm">
-              <button onClick={handleBackHome} className="text-gray-400 hover:text-white">Home</button>
-              <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
-              <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
-              <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
-              <span className="text-blue-400 font-medium">Support</span>
-            </nav>
+          </section>
+
+      {/* Quick Help */}
+      <section className="mb-20">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+            Quick Help Resources
+          </h2>
+          <p className="text-lg text-slate-600">
+            Find answers instantly with our self-service resources
+              </p>
+            </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickHelp.map((resource, index) => (
+                <button
+              key={index}
+              onClick={() => navigate(resource.link)}
+              className="p-6 bg-white rounded-xl border border-slate-200 hover:shadow-lg transition-shadow text-left group"
+                >
+              <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+                <resource.icon className="w-6 h-6 text-slate-600 group-hover:text-blue-600 transition-colors" />
+              </div>
+              <h3 className="font-semibold text-slate-900 mb-2">{resource.title}</h3>
+              <p className="text-slate-600 text-sm">{resource.description}</p>
+                </button>
+          ))}
+            </div>
+          </section>
+
+      {/* Contact Form */}
+      <section id="contact-form" className="mb-20">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+              Send us a Message
+            </h2>
+            <p className="text-lg text-slate-600">
+              Can't find what you're looking for? Send us a detailed message and we'll get back to you.
+            </p>
+            </div>
+            
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    placeholder="Your full name"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    placeholder="your@email.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="category" className="block text-sm font-medium text-slate-700 mb-2">
+                    Category *
+                  </label>
+                  <select
+                    id="category"
+                    name="category"
+                    required
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  >
+                    {categories.map((category) => (
+                      <option key={category.value} value={category.value}>
+                        {category.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="priority" className="block text-sm font-medium text-slate-700 mb-2">
+                    Priority
+                  </label>
+                  <select
+                    id="priority"
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  >
+                    {priorities.map((priority) => (
+                      <option key={priority.value} value={priority.value}>
+                        {priority.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+            </div>
+            
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-2">
+                  Subject *
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  required
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="Brief description of your issue or question"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">
+                  Message *
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={6}
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
+                  placeholder="Please provide as much detail as possible about your question or issue..."
+                />
+            </div>
+            
+              <div className="bg-slate-50 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-slate-600">
+                    <p className="font-medium text-slate-700 mb-1">Before submitting:</p>
+                    <ul className="space-y-1">
+                      <li>• Check our <button onClick={() => navigate('/faq')} className="text-blue-600 hover:underline">FAQ</button> for quick answers</li>
+                      <li>• Include your browser version for technical issues</li>
+                      <li>• Describe steps to reproduce any problems</li>
+                  </ul>
+                </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      <span>Send Message</span>
+                    </>
+                  )}
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => setFormData({
+                    name: '',
+                    email: '',
+                    subject: '',
+                    category: 'general',
+                    priority: 'normal',
+                    message: ''
+                  })}
+                  className="px-6 py-3 border border-slate-300 hover:border-slate-400 text-slate-700 rounded-lg font-semibold transition-colors bg-white"
+                >
+                  Clear Form
+                </button>
+              </div>
+            </form>
+              </div>
+            </div>
+          </section>
+
+      {/* Professional Support */}
+      <section className="bg-slate-900 text-white rounded-2xl p-12">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-6">
+            <Building2 className="w-8 h-8 text-white" />
+            </div>
+            
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            Need Professional Support?
+          </h2>
+          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+            Get priority support, advanced features, and professional photo analysis tools.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="text-center">
+              <Users className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+              <h3 className="font-semibold mb-1">Priority Support</h3>
+              <p className="text-slate-400 text-sm">Faster response times</p>
+                </div>
+            <div className="text-center">
+              <Zap className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
+              <h3 className="font-semibold mb-1">Advanced Features</h3>
+              <p className="text-slate-400 text-sm">Batch processing & more</p>
+            </div>
+            <div className="text-center">
+              <Phone className="w-8 h-8 text-purple-400 mx-auto mb-2" />
+              <h3 className="font-semibold mb-1">Phone Support</h3>
+              <p className="text-slate-400 text-sm">Direct access when needed</p>
+        </div>
+        </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => navigate('/pricing')}
+              className="bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-lg font-semibold transition-colors"
+            >
+              View Professional Plans
+            </button>
+            <button
+              onClick={() => window.location.href = 'mailto:support@proofpix.com'}
+              className="border border-slate-600 hover:border-slate-500 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
+            >
+              <Mail className="w-5 h-5" />
+              <span>Contact Support</span>
+            </button>
           </div>
         </div>
-      </footer>
-    </div>
+      </section>
+    </EnterpriseLayout>
   );
 }; 

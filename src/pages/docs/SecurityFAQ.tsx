@@ -1,7 +1,23 @@
 import React from 'react';
-import { Shield, Lock, CheckCircle, AlertTriangle, FileText, Users, Globe, HelpCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Shield, Lock, CheckCircle, AlertTriangle, FileText, Users, Globe, HelpCircle, ArrowLeft } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
+import DocumentationFooter from '../../components/DocumentationFooter';
 
 const SecurityFAQ: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBackToDocs = () => {
+    navigate('/docs');
+  };
+
   const faqSections = [
     {
       title: "Data Security & Privacy",
@@ -116,130 +132,134 @@ const SecurityFAQ: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
+    <EnterpriseLayout
+      showHero
+      title="Enterprise Security FAQ"
+      description="Comprehensive answers to security, compliance, and privacy questions"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="text-center space-y-4">
-        <div className="flex justify-center">
-          <HelpCircle className="h-16 w-16 text-blue-600" />
-        </div>
-        <h1 className="text-4xl font-bold text-gray-900">Enterprise Security FAQ</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Comprehensive answers to security, compliance, and privacy questions for enterprise customers
-        </p>
-      </div>
-
-      {/* Quick Navigation */}
-      <div className="bg-gray-50 rounded-lg p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Navigation</h2>
-        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {faqSections.map((section, index) => (
-            <a
-              key={index}
-              href={`#section-${index}`}
-              className="flex items-center space-x-2 p-3 bg-white rounded-lg border hover:border-blue-300 transition-colors"
-            >
-              {section.icon}
-              <span className="text-sm font-medium text-gray-700">{section.title}</span>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* FAQ Sections */}
-      {faqSections.map((section, sectionIndex) => (
-        <div key={sectionIndex} id={`section-${sectionIndex}`} className="space-y-6">
-          <div className="flex items-center space-x-3">
-            {section.icon}
-            <h2 className="text-2xl font-bold text-gray-900">{section.title}</h2>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <HelpCircle className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="space-y-4">
-            {section.questions.map((faq, faqIndex) => (
-              <div key={faqIndex} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-start">
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3 mt-1 flex-shrink-0">
-                    Q{sectionIndex + 1}.{faqIndex + 1}
-                  </span>
-                  {faq.question}
-                </h3>
-                <div className="text-gray-700 leading-relaxed pl-12">
-                  {faq.answer}
-                </div>
-              </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Enterprise Security FAQ</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Comprehensive answers to security, compliance, and privacy questions
+            </p>
+          </div>
+        </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<HelpCircle className="enterprise-icon-sm" />}>
+            Security FAQ
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<Shield className="enterprise-icon-sm" />}>
+            Enterprise Ready
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            Compliance Focused
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
+
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Quick Navigation */}
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Navigation</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            {faqSections.map((section, index) => (
+              <a
+                key={index}
+                href={`#section-${index}`}
+                className="flex items-center space-x-2 p-3 bg-white rounded-lg border hover:border-blue-300 transition-colors"
+              >
+                {section.icon}
+                <span className="text-sm font-medium text-slate-700">{section.title}</span>
+              </a>
             ))}
           </div>
-        </div>
-      ))}
+        </EnterpriseCard>
 
-      {/* Contact Section */}
-      <div className="bg-blue-50 rounded-lg p-8 text-center space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-900">Still Have Questions?</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Our enterprise security team is here to help. Contact us for detailed discussions about your specific 
-          security requirements, compliance needs, or custom deployment scenarios.
-        </p>
-        
-        <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto">
-          <div className="bg-white rounded-lg p-4 border">
-            <Shield className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900 mb-1">Security Team</h3>
-            <a href="mailto:security@proofpixapp.com" className="text-blue-600 hover:underline text-sm">
-              security@proofpixapp.com
-            </a>
+        {/* FAQ Sections */}
+        {faqSections.map((section, sectionIndex) => (
+          <div key={sectionIndex} id={`section-${sectionIndex}`} className="mb-12">
+            <div className="flex items-center space-x-3 mb-6">
+              {section.icon}
+              <h2 className="text-2xl font-bold text-slate-900">{section.title}</h2>
+            </div>
+            
+            <div className="space-y-4">
+              {section.questions.map((faq, faqIndex) => (
+                <EnterpriseCard key={faqIndex}>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-3 flex items-start">
+                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-3 mt-1 flex-shrink-0">
+                      Q{sectionIndex + 1}.{faqIndex + 1}
+                    </span>
+                    {faq.question}
+                  </h3>
+                  <div className="text-slate-700 leading-relaxed pl-12">
+                    {faq.answer}
+                  </div>
+                </EnterpriseCard>
+              ))}
+            </div>
           </div>
+        ))}
+
+        {/* Contact Section */}
+        <EnterpriseCard className="bg-blue-50 border-blue-200 text-center">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-4">Still Have Questions?</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto mb-6">
+            Our enterprise security team is here to help. Contact us for detailed discussions about your specific 
+            security requirements, compliance needs, or custom deployment scenarios.
+          </p>
           
-          <div className="bg-white rounded-lg p-4 border">
-            <Users className="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900 mb-1">Enterprise Sales</h3>
-            <a href="mailto:enterprise@proofpixapp.com" className="text-blue-600 hover:underline text-sm">
-              enterprise@proofpixapp.com
-            </a>
-          </div>
-          
-          <div className="bg-white rounded-lg p-4 border">
-            <FileText className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900 mb-1">Compliance</h3>
-            <a href="mailto:compliance@proofpixapp.com" className="text-blue-600 hover:underline text-sm">
-              compliance@proofpixapp.com
-            </a>
-          </div>
-        </div>
-        
-        <div className="flex justify-center space-x-4 pt-4">
-          <a 
-            href="/docs/enterprise-security" 
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            View Security Documentation
-          </a>
-          <a 
-            href="/docs/api-reference" 
-            className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            API Security Reference
-          </a>
-        </div>
+          <EnterpriseGrid columns={3}>
+            <EnterpriseCard className="text-center">
+              <Shield className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-slate-900 mb-1">Security Team</h3>
+              <p className="text-slate-600 text-sm mb-1">Alexander Rivera, CISO</p>
+              <a href="mailto:security@proofpixapp.com" className="text-blue-600 hover:underline text-sm">
+                security@proofpixapp.com
+              </a>
+            </EnterpriseCard>
+            
+            <EnterpriseCard className="text-center">
+              <Users className="h-8 w-8 text-green-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-slate-900 mb-1">Enterprise Sales</h3>
+              <p className="text-slate-600 text-sm mb-1">Olivia Rodriguez, VP of Sales</p>
+              <a href="mailto:enterprise@proofpixapp.com" className="text-blue-600 hover:underline text-sm">
+                enterprise@proofpixapp.com
+              </a>
+            </EnterpriseCard>
+            
+            <EnterpriseCard className="text-center">
+              <FileText className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-slate-900 mb-1">Compliance Team</h3>
+              <p className="text-slate-600 text-sm mb-1">Nathan Patel, Compliance Director</p>
+              <a href="mailto:compliance@proofpixapp.com" className="text-blue-600 hover:underline text-sm">
+                compliance@proofpixapp.com
+              </a>
+            </EnterpriseCard>
+          </EnterpriseGrid>
+        </EnterpriseCard>
       </div>
 
-      {/* Emergency Contact */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-        <div className="flex items-center space-x-3 mb-3">
-          <AlertTriangle className="h-6 w-6 text-red-600" />
-          <h3 className="text-lg font-semibold text-red-900">Security Emergency Contact</h3>
-        </div>
-        <p className="text-red-800 mb-3">
-          For critical security incidents requiring immediate attention (data breaches, system compromise, service unavailability):
-        </p>
-        <div className="bg-white rounded-lg p-4 border border-red-200">
-          <p className="font-semibold text-red-900">
-            Emergency Security Hotline: <a href="mailto:incident@proofpixapp.com" className="text-red-600 hover:underline">incident@proofpixapp.com</a>
-          </p>
-          <p className="text-sm text-red-700 mt-1">
-            Response time: Within 1 hour for critical incidents
-          </p>
-        </div>
-      </div>
-    </div>
+      {/* Footer */}
+      <DocumentationFooter />
+    </EnterpriseLayout>
   );
 };
 

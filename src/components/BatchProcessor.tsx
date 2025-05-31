@@ -122,7 +122,6 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
       estimatedTimeRemaining: null
     });
 
-    analytics.trackBatchUpload(batchFiles.length);
   }, [maxFiles, allowedFormats, checkUsageLimits]);
 
   // Process single file
@@ -194,7 +193,6 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
       errors: 0
     }));
 
-    analytics.trackBatchProcessingStart(files.length);
 
     try {
       // Process files in parallel with concurrency limit
@@ -238,12 +236,10 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
         estimatedTimeRemaining: 0
       }));
 
-      analytics.trackBatchProcessingComplete(files.length, finalCompleted, finalErrors);
       onComplete?.(results);
 
     } catch (error) {
       console.error('Batch processing error:', error);
-      analytics.trackBatchProcessingError(error);
     } finally {
       setIsProcessing(false);
       processingRef.current = false;
@@ -265,7 +261,6 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
   const cancelProcessing = useCallback(() => {
     processingRef.current = false;
     setIsProcessing(false);
-    analytics.trackBatchProcessingCancelled();
   }, []);
 
 
@@ -320,7 +315,6 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
       URL.revokeObjectURL(url);
 
       usageTracker.trackDataExport();
-      analytics.trackBatchExport(completedFiles.length);
 
     } catch (error) {
       console.error('Export error:', error);
@@ -376,7 +370,6 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
           <div className="space-y-3">
             <button
               onClick={() => {
-                analytics.trackFeatureUsage('Payment Protection', 'Batch Upgrade Click');
                 window.location.href = '/pricing';
               }}
               className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium py-3 px-8 rounded-xl transition-all duration-200 flex items-center justify-center mx-auto"

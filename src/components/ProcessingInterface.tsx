@@ -1,12 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Camera, Upload, AlertCircle, ArrowLeft, Download, FileText, Settings, Eye, Share2, Home, ExternalLink } from 'lucide-react';
 import { overlayTimestamp, processImage, downloadImage } from '../utils/imageUtils';
 import { generatePDF, downloadPDF } from '../utils/pdfUtils';
 import { formatDateTime } from '../utils/formatters';
 import { ImagePreview } from './ImagePreview';
 import { MetadataPanel } from './MetadataPanel';
-import { Sponsorship } from './Sponsorships';
 import SocialShare from './SocialShare';
 import EnhancedExportDialog from './EnhancedExportDialog';
 import { ProcessedImage, ImageOutputOptions } from '../types';
@@ -19,13 +18,15 @@ interface ProcessingInterfaceProps {
   onBackToHome: () => void;
   onBackToBatch?: () => void;
   showBatchBackButton?: boolean;
+  standalone?: boolean;
 }
 
 export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
   processedImage,
   onBackToHome,
   onBackToBatch,
-  showBatchBackButton = false
+  showBatchBackButton = false,
+  standalone = true
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -210,51 +211,6 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
     setError(null);
   }, []);
 
-  const handleAboutClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'About Us - Processing Interface');
-    navigate('/about');
-  };
-
-  const handlePrivacyClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Privacy Policy - Processing Interface');
-    navigate('/privacy');
-  };
-
-  const handleFAQClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'FAQ - Processing Interface');
-    navigate('/faq');
-  };
-
-  const handleContactClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Contact - Processing Interface Footer');
-    window.location.href = 'https://proofpixapp.com/#contact';
-  };
-
-  const handleTermsClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Terms - Processing Interface');
-    navigate('/terms');
-  };
-
-  const handleSupportClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Support - Processing Interface');
-    navigate('/support');
-  };
-
-  const handlePricingClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Pricing - Processing Interface');
-    navigate('/pricing');
-  };
-
-  const handleAnalyticsClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Analytics - Processing Interface');
-    navigate('/analytics');
-  };
-
-  const handleBatchManagementClick = () => {
-    analytics.trackFeatureUsage('Navigation', 'Batch Management - Processing Interface');
-    navigate('/batch');
-  };
-
   // 🔒 PAYMENT PROTECTION: Check if user can access enhanced export
   const canUseAdvancedExport = SessionManager.canPerformAction('advanced_export');
 
@@ -282,47 +238,96 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center cursor-pointer" onClick={onBackToHome}>
-              <Camera className="h-8 w-8 text-blue-500 mr-3" />
-              <h1 className="text-xl font-bold text-white">ProofPix</h1>
+    <div className="min-h-screen bg-[#0f1729] text-slate-100">
+      {/* Modern Header */}
+      {standalone && (
+        <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              {/* Logo - Clickable to go home */}
+              <div className="flex items-center cursor-pointer group" onClick={onBackToHome}>
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mr-3 group-hover:scale-105 transition-transform">
+                  <Camera className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-slate-100 group-hover:text-blue-400 transition-colors">ProofPix</h1>
+                  <p className="text-xs text-slate-400 -mt-0.5">Image Analysis Complete</p>
+                </div>
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="flex items-center space-x-3">
+                {/* Back to Batch Results Button */}
+                {showBatchBackButton && onBackToBatch && (
+                  <button
+                    onClick={onBackToBatch}
+                    className="bg-slate-700 hover:bg-slate-600 text-slate-100 px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-sm font-medium"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    <span>Back to Batch</span>
+                  </button>
+                )}
+                
+                {/* New Analysis Button */}
+                <button
+                  onClick={onBackToHome}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-sm font-medium"
+                >
+                  <Upload className="h-4 w-4" />
+                  <span>New Analysis</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+      )}
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Page Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2">
+                Image Analysis Results
+              </h1>
+              <p className="text-slate-400">
+                {currentImage?.file?.name || 'Uploaded Image'} • {currentImage?.metadata?.fileSize || 'Unknown size'}
+              </p>
             </div>
             
-            {/* Back to Batch Results Button */}
-            {showBatchBackButton && onBackToBatch && (
+            {/* Quick Actions */}
+            <div className="hidden sm:flex items-center space-x-3">
               <button
-                onClick={onBackToBatch}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
+                onClick={handleDownload}
+                disabled={isLoading}
+                className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-slate-100 px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-sm font-medium"
               >
-                <ArrowLeft className="h-4 w-4" />
-                <span>Back to Batch Results</span>
+                <Download className="h-4 w-4" />
+                <span>Download</span>
               </button>
-            )}
-            
-            {/* Header Sponsorship for Processing Interface */}
-            <div className="hidden lg:block">
-              <Sponsorship placement="header" className="max-w-md" />
+              <button
+                onClick={handleExportPDF}
+                disabled={isLoading}
+                className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-sm font-medium"
+              >
+                <FileText className="h-4 w-4" />
+                <span>PDF Report</span>
+              </button>
             </div>
           </div>
         </div>
-      </header>
 
-      {/* Main Content - Mobile Optimized */}
-      <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
         {/* Error Alert */}
         {error && (
-          <div className="mb-6 bg-red-900 bg-opacity-50 border border-red-500 p-4 rounded-md">
-            <div className="flex">
-              <AlertCircle className="h-5 w-5 text-red-400" />
-              <div className="ml-3">
+          <div className="mb-6 bg-red-900/50 border border-red-500/50 rounded-xl p-4">
+            <div className="flex items-start">
+              <AlertCircle className="h-5 w-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" />
+              <div className="flex-1">
                 <p className="text-sm text-red-200">{error}</p>
                 <button 
                   onClick={clearError}
-                  className="mt-2 text-sm text-red-300 underline hover:text-red-100"
+                  className="mt-2 text-sm text-red-300 underline hover:text-red-100 transition-colors"
                 >
                   Dismiss
                 </button>
@@ -334,17 +339,30 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
         {/* Loading State */}
         {isLoading && (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <p className="mt-2 text-gray-400">Processing image...</p>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
+            <p className="text-slate-400">Processing image...</p>
           </div>
         )}
 
-        {/* Image Processing Interface - Mobile Optimized */}
+        {/* Main Analysis Interface */}
         {currentImage && !isLoading && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
-            {/* Image Preview - Mobile First */}
-            <div className="bg-gray-800 rounded-lg p-3 sm:p-6 order-1">
-              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-white">Image Preview</h2>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            {/* Image Preview Section */}
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-slate-100 flex items-center">
+                  <Eye className="h-5 w-5 text-blue-400 mr-2" />
+                  Image Preview
+                </h2>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded-full">
+                    {outputOptions.format.toUpperCase()}
+                  </span>
+                  <span className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded-full">
+                    {outputOptions.size}
+                  </span>
+                </div>
+              </div>
               <ImagePreview
                 image={currentImage}
                 showTimestamp={showTimestamp}
@@ -358,73 +376,170 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
               />
             </div>
 
-            {/* Metadata Panel - Mobile Responsive */}
-            <div className="bg-gray-800 rounded-lg p-3 sm:p-6 order-2">
-              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-white">Image Metadata</h2>
+            {/* Metadata Analysis Section */}
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-slate-100 flex items-center">
+                  <Settings className="h-5 w-5 text-emerald-400 mr-2" />
+                  Metadata Analysis
+                </h2>
+                <button
+                  onClick={handleExportJSON}
+                  className="text-xs text-slate-400 hover:text-slate-200 bg-slate-700/50 hover:bg-slate-600/50 px-3 py-1 rounded-full transition-colors flex items-center space-x-1"
+                >
+                  <FileText className="h-3 w-3" />
+                  <span>Export JSON</span>
+                </button>
+              </div>
               <MetadataPanel metadata={currentImage.metadata} originalFile={currentImage.file} />
             </div>
           </div>
         )}
 
-        {/* Content Sponsorship between main interface and footer */}
-        <div className="mt-12 mb-8">
-          <Sponsorship placement="content" className="max-w-2xl mx-auto" />
-        </div>
-
-        {/* Social Share Section - Show after successful processing */}
+        {/* Share Section */}
         {currentImage && !isLoading && (
-          <div className="mt-12 mb-12 flex justify-center">
-            <div className="w-full max-w-2xl px-4">
-              <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700/50">
-            <SocialShare 
-              variant="prominent"
-              onShare={(platform) => {
-                analytics.trackFeatureUsage('Social Share', `Processing Interface - ${platform}`);
-              }}
-                  className="mx-auto"
-            />
+          <div className="mt-12">
+            <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-sm rounded-2xl border border-slate-600/50 p-8">
+              <div className="text-center mb-6">
+                <h3 className="text-lg font-semibold text-slate-100 mb-2 flex items-center justify-center">
+                  <Share2 className="h-5 w-5 text-blue-400 mr-2" />
+                  Share Your Experience
+                </h3>
+                <p className="text-slate-400 text-sm">
+                  Help others discover privacy-focused image analysis
+                </p>
               </div>
+              <SocialShare 
+                variant="prominent"
+                onShare={(platform) => {
+                  analytics.trackFeatureUsage('Social Share', `Processing Interface - ${platform}`);
+                }}
+                className="mx-auto"
+              />
             </div>
           </div>
         )}
 
-        {/* New Image Button */}
-        <div className="mt-8 text-center">
-          <button
-            onClick={onBackToHome}
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-          >
-            <Upload className="mr-2 h-5 w-5" />
-            Process Another Image
-          </button>
+        {/* Action Center */}
+        <div className="mt-12 text-center">
+          <div className="inline-flex items-center space-x-4 bg-slate-800/30 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+            <button
+              onClick={onBackToHome}
+              className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors space-x-2"
+            >
+              <Upload className="h-5 w-5" />
+              <span>Analyze Another Image</span>
+            </button>
+            
+            <div className="h-6 w-px bg-slate-600"></div>
+            
+            <button
+              onClick={() => navigate('/')}
+              className="inline-flex items-center px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-xl transition-colors space-x-2"
+            >
+              <Home className="h-5 w-5" />
+              <span>Back to Home</span>
+            </button>
+          </div>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 border-t border-gray-700 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-sm text-gray-400">
-            <p className="mb-2">
-              ProofPix processes images locally in your browser. No personal data is collected.
-            </p>
-            <p className="mb-4">
-              Privacy-respecting analytics • Direct sponsorships • Local EXIF processing
-            </p>
-            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-              <button onClick={onBackToHome} className="text-gray-400 hover:text-white">Home</button>
-              <button onClick={handleFAQClick} className="text-gray-400 hover:text-white">F.A.Q.</button>
-              <button onClick={handleAboutClick} className="text-gray-400 hover:text-white">About</button>
-              <button onClick={handlePrivacyClick} className="text-gray-400 hover:text-white">Privacy</button>
-              <button onClick={handleTermsClick} className="text-gray-400 hover:text-white">Terms</button>
-              <button onClick={handleSupportClick} className="text-gray-400 hover:text-white">Support</button>
-              <button onClick={handleContactClick} className="text-gray-400 hover:text-white">Contact</button>
-              <button onClick={handlePricingClick} className="text-gray-400 hover:text-white">Pricing</button>
-              <button onClick={handleAnalyticsClick} className="text-gray-400 hover:text-white">Analytics</button>
-              <button onClick={handleBatchManagementClick} className="text-gray-400 hover:text-white">Batch Manager</button>
-            </nav>
+      {/* Modern Footer */}
+      {standalone && (
+        <footer className="mt-16 py-12 border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Brand Section */}
+              <div>
+                <div className="flex items-center space-x-3 mb-4 cursor-pointer" onClick={onBackToHome}>
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                    <Camera className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                    ProofPix
+                  </span>
+                </div>
+                <p className="text-sm text-slate-400 mb-4 max-w-md leading-relaxed">
+                  Privacy-first image metadata extraction. All processing happens locally in your browser.
+                </p>
+              </div>
+              
+              {/* Quick Links */}
+              <div>
+                <h4 className="text-sm font-semibold text-slate-300 mb-4">Quick Links</h4>
+                <ul className="space-y-2">
+                  <li>
+                    <button onClick={onBackToHome} className="text-sm text-slate-400 hover:text-white transition-colors">
+                      Home
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => navigate('/docs')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                      Documentation
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => navigate('/privacy')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                      Privacy Policy
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => navigate('/support')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                      Support
+                    </button>
+                  </li>
+                </ul>
+              </div>
+              
+              {/* Features */}
+              <div>
+                <h4 className="text-sm font-semibold text-slate-300 mb-4">Features</h4>
+                <ul className="space-y-2">
+                  <li>
+                    <button onClick={() => navigate('/enterprise')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                      Enterprise Solutions
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => navigate('/pricing')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                      Pricing
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => navigate('/batch')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                      Batch Processing
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={() => navigate('/docs/api')} className="text-sm text-slate-400 hover:text-white transition-colors flex items-center space-x-1">
+                      <span>API Access</span>
+                      <ExternalLink className="h-3 w-3" />
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            {/* Bottom Footer */}
+            <div className="border-t border-slate-700 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between">
+              <p className="text-sm text-slate-400">
+                © 2024 ProofPix. All rights reserved. • Privacy-focused image analysis.
+              </p>
+              <div className="flex items-center space-x-6 mt-4 md:mt-0">
+                <button onClick={() => navigate('/privacy')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                  Privacy
+                </button>
+                <button onClick={() => navigate('/terms')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                  Terms
+                </button>
+                <button onClick={() => navigate('/support')} className="text-sm text-slate-400 hover:text-white transition-colors">
+                  Contact
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      )}
 
       {/* Enhanced Export Dialog */}
       {showEnhancedExport && canUseAdvancedExport && (

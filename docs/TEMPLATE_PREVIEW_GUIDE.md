@@ -236,3 +236,4 @@ Update the template data directly in the component:
 - Modern browsers with SVG support
 - Fallback placeholder for failed image loads
 - Graceful degradation on older browsers 
+ 

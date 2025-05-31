@@ -1,0 +1,50 @@
+[build]
+# Build command
+command = "npm run build:full"
+
+# Directory to publish
+publish = "build/"
+
+# Environment variables for build
+[build.environment]
+  NODE_VERSION = "20"
+  CI = "false"
+  GENERATE_SOURCEMAP = "false"
+  NODE_OPTIONS = "--openssl-legacy-provider"
+
+# Production environment configuration
+[deploy]
+  startCommand = "nginx -g 'daemon off;'"
+  healthcheckPath = "/health"
+  healthcheckTimeout = 300
+  restartPolicyType = "ON_FAILURE"
+  restartPolicyMaxRetries = 3
+
+# Resource allocation
+[deploy.resources]
+  cpu = 1000
+  memory = 512
+  disk = 1024
+
+# Scaling configuration
+[deploy.scaling]
+  min = 1
+  max = 3
+  target_cpu = 80
+
+# Environment variables
+[env]
+  NODE_ENV = "production"
+  PORT = "80"
+  NODE_OPTIONS = "--openssl-legacy-provider"
+
+# Custom domains
+[[services]]
+  internal_port = 80
+  protocol = "tcp"
+  [[services.ports]]
+    handlers = ["http"]
+    port = "80"
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = "443" 

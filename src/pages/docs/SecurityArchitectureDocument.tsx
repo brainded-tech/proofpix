@@ -1,6 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, Server, Eye, Lock, AlertTriangle, CheckCircle, XCircle, Code } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
+import DocumentationFooter from '../../components/DocumentationFooter';
 
 const SecurityArchitectureDocument: React.FC = () => {
   const navigate = useNavigate();
@@ -10,194 +19,209 @@ const SecurityArchitectureDocument: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Security Architecture Document"
+      description="Revolutionary client-side processing security model"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBackToDocs}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Back to Documentation</span>
-            </button>
-            <div className="flex space-x-3">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-300">
-                Security Architecture
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-300">
-                Revolutionary Model
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300">
-                Client-Side Processing
-              </span>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <Shield className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Security Architecture Document</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Revolutionary client-side processing security model
+            </p>
           </div>
         </div>
-      </header>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<Shield className="enterprise-icon-sm" />}>
+            Security Architecture
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            Enterprise Ready
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<Server className="enterprise-icon-sm" />}>
+            Infrastructure
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Title */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">
             ProofPix Security Architecture Document
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
             Revolutionary client-side processing security model that eliminates traditional SaaS risks
           </p>
         </div>
 
         {/* Executive Summary */}
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">Executive Summary</h2>
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Executive Summary</h2>
           
-          <p className="text-gray-300 mb-6">
-            ProofPix represents a <strong className="text-blue-400">paradigm shift in SaaS security architecture</strong>. 
+          <p className="text-slate-600 mb-6">
+            ProofPix represents a <strong className="text-blue-600">paradigm shift in SaaS security architecture</strong>. 
             By processing all image metadata extraction client-side in the user's browser, we've eliminated 90% of 
             traditional security risks while delivering superior performance and privacy protection.
           </p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 text-center">
-              <Shield className="h-8 w-8 text-green-400 mx-auto mb-2" />
-              <h3 className="font-semibold text-white">Zero Server Storage</h3>
-              <p className="text-sm text-gray-400">Customer images never transmitted or stored</p>
-            </div>
+          <EnterpriseGrid columns={4}>
+            <EnterpriseCard className="text-center border-2 border-green-200">
+              <Shield className="h-8 w-8 text-green-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-slate-900">Zero Server Storage</h3>
+              <p className="text-sm text-slate-600">Customer images never transmitted or stored</p>
+            </EnterpriseCard>
             
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 text-center">
-              <Server className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-              <h3 className="font-semibold text-white">Minimal Attack Surface</h3>
-              <p className="text-sm text-gray-400">No server-side processing to compromise</p>
-            </div>
+            <EnterpriseCard className="text-center border-2 border-blue-200">
+              <Server className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-slate-900">Minimal Attack Surface</h3>
+              <p className="text-sm text-slate-600">No server-side processing to compromise</p>
+            </EnterpriseCard>
             
-            <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4 text-center">
-              <Lock className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-              <h3 className="font-semibold text-white">Privacy by Design</h3>
-              <p className="text-sm text-gray-400">GDPR/CCPA compliance built into architecture</p>
-            </div>
+            <EnterpriseCard className="text-center border-2 border-purple-200">
+              <Lock className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-slate-900">Privacy by Design</h3>
+              <p className="text-sm text-slate-600">GDPR/CCPA compliance built into architecture</p>
+            </EnterpriseCard>
             
-            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 text-center">
-              <Eye className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
-              <h3 className="font-semibold text-white">Transparent Security</h3>
-              <p className="text-sm text-gray-400">Open-source codebase enables full verification</p>
-            </div>
-          </div>
-        </div>
+            <EnterpriseCard className="text-center border-2 border-yellow-200">
+              <Eye className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
+              <h3 className="font-semibold text-slate-900">Transparent Security</h3>
+              <p className="text-sm text-slate-600">Open-source codebase enables full verification</p>
+            </EnterpriseCard>
+          </EnterpriseGrid>
+        </EnterpriseCard>
 
         {/* Architecture Overview */}
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">Architecture Overview</h2>
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Architecture Overview</h2>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <EnterpriseGrid columns={2}>
             {/* Client-Side Processing Flow */}
-            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-green-400 mb-4">Image Processing Flow (100% Client-Side)</h3>
+            <EnterpriseCard className="border-2 border-green-200">
+              <h3 className="text-lg font-semibold text-green-600 mb-4">Image Processing Flow (100% Client-Side)</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
                   <div>
-                    <div className="font-medium text-white">File Selection</div>
-                    <div className="text-sm text-gray-400">User selects images via secure file picker</div>
+                    <div className="font-medium text-slate-900">File Selection</div>
+                    <div className="text-sm text-slate-600">User selects images via secure file picker</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
                   <div>
-                    <div className="font-medium text-white">Memory Loading</div>
-                    <div className="text-sm text-gray-400">Images loaded into browser memory only</div>
+                    <div className="font-medium text-slate-900">Memory Loading</div>
+                    <div className="text-sm text-slate-600">Images loaded into browser memory only</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
                   <div>
-                    <div className="font-medium text-white">EXIF Extraction</div>
-                    <div className="text-sm text-gray-400">Metadata extracted using client-side JavaScript</div>
+                    <div className="font-medium text-slate-900">EXIF Extraction</div>
+                    <div className="text-sm text-slate-600">Metadata extracted using client-side JavaScript</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
                   <div>
-                    <div className="font-medium text-white">Results Display</div>
-                    <div className="text-sm text-gray-400">Metadata displayed in browser interface</div>
+                    <div className="font-medium text-slate-900">Results Display</div>
+                    <div className="text-sm text-slate-600">Metadata displayed in browser interface</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">5</div>
                   <div>
-                    <div className="font-medium text-white">Export Generation</div>
-                    <div className="text-sm text-gray-400">PDF/JSON exports created locally</div>
+                    <div className="font-medium text-slate-900">Export Generation</div>
+                    <div className="text-sm text-slate-600">PDF/JSON exports created locally</div>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">6</div>
                   <div>
-                    <div className="font-medium text-white">Memory Cleanup</div>
-                    <div className="text-sm text-gray-400">All data cleared when user leaves</div>
+                    <div className="font-medium text-slate-900">Memory Cleanup</div>
+                    <div className="text-sm text-slate-600">All data cleared when user leaves</div>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-6 bg-green-600/20 border border-green-500/30 rounded-lg p-4">
-                <p className="text-green-300 font-medium text-center">
+              <div className="mt-6 bg-green-100 border border-green-300 rounded-lg p-4">
+                <p className="text-green-700 font-medium text-center">
                   Security Result: ZERO network transmission of customer images
                 </p>
               </div>
-            </div>
+            </EnterpriseCard>
 
             {/* Supporting Services Flow */}
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-blue-400 mb-4">Supporting Services Flow</h3>
+            <EnterpriseCard className="border-2 border-blue-200">
+              <h3 className="text-lg font-semibold text-blue-600 mb-4">Supporting Services Flow</h3>
               <div className="space-y-3">
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-blue-400 rounded-full mt-2"></div>
                   <div>
-                    <div className="font-medium text-white">Authentication</div>
-                    <div className="text-sm text-gray-400">Standard OAuth/JWT tokens for account management</div>
+                    <div className="font-medium text-slate-900">Authentication</div>
+                    <div className="text-sm text-slate-600">Standard OAuth/JWT tokens for account management</div>
                   </div>
                 </div>
                 
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
                   <div>
-                    <div className="font-medium text-white">Payment Processing</div>
-                    <div className="text-sm text-gray-400">Stripe handles all payment data (PCI DSS compliant)</div>
+                    <div className="font-medium text-slate-900">Payment Processing</div>
+                    <div className="text-sm text-slate-600">Stripe handles all payment data (PCI DSS compliant)</div>
                   </div>
                 </div>
                 
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
                   <div>
-                    <div className="font-medium text-white">Analytics</div>
-                    <div className="text-sm text-gray-400">Anonymous usage metrics via privacy-focused Plausible</div>
+                    <div className="font-medium text-slate-900">Analytics</div>
+                    <div className="text-sm text-slate-600">Anonymous usage metrics via privacy-focused Plausible</div>
                   </div>
                 </div>
                 
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
                   <div>
-                    <div className="font-medium text-white">Static Delivery</div>
-                    <div className="text-sm text-gray-400">Web app delivered via Netlify CDN with security headers</div>
+                    <div className="font-medium text-slate-900">Static Delivery</div>
+                    <div className="text-sm text-slate-600">Web app delivered via Netlify CDN with security headers</div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </EnterpriseCard>
+          </EnterpriseGrid>
+        </EnterpriseCard>
 
         {/* Threat Model Analysis */}
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">Threat Model Analysis</h2>
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Threat Model Analysis</h2>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <EnterpriseGrid columns={2}>
             {/* Traditional SaaS Threats */}
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-red-400 mb-4">Traditional SaaS Threat Landscape</h3>
+            <EnterpriseCard className="border-2 border-red-200">
+              <h3 className="text-lg font-semibold text-red-600 mb-4">Traditional SaaS Threat Landscape</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <XCircle className="h-5 w-5 text-red-400" />
@@ -228,11 +252,11 @@ const SecurityArchitectureDocument: React.FC = () => {
                   <span className="text-gray-300">Data retention and disposal risks</span>
                 </div>
               </div>
-            </div>
+            </EnterpriseCard>
 
             {/* ProofPix Threat Landscape */}
-            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-green-400 mb-4">ProofPix Attack Surface (Dramatically Reduced)</h3>
+            <EnterpriseCard className="border-2 border-green-200">
+              <h3 className="text-lg font-semibold text-green-600 mb-4">ProofPix Attack Surface (Dramatically Reduced)</h3>
               <div className="space-y-3">
                 <div className="flex items-start space-x-3">
                   <CheckCircle className="h-5 w-5 text-green-400 mt-1 flex-shrink-0" />
@@ -277,8 +301,8 @@ const SecurityArchitectureDocument: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </EnterpriseCard>
+          </EnterpriseGrid>
 
           {/* Risk Comparison Matrix */}
           <div className="mt-8 bg-gray-900 rounded-lg p-6">
@@ -334,11 +358,11 @@ const SecurityArchitectureDocument: React.FC = () => {
               </table>
             </div>
           </div>
-        </div>
+        </EnterpriseCard>
 
         {/* Security Control Implementation */}
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">Security Control Implementation</h2>
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Security Control Implementation</h2>
           
           <div className="space-y-8">
             {/* Client-Side Security Controls */}
@@ -452,11 +476,11 @@ class SecureFileValidator {
               </div>
             </div>
           </div>
-        </div>
+        </EnterpriseCard>
 
         {/* Security Validation */}
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-8">
-          <h2 className="text-2xl font-bold text-white mb-6">Security Validation & Transparency</h2>
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Security Validation & Transparency</h2>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div>
@@ -519,9 +543,12 @@ class SecureFileValidator {
               </div>
             </div>
           </div>
-        </div>
+        </EnterpriseCard>
       </div>
-    </div>
+
+      {/* Footer */}
+      <DocumentationFooter />
+    </EnterpriseLayout>
   );
 };
 

@@ -1,9 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Target, Users, MessageSquare, TrendingUp, ArrowRight, CheckCircle, AlertTriangle, DollarSign } from 'lucide-react';
+import { BookOpen, Target, Users, MessageSquare, TrendingUp, ArrowRight, CheckCircle, AlertTriangle, DollarSign, ArrowLeft } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
+import { useNavigate } from 'react-router-dom';
 
 export const SalesPlaybook: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBackToDocs = () => {
+    navigate('/docs');
+  };
+
   const customerSegments = [
     {
       name: "AI-Native Prospects",
@@ -146,284 +161,307 @@ export const SalesPlaybook: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Breadcrumb navigation */}
-      <nav className="mb-6 text-sm">
-        <Link to="/docs" className="text-blue-600 hover:underline">Documentation</Link>
-        <span className="mx-2">/</span>
-        <Link to="/docs" className="text-blue-600 hover:underline">Sales</Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-600">Sales Playbook</span>
-      </nav>
-
-      {/* Page title */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4 flex items-center">
-          <BookOpen className="mr-3 text-blue-600" size={32} />
-          ProofPix Sales Playbook
-        </h1>
-        <p className="text-xl text-gray-600">
-          Comprehensive guide to selling ProofPix enterprise solutions
-        </p>
-      </div>
-
-      {/* Executive summary */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-8 mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Sales Strategy Overview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">3</div>
-            <div className="text-sm text-gray-600">Customer Segments</div>
+    <EnterpriseLayout
+      showHero
+      title="Sales Playbook"
+      description="Comprehensive guide to selling ProofPix enterprise solutions"
+      maxWidth="6xl"
+    >
+      {/* Header */}
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <BookOpen className="h-8 w-8 text-white" />
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-green-600 mb-2">72%</div>
-            <div className="text-sm text-gray-600">Average Conversion Rate</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">$85K</div>
-            <div className="text-sm text-gray-600">Average Deal Size</div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Sales Playbook</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Comprehensive guide to selling ProofPix enterprise solutions
+            </p>
           </div>
         </div>
-      </div>
-
-      {/* Customer Segmentation */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <Target className="mr-2 text-green-500" size={24} />
-          Customer Segmentation
-        </h2>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {customerSegments.map((segment, index) => (
-            <div key={index} className={`border-2 border-${segment.color}-200 rounded-lg p-6 bg-${segment.color}-50`}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">{segment.name}</h3>
-                <span className={`text-2xl font-bold text-${segment.color}-600`}>{segment.percentage}</span>
-              </div>
-              
-              <div className="mb-4">
-                <h4 className="font-semibold text-gray-900 mb-2">Characteristics:</h4>
-                <ul className="space-y-1">
-                  {segment.characteristics.map((char, charIndex) => (
-                    <li key={charIndex} className="flex items-center text-sm text-gray-600">
-                      <CheckCircle className="mr-2 text-green-500" size={12} />
-                      {char}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<BookOpen className="enterprise-icon-sm" />}>
+            Sales Documentation
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<Target className="enterprise-icon-sm" />}>
+            Customer Segmentation
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<TrendingUp className="enterprise-icon-sm" />}>
+            Strategy Guide
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
-              <div className="space-y-2 text-sm">
-                <div><strong>Approach:</strong> {segment.approach}</div>
-                <div><strong>Timeline:</strong> {segment.timeline}</div>
-                <div><strong>Deal Size:</strong> {segment.avgDealSize}</div>
-              </div>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Executive summary */}
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">Sales Strategy Overview</h2>
+          <EnterpriseGrid columns={3}>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">3</div>
+              <div className="text-sm text-slate-600">Customer Segments</div>
             </div>
-          ))}
-        </div>
-      </section>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">72%</div>
+              <div className="text-sm text-slate-600">Average Conversion Rate</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">$85K</div>
+              <div className="text-sm text-slate-600">Average Deal Size</div>
+            </div>
+          </EnterpriseGrid>
+        </EnterpriseCard>
 
-      {/* BANT Qualification Framework */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <Users className="mr-2 text-blue-500" size={24} />
-          BANT Qualification Framework
-        </h2>
-        
-        <div className="bg-white border rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Criteria</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI-Native</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI-Assisted</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Human-Led</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Budget</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.budget.aiNative}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.budget.aiAssisted}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.budget.humanLed}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Authority</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.authority.aiNative}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.authority.aiAssisted}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.authority.humanLed}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Need</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.need.aiNative}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.need.aiAssisted}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.need.humanLed}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Timeline</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.timeline.aiNative}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.timeline.aiAssisted}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{qualificationCriteria.timeline.humanLed}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+        {/* Customer Segmentation */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <Target className="mr-2 text-green-500" size={24} />
+            Customer Segmentation
+          </h2>
 
-      {/* Demo Strategy */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <TrendingUp className="mr-2 text-purple-500" size={24} />
-          Demo Strategy by Segment
-        </h2>
-        
-        <div className="space-y-6">
-          {demoStrategies.map((strategy, index) => (
-            <div key={index} className="border rounded-lg p-6 bg-white shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">{strategy.segment} Prospects</h3>
-                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                  {strategy.conversion} conversion
-                </span>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Demo Details:</h4>
-                  <ul className="space-y-1 text-sm text-gray-600">
-                    <li><strong>Approach:</strong> {strategy.approach}</li>
-                    <li><strong>Duration:</strong> {strategy.duration}</li>
-                    <li><strong>Format:</strong> {strategy.format}</li>
-                    <li><strong>Follow-up:</strong> {strategy.followUp}</li>
+          <EnterpriseGrid columns={3}>
+            {customerSegments.map((segment, index) => (
+              <EnterpriseCard key={index} className={`border-2 border-${segment.color}-200`}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-slate-900">{segment.name}</h3>
+                  <span className={`text-2xl font-bold text-${segment.color}-600`}>{segment.percentage}</span>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="font-semibold text-slate-900 mb-2">Characteristics:</h4>
+                  <ul className="space-y-1">
+                    {segment.characteristics.map((char, charIndex) => (
+                      <li key={charIndex} className="flex items-center text-sm text-slate-600">
+                        <CheckCircle className="mr-2 text-green-500" size={12} />
+                        {char}
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Process Steps:</h4>
-                  <ol className="space-y-1 text-sm text-gray-600">
-                    {strategy.steps.map((step, stepIndex) => (
-                      <li key={stepIndex} className="flex items-center">
-                        <span className="bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs mr-2">
-                          {stepIndex + 1}
-                        </span>
-                        {step}
-                      </li>
-                    ))}
-                  </ol>
+                <div className="space-y-2 text-sm">
+                  <div><strong>Approach:</strong> {segment.approach}</div>
+                  <div><strong>Timeline:</strong> {segment.timeline}</div>
+                  <div><strong>Deal Size:</strong> {segment.avgDealSize}</div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+              </EnterpriseCard>
+            ))}
+          </EnterpriseGrid>
+        </section>
 
-      {/* Objection Handling */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <MessageSquare className="mr-2 text-orange-500" size={24} />
-          Objection Handling Guide
-        </h2>
-        
-        <div className="space-y-6">
-          {objections.map((obj, index) => (
-            <div key={index} className="border rounded-lg p-6 bg-white shadow-sm">
-              <div className="flex items-start mb-4">
-                <AlertTriangle className="mr-3 text-orange-500 mt-1" size={20} />
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{obj.objection}</h3>
-                  <p className="text-gray-600 mb-4">{obj.response}</p>
-                  
+        {/* BANT Qualification Framework */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <Users className="mr-2 text-blue-500" size={24} />
+            BANT Qualification Framework
+          </h2>
+
+          <EnterpriseCard>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-slate-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Criteria</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">AI-Native</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">AI-Assisted</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Human-Led</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-slate-200">
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Budget</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.budget.aiNative}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.budget.aiAssisted}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.budget.humanLed}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Authority</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.authority.aiNative}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.authority.aiAssisted}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.authority.humanLed}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Need</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.need.aiNative}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.need.aiAssisted}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.need.humanLed}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Timeline</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.timeline.aiNative}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.timeline.aiAssisted}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{qualificationCriteria.timeline.humanLed}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </EnterpriseCard>
+        </section>
+
+        {/* Demo Strategy */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <TrendingUp className="mr-2 text-purple-500" size={24} />
+            Demo Strategy by Segment
+          </h2>
+
+          <div className="space-y-6">
+            {demoStrategies.map((strategy, index) => (
+              <EnterpriseCard key={index}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-slate-900">{strategy.segment} Prospects</h3>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {strategy.conversion} conversion
+                  </span>
+                </div>
+
+                <EnterpriseGrid columns={2}>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Supporting Evidence:</h4>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {obj.evidence.map((evidence, evidenceIndex) => (
-                        <li key={evidenceIndex} className="flex items-center text-sm text-gray-600">
-                          <CheckCircle className="mr-2 text-green-500" size={14} />
-                          {evidence}
-                        </li>
-                      ))}
+                    <h4 className="font-semibold text-slate-900 mb-2">Demo Details:</h4>
+                    <ul className="space-y-1 text-sm text-slate-600">
+                      <li><strong>Approach:</strong> {strategy.approach}</li>
+                      <li><strong>Duration:</strong> {strategy.duration}</li>
+                      <li><strong>Format:</strong> {strategy.format}</li>
+                      <li><strong>Follow-up:</strong> {strategy.followUp}</li>
                     </ul>
                   </div>
+
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Process Steps:</h4>
+                    <ol className="space-y-1 text-sm text-slate-600">
+                      {strategy.steps.map((step, stepIndex) => (
+                        <li key={stepIndex} className="flex items-center">
+                          <span className="bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs mr-2">
+                            {stepIndex + 1}
+                          </span>
+                          {step}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </EnterpriseGrid>
+              </EnterpriseCard>
+            ))}
+          </div>
+        </section>
+
+        {/* Objection Handling */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <MessageSquare className="mr-2 text-orange-500" size={24} />
+            Objection Handling Guide
+          </h2>
+
+          <div className="space-y-6">
+            {objections.map((obj, index) => (
+              <EnterpriseCard key={index}>
+                <div className="flex items-start mb-4">
+                  <AlertTriangle className="mr-3 text-orange-500 mt-1" size={20} />
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{obj.objection}</h3>
+                    <p className="text-slate-600 mb-4">{obj.response}</p>
+
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-2">Supporting Evidence:</h4>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {obj.evidence.map((evidence, evidenceIndex) => (
+                          <li key={evidenceIndex} className="flex items-center text-sm text-slate-600">
+                            <CheckCircle className="mr-2 text-green-500" size={14} />
+                            {evidence}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Quick reference */}
-      <section className="mb-12 bg-gray-50 border rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Reference Guide</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Key Value Props</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                Zero data exposure guarantee
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                Instant processing (no server delays)
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                Complete compliance out-of-the-box
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                Massive cost savings (no infrastructure)
-              </li>
-            </ul>
+              </EnterpriseCard>
+            ))}
           </div>
+        </section>
+
+        {/* Quick reference */}
+        <section className="mb-12 bg-slate-50 border rounded-lg p-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Quick Reference Guide</h2>
           
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Competitive Advantages</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                Industry-first client-side architecture
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                No vendor lock-in or data dependency
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                Instant deployment and scaling
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="mr-2 text-green-500" size={14} />
-                Future-proof technology stack
-              </li>
-            </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">Key Value Props</h3>
+              <ul className="space-y-2 text-sm text-slate-600">
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  Zero data exposure guarantee
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  Instant processing (no server delays)
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  Complete compliance out-of-the-box
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  Massive cost savings (no infrastructure)
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">Competitive Advantages</h3>
+              <ul className="space-y-2 text-sm text-slate-600">
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  Industry-first client-side architecture
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  No vendor lock-in or data dependency
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  Instant deployment and scaling
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="mr-2 text-green-500" size={14} />
+                  Future-proof technology stack
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer navigation */}
-      <nav className="mt-12 pt-6 border-t border-gray-200">
-        <div className="flex justify-between items-center">
-          <Link 
-            to="/docs/enterprise-demo-walkthrough" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            ← Previous: Enterprise Demo Walkthrough
-          </Link>
-          <Link 
-            to="/docs/roi-calculator" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            Next: ROI Calculator →
-            <ArrowRight className="ml-1" size={16} />
-          </Link>
-        </div>
-      </nav>
+        {/* Footer navigation */}
+        <nav className="mt-12 pt-6 border-t border-slate-200">
+          <div className="flex justify-between items-center">
+            <Link 
+              to="/docs/demo-walkthrough" 
+              className="flex items-center text-blue-600 hover:underline"
+            >
+              ← Previous: Demo Walkthrough
+            </Link>
+            <Link 
+              to="/docs/roi-calculator" 
+              className="flex items-center text-blue-600 hover:underline"
+            >
+              Next: ROI Calculator →
+              <ArrowRight className="ml-1" size={16} />
+            </Link>
+          </div>
+        </nav>
 
-      <DocumentationFooter />
-    </div>
+        <DocumentationFooter />
+      </div>
+    </EnterpriseLayout>
   );
-}; 
+};

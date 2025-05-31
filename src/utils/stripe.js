@@ -2,7 +2,8 @@ import { loadStripe } from '@stripe/stripe-js';
 
 // Initialize Stripe with your publishable key
 // Replace with your actual Stripe publishable key
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_test_...');
+const isProduction = window.location.protocol === 'https:' && !window.location.hostname.includes('localhost');
+const stripePromise = isProduction ? loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_test_...') : null;
 
 export { stripePromise };
 
@@ -34,6 +35,8 @@ export const PRICING_PLANS = {
       batchProcessing: false,
       enhancedExports: false,
       priority: false,
+      aiFeatures: false,
+      aiCredits: 0,
       duration: undefined
     }
   },
@@ -193,24 +196,38 @@ export const PRICING_PLANS = {
   enterprise: {
     id: 'enterprise',
     name: 'Enterprise',
-    price: 'Custom',
+    price: 299,
+    interval: 'month',
+    stripePriceId: 'price_enterprise_monthly_placeholder',
+    features: [
+      'Everything in Professional',
+      'Unlimited users and processing',
+      'Custom integrations and workflows',
+      'Dedicated support and training',
+      'On-premise deployment options',
+      'Custom SLA and compliance'
+    ]
+  },
+  // ===== AI-ENHANCED PRICING TIERS =====
+  individual: {
+    id: 'individual',
+    name: 'Individual',
+    price: 49, // CMO's new pricing: $19 → $49 (+157%)
     interval: 'month',
     popular: false,
-    stripeProductId: 'prod_enterprise_placeholder',
-    stripePriceId: 'price_enterprise_placeholder',
+    stripeProductId: 'prod_individual_ai',
+    stripePriceId: 'price_individual_ai_monthly',
     accountRequired: true,
     sessionBased: false,
     features: [
-      'Unlimited images per session',
-      'Unlimited PDF exports',
-      'Unlimited data exports (all formats + custom)',
-      'Unlimited comparison tool',
-      'Advanced analytics + API',
-      'Unlimited batch processing',
-      'Custom export templates',
-      'Advanced metadata editing',
-      'Full REST API access',
-      'Dedicated support + SLA'
+      'Unlimited image processing',
+      'Basic AI analysis (OCR, classification)',
+      'AI-powered quality assessment',
+      'Smart document categorization',
+      'Enhanced PDF reports with AI insights',
+      'Basic fraud detection',
+      '100 AI credits/month',
+      'Email support'
     ],
     limits: {
       imagesPerSession: Infinity,
@@ -218,14 +235,212 @@ export const PRICING_PLANS = {
       dataExports: Infinity,
       comparisons: Infinity,
       batchProcessing: true,
-      batchSize: Infinity,
-      enhancedExports: true,
-      customTemplates: true,
-      metadataEditing: true,
-      apiAccess: true,
+      batchSize: 50,
+      aiFeatures: true,
+      aiCredits: 100,
+      advancedAI: false,
+      customModels: false,
+      priority: false,
+      duration: undefined
+    }
+  },
+  professional: {
+    id: 'professional',
+    name: 'Professional',
+    price: 149, // CMO's new pricing: $49 → $149 (+204%)
+    interval: 'month',
+    stripeProductId: 'prod_professional_ai',
+    stripePriceId: 'price_professional_ai_monthly',
+    popular: true,
+    accountRequired: true,
+    sessionBased: false,
+    features: [
+      'Everything in Individual',
+      'Advanced AI analysis (entity extraction, sentiment)',
+      'Predictive processing time estimation',
+      'AI-powered fraud detection (advanced)',
+      'Smart workflow recommendations',
+      'Custom AI model training (basic)',
+      '500 AI credits/month',
+      'Team collaboration (up to 5 users)',
+      'API access with AI endpoints',
+      'Priority support'
+    ],
+    limits: {
+      imagesPerSession: Infinity,
+      pdfExports: Infinity,
+      dataExports: Infinity,
+      comparisons: Infinity,
+      batchProcessing: true,
+      batchSize: 200,
+      aiFeatures: true,
+      aiCredits: 500,
+      advancedAI: true,
+      customModels: 'basic',
+      teamUsers: 5,
+      apiCalls: 5000,
       priority: true,
       duration: undefined
     }
+  },
+  business: {
+    id: 'business',
+    name: 'Business',
+    price: 499, // CMO's new pricing: $149 → $499 (+235%)
+    interval: 'month',
+    popular: false,
+    stripeProductId: 'prod_business_ai',
+    stripePriceId: 'price_business_ai_monthly',
+    accountRequired: true,
+    sessionBased: false,
+    features: [
+      'Everything in Professional',
+      'Industry-specific AI models (legal, healthcare, finance)',
+      'Advanced custom model training',
+      'AI-powered compliance monitoring',
+      'Intelligent document routing',
+      'Advanced predictive analytics',
+      '2000 AI credits/month',
+      'Team management (up to 25 users)',
+      'Advanced API access',
+      'SSO integration',
+      'Business support'
+    ],
+    limits: {
+      imagesPerSession: Infinity,
+      pdfExports: Infinity,
+      dataExports: Infinity,
+      comparisons: Infinity,
+      batchProcessing: true,
+      batchSize: 1000,
+      aiFeatures: true,
+      aiCredits: 2000,
+      advancedAI: true,
+      customModels: 'advanced',
+      industryModels: true,
+      teamUsers: 25,
+      apiCalls: 25000,
+      priority: true,
+      duration: undefined
+    }
+  },
+  // ===== AI PREMIUM ADD-ON =====
+  ai_premium: {
+    id: 'ai_premium',
+    name: 'AI Premium Add-On',
+    price: 999, // CMO's AI Premium: $999/month
+    interval: 'month',
+    popular: false,
+    stripeProductId: 'prod_ai_premium',
+    stripePriceId: 'price_ai_premium_monthly',
+    accountRequired: true,
+    sessionBased: false,
+    isAddon: true,
+    features: [
+      'Unlimited AI processing',
+      'Advanced machine learning models',
+      'Real-time AI insights',
+      'Custom AI model training',
+      'AI API access',
+      'Priority AI processing',
+      'Advanced AI analytics'
+    ],
+    limits: {
+      aiCredits: Infinity,
+      advancedAI: true,
+      customModels: 'premium',
+      realTimeAI: true,
+      aiAPI: true,
+      priority: true
+    }
+  }
+};
+
+// ===== INDUSTRY-SPECIFIC AI PACKAGES =====
+export const INDUSTRY_AI_PACKAGES = {
+  legal: {
+    id: 'legal_ai',
+    name: 'Legal AI Package',
+    price: 2999,
+    interval: 'month',
+    features: [
+      'Court document classification',
+      'Legal entity extraction',
+      'Case precedent matching',
+      'Legal compliance monitoring',
+      'Court-ready AI reports'
+    ]
+  },
+  healthcare: {
+    id: 'healthcare_ai',
+    name: 'Healthcare AI Package',
+    price: 3999,
+    interval: 'month',
+    features: [
+      'HIPAA-compliant AI processing',
+      'Medical terminology extraction',
+      'Patient data protection AI',
+      'Medical document classification',
+      'Healthcare compliance monitoring'
+    ]
+  },
+  financial: {
+    id: 'financial_ai',
+    name: 'Financial AI Package',
+    price: 4999,
+    interval: 'month',
+    features: [
+      'Fraud pattern detection',
+      'Financial entity extraction',
+      'Compliance automation',
+      'Risk assessment AI',
+      'Financial document analysis'
+    ]
+  }
+};
+
+// ===== CUSTOM AI MODEL TRAINING PACKAGES =====
+export const AI_TRAINING_PACKAGES = {
+  starter: {
+    id: 'ai_training_starter',
+    name: 'AI Training Starter',
+    price: 10000,
+    interval: 'one-time',
+    features: [
+      'Basic custom model training',
+      'Up to 1000 training documents',
+      'Standard accuracy optimization',
+      'Basic deployment'
+    ]
+  },
+  professional: {
+    id: 'ai_training_professional',
+    name: 'AI Training Professional',
+    price: 25000,
+    setupFee: 25000,
+    monthlyFee: 1000,
+    features: [
+      'Advanced custom model training',
+      'Up to 10000 training documents',
+      'Advanced accuracy optimization',
+      'Production deployment',
+      'Monthly model updates'
+    ]
+  },
+  enterprise: {
+    id: 'ai_training_enterprise',
+    name: 'AI Training Enterprise',
+    price: 100000,
+    setupFee: 100000,
+    monthlyFee: 5000,
+    features: [
+      'Enterprise custom model development',
+      'Unlimited training documents',
+      'Maximum accuracy optimization',
+      'Enterprise deployment',
+      'Continuous model improvement',
+      'Dedicated AI team'
+    ]
   }
 };
 
@@ -306,22 +521,22 @@ export const redirectToCheckout = async (priceId) => {
   try {
     // Get plan info to determine success URL parameters
     const plan = Object.values(PRICING_PLANS).find(p => p.stripePriceId === priceId);
-  if (window.location.hostname === "localhost") { alert("Local Development: Stripe checkout simulation. Deploy to test real payments."); return; }
-  // 🧪 LOCAL DEVELOPMENT: Skip API calls for localhost
-  if (window.location.hostname === "localhost") {
-    console.log("🧪 Local Development: Simulating checkout for", plan?.name || "Unknown Plan");
-    alert(`Local Development Checkout
+    
+    // Check for non-HTTPS environment
+    if (!isProduction) {
+      console.log("🧪 Development/Non-HTTPS Environment: Simulating checkout for", plan?.name || "Unknown Plan");
+      alert(`Development Mode Checkout
 
 Plan: ${plan?.name || "Unknown"}
 Price: ${plan?.price || "Unknown"}
 
-This is a local development simulation.
-In production, this would redirect to Stripe Checkout.
+This is a development simulation.
+Stripe requires HTTPS for live payments.
 
-To test real payments, deploy to Netlify.`);
-    return;
-  }
-
+To test real payments, deploy to a secure HTTPS environment.`);
+      return;
+    }
+    
     const planId = plan ? plan.id : 'pro';
     
     // 🚀 DEVELOPMENT MODE: Handle placeholder price IDs
@@ -346,6 +561,10 @@ To test real payments, deploy to Netlify.`);
 
     // Real Stripe checkout
     const stripe = await stripePromise;
+    if (!stripe) {
+      throw new Error('Stripe failed to load. Please ensure you are using HTTPS.');
+    }
+    
     const result = await stripe.redirectToCheckout({
       sessionId: session.sessionId || session.id,
     });

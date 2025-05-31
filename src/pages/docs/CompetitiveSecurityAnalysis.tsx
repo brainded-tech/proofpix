@@ -1,13 +1,36 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, CheckCircle, XCircle, Download, TrendingUp, AlertTriangle, Target, Zap } from 'lucide-react';
+import { 
+  Shield, 
+  TrendingUp, 
+  CheckCircle, 
+  XCircle, 
+  AlertTriangle, 
+  Eye, 
+  Lock, 
+  Server,
+  Globe,
+  Users,
+  Database,
+  Settings,
+  Target,
+  Award
+} from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 const CompetitiveSecurityAnalysis: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleBackToDocs = () => {
-    navigate('/docs');
+  const handleBackHome = () => {
+    navigate('/');
   };
 
   const handleDownload = () => {
@@ -170,33 +193,46 @@ const CompetitiveSecurityAnalysis: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Competitive Security Analysis"
+      description="How ProofPix's security model compares to traditional cloud solutions"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBackToDocs}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Back to Documentation</span>
-            </button>
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={handleDownload}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <Download className="h-4 w-4" />
-                <span>Download PDF</span>
-              </button>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-500/20 text-orange-300">
-                Competitive Analysis
-              </span>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-orange-600 p-3 rounded-lg">
+            <TrendingUp className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Competitive Security Analysis</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              How ProofPix's security model compares to traditional cloud solutions
+            </p>
           </div>
         </div>
-      </header>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="warning" icon={<Target className="enterprise-icon-sm" />}>
+            Competitive Analysis
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="danger" icon={<Shield className="enterprise-icon-sm" />}>
+            Security Comparison
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<Award className="enterprise-icon-sm" />}>
+            Market Leading
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Title */}
@@ -488,7 +524,7 @@ const CompetitiveSecurityAnalysis: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-blue-400 mb-4 flex items-center">
-                <Zap className="h-5 w-5 mr-2" />
+                <Target className="h-5 w-5 mr-2" />
                 Against Adobe/Canva
               </h3>
               <div className="space-y-3 text-sm">
@@ -581,7 +617,7 @@ const CompetitiveSecurityAnalysis: React.FC = () => {
 
       {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 };
 

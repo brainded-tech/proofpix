@@ -1,6 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, CheckCircle, AlertTriangle, Clock, Target, FileText } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 const ComplianceChecklist: React.FC = () => {
@@ -11,32 +19,47 @@ const ComplianceChecklist: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Compliance Checklist"
+      description="Step-by-step compliance verification checklist"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBackToDocs}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Back to Documentation</span>
-            </button>
-            <div className="flex space-x-3">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-300">
-                Compliance Ready
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-300">
-                Assessment
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300">
-                Enterprise
-              </span>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-green-600 p-3 rounded-lg">
+            <Shield className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Compliance Checklist</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Step-by-step compliance verification checklist
+            </p>
           </div>
         </div>
-      </header>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="success">
+            Compliance Ready
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral">
+            Assessment
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="primary">
+            Enterprise
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Title */}
@@ -492,7 +515,7 @@ const ComplianceChecklist: React.FC = () => {
 
       {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 };
 

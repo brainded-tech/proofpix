@@ -65,7 +65,7 @@ const EnhancedExportDialog = memo(({
         filename = await exportData(data, exportType, options);
       }
 
-      onExportComplete?.(filename, exportType);
+      if (onExportComplete) onExportComplete(filename, exportType);
       onClose();
     } catch (error) {
       console.error('Export failed:', error);

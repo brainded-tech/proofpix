@@ -15,6 +15,14 @@ import {
   ArrowRight,
   Play
 } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 
 const GettingStarted: React.FC = () => {
   const navigate = useNavigate();
@@ -58,369 +66,255 @@ const GettingStarted: React.FC = () => {
     {
       title: 'Social Media Privacy',
       description: 'Remove location data before sharing photos online',
-      icon: <Shield className="h-5 w-5 text-blue-400" />,
+      icon: <Shield className="h-5 w-5 text-blue-600" />,
       example: 'Strip GPS coordinates from vacation photos'
     },
     {
       title: 'Professional Photography',
       description: 'Create detailed metadata reports for clients',
-      icon: <Camera className="h-5 w-5 text-purple-400" />,
+      icon: <Camera className="h-5 w-5 text-purple-600" />,
       example: 'Document camera settings and shooting conditions'
     },
     {
       title: 'Legal Documentation',
       description: 'Verify photo authenticity and capture details',
-      icon: <CheckCircle className="h-5 w-5 text-green-400" />,
+      icon: <CheckCircle className="h-5 w-5 text-green-600" />,
       example: 'Prove when and where evidence photos were taken'
     },
     {
       title: 'Real Estate Listings',
       description: 'Ensure MLS compliance and property verification',
-      icon: <MapPin className="h-5 w-5 text-orange-400" />,
+      icon: <MapPin className="h-5 w-5 text-orange-600" />,
       example: 'Verify property photos with timestamp and location'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Getting Started with ProofPix"
+      description="Learn to extract, view, and protect your photo metadata in minutes"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <button
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
             onClick={handleBackHome}
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
+          className="mb-6"
           >
             ← Back to ProofPix
-          </button>
+        </EnterpriseButton>
           
           <div className="flex items-center space-x-4 mb-4">
             <div className="bg-blue-600 p-3 rounded-lg">
-              <Play className="h-8 w-8" />
+            <Play className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Getting Started with ProofPix</h1>
-              <p className="text-xl text-gray-300 mt-2">
+            <h1 className="text-4xl font-bold text-slate-900">Getting Started with ProofPix</h1>
+            <p className="text-xl text-slate-600 mt-2">
                 Learn to extract, view, and protect your photo metadata in minutes
               </p>
             </div>
           </div>
           
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span className="flex items-center">
-              <Clock className="h-4 w-4 mr-1" />
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="neutral" icon={<Clock className="enterprise-icon-sm" />}>
               5 minute read
-            </span>
-            <span className="flex items-center">
-              <Shield className="h-4 w-4 mr-1" />
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<Shield className="enterprise-icon-sm" />}>
               Privacy-focused
-            </span>
-            <span className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-1" />
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="primary" icon={<CheckCircle className="enterprise-icon-sm" />}>
               No registration required
-            </span>
-          </div>
+          </EnterpriseBadge>
         </div>
-      </div>
+      </EnterpriseSection>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* What is ProofPix Section */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">What is ProofPix?</h2>
-          <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
-            <p className="text-lg text-gray-300 mb-6">
+      <EnterpriseSection size="lg">
+        <h2 className="text-3xl font-bold text-slate-900 mb-6">What is ProofPix?</h2>
+        <EnterpriseCard>
+          <p className="text-lg text-slate-600 mb-6">
               ProofPix is a privacy-focused photo metadata extraction tool that works entirely in your browser. 
               Extract, view, and remove EXIF data from photos without uploading them to any server.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <EnterpriseGrid columns={3}>
               <div className="text-center">
-                <div className="bg-blue-600/20 p-4 rounded-lg mb-3 inline-block">
-                  <Shield className="h-8 w-8 text-blue-400" />
-                </div>
-                <h3 className="font-semibold mb-2">100% Private</h3>
-                <p className="text-sm text-gray-400">Photos never leave your device</p>
+              <div className="bg-blue-100 p-4 rounded-lg mb-3 inline-block">
+                <Shield className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="font-semibold text-slate-900 mb-2">100% Private</h3>
+              <p className="text-sm text-slate-600">Photos never leave your device</p>
               </div>
               
               <div className="text-center">
-                <div className="bg-green-600/20 p-4 rounded-lg mb-3 inline-block">
-                  <CheckCircle className="h-8 w-8 text-green-400" />
-                </div>
-                <h3 className="font-semibold mb-2">No Registration</h3>
-                <p className="text-sm text-gray-400">Start using immediately</p>
+              <div className="bg-green-100 p-4 rounded-lg mb-3 inline-block">
+                <CheckCircle className="h-8 w-8 text-green-600" />
+              </div>
+              <h3 className="font-semibold text-slate-900 mb-2">No Registration</h3>
+              <p className="text-sm text-slate-600">Start using immediately</p>
               </div>
               
               <div className="text-center">
-                <div className="bg-purple-600/20 p-4 rounded-lg mb-3 inline-block">
-                  <Eye className="h-8 w-8 text-purple-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Professional Grade</h3>
-                <p className="text-sm text-gray-400">Enterprise-quality extraction</p>
+              <div className="bg-purple-100 p-4 rounded-lg mb-3 inline-block">
+                <Eye className="h-8 w-8 text-purple-600" />
               </div>
+              <h3 className="font-semibold text-slate-900 mb-2">Professional Grade</h3>
+              <p className="text-sm text-slate-600">Enterprise-quality extraction</p>
             </div>
-          </div>
-        </section>
+          </EnterpriseGrid>
+        </EnterpriseCard>
+      </EnterpriseSection>
 
         {/* Quick Start Section */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Quick Start (5 minutes)</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <EnterpriseSection size="lg">
+        <h2 className="text-3xl font-bold text-slate-900 mb-6">Quick Start (5 minutes)</h2>
+        <EnterpriseGrid columns={3}>
             {quickSteps.map((step, index) => (
               <div key={index} className="relative">
-                <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 h-full">
+              <EnterpriseCard className="h-full">
                   <div className="flex items-center mb-4">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">
                       {step.step}
                     </div>
-                    <div className="bg-blue-600/20 p-2 rounded-lg">
+                  <div className="bg-blue-100 p-2 rounded-lg">
                       {step.icon}
-                    </div>
                   </div>
-                  
-                  <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-                  <p className="text-gray-300 mb-4">{step.description}</p>
-                  <p className="text-sm text-gray-400">{step.details}</p>
                 </div>
+                
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">{step.title}</h3>
+                <p className="text-slate-600 mb-4">{step.description}</p>
+                <p className="text-sm text-slate-500">{step.details}</p>
+              </EnterpriseCard>
                 
                 {index < quickSteps.length - 1 && (
                   <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                    <ArrowRight className="h-6 w-6 text-gray-600" />
+                  <ArrowRight className="h-6 w-6 text-slate-400" />
                   </div>
                 )}
               </div>
             ))}
-          </div>
-        </section>
+        </EnterpriseGrid>
+      </EnterpriseSection>
 
         {/* Step-by-Step Tutorial */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Step-by-Step Tutorial</h2>
+      <EnterpriseSection size="lg">
+        <h2 className="text-3xl font-bold text-slate-900 mb-6">Step-by-Step Tutorial</h2>
           
           {/* Single Image Processing */}
-          <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700 mb-8">
-            <h3 className="text-2xl font-semibold mb-6 flex items-center">
-              <FileImage className="h-6 w-6 mr-3 text-blue-400" />
+        <EnterpriseCard className="mb-8">
+          <h3 className="text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+            <FileImage className="h-6 w-6 text-blue-600 mr-2" />
               Single Image Processing
             </h3>
             
             <div className="space-y-6">
-              <div>
-                <h4 className="text-lg font-semibold mb-3">1. Upload Your Photo</h4>
-                <div className="bg-gray-700/50 rounded-lg p-4 mb-4">
-                  <p className="text-gray-300 mb-3">
-                    Use the drag-and-drop interface on the homepage or click "Choose File" to select your image.
-                  </p>
-                  <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-3">
-                    <p className="text-blue-300 text-sm">
-                      <Info className="h-4 w-4 inline mr-2" />
-                      <strong>Tip:</strong> You can also paste images directly from your clipboard!
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-lg font-semibold mb-3">2. Supported Formats</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {supportedFormats.map((format, index) => (
-                    <div key={index} className="bg-gray-700/50 rounded-lg p-4 flex items-center">
-                      <div className="bg-green-600/20 p-2 rounded mr-3">
-                        {format.icon}
-                      </div>
-                      <div>
-                        <div className="font-semibold text-green-400">{format.format}</div>
-                        <div className="text-sm text-gray-400">{format.description}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-lg font-semibold mb-3">3. File Size Limits</h4>
-                <div className="bg-yellow-900/30 border border-yellow-500/30 rounded-lg p-4">
-                  <p className="text-yellow-300">
-                    <AlertTriangle className="h-4 w-4 inline mr-2" />
-                    Maximum file size: <strong>50MB</strong>. For best performance, use files under 10MB.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Batch Processing */}
-          <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
-            <h3 className="text-2xl font-semibold mb-6 flex items-center">
-              <Upload className="h-6 w-6 mr-3 text-purple-400" />
-              Batch Processing
-            </h3>
-            
-            <div className="space-y-4">
-              <p className="text-gray-300">
-                Process multiple images simultaneously for efficient workflow:
+            <div className="border-l-4 border-blue-600 pl-6">
+              <h4 className="text-lg font-semibold text-slate-900 mb-2">Step 1: Upload Your Photo</h4>
+              <p className="text-slate-600 mb-3">
+                Click the upload area or drag and drop your image file. ProofPix supports all major image formats.
               </p>
-              
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
-                  Select multiple files at once (up to 50 images)
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
-                  Real-time progress tracking for each file
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
-                  Individual error handling with retry options
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
-                  Bulk export in multiple formats
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Understanding Results */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Understanding Your Results</h2>
-          <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold mb-4">What Metadata Was Found</h3>
-                <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-center">
-                    <Camera className="h-4 w-4 text-blue-400 mr-3" />
-                    Camera settings (ISO, aperture, shutter speed)
-                  </li>
-                  <li className="flex items-center">
-                    <MapPin className="h-4 w-4 text-red-400 mr-3" />
-                    GPS coordinates (if available)
-                  </li>
-                  <li className="flex items-center">
-                    <Clock className="h-4 w-4 text-green-400 mr-3" />
-                    Timestamp information
-                  </li>
-                  <li className="flex items-center">
-                    <FileImage className="h-4 w-4 text-purple-400 mr-3" />
-                    Device and software details
-                  </li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Privacy Implications</h3>
-                <div className="space-y-3">
-                  <div className="bg-red-900/30 border border-red-500/30 rounded-lg p-3">
-                    <p className="text-red-300 text-sm">
-                      <AlertTriangle className="h-4 w-4 inline mr-2" />
-                      <strong>High Risk:</strong> GPS coordinates reveal exact location
-                    </p>
-                  </div>
-                  <div className="bg-yellow-900/30 border border-yellow-500/30 rounded-lg p-3">
-                    <p className="text-yellow-300 text-sm">
-                      <AlertTriangle className="h-4 w-4 inline mr-2" />
-                      <strong>Medium Risk:</strong> Device info can identify your equipment
-                    </p>
-                  </div>
-                  <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-3">
-                    <p className="text-green-300 text-sm">
-                      <CheckCircle className="h-4 w-4 inline mr-2" />
-                      <strong>Low Risk:</strong> Camera settings are generally safe to share
-                    </p>
-                  </div>
+              <div className="bg-slate-50 rounded-lg p-4">
+                <p className="text-sm text-slate-600">
+                  <strong>Tip:</strong> Your photo is processed entirely in your browser - it never leaves your device.
+                </p>
                 </div>
+              </div>
+
+            <div className="border-l-4 border-green-600 pl-6">
+              <h4 className="text-lg font-semibold text-slate-900 mb-2">Step 2: View Extracted Data</h4>
+              <p className="text-slate-600 mb-3">
+                Instantly see all metadata including camera settings, GPS coordinates, timestamps, and device information.
+              </p>
+              <div className="bg-slate-50 rounded-lg p-4">
+                <p className="text-sm text-slate-600">
+                  <strong>Note:</strong> Not all photos contain metadata - it depends on the camera and settings used.
+                </p>
+              </div>
+            </div>
+            
+            <div className="border-l-4 border-purple-600 pl-6">
+              <h4 className="text-lg font-semibold text-slate-900 mb-2">Step 3: Export or Clean</h4>
+              <p className="text-slate-600 mb-3">
+                Download a detailed report, export raw data, or create a privacy-cleaned version of your photo.
+              </p>
+              <div className="bg-slate-50 rounded-lg p-4">
+                <p className="text-sm text-slate-600">
+                  <strong>Privacy:</strong> Cleaned photos have all metadata removed for safe sharing.
+                </p>
               </div>
             </div>
           </div>
-        </section>
+        </EnterpriseCard>
 
-        {/* Common Use Cases */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Common Use Cases</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {useCases.map((useCase, index) => (
-              <div key={index} className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-                <div className="flex items-center mb-4">
-                  <div className="bg-gray-700 p-2 rounded-lg mr-3">
-                    {useCase.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold">{useCase.title}</h3>
+        {/* Supported Formats */}
+        <EnterpriseCard>
+          <h3 className="text-2xl font-semibold text-slate-900 mb-6">Supported File Formats</h3>
+          <EnterpriseGrid columns={2}>
+            {supportedFormats.map((format, index) => (
+              <div key={index} className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg">
+                <div className="text-blue-600">{format.icon}</div>
+                <div>
+                  <p className="font-medium text-slate-900">{format.format}</p>
+                  <p className="text-sm text-slate-600">{format.description}</p>
                 </div>
-                <p className="text-gray-300 mb-3">{useCase.description}</p>
-                <p className="text-sm text-gray-400 italic">Example: {useCase.example}</p>
               </div>
             ))}
-          </div>
-        </section>
+          </EnterpriseGrid>
+        </EnterpriseCard>
+      </EnterpriseSection>
 
-        {/* Troubleshooting */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Troubleshooting</h2>
-          <div className="space-y-6">
-            <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-              <h3 className="text-xl font-semibold mb-4">Common Issues</h3>
-              <div className="space-y-4">
+      {/* Common Use Cases */}
+      <EnterpriseSection size="lg">
+        <h2 className="text-3xl font-bold text-slate-900 mb-6">Common Use Cases</h2>
+        <EnterpriseGrid columns={2}>
+          {useCases.map((useCase, index) => (
+            <EnterpriseCard key={index}>
+              <div className="flex items-start space-x-3 mb-4">
+                {useCase.icon}
                 <div>
-                  <h4 className="font-semibold text-yellow-400 mb-2">File not uploading</h4>
-                  <ul className="text-gray-300 text-sm space-y-1 ml-4">
-                    <li>• Check file size (must be under 50MB)</li>
-                    <li>• Ensure file format is supported (JPEG, PNG, TIFF, HEIC)</li>
-                    <li>• Try refreshing the page and uploading again</li>
-                  </ul>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{useCase.title}</h3>
+                  <p className="text-slate-600 mb-3">{useCase.description}</p>
+                  <div className="bg-slate-50 rounded-lg p-3">
+                    <p className="text-sm text-slate-600">
+                      <strong>Example:</strong> {useCase.example}
+                    </p>
                 </div>
-                
-                <div>
-                  <h4 className="font-semibold text-yellow-400 mb-2">Metadata not detected</h4>
-                  <ul className="text-gray-300 text-sm space-y-1 ml-4">
-                    <li>• Some images may not contain EXIF data</li>
-                    <li>• Screenshots typically have no metadata</li>
-                    <li>• Social media platforms often strip metadata</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold text-yellow-400 mb-2">Browser compatibility</h4>
-                  <ul className="text-gray-300 text-sm space-y-1 ml-4">
-                    <li>• Use Chrome 90+, Firefox 88+, Safari 14+, or Edge 90+</li>
-                    <li>• Enable JavaScript in your browser</li>
-                    <li>• Clear browser cache if experiencing issues</li>
-                  </ul>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </EnterpriseCard>
+          ))}
+        </EnterpriseGrid>
+      </EnterpriseSection>
 
         {/* Next Steps */}
-        <section className="mb-16">
-          <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-xl p-8 border border-gray-700">
-            <h2 className="text-2xl font-bold mb-4">Ready to Get Started?</h2>
-            <p className="text-gray-300 mb-6">
-              Now that you understand how ProofPix works, try it with your own photos!
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
+      <EnterpriseSection size="lg">
+        <EnterpriseCard variant="dark" className="text-center">
+          <h2 className="text-3xl font-bold text-white mb-6">Ready to Get Started?</h2>
+          <p className="text-xl text-slate-300 mb-8">
+            Start extracting metadata from your photos right now - no registration required.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <EnterpriseButton 
+              variant="primary" 
+              size="lg"
                 onClick={handleBackHome}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center"
-              >
-                <Upload className="h-5 w-5 mr-2" />
-                Start Extracting Metadata
-              </button>
-              
-              <button
-                onClick={() => navigate('/docs/privacy-guide')}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center"
-              >
-                <Shield className="h-5 w-5 mr-2" />
-                Learn Privacy Best Practices
-              </button>
-            </div>
+            >
+              Try ProofPix Now
+            </EnterpriseButton>
+            <EnterpriseButton 
+              variant="secondary" 
+              size="lg"
+              onClick={() => navigate('/enterprise')}
+            >
+              Learn About Enterprise
+            </EnterpriseButton>
           </div>
-        </section>
-      </div>
-    </div>
+        </EnterpriseCard>
+      </EnterpriseSection>
+    </EnterpriseLayout>
   );
 };
 

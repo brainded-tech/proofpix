@@ -280,3 +280,78 @@ This project is open source and available under the MIT License.
 ---
 
 **ProofPix** - Extract metadata, preserve privacy, maintain proof. 🔒 # Environment variables updated
+
+# ProofPix Enterprise Analytics Dashboard
+
+A comprehensive analytics system for the ProofPix Enterprise platform, featuring real-time metrics, custom dashboards, and performance monitoring.
+
+## Components
+
+### 1. RealTimeMetricsDashboard
+
+Displays real-time analytics with interactive charts using Chart.js:
+
+- Time-range selection (24h, 7d, 30d, 90d)
+- Key metrics cards with trend indicators
+- Interactive charts with drill-down capability
+- Light/dark theme support
+
+### 2. CustomDashboardBuilder
+
+A drag-and-drop dashboard builder:
+
+- Custom widget creation for various visualization types
+- Configurable widget settings
+- Dashboard layout customization
+- Theme support
+
+### 3. PerformanceTrackingSystem
+
+A system health monitoring dashboard:
+
+- Service status monitoring
+- Performance metrics tracking
+- Historical data visualization
+- Alert thresholds
+
+### 4. Supporting Components
+
+- **SortableWidget**: Draggable widget component
+- **WidgetSettings**: Widget configuration panel
+- **Tabs**: UI component for tab navigation
+
+## Installation
+
+```bash
+# Install dependencies
+npm install chart.js@4.4.9 react-chartjs-2@5.3.0 chartjs-adapter-date-fns@3.0.0 date-fns
+npm install @dnd-kit/core @dnd-kit/sortable
+npm install @radix-ui/react-tabs tailwind-merge clsx
+npm install lucide-react
+```
+
+## Usage
+
+```jsx
+import React from 'react';
+import AnalyticsDashboard from './pages/AnalyticsDashboard';
+
+function App() {
+  return (
+    <div className="App">
+      <AnalyticsDashboard />
+    </div>
+  );
+}
+
+export default App;
+```
+
+The main dashboard integrates all components and provides tab navigation between:
+- Real-Time Metrics
+- Custom Dashboards
+- System Performance
+
+## Theme Support
+
+The dashboard supports both light and dark themes and adapts to the user's preferences.

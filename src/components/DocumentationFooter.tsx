@@ -1,13 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const DocumentationFooter: React.FC = () => {
-  const navigate = useNavigate();
-
-  const handleBackHome = () => {
-    navigate('/');
-  };
-
   return (
     <footer className="bg-gray-800 border-t border-gray-700 py-6 mt-16">
       <div className="max-w-6xl mx-auto px-4">
@@ -17,24 +11,24 @@ const DocumentationFooter: React.FC = () => {
             <p>Privacy-respecting EXIF metadata tool - v1.8.0 • Open Source</p>
           </div>
           <nav className="flex space-x-6 text-sm">
-            <button onClick={handleBackHome} className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/" className="text-gray-400 hover:text-white transition-colors">
               Home
-            </button>
-            <button onClick={() => navigate('/docs')} className="text-gray-400 hover:text-white transition-colors">
+            </Link>
+            <Link to="/docs" className="text-gray-400 hover:text-white transition-colors">
               Documentation
-            </button>
-            <button onClick={() => navigate('/faq')} className="text-gray-400 hover:text-white transition-colors">
+            </Link>
+            <Link to="/faq" className="text-gray-400 hover:text-white transition-colors">
               FAQ
-            </button>
-            <button onClick={() => navigate('/about')} className="text-gray-400 hover:text-white transition-colors">
+            </Link>
+            <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
               About
-            </button>
-            <button onClick={() => navigate('/privacy')} className="text-gray-400 hover:text-white transition-colors">
+            </Link>
+            <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">
               Privacy
-            </button>
-            <button onClick={() => navigate('/support')} className="text-gray-400 hover:text-white transition-colors">
+            </Link>
+            <Link to="/support" className="text-gray-400 hover:text-white transition-colors">
               Support
-            </button>
+            </Link>
           </nav>
         </div>
       </div>

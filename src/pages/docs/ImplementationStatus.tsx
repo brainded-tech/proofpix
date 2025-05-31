@@ -1,6 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Activity, CheckCircle, Clock, AlertCircle, TrendingUp, Users, Zap, ArrowRight, Calendar, Target } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Activity, CheckCircle, Clock, AlertCircle, TrendingUp, Users, Zap, ArrowRight, Calendar, Target, ArrowLeft } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
+import DocumentationFooter from '../../components/DocumentationFooter';
 
 interface StatusCardProps {
   title: string;
@@ -12,30 +21,64 @@ interface StatusCardProps {
 }
 
 const StatusCard: React.FC<StatusCardProps> = ({ title, status, progress, details, icon, color }) => (
-  <div className={`border rounded-lg p-6 bg-${color}-50 border-${color}-200`}>
+  <EnterpriseCard className={`${
+    color === 'green' ? 'bg-green-50 border-green-200' :
+    color === 'blue' ? 'bg-blue-50 border-blue-200' :
+    color === 'yellow' ? 'bg-yellow-50 border-yellow-200' :
+    'bg-slate-50 border-slate-200'
+  }`}>
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center">
         {icon}
-        <h3 className={`text-lg font-semibold text-${color}-900 ml-2`}>{title}</h3>
+        <h3 className={`text-lg font-semibold ml-2 ${
+          color === 'green' ? 'text-green-900' :
+          color === 'blue' ? 'text-blue-900' :
+          color === 'yellow' ? 'text-yellow-900' :
+          'text-slate-900'
+        }`}>{title}</h3>
       </div>
-      <span className={`text-sm font-medium text-${color}-700`}>{status}</span>
+      <EnterpriseBadge 
+        variant={color === 'green' ? 'success' : color === 'blue' ? 'primary' : color === 'yellow' ? 'warning' : 'neutral'}
+      >
+        {status}
+      </EnterpriseBadge>
     </div>
     
     <div className="mb-3">
       <div className="flex justify-between text-sm mb-1">
-        <span className={`text-${color}-700`}>Progress</span>
-        <span className={`text-${color}-700`}>{progress}%</span>
+        <span className={`${
+          color === 'green' ? 'text-green-700' :
+          color === 'blue' ? 'text-blue-700' :
+          color === 'yellow' ? 'text-yellow-700' :
+          'text-slate-700'
+        }`}>Progress</span>
+        <span className={`${
+          color === 'green' ? 'text-green-700' :
+          color === 'blue' ? 'text-blue-700' :
+          color === 'yellow' ? 'text-yellow-700' :
+          'text-slate-700'
+        }`}>{progress}%</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-slate-200 rounded-full h-2">
         <div 
-          className={`bg-${color}-600 h-2 rounded-full transition-all duration-300`}
+          className={`h-2 rounded-full transition-all duration-300 ${
+            color === 'green' ? 'bg-green-600' :
+            color === 'blue' ? 'bg-blue-600' :
+            color === 'yellow' ? 'bg-yellow-600' :
+            'bg-slate-600'
+          }`}
           style={{ width: `${progress}%` }}
         ></div>
       </div>
     </div>
     
-    <p className={`text-sm text-${color}-700`}>{details}</p>
-  </div>
+    <p className={`text-sm ${
+      color === 'green' ? 'text-green-700' :
+      color === 'blue' ? 'text-blue-700' :
+      color === 'yellow' ? 'text-yellow-700' :
+      'text-slate-700'
+    }`}>{details}</p>
+  </EnterpriseCard>
 );
 
 interface TimelineItemProps {
@@ -50,7 +93,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ title, description, date, s
     switch (status) {
       case 'completed': return 'text-green-600 bg-green-100';
       case 'in-progress': return 'text-blue-600 bg-blue-100';
-      case 'upcoming': return 'text-gray-600 bg-gray-100';
+      case 'upcoming': return 'text-slate-600 bg-slate-100';
     }
   };
 
@@ -69,16 +112,22 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ title, description, date, s
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <h4 className="text-sm font-semibold text-gray-900">{title}</h4>
-          <span className="text-xs text-gray-500">{date}</span>
+          <h4 className="text-sm font-semibold text-slate-900">{title}</h4>
+          <span className="text-xs text-slate-500">{date}</span>
         </div>
-        <p className="text-sm text-gray-600 mt-1">{description}</p>
+        <p className="text-sm text-slate-600 mt-1">{description}</p>
       </div>
     </div>
   );
 };
 
 export const ImplementationStatus: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBackToDocs = () => {
+    navigate('/docs');
+  };
+
   const projectStatus = [
     {
       title: "AI-Driven Pricing",
@@ -198,246 +247,229 @@ export const ImplementationStatus: React.FC = () => {
       color: "yellow"
     },
     {
-      priority: "Medium",
-      task: "Customer Success Onboarding Materials",
-      owner: "Customer Success",
-      deadline: "Next Week", 
-      color: "yellow"
-    },
-    {
       priority: "Low",
-      task: "Performance Optimization Review",
-      owner: "Senior Developer",
-      deadline: "2 Weeks",
+      task: "Production Deployment Planning",
+      owner: "DevOps Team",
+      deadline: "Next Week",
       color: "green"
     }
   ];
 
+  const metrics = [
+    {
+      label: "Overall Progress",
+      value: "88%",
+      change: "+12%",
+      icon: Target,
+      color: "blue"
+    },
+    {
+      label: "Features Complete",
+      value: "15/18",
+      change: "+3",
+      icon: CheckCircle,
+      color: "green"
+    },
+    {
+      label: "Documentation",
+      value: "95%",
+      change: "+25%",
+      icon: Activity,
+      color: "purple"
+    },
+    {
+      label: "Team Velocity",
+      value: "High",
+      change: "Stable",
+      icon: Zap,
+      color: "orange"
+    }
+  ];
+
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Breadcrumb navigation */}
-      <nav className="mb-6 text-sm">
-        <Link to="/docs" className="text-blue-600 hover:underline">Documentation</Link>
-        <span className="mx-2">/</span>
-        <Link to="/docs" className="text-blue-600 hover:underline">Enterprise</Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-600">Implementation Status</span>
-      </nav>
-
-      {/* Page title */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4 flex items-center">
-          <Activity className="mr-3 text-blue-600" size={32} />
-          Implementation Status Dashboard
-        </h1>
-        <p className="text-xl text-gray-600">
-          Real-time tracking of ProofPix enterprise feature development and deployment
-        </p>
-      </div>
-
-      {/* Overall Progress Summary */}
-      <div className="mb-8 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Overall Project Progress</h2>
-          <div className="flex items-center space-x-2">
-            <Zap className="text-blue-600" size={20} />
-            <span className="text-lg font-bold text-blue-600">88% Complete</span>
+    <EnterpriseLayout
+      showHero
+      title="Implementation Status"
+      description="Real-time project status, milestones, and next steps for ProofPix enterprise features"
+      maxWidth="6xl"
+    >
+      {/* Header */}
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <Activity className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Implementation Status</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Real-time project status, milestones, and next steps for ProofPix enterprise features
+            </p>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">3</div>
-            <div className="text-sm text-gray-600">Features Complete</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">2</div>
-            <div className="text-sm text-gray-600">In Progress</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-yellow-600">1</div>
-            <div className="text-sm text-gray-600">Pending</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">7</div>
-            <div className="text-sm text-gray-600">Days to Launch</div>
-          </div>
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<Activity className="enterprise-icon-sm" />}>
+            Implementation Status
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<TrendingUp className="enterprise-icon-sm" />}>
+            Progress Tracking
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<Clock className="enterprise-icon-sm" />}>
+            Real-time Updates
+          </EnterpriseBadge>
         </div>
+      </EnterpriseSection>
 
-        <div className="w-full bg-gray-200 rounded-full h-3">
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full" style={{ width: '88%' }}></div>
-        </div>
-      </div>
-
-      {/* Project Status Cards */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Feature Implementation Status</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projectStatus.map((project, index) => (
-            <StatusCard key={index} {...project} />
-          ))}
-        </div>
-      </section>
-
-      {/* Implementation Timeline */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <Calendar className="mr-2 text-blue-500" size={24} />
-          Implementation Timeline
-        </h2>
-        
-        <div className="bg-white border rounded-lg p-6">
-          <div className="space-y-6">
-            {timelineItems.map((item, index) => (
-              <div key={index}>
-                <TimelineItem {...item} />
-                {index < timelineItems.length - 1 && (
-                  <div className="ml-4 mt-4 mb-2 border-l-2 border-gray-200 h-4"></div>
-                )}
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Key Metrics */}
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Key Metrics</h2>
+          <EnterpriseGrid columns={4}>
+            {metrics.map((metric, index) => (
+              <div key={index} className="text-center p-4 bg-slate-50 rounded-lg">
+                <metric.icon className={`h-8 w-8 mx-auto mb-2 ${
+                  metric.color === 'blue' ? 'text-blue-600' :
+                  metric.color === 'green' ? 'text-green-600' :
+                  metric.color === 'purple' ? 'text-purple-600' :
+                  'text-orange-600'
+                }`} />
+                <div className="text-2xl font-bold text-slate-900 mb-1">{metric.value}</div>
+                <div className="text-sm text-slate-600 mb-1">{metric.label}</div>
+                <div className={`text-xs font-medium ${
+                  metric.change.startsWith('+') ? 'text-green-600' : 'text-slate-500'
+                }`}>
+                  {metric.change}
+                </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
+          </EnterpriseGrid>
+        </EnterpriseCard>
 
-      {/* Next Steps & Action Items */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-          <Target className="mr-2 text-green-500" size={24} />
-          Next Steps & Action Items
-        </h2>
-        
-        <div className="space-y-4">
-          {nextSteps.map((step, index) => (
-            <div key={index} className="bg-white border rounded-lg p-4 flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className={`px-2 py-1 rounded text-xs font-medium ${
-                  step.color === 'red' ? 'bg-red-100 text-red-800' :
-                  step.color === 'yellow' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-green-100 text-green-800'
-                }`}>
-                  {step.priority}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">{step.task}</h3>
-                  <p className="text-sm text-gray-600">Owner: {step.owner}</p>
-                </div>
+        {/* Project Status */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Project Status Overview</h2>
+          <EnterpriseGrid columns={2}>
+            {projectStatus.map((project, index) => (
+              <StatusCard key={index} {...project} />
+            ))}
+          </EnterpriseGrid>
+        </div>
+
+        {/* Timeline */}
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Implementation Timeline</h2>
+          <div className="space-y-6">
+            {timelineItems.map((item, index) => (
+              <TimelineItem key={index} {...item} />
+            ))}
+          </div>
+        </EnterpriseCard>
+
+        {/* Next Steps */}
+        <EnterpriseCard className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Next Steps & Action Items</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-slate-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Priority</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Task</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Owner</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Deadline</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-slate-200">
+                {nextSteps.map((step, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <EnterpriseBadge 
+                        variant={step.priority === 'High' ? 'danger' : step.priority === 'Medium' ? 'warning' : 'success'}
+                      >
+                        {step.priority}
+                      </EnterpriseBadge>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-slate-900">{step.task}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-slate-600">{step.owner}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-slate-600">{step.deadline}</div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </EnterpriseCard>
+
+        {/* Team Communication */}
+        <EnterpriseCard className="mb-8 bg-blue-50 border-blue-200">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">Team Communication</h2>
+          <div className="space-y-4">
+            <div className="flex items-start space-x-4">
+              <div className="bg-blue-100 p-2 rounded-full">
+                <Users className="h-5 w-5 text-blue-600" />
               </div>
-              <div className="text-right">
-                <div className="text-sm font-medium text-gray-900">{step.deadline}</div>
+              <div>
+                <h3 className="font-semibold text-slate-900">Daily Standups</h3>
+                <p className="text-slate-600 text-sm">Team sync every morning at 9:00 AM EST to review progress and blockers</p>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Team Coordination Status */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Team Coordination Status</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-green-900 mb-3">Completed Teams</h3>
-            <ul className="space-y-2 text-green-800">
-              <li>• UI/UX Team - Branding specs delivered</li>
-              <li>• Security Officer - Protocols defined</li>
-              <li>• Sales & Marketing - Strategy approved</li>
-              <li>• Tech Documentation - API docs created</li>
-            </ul>
-          </div>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-blue-900 mb-3">In Progress</h3>
-            <ul className="space-y-2 text-blue-800">
-              <li>• Tech Team - Custom branding implementation</li>
-              <li>• Senior Developer - API integration</li>
-              <li>• Documentation Team - Perfection roadmap</li>
-            </ul>
-          </div>
-
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-yellow-900 mb-3">Pending</h3>
-            <ul className="space-y-2 text-yellow-800">
-              <li>• Customer Success - Onboarding materials</li>
-              <li>• Privacy Officer - Final compliance review</li>
-              <li>• Social Media - Launch campaign</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Key Metrics */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Key Implementation Metrics</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white border rounded-lg p-6 text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">15</div>
-            <div className="text-sm text-gray-600">Documentation Pages Created</div>
-          </div>
-          
-          <div className="bg-white border rounded-lg p-6 text-center">
-            <div className="text-3xl font-bold text-green-600 mb-2">12</div>
-            <div className="text-sm text-gray-600">API Endpoints Documented</div>
-          </div>
-          
-          <div className="bg-white border rounded-lg p-6 text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">8</div>
-            <div className="text-sm text-gray-600">Team Responses Coordinated</div>
-          </div>
-          
-          <div className="bg-white border rounded-lg p-6 text-center">
-            <div className="text-3xl font-bold text-yellow-600 mb-2">95%</div>
-            <div className="text-sm text-gray-600">Documentation Completeness</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Risk Assessment */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Risk Assessment</h2>
-        
-        <div className="space-y-4">
-          <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg">
-            <div className="flex items-center mb-2">
-              <CheckCircle className="mr-2 text-green-600" size={16} />
-              <span className="font-semibold text-green-800">Low Risk</span>
+            <div className="flex items-start space-x-4">
+              <div className="bg-green-100 p-2 rounded-full">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900">Weekly Reviews</h3>
+                <p className="text-slate-600 text-sm">Comprehensive progress review every Friday with stakeholder updates</p>
+              </div>
             </div>
-            <p className="text-green-700 text-sm">
-              Core features are complete and tested. Documentation is comprehensive. Team coordination is effective.
-            </p>
-          </div>
-
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
-            <div className="flex items-center mb-2">
-              <AlertCircle className="mr-2 text-yellow-600" size={16} />
-              <span className="font-semibold text-yellow-800">Medium Risk</span>
+            <div className="flex items-start space-x-4">
+              <div className="bg-purple-100 p-2 rounded-full">
+                <Target className="h-5 w-5 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900">Sprint Planning</h3>
+                <p className="text-slate-600 text-sm">Bi-weekly sprint planning sessions to prioritize features and allocate resources</p>
+              </div>
             </div>
-            <p className="text-yellow-700 text-sm">
-              Custom branding API integration timeline is tight. Sales team training needs to be scheduled promptly.
-            </p>
           </div>
-        </div>
-      </section>
+        </EnterpriseCard>
 
-      {/* Footer navigation */}
-      <nav className="mt-12 pt-6 border-t border-gray-200">
-        <div className="flex justify-between items-center">
-          <Link 
-            to="/docs/custom-branding" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            ← Previous: Custom Branding
-          </Link>
-          <Link 
-            to="/docs/enterprise-demo-walkthrough" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            Next: Enterprise Demo Walkthrough →
-            <ArrowRight className="ml-1" size={16} />
-          </Link>
-        </div>
-      </nav>
-    </div>
+        {/* Call to Action */}
+        <EnterpriseCard className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 text-center">
+          <h3 className="text-2xl font-bold text-slate-900 mb-4">Stay Updated</h3>
+          <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
+            This status page is updated in real-time as we make progress. 
+            Check back regularly for the latest updates on enterprise feature development.
+          </p>
+          <div className="flex justify-center space-x-4">
+            <EnterpriseButton variant="primary">
+              View Enterprise Demo
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </EnterpriseButton>
+            <EnterpriseButton variant="secondary">
+              Contact Team
+            </EnterpriseButton>
+          </div>
+        </EnterpriseCard>
+      </div>
+
+      {/* Footer */}
+      <DocumentationFooter />
+    </EnterpriseLayout>
   );
 }; 
+
+

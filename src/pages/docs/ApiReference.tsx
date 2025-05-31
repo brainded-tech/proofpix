@@ -15,6 +15,14 @@ import {
   ArrowRight,
   Copy
 } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 
 const ApiReference: React.FC = () => {
   const navigate = useNavigate();
@@ -160,45 +168,46 @@ if (validation.isValid) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="API Reference"
+      description="Complete developer reference for ProofPix metadata extraction APIs"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <button
-            onClick={handleBackHome}
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
-          >
-            ← Back to ProofPix
-          </button>
-          
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="bg-purple-600 p-3 rounded-lg">
-              <Code className="h-8 w-8" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold">API Reference</h1>
-              <p className="text-xl text-gray-300 mt-2">
-                Complete developer reference for ProofPix metadata extraction APIs
-              </p>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-purple-600 p-3 rounded-lg">
+            <Code className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span className="flex items-center">
-              <Code className="h-4 w-4 mr-1" />
-              Developer Documentation
-            </span>
-            <span className="flex items-center">
-              <Shield className="h-4 w-4 mr-1" />
-              Privacy-focused
-            </span>
-            <span className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-1" />
-              TypeScript Support
-            </span>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">API Reference</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Complete developer reference for ProofPix metadata extraction APIs
+            </p>
           </div>
         </div>
-      </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="neutral" icon={<Code className="enterprise-icon-sm" />}>
+            Developer Documentation
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="danger" icon={<Shield className="enterprise-icon-sm" />}>
+            Privacy-focused
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            TypeScript Support
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* API Overview */}
@@ -1009,7 +1018,7 @@ yarn add proofpix-api`}
           </button>
         </div>
       </div>
-    </div>
+    </EnterpriseLayout>
   );
 };
 

@@ -1,42 +1,69 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, Lock, Eye, Server, Cloud, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Shield, Lock, Eye, Server, Cloud, CheckCircle, XCircle, AlertTriangle, Users, Settings } from 'lucide-react';
 import DocumentationFooter from '../../components/DocumentationFooter';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 
 const SecurityArchitectureOverview: React.FC = () => {
   const navigate = useNavigate();
+
+  const handleBackHome = () => {
+    navigate('/');
+  };
 
   const handleBackToDocs = () => {
     navigate('/docs');
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Security Architecture Overview"
+      description="Comprehensive security framework and implementation details"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBackToDocs}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Back to Documentation</span>
-            </button>
-            <div className="flex space-x-3">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-300">
-                Revolutionary Architecture
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-300">
-                Client-Side Processing
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300">
-                Zero Server Risk
-              </span>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Home
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-red-600 p-3 rounded-lg">
+            <Shield className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Security Architecture Overview</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Comprehensive security framework and implementation details
+            </p>
           </div>
         </div>
-      </header>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="danger" icon={<Shield className="enterprise-icon-sm" />}>
+            Security Documentation
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="warning" icon={<AlertTriangle className="enterprise-icon-sm" />}>
+            Critical Systems
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            SOC 2 Compliant
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Title */}
@@ -517,7 +544,7 @@ const SecurityArchitectureOverview: React.FC = () => {
 
       {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 };
 

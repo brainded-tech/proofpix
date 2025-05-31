@@ -1,6 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, Zap, Globe, Lock, Clock, Users } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 const EnterpriseApiDocumentation: React.FC = () => {
@@ -11,32 +19,47 @@ const EnterpriseApiDocumentation: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Enterprise API Documentation"
+      description="Comprehensive API reference for enterprise integration"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBackToDocs}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Back to Documentation</span>
-            </button>
-            <div className="flex space-x-3">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-300">
-                Version 2.0 (Enterprise)
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-300">
-                SOC 2 Compliant
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300">
-                GDPR Ready
-              </span>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <Zap className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Enterprise API Documentation</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Comprehensive API reference for enterprise integration
+            </p>
           </div>
         </div>
-      </header>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary">
+            Version 2.0 (Enterprise)
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success">
+            SOC 2 Compliant
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="primary">
+            GDPR Ready
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Title */}
@@ -486,7 +509,7 @@ var result = await client.AnalyzeAsync("image.jpg");`}
 
       {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 };
 

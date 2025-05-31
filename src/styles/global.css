@@ -10,14 +10,17 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f9fafb;
-  color: #111827;
+  background-color: #0f1729;
+  color: #f8fafc;
   min-height: 100vh;
   line-height: 1.5;
 }
 
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #0f1729;
 }
 
 /* Tailwind CSS directives */
@@ -37,16 +40,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #1e293b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #475569;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #64748b;
 }
 
 /* Focus styles */
@@ -57,8 +60,8 @@ body {
 
 /* Selection styles */
 ::selection {
-  background: rgba(59, 130, 246, 0.2);
-  color: #1f2937;
+  background: rgba(59, 130, 246, 0.3);
+  color: #f8fafc;
 }
 
 /* File input styling */
@@ -69,4 +72,4 @@ input[type="file"] {
   overflow: hidden;
   position: absolute;
   z-index: -1;
-} 
+}

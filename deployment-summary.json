@@ -1,0 +1,17 @@
+{
+  "deploymentType": "opensource",
+  "environment": "development",
+  "timestamp": "2025-05-30T20:25:12Z",
+  "features": {
+    "openSourceCore": true,
+    "basicAI": true,
+    "advancedAI": false,
+    "proprietaryModels": true
+  },
+  "components": {
+    "privacyEngine": "open-source",
+    "basicAI": "open-source",
+    "advancedAI": "upgrade-required",
+    "industryModels": "subscription-required"
+  }
+}

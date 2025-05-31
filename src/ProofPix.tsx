@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { extractMetadata } from './utils/metadata';
-import { HomePage } from './components/HomePage';
+import { EnterpriseHomePage } from './components/EnterpriseHomePage';
 import { ProcessingInterface } from './components/ProcessingInterface';
 import { ProcessedImage } from './types';
 import { errorLogger, logAsyncError } from './utils/errorLogger';
-import { analytics } from './utils/analytics';
 
 export const ProofPix: React.FC = () => {
   const [processedImage, setProcessedImage] = useState<ProcessedImage | null>(null);
@@ -25,11 +24,10 @@ export const ProofPix: React.FC = () => {
     
     // Validate file type
     if (!supportedFormats.includes(file.type)) {
-      const errorMessage = `Unsupported file format: ${file.type}. Please select JPEG, PNG, TIFF, or HEIC images.`;
+      const errorMessage = `This file type isn't supported yet. We work best with photos from cameras and phones (JPEG, PNG, TIFF, or HEIC formats).`;
       setError(errorMessage);
       
       // Track error (anonymized)
-      analytics.trackError('File Validation', 'Unsupported Format');
       errorLogger.logMedium('File validation error', {
         fileType: file.type,
         fileName: file.name,
@@ -40,11 +38,10 @@ export const ProofPix: React.FC = () => {
 
     // Validate file size (max 50MB)
     if (file.size > 50 * 1024 * 1024) {
-      const errorMessage = 'File too large. Please select an image smaller than 50MB.';
+      const errorMessage = 'This photo is too large for us to analyze. Please try a photo smaller than 50MB, or compress it first.';
       setError(errorMessage);
       
       // Track error (anonymized)
-      analytics.trackError('File Validation', 'File Too Large');
       errorLogger.logMedium('File size validation error', {
         fileSize: file.size,
         fileName: file.name,
@@ -61,44 +58,32 @@ export const ProofPix: React.FC = () => {
       // Extract metadata
       const metadata = await extractMetadata(file);
       
-      // Create preview URL
-      const previewUrl = URL.createObjectURL(file);
-      
-      const newProcessedImage: ProcessedImage = {
+      // Create processed image object
+      const processedImg: ProcessedImage = {
         file,
         metadata,
-        previewUrl
+        previewUrl: URL.createObjectURL(file)
       };
 
-      setProcessedImage(newProcessedImage);
+      setProcessedImage(processedImg);
       
-      // Track successful processing (privacy-friendly)
-      const hasGPS = !!(metadata.gpsLatitude && metadata.gpsLongitude);
-      const metadataKeys = Object.keys(metadata).length;
-      
-      analytics.trackFileProcessing(file.type, hasGPS, metadataKeys);
-      analytics.trackFeatureUsage('Metadata Extraction', 'Successful');
-      
-      // Log successful processing
-      console.log('✅ Image processed successfully:', {
-        fileName: file.name,
-        hasGPS,
-        metadataKeys
+      // Track successful processing (anonymized)
+      errorLogger.logLow('File processed successfully', {
+        fileType: file.type,
+        fileSize: file.size,
+        metadataKeys: Object.keys(metadata).length,
+        processingTime: Date.now()
       });
+
     } catch (err) {
-      console.error('Error processing image:', err);
-      const errorMessage = 'Failed to process image. The image may not contain EXIF data or may be corrupted.';
+      const errorMessage = err instanceof Error ? err.message : 'We couldn\'t analyze this photo. This sometimes happens with unusual file formats or corrupted images. Try a different photo or convert it to JPEG first.';
       setError(errorMessage);
       
-      // Track error (anonymized)
-      analytics.trackError('Image Processing', 'Metadata Extraction Failed');
-      
-      // Log the error for analysis
-      logAsyncError('Image Processing', err as Error, {
-        fileName: file.name,
-        fileSize: file.size,
+      // Track processing error (anonymized)
+      logAsyncError('File processing error', err instanceof Error ? err : new Error(String(err)), {
         fileType: file.type,
-        operation: 'extractMetadata'
+        fileSize: file.size,
+        fileName: file.name
       });
     } finally {
       setIsLoading(false);
@@ -109,46 +94,50 @@ export const ProofPix: React.FC = () => {
     setProcessedImage(null);
     setError(null);
     setIsFromBatchResults(false);
-    
-    // Track navigation (privacy-friendly)
-    analytics.trackFeatureUsage('Navigation', 'Back to Home');
   }, []);
 
   const handleBackToBatch = useCallback(() => {
     setProcessedImage(null);
+    setError(null);
     setIsFromBatchResults(false);
-    
-    // Track navigation (privacy-friendly)
-    analytics.trackFeatureUsage('Navigation', 'Back to Batch Results');
+    // Additional logic for returning to batch view could go here
   }, []);
 
-  // Show loading screen
+  // Show loading screen with enterprise styling
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-          <p className="text-lg text-gray-300">Processing your image...</p>
-          <p className="text-sm text-gray-400">Extracting EXIF metadata locally</p>
+          <div className="relative inline-block mb-6">
+            <div className="w-16 h-16 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-emerald-500 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Processing Your Image</h2>
+          <p className="text-slate-400 mb-2">Extracting EXIF metadata securely on your device</p>
+          <p className="text-sm text-slate-500">Your data never leaves this browser</p>
         </div>
       </div>
     );
   }
 
-  // Show error screen if there's an error but no processed image
+  // Show error screen with enterprise styling
   if (error && !processedImage) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="bg-red-900 bg-opacity-50 border border-red-500 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-2 text-red-200">Processing Error</h2>
-            <p className="text-red-300 mb-4">{error}</p>
+          <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-8 mb-8 backdrop-blur-sm">
+            <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold mb-4 text-red-400">Processing Error</h2>
+            <p className="text-slate-300 mb-6 leading-relaxed">{error}</p>
             <button 
               onClick={() => {
                 setError(null);
-                analytics.trackFeatureUsage('Error Recovery', 'Try Again');
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Try Again
             </button>
@@ -172,18 +161,16 @@ export const ProofPix: React.FC = () => {
 
   // Render homepage by default
   return (
-    <HomePage 
+    <EnterpriseHomePage 
       onFileSelect={handleFileSelect}
       onBatchComplete={(images) => {
         // Stay in batch mode and show results - don't auto-navigate to single image view
-        analytics.trackFeatureUsage('Batch Processing', `Completed ${images.length} images`);
-        // The HomePage will handle showing the batch results
+        // The EnterpriseHomePage will handle showing the batch results
       }}
       onImageSelect={(image) => {
         // Navigate to individual image view from batch results
         setProcessedImage(image);
         setIsFromBatchResults(true);
-        analytics.trackFeatureUsage('Batch Results', 'Navigate to Individual Image');
       }}
     />
   );

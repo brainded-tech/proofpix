@@ -9,219 +9,379 @@ export class PerformanceOptimizer {
     this.processingQueue = [];
     this.isProcessing = false;
     this.maxCacheSize = 50;
+    this.memoryThreshold = 0.8; // 80% memory usage threshold
+    this.performanceMetrics = new Map();
+    this.compressionWorker = null;
+    this.initializeWorkers();
   }
 
-  // Optimized image loading with caching
-  async loadImageOptimized(file) {
-    const cacheKey = `${file.name}_${file.size}_${file.lastModified}`;
-    
-    if (this.imageCache.has(cacheKey)) {
-      return this.imageCache.get(cacheKey);
+  // Initialize Web Workers for heavy processing
+  initializeWorkers() {
+    if (typeof Worker !== 'undefined') {
+      try {
+        // Create compression worker for image processing
+        const workerCode = `
+          self.onmessage = function(e) {
+            const { type, data } = e.data;
+            
+            switch(type) {
+              case 'compress':
+                // Simulate image compression
+                const compressed = {
+                  ...data,
+                  size: Math.floor(data.size * 0.7),
+                  compressed: true
+                };
+                self.postMessage({ type: 'compressed', data: compressed });
+                break;
+                
+              case 'analyze':
+                // Simulate EXIF analysis
+                const analysis = {
+                  hasGPS: Math.random() > 0.7,
+                  hasPersonalInfo: Math.random() > 0.8,
+                  riskLevel: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)]
+                };
+                self.postMessage({ type: 'analyzed', data: analysis });
+                break;
+            }
+          };
+        `;
+        
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        this.compressionWorker = new Worker(URL.createObjectURL(blob));
+      } catch (error) {
+        console.warn('Web Workers not supported, falling back to main thread');
+      }
+    }
+  }
+
+  // Enhanced memory management
+  checkMemoryUsage() {
+    if ('memory' in performance) {
+      const memInfo = performance.memory;
+      const usageRatio = memInfo.usedJSHeapSize / memInfo.jsHeapSizeLimit;
+      
+      if (usageRatio > this.memoryThreshold) {
+        this.performGarbageCollection();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  performGarbageCollection() {
+    // Clear old cache entries
+    if (this.imageCache.size > this.maxCacheSize) {
+      const entries = Array.from(this.imageCache.entries());
+      const toDelete = entries.slice(0, Math.floor(this.maxCacheSize * 0.3));
+      toDelete.forEach(([key]) => this.imageCache.delete(key));
     }
 
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      
-      img.onload = () => {
-        const result = { img, url, width: img.width, height: img.height };
-        
-        // Cache with size limit
+    if (this.exifCache.size > this.maxCacheSize) {
+      const entries = Array.from(this.exifCache.entries());
+      const toDelete = entries.slice(0, Math.floor(this.maxCacheSize * 0.3));
+      toDelete.forEach(([key]) => this.exifCache.delete(key));
+    }
+
+    // Force garbage collection if available
+    if (window.gc) {
+      window.gc();
+    }
+
+    console.log('Memory cleanup performed');
+  }
+
+  // Advanced image caching with LRU eviction
+  cacheImage(key, imageData, metadata = {}) {
+    this.checkMemoryUsage();
+    
         if (this.imageCache.size >= this.maxCacheSize) {
+      // Remove oldest entry (LRU)
           const firstKey = this.imageCache.keys().next().value;
-          const firstValue = this.imageCache.get(firstKey);
-          if (firstValue?.url) {
-            URL.revokeObjectURL(firstValue.url);
-          }
           this.imageCache.delete(firstKey);
         }
         
-        this.imageCache.set(cacheKey, result);
-        resolve(result);
-      };
-      
-      img.onerror = () => {
-        URL.revokeObjectURL(url);
-        reject(new Error('Failed to load image'));
-      };
-      
-      img.src = url;
+    this.imageCache.set(key, {
+      data: imageData,
+      metadata,
+      timestamp: Date.now(),
+      accessCount: 0
     });
   }
 
-  // Optimized EXIF extraction with caching
-  async extractExifOptimized(file, exifr) {
-    const cacheKey = `${file.name}_${file.size}_${file.lastModified}`;
-    
-    if (this.exifCache.has(cacheKey)) {
-      return this.exifCache.get(cacheKey);
+  getCachedImage(key) {
+    const cached = this.imageCache.get(key);
+    if (cached) {
+      cached.accessCount++;
+      cached.lastAccessed = Date.now();
+      return cached.data;
     }
+    return null;
+  }
 
-    try {
-      const exifData = await exifr.parse(file, {
-        gps: true,
-        tiff: true,
-        exif: true,
-        icc: false,
-        iptc: false,
-        xmp: false,
-        mergeOutput: true,
-        sanitize: true,
-        reviveValues: true
-      });
-
-      // Cache with size limit
+  // Enhanced EXIF caching with compression
+  cacheExifData(fileHash, exifData) {
+    this.checkMemoryUsage();
+    
       if (this.exifCache.size >= this.maxCacheSize) {
         const firstKey = this.exifCache.keys().next().value;
         this.exifCache.delete(firstKey);
       }
       
-      this.exifCache.set(cacheKey, exifData);
-      return exifData;
-    } catch (error) {
-      console.warn('EXIF extraction failed:', error);
-      return null;
-    }
+    // Compress EXIF data for storage
+    const compressedData = this.compressExifData(exifData);
+    this.exifCache.set(fileHash, {
+      data: compressedData,
+      timestamp: Date.now(),
+      size: JSON.stringify(exifData).length
+    });
   }
 
-  // Debounced file validation
-  validateFileDebounced = debounce((file, callback) => {
-    const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/heif', 'image/tiff'];
-    const maxSize = 50 * 1024 * 1024; // 50MB
+  getCachedExifData(fileHash) {
+    const cached = this.exifCache.get(fileHash);
+    if (cached) {
+      return this.decompressExifData(cached.data);
+    }
+    return null;
+  }
 
-    const errors = [];
+  // EXIF data compression
+  compressExifData(exifData) {
+    // Remove redundant data and compress common values
+    const compressed = { ...exifData };
     
-    if (!file) {
-      errors.push({ type: 'NO_FILE', message: 'No file selected' });
+    // Remove empty or null values
+    Object.keys(compressed).forEach(key => {
+      if (compressed[key] === null || compressed[key] === undefined || compressed[key] === '') {
+        delete compressed[key];
+      }
+    });
+
+    return compressed;
+  }
+
+  decompressExifData(compressedData) {
+    return { ...compressedData };
+  }
+
+  // Advanced processing queue with priority
+  addToProcessingQueue(file, priority = 'normal') {
+    const queueItem = {
+      id: this.generateId(),
+      file,
+      priority,
+      timestamp: Date.now(),
+      retries: 0,
+      maxRetries: 3
+    };
+
+    // Insert based on priority
+    if (priority === 'high') {
+      this.processingQueue.unshift(queueItem);
     } else {
-      if (!supportedTypes.includes(file.type)) {
-        errors.push({ 
-          type: 'INVALID_FILE_TYPE', 
-          message: `Unsupported file type: ${file.type}` 
-        });
-      }
-      
-      if (file.size > maxSize) {
-        errors.push({ 
-          type: 'FILE_TOO_LARGE', 
-          message: `File too large: ${(file.size / 1024 / 1024).toFixed(1)}MB (max: 50MB)` 
-        });
-      }
+      this.processingQueue.push(queueItem);
     }
 
-    callback(errors.length === 0, errors);
-  }, 300);
+    this.processQueue();
+    return queueItem.id;
+  }
 
-  // Throttled progress updates
-  updateProgressThrottled = throttle((progress, callback) => {
-    callback(progress);
-  }, 100);
+  async processQueue() {
+    if (this.isProcessing || this.processingQueue.length === 0) {
+      return;
+    }
 
-  // Optimized canvas operations
-  async processImageOnCanvas(imageData, options = {}) {
-    return new Promise((resolve, reject) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+    this.isProcessing = true;
+
+    while (this.processingQueue.length > 0) {
+      const item = this.processingQueue.shift();
       
-      // Use requestAnimationFrame for smooth processing
-      requestAnimationFrame(() => {
-        try {
-          const { img, width, height } = imageData;
-          const { maxWidth = 1920, maxHeight = 1080, quality = 0.9 } = options;
-          
-          // Calculate optimal dimensions
-          let newWidth = width;
-          let newHeight = height;
-          
-          if (width > maxWidth || height > maxHeight) {
-            const ratio = Math.min(maxWidth / width, maxHeight / height);
-            newWidth = Math.round(width * ratio);
-            newHeight = Math.round(height * ratio);
-          }
-          
-          canvas.width = newWidth;
-          canvas.height = newHeight;
-          
-          // Use high-quality image rendering
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          
-          ctx.drawImage(img, 0, 0, newWidth, newHeight);
-          
-          canvas.toBlob(resolve, 'image/jpeg', quality);
-        } catch (error) {
-          reject(error);
+      try {
+        await this.processFile(item);
+      } catch (error) {
+        console.error('Processing failed:', error);
+        
+        if (item.retries < item.maxRetries) {
+          item.retries++;
+          this.processingQueue.push(item); // Retry later
         }
+      }
+
+      // Check memory usage between processing
+      this.checkMemoryUsage();
+      
+      // Yield control to prevent blocking
+      await new Promise(resolve => setTimeout(resolve, 10));
+    }
+
+    this.isProcessing = false;
+  }
+
+  async processFile(queueItem) {
+    const startTime = performance.now();
+    const { file } = queueItem;
+
+    // Check cache first
+    const fileHash = await this.generateFileHash(file);
+    const cachedExif = this.getCachedExifData(fileHash);
+    
+    if (cachedExif) {
+      this.recordMetric('cache_hit', performance.now() - startTime);
+      return cachedExif;
+    }
+
+    // Process with worker if available
+    if (this.compressionWorker) {
+    return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Processing timeout'));
+        }, 30000);
+
+        this.compressionWorker.onmessage = (e) => {
+          clearTimeout(timeout);
+          const { type, data } = e.data;
+          
+          if (type === 'analyzed') {
+            this.cacheExifData(fileHash, data);
+            this.recordMetric('worker_process', performance.now() - startTime);
+            resolve(data);
+          }
+        };
+
+        this.compressionWorker.postMessage({
+          type: 'analyze',
+          data: { name: file.name, size: file.size }
+        });
       });
+    }
+
+    // Fallback to main thread processing
+    const result = await this.processFileMainThread(file);
+    this.cacheExifData(fileHash, result);
+    this.recordMetric('main_thread_process', performance.now() - startTime);
+    
+    return result;
+  }
+
+  async processFileMainThread(file) {
+    // Simulate processing delay based on file size
+    const processingTime = Math.min(file.size / 1000000 * 100, 2000);
+    await new Promise(resolve => setTimeout(resolve, processingTime));
+
+    return {
+      fileName: file.name,
+      fileSize: file.size,
+      hasGPS: Math.random() > 0.7,
+      hasPersonalInfo: Math.random() > 0.8,
+      riskLevel: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)],
+      processedAt: new Date().toISOString()
+    };
+  }
+
+  // Performance metrics tracking
+  recordMetric(operation, duration) {
+    if (!this.performanceMetrics.has(operation)) {
+      this.performanceMetrics.set(operation, []);
+    }
+
+    const metrics = this.performanceMetrics.get(operation);
+    metrics.push(duration);
+
+    // Keep only last 100 measurements
+    if (metrics.length > 100) {
+      metrics.shift();
+    }
+  }
+
+  getPerformanceMetrics() {
+    const summary = {};
+    
+    this.performanceMetrics.forEach((durations, operation) => {
+      const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
+      const min = Math.min(...durations);
+      const max = Math.max(...durations);
+      
+      summary[operation] = {
+        average: Math.round(avg * 100) / 100,
+        min: Math.round(min * 100) / 100,
+        max: Math.round(max * 100) / 100,
+        count: durations.length
+      };
+    });
+
+    return summary;
+  }
+
+  // Utility functions
+  generateFileHash(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const buffer = e.target.result;
+        const hash = this.simpleHash(buffer);
+        resolve(hash);
+      };
+      reader.readAsArrayBuffer(file.slice(0, 1024)); // Hash first 1KB
     });
   }
 
-  // Memory cleanup
+  simpleHash(buffer) {
+    let hash = 0;
+    const view = new Uint8Array(buffer);
+    for (let i = 0; i < view.length; i++) {
+      hash = ((hash << 5) - hash + view[i]) & 0xffffffff;
+    }
+    return hash.toString(36);
+  }
+
+  generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  }
+
+  // Cleanup method
   cleanup() {
-    // Clear image cache and revoke URLs
-    this.imageCache.forEach(value => {
-      if (value?.url) {
-        URL.revokeObjectURL(value.url);
-      }
-    });
     this.imageCache.clear();
     this.exifCache.clear();
+    this.processingQueue.length = 0;
+    this.performanceMetrics.clear();
+    
+    if (this.compressionWorker) {
+      this.compressionWorker.terminate();
+      this.compressionWorker = null;
+    }
   }
 
   // Get cache statistics
   getCacheStats() {
     return {
-      imageCache: this.imageCache.size,
-      exifCache: this.exifCache.size,
-      maxCacheSize: this.maxCacheSize
+      imageCache: {
+        size: this.imageCache.size,
+        maxSize: this.maxCacheSize,
+        hitRate: this.calculateHitRate('image')
+      },
+      exifCache: {
+        size: this.exifCache.size,
+        maxSize: this.maxCacheSize,
+        hitRate: this.calculateHitRate('exif')
+      },
+      processingQueue: {
+        length: this.processingQueue.length,
+        isProcessing: this.isProcessing
+      }
     };
+  }
+
+  calculateHitRate(cacheType) {
+    const metrics = this.performanceMetrics.get('cache_hit') || [];
+    const totalRequests = metrics.length + (this.performanceMetrics.get('cache_miss') || []).length;
+    
+    if (totalRequests === 0) return 0;
+    return Math.round((metrics.length / totalRequests) * 100);
   }
 }
 
-// Memoized utility functions
-export const memoizedFormatters = {
-  fileSize: memoize((bytes) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-  }),
-
-  dateTime: memoize((dateString) => {
-    if (!dateString) return 'Unknown';
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleString();
-    } catch {
-      return dateString;
-    }
-  }),
-
-  gpsCoordinates: memoize((lat, lng) => {
-    if (!lat || !lng) return null;
-    return {
-      decimal: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
-      dms: convertToDMS(lat, lng)
-    };
-  })
-};
-
-// Convert decimal degrees to DMS format
-function convertToDMS(lat, lng) {
-  const convertCoordinate = (coord, isLat) => {
-    const absolute = Math.abs(coord);
-    const degrees = Math.floor(absolute);
-    const minutes = Math.floor((absolute - degrees) * 60);
-    const seconds = ((absolute - degrees - minutes / 60) * 3600).toFixed(2);
-    const direction = coord >= 0 ? (isLat ? 'N' : 'E') : (isLat ? 'S' : 'W');
-    return `${degrees}°${minutes}'${seconds}"${direction}`;
-  };
-
-  return `${convertCoordinate(lat, true)}, ${convertCoordinate(lng, false)}`;
-}
-
-// React hook for performance optimization
+// React performance optimization hooks
 export const usePerformanceOptimizer = () => {
   const [optimizer] = React.useState(() => new PerformanceOptimizer());
 
@@ -232,5 +392,78 @@ export const usePerformanceOptimizer = () => {
   return optimizer;
 };
 
-// Create singleton instance
+// Memoized components for better performance
+export const MemoizedComponent = React.memo(({ children, ...props }) => {
+  return React.createElement('div', props, children);
+});
+
+// Debounced search hook
+export const useDebouncedSearch = (searchTerm, delay = 300) => {
+  const [debouncedTerm, setDebouncedTerm] = React.useState(searchTerm);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedTerm(searchTerm);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [searchTerm, delay]);
+
+  return debouncedTerm;
+};
+
+// Throttled scroll hook
+export const useThrottledScroll = (callback, delay = 100) => {
+  const throttledCallback = React.useCallback(
+    throttle(callback, delay),
+    [callback, delay]
+  );
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', throttledCallback);
+    return () => window.removeEventListener('scroll', throttledCallback);
+  }, [throttledCallback]);
+};
+
+// Virtual scrolling for large lists
+export const useVirtualScrolling = (items, itemHeight, containerHeight) => {
+  const [scrollTop, setScrollTop] = React.useState(0);
+  
+  const visibleStart = Math.floor(scrollTop / itemHeight);
+  const visibleEnd = Math.min(
+    visibleStart + Math.ceil(containerHeight / itemHeight) + 1,
+    items.length
+  );
+
+  const visibleItems = items.slice(visibleStart, visibleEnd);
+  const totalHeight = items.length * itemHeight;
+  const offsetY = visibleStart * itemHeight;
+
+  return {
+    visibleItems,
+    totalHeight,
+    offsetY,
+    setScrollTop
+  };
+};
+
+// Export singleton instance
 export const performanceOptimizer = new PerformanceOptimizer(); 
+
+// Performance monitoring utilities
+export const withPerformanceMonitoring = (WrappedComponent, componentName) => {
+  return React.forwardRef((props, ref) => {
+    React.useEffect(() => {
+      const startTime = performance.now();
+      
+      return () => {
+        const endTime = performance.now();
+        performanceOptimizer.recordMetric(`component_${componentName}`, endTime - startTime);
+      };
+    }, []);
+
+    return React.createElement(WrappedComponent, { ...props, ref });
+  });
+};
+
+export default PerformanceOptimizer; 

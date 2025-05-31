@@ -1,0 +1,521 @@
+/**
+ * Dark Mode Overrides
+ * This file contains CSS overrides to ensure all components use dark mode
+ */
+
+/* Dark Mode Overrides - Comprehensive Coverage */
+
+/* Base body and container overrides */
+body,
+html,
+#root,
+.App {
+  background-color: #0f1729 !important;
+  color: #f8fafc !important;
+}
+
+/* Container overrides */
+.container,
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl,
+.max-w-4xl,
+.max-w-3xl,
+.max-w-2xl,
+.max-w-xl {
+  background-color: transparent !important;
+}
+
+/* Enterprise components */
+.enterprise-card {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.enterprise-card-dark {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #1e293b !important;
+}
+
+.enterprise-section {
+  background-color: #0f1729 !important;
+}
+
+.enterprise-input {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.enterprise-input::placeholder {
+  color: #64748b !important;
+}
+
+.enterprise-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
+}
+
+.enterprise-textarea {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.enterprise-nav {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.enterprise-table {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+.enterprise-table th {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.enterprise-table td {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.enterprise-hero {
+  background: linear-gradient(to bottom right, #1e293b, #0f172a) !important;
+}
+
+.enterprise-metric {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.enterprise-metric-value {
+  color: #f8fafc !important;
+}
+
+.enterprise-metric-label {
+  color: #cbd5e1 !important;
+}
+
+/* Pricing page specific overrides */
+.pricing-section,
+.pricing-card,
+.plan-card,
+.feature-card {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Override ALL light backgrounds in pricing and other components */
+[class*="bg-blue-50"],
+[class*="bg-green-50"],
+[class*="bg-purple-50"],
+[class*="bg-yellow-50"],
+[class*="bg-red-50"],
+[class*="bg-slate-50"],
+[class*="bg-gray-50"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+/* Override light gradients */
+[class*="bg-gradient-to-r"][class*="from-blue-50"],
+[class*="bg-gradient-to-r"][class*="to-purple-50"],
+[class*="bg-gradient-to-br"][class*="from-slate-50"],
+[class*="bg-gradient-to-br"][class*="to-blue-50"] {
+  background: linear-gradient(to bottom right, #1e293b, #0f172a) !important;
+  color: #f8fafc !important;
+}
+
+/* Specific gradient overrides */
+.bg-gradient-to-r.from-blue-50.to-purple-50 {
+  background: linear-gradient(to right, #1e293b, #0f172a) !important;
+  color: #f8fafc !important;
+}
+
+.bg-gradient-to-br.from-slate-50.to-blue-50 {
+  background: linear-gradient(to bottom right, #1e293b, #0f172a) !important;
+  color: #f8fafc !important;
+}
+
+/* Set default text colors for dark mode */
+h1, h2, h3, h4, h5, h6 {
+  color: #f8fafc !important;
+}
+
+p, span, div, a {
+  color: #e2e8f0 !important;
+}
+
+/* Override any text colors that may be dark */
+.text-gray-700,
+.text-gray-800,
+.text-gray-900,
+.text-slate-700,
+.text-slate-800,
+.text-slate-900 {
+  color: #f8fafc !important;
+}
+
+.text-gray-500,
+.text-gray-600,
+.text-slate-500,
+.text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+/* Pricing specific text overrides */
+.text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+.text-blue-600 {
+  color: #60a5fa !important;
+}
+
+.text-purple-600 {
+  color: #c084fc !important;
+}
+
+.text-green-600 {
+  color: #4ade80 !important;
+}
+
+/* Dark mode form elements */
+input, 
+select, 
+textarea, 
+button {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+input:focus, 
+select:focus, 
+textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
+}
+
+/* Dark tables */
+table {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+th {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+td {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+tr:nth-child(even) td {
+  background-color: #1a2234 !important;
+}
+
+/* Card elements */
+.card, 
+.box, 
+.container, 
+.panel,
+.widget,
+section[class*="bg-white"],
+div[class*="bg-white"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Header and navigation */
+header, 
+nav, 
+.header, 
+.navigation {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Footer */
+footer, 
+.footer {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* Override white backgrounds specifically */
+.bg-white, 
+[class*="bg-white"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+/* Override any remaining light backgrounds */
+[class*="bg-gray-100"],
+[class*="bg-slate-100"],
+[class*="bg-blue-100"],
+[class*="bg-green-100"],
+[class*="bg-purple-100"],
+[class*="bg-yellow-100"],
+[class*="bg-red-100"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+/* Gradient overrides */
+.bg-gradient-to-br {
+  background: linear-gradient(to bottom right, #1e293b, #0f172a) !important;
+}
+
+/* Shadow overrides for dark mode */
+.shadow,
+.shadow-sm,
+.shadow-md,
+.shadow-lg,
+.shadow-xl,
+.shadow-2xl {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Button overrides */
+.btn-primary,
+button[class*="bg-blue"] {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.btn-secondary,
+button[class*="bg-gray"] {
+  background-color: #6b7280 !important;
+  color: white !important;
+}
+
+.btn-success,
+button[class*="bg-green"] {
+  background-color: #10b981 !important;
+  color: white !important;
+}
+
+.btn-danger,
+button[class*="bg-red"] {
+  background-color: #ef4444 !important;
+  color: white !important;
+}
+
+.btn-warning,
+button[class*="bg-yellow"] {
+  background-color: #f59e0b !important;
+  color: white !important;
+}
+
+/* Purple button overrides */
+button[class*="bg-purple"],
+.btn-purple {
+  background-color: #8b5cf6 !important;
+  color: white !important;
+}
+
+/* Enterprise button variants */
+.btn-enterprise-ghost {
+  background: transparent !important;
+  color: #cbd5e1 !important;
+  border-color: #334155 !important;
+}
+
+.btn-enterprise-ghost:hover {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+.btn-enterprise-secondary {
+  background: transparent !important;
+  color: #60a5fa !important;
+  border-color: #3b82f6 !important;
+}
+
+.btn-enterprise-secondary:hover {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Exception for code elements */
+code, pre {
+  background-color: #1a2234 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Specific overrides for pricing page components */
+.pricing-hero {
+  background: linear-gradient(to bottom right, #1e293b, #0f172a) !important;
+}
+
+.pricing-testimonial {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Trust signals and badges */
+.trust-signal,
+.badge,
+.tag {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Ensure all sections have proper dark backgrounds */
+section[class*="bg-"] {
+  background-color: #0f1729 !important;
+}
+
+section[class*="bg-gray-50"] {
+  background-color: #1e293b !important;
+}
+
+section[class*="bg-white"] {
+  background-color: #0f1729 !important;
+}
+
+section[class*="bg-slate-50"] {
+  background-color: #1e293b !important;
+}
+
+/* FAQ and accordion components */
+.faq-item,
+.accordion-item {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+/* Interactive elements */
+.interactive-tool,
+.calculator,
+.quiz {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+/* Ensure proper contrast for all text elements */
+.text-contrast {
+  color: #f8fafc !important;
+}
+
+.text-muted {
+  color: #cbd5e1 !important;
+}
+
+/* Override any remaining light mode elements */
+* {
+  scrollbar-color: #4b5563 #1e293b;
+}
+
+*::-webkit-scrollbar {
+  background-color: #1e293b;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+/* Lead capture and automation specific overrides */
+.lead-capture-system,
+.automation-system {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.automation-card,
+.lead-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+/* Specific overrides for problematic containers */
+/* Trust signals bar in pricing */
+div[class*="bg-gradient-to-r"][class*="from-blue-50"][class*="to-purple-50"] {
+  background: linear-gradient(to right, #1e293b, #0f172a) !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Enterprise features section */
+section[class*="bg-gradient-to-br"][class*="from-slate-50"][class*="to-blue-50"] {
+  background: linear-gradient(to bottom right, #1e293b, #0f172a) !important;
+  color: #f8fafc !important;
+}
+
+/* White icon containers */
+div[class*="bg-white"][class*="rounded-xl"] {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+/* Pricing cards */
+div[class*="bg-white"][class*="rounded-2xl"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* FAQ items */
+div[class*="bg-white"][class*="rounded-xl"][class*="border"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Override billing cycle toggle buttons */
+button[class*="bg-white"] {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Override any remaining light text on dark backgrounds */
+.text-slate-900 {
+  color: #f8fafc !important;
+}
+
+.text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+.text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+/* Ensure proper visibility for all interactive elements */
+button:hover,
+a:hover,
+.hover\:shadow-lg:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Override any remaining problematic backgrounds */
+[style*="background-color: white"],
+[style*="background-color: #ffffff"],
+[style*="background-color: rgb(255, 255, 255)"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+} 

@@ -1,6 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, CheckCircle, XCircle, Download, Search, FileText, Lock } from 'lucide-react';
+import { ArrowLeft, Shield, CheckCircle, XCircle, Download, Search, FileText, Lock, AlertTriangle, Eye, Server, Users } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 const SecurityQuestionnaireResponses: React.FC = () => {
@@ -11,7 +19,7 @@ const SecurityQuestionnaireResponses: React.FC = () => {
   };
 
   const handleDownload = () => {
-    window.print();
+    console.log('Downloading security questionnaire PDF...');
   };
 
   const questionCategories = [
@@ -222,33 +230,50 @@ const SecurityQuestionnaireResponses: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Security Questionnaire Responses"
+      description="Pre-filled security questionnaire responses for enterprise sales"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBackToDocs}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Back to Documentation</span>
-            </button>
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={handleDownload}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <Download className="h-4 w-4" />
-                <span>Download PDF</span>
-              </button>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-500/20 text-yellow-300">
-                Security Q&A
-              </span>
-            </div>
+      <EnterpriseSection size="sm">
+        <div className="flex items-center justify-between mb-6">
+          <EnterpriseButton
+            variant="ghost"
+            onClick={handleBackToDocs}
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            Back to Documentation
+          </EnterpriseButton>
+          
+          <EnterpriseButton
+            variant="primary"
+            onClick={handleDownload}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Download PDF
+          </EnterpriseButton>
+        </div>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-yellow-600 p-3 rounded-lg">
+            <Shield className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Security Questionnaire Responses</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Pre-filled security questionnaire responses for enterprise sales
+            </p>
           </div>
         </div>
-      </header>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="warning">
+            Security Q&A
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Title */}
@@ -419,7 +444,7 @@ const SecurityQuestionnaireResponses: React.FC = () => {
 
       {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 };
 

@@ -1,87 +1,111 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Palette, Upload, Settings, Eye, Code, CheckCircle, ArrowRight, Image, Zap } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Palette, Upload, Settings, Eye, Code, CheckCircle, ArrowRight, Image, Zap, ArrowLeft } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 export const CustomBranding: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto p-6">
-        {/* Breadcrumb navigation */}
-        <nav className="mb-6 text-sm">
-          <Link to="/docs" className="text-blue-600 hover:underline">Documentation</Link>
-          <span className="mx-2">/</span>
-          <Link to="/docs" className="text-blue-600 hover:underline">Enterprise</Link>
-          <span className="mx-2">/</span>
-          <span className="text-gray-600">Custom Branding</span>
-        </nav>
+  const navigate = useNavigate();
 
-        {/* Page title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4 flex items-center">
-            <Palette className="mr-3 text-purple-600" size={32} />
-            Custom Branding & White-Label
-          </h1>
-          <p className="text-xl text-gray-600">
-            Upload your company's branding assets for a fully customized ProofPix experience
-          </p>
-        </div>
+  const handleBackToDocs = () => {
+    navigate('/docs');
+  };
+
+  return (
+    <EnterpriseLayout
+      showHero
+      title="Custom Branding & White-Label Solutions"
+      description="Complete branding customization for enterprise deployments"
+      maxWidth="6xl"
+    >
+      {/* Header */}
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
         
+        <div className="flex items-center space-x-6 text-sm mb-8">
+          <EnterpriseBadge variant="primary" icon={<Palette className="enterprise-icon-sm" />}>
+            Branding Solutions
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<Settings className="enterprise-icon-sm" />}>
+            White-Label Ready
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<Eye className="enterprise-icon-sm" />}>
+            Custom UI/UX
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
+
+      <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Table of contents */}
-        <nav className="mb-8 p-4 bg-gray-50 rounded-lg">
+        <EnterpriseCard className="mb-8">
           <h2 className="text-lg font-semibold mb-3">On This Page</h2>
           <ul className="space-y-2">
-            <li><a href="#brand-assets" className="text-blue-600 hover:underline">Brand Asset Upload</a></li>
-            <li><a href="#color-schemes" className="text-blue-600 hover:underline">Color Schemes</a></li>
-            <li><a href="#white-label" className="text-blue-600 hover:underline">White-Label Configuration</a></li>
+            <li><a href="#overview" className="text-blue-600 hover:underline">Branding Overview</a></li>
+            <li><a href="#logo-assets" className="text-blue-600 hover:underline">Logo & Assets</a></li>
+            <li><a href="#color-themes" className="text-blue-600 hover:underline">Color Themes</a></li>
+            <li><a href="#white-label" className="text-blue-600 hover:underline">White-Label Options</a></li>
             <li><a href="#api-integration" className="text-blue-600 hover:underline">API Integration</a></li>
             <li><a href="#preview" className="text-blue-600 hover:underline">Preview & Testing</a></li>
           </ul>
-        </nav>
+        </EnterpriseCard>
 
         {/* Brand Asset Upload */}
         <section id="brand-assets" className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
             <Upload className="mr-2 text-blue-500" size={24} />
             Brand Asset Upload
           </h2>
           
-          <p className="text-gray-700 mb-6">
+          <p className="text-slate-700 mb-6">
             Upload your company's branding assets to create a seamless, branded experience for your team 
             and customers. All assets are processed securely and optimized for web performance.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="border rounded-lg p-6 bg-blue-50">
+          <EnterpriseGrid columns={2} className="mb-8">
+            <EnterpriseCard className="bg-blue-50 border-blue-200">
               <div className="flex items-center mb-4">
                 <Image className="mr-2 text-blue-600" size={20} />
                 <h3 className="text-lg font-semibold text-blue-900">Logo Requirements</h3>
               </div>
-              <ul className="text-sm text-gray-700 space-y-2">
+              <ul className="text-sm text-slate-700 space-y-2">
                 <li>• <strong>Formats:</strong> PNG, SVG, JPG</li>
                 <li>• <strong>Max Size:</strong> 2MB per file</li>
                 <li>• <strong>Recommended:</strong> 300x100px (3:1 ratio)</li>
                 <li>• <strong>Background:</strong> Transparent PNG preferred</li>
                 <li>• <strong>Variants:</strong> Light and dark versions</li>
               </ul>
-            </div>
+            </EnterpriseCard>
             
-            <div className="border rounded-lg p-6 bg-green-50">
+            <EnterpriseCard className="bg-green-50 border-green-200">
               <div className="flex items-center mb-4">
                 <Palette className="mr-2 text-green-600" size={20} />
                 <h3 className="text-lg font-semibold text-green-900">Color Scheme</h3>
               </div>
-              <ul className="text-sm text-gray-700 space-y-2">
+              <ul className="text-sm text-slate-700 space-y-2">
                 <li>• <strong>Primary:</strong> Buttons, links, highlights</li>
                 <li>• <strong>Secondary:</strong> Backgrounds, borders</li>
                 <li>• <strong>Accent:</strong> Success states, CTAs</li>
                 <li>• <strong>Text:</strong> Headings and body text</li>
                 <li>• <strong>Format:</strong> HEX, RGB, or HSL values</li>
               </ul>
-            </div>
-          </div>
+            </EnterpriseCard>
+          </EnterpriseGrid>
 
-          <div className="bg-gray-900 rounded-lg p-6 mb-6">
+          <div className="bg-slate-900 rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-white mb-4">Upload Example</h3>
             <pre className="text-green-400 text-sm overflow-x-auto">
 {`// Upload brand assets via API
@@ -115,7 +139,7 @@ const uploadBrandAssets = async (files, colors) => {
             </pre>
           </div>
 
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
+          <EnterpriseCard className="bg-yellow-50 border-l-4 border-yellow-400">
             <div className="flex items-center mb-2">
               <Zap className="mr-2 text-yellow-600" size={16} />
               <span className="font-semibold text-yellow-800">Pro Tip</span>
@@ -123,49 +147,49 @@ const uploadBrandAssets = async (files, colors) => {
             <p className="text-yellow-700 text-sm">
               Upload both light and dark logo variants for optimal display across different themes and backgrounds.
             </p>
-          </div>
+          </EnterpriseCard>
         </section>
 
         {/* Color Schemes */}
         <section id="color-schemes" className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Color Scheme Configuration</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Color Scheme Configuration</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <EnterpriseGrid columns={2}>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Color Palette Setup</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Color Palette Setup</h3>
               <div className="space-y-4">
-                <div className="border rounded-lg p-4">
+                <EnterpriseCard>
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium">Primary Color</span>
                     <div className="w-8 h-8 bg-blue-600 rounded border"></div>
                   </div>
-                  <p className="text-sm text-gray-600">Used for buttons, links, and primary actions</p>
-                  <code className="text-xs bg-gray-100 px-2 py-1 rounded">#2563eb</code>
-                </div>
+                  <p className="text-sm text-slate-600">Used for buttons, links, and primary actions</p>
+                  <code className="text-xs bg-slate-100 px-2 py-1 rounded">#2563eb</code>
+                </EnterpriseCard>
 
-                <div className="border rounded-lg p-4">
+                <EnterpriseCard>
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium">Secondary Color</span>
-                    <div className="w-8 h-8 bg-gray-600 rounded border"></div>
+                    <div className="w-8 h-8 bg-slate-600 rounded border"></div>
                   </div>
-                  <p className="text-sm text-gray-600">Used for backgrounds and subtle elements</p>
-                  <code className="text-xs bg-gray-100 px-2 py-1 rounded">#4b5563</code>
-                </div>
-
-                <div className="border rounded-lg p-4">
+                  <p className="text-sm text-slate-600">Used for backgrounds and subtle elements</p>
+                  <code className="text-xs bg-slate-100 px-2 py-1 rounded">#4b5563</code>
+                </EnterpriseCard>
+              
+                <EnterpriseCard>
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium">Accent Color</span>
                     <div className="w-8 h-8 bg-green-600 rounded border"></div>
                   </div>
-                  <p className="text-sm text-gray-600">Used for success states and highlights</p>
-                  <code className="text-xs bg-gray-100 px-2 py-1 rounded">#059669</code>
-                </div>
+                  <p className="text-sm text-slate-600">Used for success states and highlights</p>
+                  <code className="text-xs bg-slate-100 px-2 py-1 rounded">#059669</code>
+                </EnterpriseCard>
               </div>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">API Configuration</h3>
-              <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">API Configuration</h3>
+              <div className="bg-slate-900 rounded-lg p-4">
                 <pre className="text-green-400 text-sm overflow-x-auto">
 {`// Update color scheme
 const updateColors = async (colors) => {
@@ -192,53 +216,52 @@ const updateColors = async (colors) => {
                 </pre>
               </div>
             </div>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 border rounded-lg">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mx-auto mb-3"></div>
-              <h4 className="font-semibold">Tech Theme</h4>
-              <p className="text-sm text-gray-600">Modern, professional</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg mx-auto mb-3"></div>
-              <h4 className="font-semibold">Finance Theme</h4>
-              <p className="text-sm text-gray-600">Trust, stability</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg mx-auto mb-3"></div>
-              <h4 className="font-semibold">Creative Theme</h4>
-              <p className="text-sm text-gray-600">Bold, innovative</p>
-            </div>
+          </EnterpriseGrid>
+          
+          <div className="mt-8">
+            <EnterpriseGrid columns={3}>
+              <EnterpriseCard className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mx-auto mb-3"></div>
+                <h4 className="font-semibold">Tech Theme</h4>
+              </EnterpriseCard>
+              <EnterpriseCard className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg mx-auto mb-3"></div>
+                <h4 className="font-semibold">Corporate Theme</h4>
+              </EnterpriseCard>
+              <EnterpriseCard className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg mx-auto mb-3"></div>
+                <h4 className="font-semibold">Creative Theme</h4>
+              </EnterpriseCard>
+            </EnterpriseGrid>
           </div>
         </section>
 
         {/* White-Label Configuration */}
         <section id="white-label" className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-            <Settings className="mr-2 text-gray-600" size={24} />
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <Settings className="mr-2 text-slate-600" size={24} />
             White-Label Configuration
           </h2>
           
-          <p className="text-gray-700 mb-6">
+          <p className="text-slate-700 mb-6">
             Complete white-label customization allows you to present ProofPix as your own solution, 
             with your branding, domain, and custom messaging throughout the application.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="border rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Domain & URLs</h3>
-              <ul className="text-sm text-gray-600 space-y-2">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Domain & URLs</h3>
+              <ul className="text-sm text-slate-600 space-y-2">
                 <li>• <strong>Custom Domain:</strong> app.yourcompany.com</li>
                 <li>• <strong>SSL Certificate:</strong> Automatically provisioned</li>
                 <li>• <strong>API Subdomain:</strong> api.yourcompany.com</li>
                 <li>• <strong>Documentation:</strong> docs.yourcompany.com</li>
               </ul>
             </div>
-
+            
             <div className="border rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Branding</h3>
-              <ul className="text-sm text-gray-600 space-y-2">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Application Branding</h3>
+              <ul className="text-sm text-slate-600 space-y-2">
                 <li>• <strong>Application Name:</strong> Your Product Name</li>
                 <li>• <strong>Email Templates:</strong> Custom branded emails</li>
                 <li>• <strong>Support Links:</strong> Your support channels</li>
@@ -246,7 +269,7 @@ const updateColors = async (colors) => {
               </ul>
             </div>
           </div>
-
+          
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
             <h4 className="font-semibold text-purple-900 mb-3">White-Label Features</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -284,15 +307,15 @@ const updateColors = async (colors) => {
 
         {/* API Integration */}
         <section id="api-integration" className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
             <Code className="mr-2 text-green-500" size={24} />
             API Integration
           </h2>
           
           <div className="space-y-6">
-            <div className="bg-gray-900 rounded-lg p-6">
+            <div className="bg-slate-900 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Complete Branding Setup</h3>
-              <pre className="text-green-400 text-sm overflow-x-auto">
+            <pre className="text-green-400 text-sm overflow-x-auto">
 {`// Complete branding configuration
 const setupCustomBranding = async (brandingConfig) => {
   // 1. Upload brand assets
@@ -333,20 +356,20 @@ const setupCustomBranding = async (brandingConfig) => {
     whitelabel: await whitelabelResponse.json()
   };
 };`}
-              </pre>
-            </div>
-
+            </pre>
+          </div>
+          
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="border rounded-lg p-6">
-                <h4 className="font-semibold text-gray-900 mb-3">Request Format</h4>
-                <div className="bg-gray-50 p-4 rounded text-sm">
+                <h4 className="font-semibold text-slate-900 mb-3">Request Format</h4>
+                <div className="bg-slate-50 p-4 rounded text-sm">
                   <pre>{`{
     "assets": {
       "logoLight": File,
       "logoDark": File,
       "favicon": File
-    },
-    "colors": {
+  },
+  "colors": {
       "primary": "#2563eb",
       "secondary": "#4b5563",
       "accent": "#059669"
@@ -404,7 +427,7 @@ const setupCustomBranding = async (brandingConfig) => {
                 Deploy to staging environment for team testing and approval
               </p>
             </div>
-
+            
             <div className="border rounded-lg p-6 text-center">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Zap className="text-purple-600" size={24} />
@@ -415,7 +438,7 @@ const setupCustomBranding = async (brandingConfig) => {
               </p>
             </div>
           </div>
-
+          
           <div className="bg-gray-900 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Preview API</h3>
             <pre className="text-green-400 text-sm overflow-x-auto">
@@ -478,6 +501,6 @@ const deployToProduction = async (brandingId) => {
 
         <DocumentationFooter />
       </div>
-    </div>
+    </EnterpriseLayout>
   );
 }; 

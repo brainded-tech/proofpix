@@ -1,0 +1,543 @@
+/* Modern Design System Override for ProofPix */
+/* This file provides modern styling while preserving all functionality */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Modern color variables */
+:root {
+  --modern-slate-900: #0f172a;
+  --modern-slate-800: #1e293b;
+  --modern-slate-700: #334155;
+  --modern-slate-600: #475569;
+  --modern-slate-500: #64748b;
+  --modern-slate-400: #94a3b8;
+  --modern-slate-300: #cbd5e1;
+  --modern-slate-200: #e2e8f0;
+  --modern-slate-100: #f1f5f9;
+  --modern-blue-600: #2563eb;
+  --modern-blue-700: #1d4ed8;
+  --modern-emerald-500: #10b981;
+  --modern-amber-500: #f59e0b;
+}
+
+/* Override body styling for modern dark theme */
+body {
+  background-color: var(--modern-slate-900) !important;
+  color: var(--modern-slate-100) !important;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+#root {
+  background-color: var(--modern-slate-900) !important;
+  min-height: 100vh !important;
+}
+
+/* Modern navigation styling */
+nav {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  border-bottom: 1px solid var(--modern-slate-800) !important;
+}
+
+/* Modern button styling - preserve all functionality */
+button {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+button:hover {
+  transform: translateY(-1px) !important;
+}
+
+/* Primary buttons */
+button.bg-blue-600,
+.btn-primary,
+button[class*="bg-blue"] {
+  background-color: var(--modern-blue-600) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+button.bg-blue-600:hover,
+.btn-primary:hover,
+button[class*="bg-blue"]:hover {
+  background-color: var(--modern-blue-700) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Secondary buttons */
+button.bg-slate-800,
+.btn-secondary,
+button[class*="bg-slate"] {
+  background-color: var(--modern-slate-800) !important;
+  color: white !important;
+  border: 1px solid var(--modern-slate-700) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 500 !important;
+}
+
+button.bg-slate-800:hover,
+.btn-secondary:hover,
+button[class*="bg-slate"]:hover {
+  background-color: var(--modern-slate-700) !important;
+  border-color: var(--modern-slate-600) !important;
+}
+
+/* Modern card styling */
+.card,
+div[class*="bg-slate-800"],
+div[class*="bg-enterprise"] {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--modern-slate-700) !important;
+  border-radius: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.card:hover,
+div[class*="bg-slate-800"]:hover {
+  border-color: var(--modern-blue-600) !important;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Modern text styling */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  color: white !important;
+  letter-spacing: -0.025em !important;
+}
+
+h1 {
+  font-size: 3.75rem !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+}
+
+h2 {
+  font-size: 3rem !important;
+  line-height: 1.2 !important;
+}
+
+h3 {
+  font-size: 1.875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+}
+
+p {
+  color: var(--modern-slate-300) !important;
+  line-height: 1.6 !important;
+}
+
+/* Modern link styling - preserve functionality */
+a {
+  color: var(--modern-slate-300) !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+a:hover {
+  color: white !important;
+}
+
+/* Modern form inputs */
+input, textarea, select {
+  background-color: var(--modern-slate-800) !important;
+  border: 1px solid var(--modern-slate-700) !important;
+  border-radius: 0.5rem !important;
+  color: white !important;
+  padding: 0.75rem 1rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  transition: all 0.2s ease !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  border-color: var(--modern-blue-600) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--modern-slate-500) !important;
+}
+
+/* Modern badge styling */
+.badge,
+span[class*="bg-green"],
+span[class*="bg-blue"],
+span[class*="bg-amber"] {
+  border-radius: 9999px !important;
+  padding: 0.25rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Trust badges */
+div[class*="bg-green-500"] {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: var(--modern-emerald-500) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+div[class*="bg-blue-500"] {
+  background-color: rgba(37, 99, 235, 0.1) !important;
+  color: var(--modern-blue-600) !important;
+  border: 1px solid rgba(37, 99, 235, 0.2) !important;
+}
+
+div[class*="bg-amber-500"] {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: var(--modern-amber-500) !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+}
+
+/* Modern upload area */
+div[class*="border-dashed"] {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 2px dashed var(--modern-slate-600) !important;
+  border-radius: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+div[class*="border-dashed"]:hover {
+  border-color: var(--modern-blue-600) !important;
+  background-color: rgba(30, 41, 59, 0.7) !important;
+}
+
+/* Modern gradient text */
+.text-gradient,
+span[class*="bg-gradient"] {
+  background: linear-gradient(135deg, #60a5fa, #34d399) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--modern-slate-900) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--modern-slate-700) !important;
+  border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--modern-slate-600) !important;
+}
+
+/* Ensure all interactive elements work */
+button, a, input, textarea, select {
+  pointer-events: auto !important;
+}
+
+/* Modern responsive design */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 2.25rem !important;
+  }
+  
+  h2 {
+    font-size: 1.875rem !important;
+  }
+  
+  button {
+    padding: 0.625rem 1.25rem !important;
+  }
+}
+
+/* Enterprise-Grade Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+}
+
+/* Animated Gradient Text */
+.animate-gradient-x {
+  background: linear-gradient(-45deg, #3b82f6, #10b981, #3b82f6, #8b5cf6) !important;
+  background-size: 400% 400% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: gradientShift 4s ease-in-out infinite !important;
+}
+
+/* Premium Button Animations */
+.btn-enterprise {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-enterprise::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+  transition: left 0.5s !important;
+}
+
+.btn-enterprise:hover::before {
+  left: 100% !important;
+}
+
+.btn-enterprise:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Glass Morphism Effects */
+.glass-card {
+  background: rgba(30, 41, 59, 0.4) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.glass-card:hover {
+  background: rgba(30, 41, 59, 0.6) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Floating Elements */
+.float-animation {
+  animation: float 6s ease-in-out infinite !important;
+}
+
+/* Pulse Animation for Status Indicators */
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite !important;
+}
+
+/* Shimmer Loading Effect */
+.shimmer {
+  background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%) !important;
+  background-size: 200% 100% !important;
+  animation: shimmer 2s infinite !important;
+}
+
+/* Glow Effects */
+.glow-blue {
+  animation: glow 2s ease-in-out infinite alternate !important;
+}
+
+/* Enterprise Card Hover Effects */
+.enterprise-card {
+  background: rgba(30, 41, 59, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 24px !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.enterprise-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1)) !important;
+  opacity: 0 !important;
+  transition: opacity 0.4s ease !important;
+  border-radius: 24px !important;
+}
+
+.enterprise-card:hover::before {
+  opacity: 1 !important;
+}
+
+.enterprise-card:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Navigation Underline Animation */
+.nav-link {
+  position: relative !important;
+  transition: color 0.3s ease !important;
+}
+
+.nav-link::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -4px !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, #3b82f6, #10b981) !important;
+  transition: width 0.3s ease !important;
+}
+
+.nav-link:hover::after {
+  width: 100% !important;
+}
+
+/* Upload Zone Enhanced Animation */
+.upload-zone {
+  position: relative !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.upload-zone::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: -2px !important;
+  background: linear-gradient(45deg, #3b82f6, #10b981, #3b82f6) !important;
+  background-size: 400% 400% !important;
+  border-radius: 24px !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+  animation: gradientShift 3s ease infinite !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.upload-zone:hover::before {
+  opacity: 0.7 !important;
+}
+
+.upload-zone.drag-active::before {
+  opacity: 1 !important;
+}
+
+/* Status Indicator Animations */
+.status-online {
+  background-color: #10b981 !important;
+  animation: pulse 2s ease-in-out infinite !important;
+}
+
+.status-processing {
+  background-color: #3b82f6 !important;
+  animation: pulse 1s ease-in-out infinite !important;
+}
+
+.status-error {
+  background-color: #ef4444 !important;
+  animation: pulse 1.5s ease-in-out infinite !important;
+}
+
+/* Ensure footer styling */
+footer {
+  background-color: var(--modern-slate-900) !important;
+  border-top: 1px solid var(--modern-slate-800) !important;
+}
+
+/* Modern animations */
+.animate-fade-in { animation: fadeIn 0.5s ease-in-out !important; }
+.animate-slide-up { animation: slideUp 0.5s ease-out !important; }
+.animate-float { animation: float 6s ease-in-out infinite !important; }
+.animate-pulse-slow { animation: pulse 3s ease-in-out infinite !important; }
+.animate-shimmer { animation: shimmer 2s infinite !important; }
+
+/* Performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .enterprise-card {
+    border-width: 2px !important;
+  }
+  
+  .nav-link::after {
+    height: 3px !important;
+  }
+} 

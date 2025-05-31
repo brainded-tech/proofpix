@@ -1,0 +1,2 @@
+// Insurance Claim Template
+export {};

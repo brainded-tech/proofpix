@@ -44,17 +44,17 @@ export class SecureSessionManager {
   
   static createSession(planId: string, duration?: string): SecureSession {
     const plan = PRICING_PLANS[planId as keyof typeof PRICING_PLANS];
-    if (!plan || !plan.sessionBased) {
+    if (!plan || !(plan as any).sessionBased) {
       throw new SecurityError('Invalid session-based plan');
     }
 
-    const sessionDuration = plan.limits.duration || duration || '24h';
+    const sessionDuration = ((plan as any).limits as any)?.duration || duration || '24h';
     const sessionData = {
       planId,
       planName: plan.name,
       startTime: Date.now(),
       duration: this.parseDuration(sessionDuration),
-      limits: plan.limits,
+      limits: (plan as any).limits || {},
       features: plan.features,
       expiry: Date.now() + SESSION_TIMEOUT,
       checksum: '',

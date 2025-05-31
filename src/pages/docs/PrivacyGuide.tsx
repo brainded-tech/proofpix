@@ -2,22 +2,36 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Shield, 
-  MapPin, 
-  Camera, 
-  Clock, 
-  Smartphone, 
+  Eye, 
+  Lock, 
   AlertTriangle, 
   CheckCircle, 
-  Eye, 
-  Lock,
+  XCircle, 
+  Clock, 
+  MapPin, 
+  Camera, 
+  Smartphone,
   Globe,
-  Briefcase,
+  Users,
+  FileText,
+  Download,
+  Upload,
+  Settings,
+  Info,
   Heart,
   ShoppingCart,
-  FileText,
-  Settings,
-  Info
+  Briefcase,
+  ArrowLeft
 } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
+import DocumentationFooter from '../../components/DocumentationFooter';
 
 const PrivacyGuide: React.FC = () => {
   const navigate = useNavigate();
@@ -189,45 +203,46 @@ const PrivacyGuide: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Privacy Best Practices"
+      description="Protect your privacy when sharing photos online"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-900/50 to-orange-900/50 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <button
-            onClick={handleBackHome}
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
-          >
-            ← Back to ProofPix
-          </button>
-          
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="bg-red-600 p-3 rounded-lg">
-              <Shield className="h-8 w-8" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold">Privacy Best Practices</h1>
-              <p className="text-xl text-gray-300 mt-2">
-                Protect your privacy when sharing photos online
-              </p>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-red-600 p-3 rounded-lg">
+            <Shield className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span className="flex items-center">
-              <Clock className="h-4 w-4 mr-1" />
-              10 minute read
-            </span>
-            <span className="flex items-center">
-              <AlertTriangle className="h-4 w-4 mr-1" />
-              Privacy critical
-            </span>
-            <span className="flex items-center">
-              <Eye className="h-4 w-4 mr-1" />
-              Essential knowledge
-            </span>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Privacy Best Practices</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Protect your privacy when sharing photos online
+            </p>
           </div>
         </div>
-      </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="neutral" icon={<Clock className="enterprise-icon-sm" />}>
+            10 minute read
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="warning" icon={<AlertTriangle className="enterprise-icon-sm" />}>
+            Privacy critical
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="primary" icon={<Eye className="enterprise-icon-sm" />}>
+            Essential knowledge
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Why Photo Privacy Matters */}
@@ -530,7 +545,7 @@ const PrivacyGuide: React.FC = () => {
           </div>
         </section>
       </div>
-    </div>
+    </EnterpriseLayout>
   );
 };
 

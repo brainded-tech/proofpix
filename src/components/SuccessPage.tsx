@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CheckCircle, ArrowRight, Clock, Shield } from 'lucide-react';
-import { analytics } from '../utils/analytics';
 import SessionManager from '../utils/sessionManager';
 import { PRICING_PLANS } from '../utils/stripe';
 
@@ -18,24 +17,21 @@ const SuccessPage: React.FC = () => {
     const plan = PRICING_PLANS[planId as keyof typeof PRICING_PLANS];
     if (plan) {
       setPlanInfo(plan);
-      setIsSessionBased(plan.sessionBased || false);
+      setIsSessionBased((plan as any).sessionBased || false);
       
       // If it's a session-based plan, create the session
-      if (plan.sessionBased) {
+      if ((plan as any).sessionBased) {
         try {
-          SessionManager.createSession(planId, plan.limits.duration || '24h');
-          analytics.trackFeatureUsage('Session', `Created - ${planId}`);
+          SessionManager.createSession(planId, ((plan as any).limits as any)?.duration || '24h');
         } catch (error) {
           console.error('Error creating session:', error);
         }
       }
     }
 
-    analytics.trackFeatureUsage('Purchase', `Success - ${planId}`);
   }, [searchParams]);
 
   const handleContinue = () => {
-    analytics.trackFeatureUsage('Navigation', 'Continue from Success');
     navigate('/');
   };
 

@@ -12,8 +12,18 @@ import {
   Monitor,
   Smartphone,
   ArrowRight,
-  CheckCircle
+  CheckCircle,
+  Users,
+  Settings
 } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 
 const Architecture: React.FC = () => {
   const navigate = useNavigate();
@@ -90,45 +100,46 @@ const Architecture: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="System Architecture"
+      description="Technical overview of ProofPix's privacy-first architecture"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <button
-            onClick={handleBackHome}
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
-          >
-            ← Back to ProofPix
-          </button>
-          
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="bg-blue-600 p-3 rounded-lg">
-              <Layers className="h-8 w-8" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold">System Architecture</h1>
-              <p className="text-xl text-gray-300 mt-2">
-                Privacy-first design with client-side processing and enterprise scalability
-              </p>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-indigo-600 p-3 rounded-lg">
+            <Layers className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span className="flex items-center">
-              <Code className="h-4 w-4 mr-1" />
-              Technical Documentation
-            </span>
-            <span className="flex items-center">
-              <Shield className="h-4 w-4 mr-1" />
-              Privacy-focused
-            </span>
-            <span className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-1" />
-              Production Ready
-            </span>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">System Architecture</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Technical overview of ProofPix's privacy-first architecture
+            </p>
           </div>
         </div>
-      </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="neutral" icon={<Code className="enterprise-icon-sm" />}>
+            Technical Documentation
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="danger" icon={<Shield className="enterprise-icon-sm" />}>
+            Privacy-first
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            Enterprise Ready
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* System Overview */}
@@ -429,7 +440,7 @@ const Architecture: React.FC = () => {
           </button>
         </div>
       </div>
-    </div>
+    </EnterpriseLayout>
   );
 };
 

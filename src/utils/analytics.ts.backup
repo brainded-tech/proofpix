@@ -1,0 +1,27 @@
+// Comprehensive analytics stub
+type AnyFunction = (...args: any[]) => any;
+
+const createAnalyticsStub = (): any => {
+  return new Proxy({}, {
+    get: (target, prop) => {
+      if (prop === "getUsageStats") {
+        return () => ({ uploads: 0, pdfs: 0, images: 0, pdfDownloads: 0, imageDownloads: 0, dataExports: 0 });
+      }
+      if (prop === "getCurrentUsage") {
+        return () => ({ imagesProcessed: 0, pdfsGenerated: 0, uploadsToday: 0, dataExports: 0 });
+      }
+      if (prop === "getLimits") {
+        return () => ({ imagesPerSession: 100, pdfsPerSession: 50, uploadsPerDay: 1000, dataExportsPerDay: 100 });
+      }
+      return (...args: any[]) => {};
+    }
+  });
+};
+
+export const analytics = createAnalyticsStub();
+export const usageTracker = createAnalyticsStub();
+export const trackTimestampOverlay = (...args: any[]) => {};
+export const trackPDFExport = (...args: any[]) => {};
+export const trackJSONExport = (...args: any[]) => {};
+export const trackImageExport = (...args: any[]) => {};
+export const trackFileUpload = (...args: any[]) => {};

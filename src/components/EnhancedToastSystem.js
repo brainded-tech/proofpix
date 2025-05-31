@@ -1,6 +1,6 @@
 // Enhanced Toast Notification System
 import React, { useState, useEffect, useCallback, memo } from 'react';
-import * as LucideIcons from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, Info, Bell, X } from 'lucide-react';
 import { useErrorHandler } from '../utils/errorHandler';
 import './EnhancedToastSystem.css';
 
@@ -106,15 +106,15 @@ const Toast = memo(({ toast, onDismiss }) => {
     const iconProps = { size: 20 };
     switch (toast.type) {
       case 'success':
-        return <LucideIcons.CheckCircle {...iconProps} className="toast-icon success" />;
+        return <CheckCircle {...iconProps} className="toast-icon success" />;
       case 'warning':
-        return <LucideIcons.AlertTriangle {...iconProps} className="toast-icon warning" />;
+        return <AlertTriangle {...iconProps} className="toast-icon warning" />;
       case 'error':
-        return <LucideIcons.XCircle {...iconProps} className="toast-icon error" />;
+        return <XCircle {...iconProps} className="toast-icon error" />;
       case 'info':
-        return <LucideIcons.Info {...iconProps} className="toast-icon info" />;
+        return <Info {...iconProps} className="toast-icon info" />;
       default:
-        return <LucideIcons.Bell {...iconProps} className="toast-icon" />;
+        return <Bell {...iconProps} className="toast-icon" />;
     }
   };
 
@@ -137,7 +137,7 @@ const Toast = memo(({ toast, onDismiss }) => {
               onClick={handleDismiss}
               aria-label="Dismiss notification"
             >
-              <LucideIcons.X size={16} />
+              <X size={16} />
             </button>
           )}
         </div>

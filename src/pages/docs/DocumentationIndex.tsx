@@ -1,519 +1,514 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Book, Users, Shield, Code, Settings, FileText, ExternalLink } from 'lucide-react';
+import { Camera, Book, Users, Shield, Code, Settings, FileText, ExternalLink, ChevronDown, ChevronRight, Star, Zap, BarChart3, Image } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 export const DocumentationIndex: React.FC = () => {
   const navigate = useNavigate();
+  const [expandedSections, setExpandedSections] = useState<string[]>(['getting-started']);
 
   const handleBackHome = () => {
     navigate('/');
   };
 
-  const documentationSections = [
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => 
+      prev.includes(sectionId) 
+        ? prev.filter(id => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
+
+  // Quick Start Path - Most Common User Journey
+  const quickStartPath = [
     {
-      title: "User Documentation",
+      title: "Getting Started Guide",
+      description: "Upload your first image and extract metadata in 3 simple steps",
+      path: "/docs/getting-started",
+      icon: <Star className="h-5 w-5" />,
+      priority: "high",
+      estimatedTime: "5 min"
+    },
+    {
+      title: "Content Quality Dashboard",
+      description: "Monitor documentation quality, validate links, and track content analytics",
+      path: "/docs/content-quality",
+      icon: <BarChart3 className="h-5 w-5" />,
+      priority: "medium",
+      estimatedTime: "10 min"
+    },
+    {
+      title: "Metadata Extraction Guide",
+      description: "Learn how to extract and analyze image metadata effectively",
+      path: "/docs/metadata-guide",
+      icon: <Image className="h-5 w-5" />,
+      priority: "high",
+      estimatedTime: "8 min"
+    }
+  ];
+
+  // Define priority type
+  type Priority = 'high' | 'medium' | 'low';
+
+  // Organized by user type and complexity
+  const documentationSections: Array<{
+    id: string;
+    title: string;
+    subtitle: string;
+    icon: React.ReactNode;
+    color: string;
+    priority: Priority;
+    expanded?: boolean;
+    docs: Array<{
+      title: string;
+      description: string;
+      path: string;
+      internal?: boolean;
+      badge?: string;
+      time?: string;
+    }>;
+  }> = [
+    {
+      id: "getting-started",
+      title: "🚀 New to ProofPix?",
+      subtitle: "Start here - everything you need in 15 minutes",
+      icon: <Zap className="h-6 w-6" />,
+      color: "green",
+      priority: "high",
+      expanded: true,
+      docs: quickStartPath
+    },
+    {
+      id: "user-guides",
+      title: "📚 User Guides",
+      subtitle: "Detailed guides for regular users",
       icon: <Book className="h-6 w-6" />,
       color: "blue",
-      description: "Essential guides for all ProofPix users",
+      priority: "medium",
       docs: [
         {
-          title: "Getting Started Guide",
-          description: "Complete setup and usage guide for new users",
-          path: "/docs/getting-started",
-          internal: true
-        },
-        {
-          title: "Privacy Best Practices",
-          description: "Protect your privacy when working with image metadata",
-          path: "/docs/privacy-guide",
-          internal: true
+          title: "Pro User Guide",
+          description: "Advanced features for Pro subscribers - batch processing, custom exports, and more",
+          path: "https://github.com/brainded-tech/proofpix/blob/main/PRO_USER_GUIDE.md",
+          internal: false,
+          badge: "Pro",
+          time: "15 min read"
         },
         {
           title: "Metadata Types Explained",
-          description: "Understanding EXIF, IPTC, and XMP metadata",
+          description: "Deep dive into EXIF, IPTC, and XMP metadata formats",
           path: "/docs/metadata-guide",
-          internal: true
-        },
-        {
-          title: "Pro User Guide",
-          description: "Advanced features for Pro subscribers",
-          path: "https://github.com/brainded-tech/proofpix/blob/main/PRO_USER_GUIDE.md",
-          internal: false,
-          badge: "Pro"
+          internal: true,
+          time: "10 min read"
         }
       ]
     },
     {
-      title: "Enterprise Documentation",
+      id: "enterprise",
+      title: "🏢 Enterprise & Business",
+      subtitle: "For teams, organizations, and enterprise deployments",
       icon: <Users className="h-6 w-6" />,
       color: "purple",
-      description: "Comprehensive guides for enterprise deployments",
+      priority: "medium",
       docs: [
         {
-          title: "Enterprise Guide",
+          title: "Enterprise Overview",
           description: "Complete enterprise features and workflows",
           path: "https://github.com/brainded-tech/proofpix/blob/main/ENTERPRISE_GUIDE.md",
           internal: false,
-          badge: "Enterprise"
+          badge: "Enterprise",
+          time: "20 min read"
         },
         {
           title: "API Documentation",
-          description: "Enterprise API reference and examples",
-          path: "/docs/api",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Enterprise API Documentation",
-          description: "Comprehensive API reference for enterprise integration",
+          description: "Enterprise API reference and integration examples",
           path: "/docs/enterprise-api",
           internal: true,
-          badge: "Enterprise"
+          badge: "Enterprise",
+          time: "25 min read"
         },
         {
-          title: "Enterprise Deployment Guide",
+          title: "Deployment Guide",
           description: "Complete deployment guide for enterprise environments",
-          path: "/docs/enterprise-deployment",
+          path: "/docs/enterprise-deployment", 
           internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Integration Guide",
-          description: "System integration and workflow automation",
-          path: "https://github.com/brainded-tech/proofpix/blob/main/INTEGRATION_GUIDE.md",
-          internal: false,
-          badge: "Enterprise"
-        },
-        {
-          title: "Compliance Guide",
-          description: "Regulatory compliance and audit procedures",
-          path: "https://github.com/brainded-tech/proofpix/blob/main/COMPLIANCE_GUIDE.md",
-          internal: false,
-          badge: "Enterprise"
-        },
-        {
-          title: "AI-Driven Pricing",
-          description: "Intelligent customer segmentation and instant pricing strategy",
-          path: "/docs/ai-pricing",
-          internal: true,
-          badge: "Enterprise"
+          badge: "Enterprise",
+          time: "30 min read"
         },
         {
           title: "Custom Branding",
           description: "Brand customization and white-label deployment options",
           path: "/docs/custom-branding",
           internal: true,
-          badge: "Enterprise"
+          badge: "Enterprise",
+          time: "10 min read"
+        }
+      ]
+    },
+    {
+      id: "security",
+      title: "🔒 Security & Compliance",
+      subtitle: "Enterprise security, compliance, and privacy documentation",
+      icon: <Shield className="h-6 w-6" />,
+      color: "red",
+      priority: "medium",
+      docs: [
+        {
+          title: "Security Architecture",
+          description: "Revolutionary client-side processing security architecture",
+          path: "/docs/security-architecture",
+          internal: true,
+          badge: "Enterprise",
+          time: "15 min read"
         },
         {
-          title: "Implementation Status",
-          description: "Real-time project tracking and progress dashboard",
-          path: "/docs/implementation-status",
+          title: "Security FAQ",
+          description: "Common security questions and detailed answers",
+          path: "/docs/security-faq",
           internal: true,
-          badge: "Enterprise"
+          badge: "Enterprise",
+          time: "12 min read"
         },
+        {
+          title: "Compliance Templates",
+          description: "Ready-to-use GDPR, HIPAA, and SOC 2 compliance templates",
+          path: "/docs/compliance-templates",
+          internal: true,
+          badge: "Enterprise", 
+          time: "20 min read"
+        },
+        {
+          title: "Compliance Checklist",
+          description: "Step-by-step compliance verification checklist",
+          path: "/docs/compliance-checklist",
+          internal: true,
+          badge: "Enterprise",
+          time: "10 min read"
+        }
+      ]
+    },
+    {
+      id: "sales-tools",
+      title: "💼 Sales & Implementation",
+      subtitle: "Tools for sales teams and implementation specialists",
+      icon: <Settings className="h-6 w-6" />,
+      color: "orange",
+      priority: "low",
+      docs: [
         {
           title: "Enterprise Demo Walkthrough",
-          description: "Complete guide to the TechCorp Industries enterprise simulation with 20+ screenshots",
-          path: "/docs/enterprise-demo-walkthrough",
+          description: "Complete guide to the TechCorp Industries enterprise simulation",
+          path: "/docs/demo-walkthrough",
           internal: true,
-          badge: "Sales Tool"
+          badge: "Sales Tool",
+          time: "25 min read"
         },
         {
-          title: "Sales Playbook",
-          description: "Comprehensive sales guide with customer segmentation, demo strategies, and objection handling",
+          title: "Sales Playbook", 
+          description: "Comprehensive sales guide with customer segmentation and objection handling",
           path: "/docs/sales-playbook",
           internal: true,
-          badge: "Sales Tool"
+          badge: "Sales Tool",
+          time: "30 min read"
         },
         {
           title: "ROI Calculator",
-          description: "Interactive calculator to demonstrate cost savings and return on investment",
+          description: "Interactive calculator to demonstrate cost savings and ROI",
           path: "/docs/roi-calculator",
           internal: true,
-          badge: "Sales Tool"
+          badge: "Sales Tool",
+          time: "5 min read"
         },
         {
           title: "Customer Success Stories",
           description: "Real case studies from legal firms, insurance companies, and security agencies",
-          path: "/docs/customer-success-stories",
+          path: "/docs/customer-success-stories", 
           internal: true,
-          badge: "Sales Tool"
+          badge: "Sales Tool",
+          time: "15 min read"
         },
         {
           title: "Implementation Guides",
-          description: "30-day implementation plan, integration checklist, and quick start guide",
+          description: "30-day implementation plan and integration checklist",
           path: "/docs/implementation-guides",
           internal: true,
-          badge: "Enterprise"
+          badge: "Enterprise",
+          time: "20 min read"
         }
       ]
     },
     {
-      title: "Security & Compliance",
-      icon: <Shield className="h-6 w-6" />,
-      color: "red",
-      description: "Enterprise security, compliance, and privacy documentation",
-      docs: [
-        {
-          title: "Enterprise Security",
-          description: "Comprehensive security controls and compliance features",
-          path: "/docs/enterprise-security",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Security Architecture Overview",
-          description: "Revolutionary client-side processing security architecture",
-          path: "/docs/security-architecture",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Security FAQ",
-          description: "Frequently asked questions about security and compliance",
-          path: "/docs/security-faq",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Compliance Documentation",
-          description: "GDPR, CCPA, HIPAA, and SOC 2 compliance details",
-          path: "https://github.com/brainded-tech/proofpix/blob/main/ENTERPRISE_COMPLIANCE_DOCUMENTATION.md",
-          internal: false,
-          badge: "Enterprise"
-        },
-        {
-          title: "SOC 2 Certification",
-          description: "SOC 2 Type II certification progress and marketing materials",
-          path: "https://github.com/brainded-tech/proofpix/blob/main/SOC2_CERTIFICATION_MARKETING.md",
-          internal: false,
-          badge: "Enterprise"
-        },
-        {
-          title: "Compliance Documentation Templates",
-          description: "Ready-to-use compliance templates for enterprise customers",
-          path: "/docs/compliance-templates",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Enterprise Security FAQ",
-          description: "Comprehensive security Q&A for enterprise customers",
-          path: "/docs/enterprise-security-faq",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Compliance Checklist",
-          description: "Complete compliance readiness assessment across regulatory frameworks",
-          path: "/docs/compliance-checklist",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Security Architecture Document",
-          description: "Detailed technical security architecture and threat model analysis",
-          path: "/docs/security-architecture-document",
-          internal: true,
-          badge: "Enterprise"
-        },
-        {
-          title: "Security One-Pager",
-          description: "Concise security overview for sales teams and quick reference",
-          path: "/docs/security-one-pager",
-          internal: true,
-          badge: "Sales Tool"
-        },
-        {
-          title: "CISO Presentation Deck",
-          description: "Executive-level security presentation for CISOs and security leaders",
-          path: "/docs/ciso-presentation",
-          internal: true,
-          badge: "Executive"
-        },
-        {
-          title: "Security Questionnaire Responses",
-          description: "Pre-answered responses to standard enterprise security questions",
-          path: "/docs/security-questionnaire",
-          internal: true,
-          badge: "Sales Tool"
-        },
-        {
-          title: "Competitive Security Analysis",
-          description: "Security comparison vs traditional image processing platforms",
-          path: "/docs/competitive-security-analysis",
-          internal: true,
-          badge: "Competitive"
-        }
-      ]
-    },
-    {
-      title: "Technical Documentation",
+      id: "technical",
+      title: "⚙️ Technical Documentation",
+      subtitle: "For developers, system administrators, and technical teams",
       icon: <Code className="h-6 w-6" />,
-      color: "green",
-      description: "Developer and system administrator resources",
+      color: "gray",
+      priority: "low", 
       docs: [
         {
           title: "System Architecture",
-          description: "Complete system design and architecture overview",
+          description: "Complete system design and technical architecture",
           path: "/docs/architecture",
           internal: true,
-          badge: "Developers"
+          time: "25 min read"
         },
         {
           title: "API Reference",
-          description: "Comprehensive API documentation",
-          path: "/docs/api-reference",
+          description: "Comprehensive API documentation with examples",
+          path: "/docs/api",
           internal: true,
-          badge: "Developers"
+          time: "30 min read"
         },
         {
           title: "Testing Guide",
-          description: "Testing strategies and procedures",
+          description: "Testing strategies and quality assurance procedures",
           path: "/docs/testing",
           internal: true,
-          badge: "Developers"
+          time: "20 min read"
         },
         {
           title: "Deployment Guide",
-          description: "Deployment and DevOps documentation",
+          description: "Technical deployment and DevOps documentation",
           path: "/docs/deployment",
           internal: true,
-          badge: "DevOps"
+          time: "25 min read"
+        },
+        {
+          title: "Integration Guide",
+          description: "System integration and workflow automation",
+          path: "https://github.com/brainded-tech/proofpix/blob/main/INTEGRATION_GUIDE.md",
+          internal: false,
+          time: "35 min read"
         }
       ]
     }
   ];
 
-  const getColorClasses = (color: string) => {
-    const colors = {
-      blue: {
-        bg: "bg-blue-500/10",
-        border: "border-blue-500/20",
-        text: "text-blue-400",
-        hover: "hover:border-blue-500/50"
-      },
-      purple: {
-        bg: "bg-purple-500/10",
-        border: "border-purple-500/20",
-        text: "text-purple-400",
-        hover: "hover:border-purple-500/50"
-      },
-      green: {
-        bg: "bg-green-500/10",
-        border: "border-green-500/20",
-        text: "text-green-400",
-        hover: "hover:border-green-500/50"
-      },
-      red: {
-        bg: "bg-red-500/10",
-        border: "border-red-500/20",
-        text: "text-red-400",
-        hover: "hover:border-red-500/50"
-      }
-    };
-    return colors[color as keyof typeof colors];
+  const getBadgeVariant = (badge: string) => {
+    switch (badge) {
+      case 'Enterprise':
+        return 'primary';
+      case 'Pro':
+        return 'success';
+      case 'Sales Tool':
+        return 'warning';
+      default:
+        return 'neutral';
+    }
   };
 
-  const getBadgeColor = (badge: string) => {
-    const badgeColors = {
-      "Pro": "bg-green-500 text-black",
-      "Enterprise": "bg-purple-500 text-white",
-      "Developers": "bg-yellow-500 text-black",
-      "DevOps": "bg-orange-500 text-white",
-      "Sales Tool": "bg-blue-500 text-white",
-      "Executive": "bg-red-500 text-white",
-      "Competitive": "bg-orange-600 text-white"
-    };
-    return badgeColors[badge as keyof typeof badgeColors] || "bg-gray-500 text-white";
+  const handleDocClick = (doc: any) => {
+    if (doc.internal) {
+      navigate(doc.path);
+    } else {
+      window.open(doc.path, '_blank');
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="ProofPix Documentation"
+      description="Comprehensive guides, API references, and resources for all ProofPix users"
+      maxWidth="7xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center cursor-pointer" onClick={handleBackHome}>
-              <Camera className="h-8 w-8 text-blue-500 mr-3" />
-              <h1 className="text-xl font-bold">ProofPix</h1>
-            </div>
-            <nav className="flex space-x-6 text-sm">
-              <button onClick={handleBackHome} className="text-gray-400 hover:text-white">
-                Home
-              </button>
-              <button onClick={() => navigate('/support')} className="text-gray-400 hover:text-white">
-                Support
-              </button>
-              <span className="text-blue-400 font-medium">Documentation</span>
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Hero Section */}
-        <section className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">
-            ProofPix Documentation
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            Documentation Center
           </h1>
-          <p className="text-xl text-gray-300 mb-6">
-            Comprehensive guides, API references, and technical documentation
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            Everything you need to get the most out of ProofPix, from basic usage to enterprise deployment
           </p>
-          <p className="text-gray-400">
-            Everything you need to get the most out of ProofPix
-          </p>
-        </section>
+        </div>
+      </EnterpriseSection>
 
-        {/* Documentation Sections */}
-        <div className="space-y-12">
-          {documentationSections.map((section, sectionIndex) => {
-            const colorClasses = getColorClasses(section.color);
+      {/* Quick Start Banner */}
+      <EnterpriseSection size="sm">
+        <EnterpriseCard variant="dark" className="text-center mb-8">
+          <div className="flex items-center justify-center mb-4">
+            <Star className="h-8 w-8 text-yellow-400 mr-3" />
+            <h2 className="text-2xl font-bold text-white">New to ProofPix?</h2>
+          </div>
+          <p className="text-blue-100 mb-6">
+            Get started in just 15 minutes with our guided quick start path
+          </p>
+          <div className="grid md:grid-cols-3 gap-4">
+            {quickStartPath.map((doc, index) => (
+              <div 
+                key={index}
+                className="bg-white/10 rounded-lg p-4 cursor-pointer hover:bg-white/20 transition-colors"
+                onClick={() => handleDocClick(doc)}
+              >
+                <div className="flex items-center mb-2">
+                  {doc.icon}
+                  <span className="ml-2 text-sm text-blue-200">{doc.estimatedTime}</span>
+                </div>
+                <h3 className="font-semibold text-white text-sm mb-1">{doc.title}</h3>
+                <p className="text-blue-200 text-xs">{doc.description}</p>
+              </div>
+            ))}
+          </div>
+        </EnterpriseCard>
+      </EnterpriseSection>
+
+      {/* Documentation Sections with Progressive Disclosure */}
+      <EnterpriseSection size="lg">
+        <div className="space-y-6">
+          {documentationSections
+            .filter(section => section.id !== 'getting-started') // Already shown above
+            .sort((a, b) => {
+              const priorityOrder: Record<Priority, number> = { high: 0, medium: 1, low: 2 };
+              return priorityOrder[a.priority] - priorityOrder[b.priority];
+            })
+            .map((section, sectionIndex) => {
+              const isExpanded = expandedSections.includes(section.id);
             
             return (
-              <section key={sectionIndex} className={`${colorClasses.bg} ${colorClasses.border} border rounded-2xl p-8 ${colorClasses.hover} transition-all duration-300`}>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className={colorClasses.text}>
+                <div key={sectionIndex} className="border border-slate-200 rounded-lg overflow-hidden">
+                  {/* Section Header - Always Visible */}
+                  <div 
+                    className={`p-6 cursor-pointer transition-colors ${
+                      isExpanded ? 'bg-slate-50' : 'bg-white hover:bg-slate-50'
+                    }`}
+                    onClick={() => toggleSection(section.id)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className={`p-3 rounded-lg ${
+                          section.color === 'blue' ? 'bg-blue-100' :
+                          section.color === 'purple' ? 'bg-purple-100' :
+                          section.color === 'red' ? 'bg-red-100' :
+                          section.color === 'green' ? 'bg-green-100' :
+                          section.color === 'orange' ? 'bg-orange-100' :
+                          'bg-gray-100'
+                        }`}>
+                          <div className={`${
+                            section.color === 'blue' ? 'text-blue-600' :
+                            section.color === 'purple' ? 'text-purple-600' :
+                            section.color === 'red' ? 'text-red-600' :
+                            section.color === 'green' ? 'text-green-600' :
+                            section.color === 'orange' ? 'text-orange-600' :
+                            'text-gray-600'
+                          }`}>
                     {section.icon}
+                          </div>
                   </div>
                   <div>
-                    <h2 className={`text-2xl font-bold ${colorClasses.text}`}>
-                      {section.title}
-                    </h2>
-                    <p className="text-gray-300">
-                      {section.description}
-                    </p>
+                          <h2 className="text-xl font-bold text-slate-900">{section.title}</h2>
+                          <p className="text-slate-600">{section.subtitle}</p>
+                          <div className="flex items-center mt-1">
+                            <span className="text-sm text-slate-500">{section.docs.length} guides</span>
+                            {section.priority === 'high' && (
+                              <EnterpriseBadge variant="success" className="ml-2">Recommended</EnterpriseBadge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        {isExpanded ? (
+                          <ChevronDown className="h-5 w-5 text-slate-400" />
+                        ) : (
+                          <ChevronRight className="h-5 w-5 text-slate-400" />
+                        )}
+                      </div>
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Section Content - Collapsible */}
+                  {isExpanded && (
+                    <div className="p-6 pt-0 bg-slate-50">
+                      <EnterpriseGrid columns={2}>
                   {section.docs.map((doc, docIndex) => (
-                    <div key={docIndex} className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-gray-600 transition-colors">
+                          <EnterpriseCard 
+                            key={docIndex}
+                            className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
+                            onClick={() => handleDocClick(doc)}
+                          >
                       <div className="flex items-start justify-between mb-3">
-                        <h3 className="text-lg font-semibold text-white">
+                              <h3 className="text-lg font-semibold text-slate-900 flex-1 pr-2">
                           {doc.title}
                         </h3>
-                        <div className="flex items-center gap-2">
-                          {doc.badge && (
-                            <span className={`text-xs px-2 py-1 rounded-full font-medium ${getBadgeColor(doc.badge)}`}>
-                              {doc.badge}
+                              <div className="flex items-center space-x-2">
+                                {doc.time && (
+                                  <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                                    {doc.time}
                             </span>
                           )}
+                                {doc.badge && (
+                                  <EnterpriseBadge variant={getBadgeVariant(doc.badge)}>
+                                    {doc.badge}
+                                  </EnterpriseBadge>
+                          )}
                           {!doc.internal && (
-                            <ExternalLink className="h-4 w-4 text-gray-400" />
+                                  <ExternalLink className="h-4 w-4 text-slate-400" />
                           )}
                         </div>
                       </div>
-                      <p className="text-gray-300 text-sm mb-4">
-                        {doc.description}
-                      </p>
-                      {doc.internal ? (
-                        <button
-                          onClick={() => navigate(doc.path)}
-                          className={`${colorClasses.text} hover:text-white underline text-sm font-medium`}
-                        >
-                          Read Guide →
-                        </button>
-                      ) : (
-                        <a
-                          href={doc.path}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`${colorClasses.text} hover:text-white underline text-sm font-medium`}
-                        >
-                          View on GitHub →
-                        </a>
-                      )}
+                            <p className="text-slate-600 text-sm leading-relaxed">{doc.description}</p>
+                          </EnterpriseCard>
+                        ))}
+                      </EnterpriseGrid>
                     </div>
-                  ))}
+                  )}
                 </div>
-              </section>
             );
           })}
         </div>
+      </EnterpriseSection>
 
-        {/* Quick Links */}
-        <section className="bg-gray-800/50 border border-gray-700 rounded-2xl p-8 mt-12">
-          <div className="flex items-center gap-4 mb-6">
-            <FileText className="h-6 w-6 text-blue-500" />
-            <h2 className="text-2xl font-bold">Quick Links</h2>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <Shield className="h-8 w-8 text-green-500 mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-2">Privacy First</h3>
-              <p className="text-gray-300 text-sm mb-3">
-                All processing happens locally in your browser
-              </p>
-              <button
-                onClick={() => navigate('/docs/privacy-guide')}
-                className="text-blue-400 hover:text-blue-300 underline text-sm"
-              >
-                Learn More
-              </button>
-            </div>
-
-            <div className="text-center">
-              <Settings className="h-8 w-8 text-purple-500 mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-2">Enterprise Ready</h3>
-              <p className="text-gray-300 text-sm mb-3">
-                Scalable solutions for business needs
-              </p>
-              <a
-                href="https://github.com/brainded-tech/proofpix/blob/main/ENTERPRISE_GUIDE.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:text-blue-300 underline text-sm"
-              >
-                Enterprise Guide
-              </a>
-            </div>
-
-            <div className="text-center">
-              <Code className="h-8 w-8 text-yellow-500 mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-2">Developer Friendly</h3>
-              <p className="text-gray-300 text-sm mb-3">
-                Open source with comprehensive APIs
-              </p>
-              <button
-                onClick={() => navigate('/docs/api-reference')}
-                className="text-blue-400 hover:text-blue-300 underline text-sm"
-              >
-                API Reference
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section className="text-center mt-12">
-          <h2 className="text-2xl font-bold mb-4">Need Help?</h2>
-          <p className="text-gray-300 mb-6">
-            Can't find what you're looking for? Our support team is here to help.
+      {/* Quick Actions Footer */}
+      <EnterpriseSection size="lg">
+        <EnterpriseCard variant="dark" className="text-center">
+          <h2 className="text-3xl font-bold text-white mb-6">Need Help Getting Started?</h2>
+          <p className="text-xl text-slate-300 mb-8">
+            Jump right into the most popular documentation sections
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate('/support')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <EnterpriseButton 
+              variant="primary" 
+              size="lg"
+              onClick={() => navigate('/docs/getting-started')}
             >
-              Contact Support
-            </button>
-            <button
-              onClick={() => navigate('/faq')}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              Getting Started Guide
+            </EnterpriseButton>
+            <EnterpriseButton 
+              variant="secondary" 
+              size="lg"
+              onClick={() => navigate('/docs/enterprise-api')}
             >
-              View FAQ
-            </button>
+              API Documentation
+            </EnterpriseButton>
+            <EnterpriseButton 
+              variant="secondary" 
+              size="lg"
+              onClick={() => navigate('/enterprise')}
+            >
+              Enterprise Features
+            </EnterpriseButton>
           </div>
-        </section>
-      </div>
+        </EnterpriseCard>
+      </EnterpriseSection>
 
-      {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 };
 

@@ -1,402 +1,519 @@
-// Privacy-Focused Analytics using Plausible
-// No cookies, no personal data collection, GDPR compliant
+// Comprehensive analytics stub
+type AnyFunction = (...args: any[]) => any;
 
-declare global {
-  interface Window {
-    plausible: (event: string, options?: { props?: Record<string, string | number> }) => void;
-  }
+const createAnalyticsStub = (): any => {
+  return new Proxy({}, {
+    get: (target, prop) => {
+      if (prop === "getUsageStats") {
+        return () => ({ uploads: 0, pdfs: 0, images: 0, pdfDownloads: 0, imageDownloads: 0, dataExports: 0 });
+      }
+      if (prop === "getCurrentUsage") {
+        return () => ({ imagesProcessed: 0, pdfsGenerated: 0, uploadsToday: 0, dataExports: 0 });
+      }
+      if (prop === "getLimits") {
+        return () => ({ imagesPerSession: 100, pdfsPerSession: 50, uploadsPerDay: 1000, dataExportsPerDay: 100 });
+      }
+      return (...args: any[]) => {};
+    }
+  });
+};
+
+export const analytics = createAnalyticsStub();
+export const usageTracker = createAnalyticsStub();
+export const trackTimestampOverlay = (...args: any[]) => {};
+export const trackPDFExport = (...args: any[]) => {};
+export const trackJSONExport = (...args: any[]) => {};
+export const trackImageExport = (...args: any[]) => {};
+export const trackFileUpload = (...args: any[]) => {};
+
+// Analytics tracking system for unified pricing page
+export interface AnalyticsEvent {
+  event: string;
+  category: string;
+  label?: string;
+  value?: number;
+  properties?: Record<string, any>;
 }
 
-class PrivacyAnalytics {
-  private isEnabled: boolean = false;
-  
+export interface UserContext {
+  userId?: string;
+  sessionId: string;
+  referrer: string;
+  userAgent: string;
+  viewport: { width: number; height: number };
+  industry?: string;
+  companySize?: string;
+  userType?: string;
+}
+
+export interface ConversionFunnelStep {
+  step: string;
+  timestamp: number;
+  data?: Record<string, any>;
+}
+
+class PricingAnalytics {
+  private sessionId: string;
+  private funnelSteps: ConversionFunnelStep[] = [];
+  private startTime: number;
+  private userContext: Partial<UserContext> = {};
+
   constructor() {
-    // Only enable if Plausible script is loaded
-    this.isEnabled = typeof window !== 'undefined' && typeof window.plausible === 'function';
+    this.sessionId = this.generateSessionId();
+    this.startTime = Date.now();
+    this.initializeContext();
+    this.trackPageView();
   }
 
-  // Track page views automatically handled by Plausible
-  trackPageView(page?: string) {
-    if (!this.isEnabled) return;
+  private generateSessionId(): string {
+    return `pricing_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private initializeContext(): void {
+    this.userContext = {
+      sessionId: this.sessionId,
+      referrer: document.referrer,
+      userAgent: navigator.userAgent,
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight
+      },
+      industry: this.detectIndustry(),
+      companySize: this.detectCompanySize(),
+      userType: this.detectUserType()
+    };
+  }
+
+  private detectIndustry(): string | undefined {
+    const urlParams = new URLSearchParams(window.location.search);
+    const industry = urlParams.get('industry');
+    if (industry) return industry;
+
+    // Detect from referrer
+    const referrer = document.referrer.toLowerCase();
+    if (referrer.includes('legal')) return 'legal';
+    if (referrer.includes('healthcare') || referrer.includes('medical')) return 'healthcare';
+    if (referrer.includes('insurance')) return 'insurance';
+    if (referrer.includes('realestate') || referrer.includes('real-estate')) return 'realestate';
+    if (referrer.includes('government') || referrer.includes('gov')) return 'government';
+
+    return undefined;
+  }
+
+  private detectCompanySize(): string | undefined {
+    // Could be enhanced with IP-based company detection
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('company_size') || undefined;
+  }
+
+  private detectUserType(): string | undefined {
+    const urlParams = new URLSearchParams(window.location.search);
+    const view = urlParams.get('view');
+    if (view) return view;
+
+    // Detect from localStorage
+    return localStorage.getItem('proofpix_user_type') || 'general';
+  }
+
+  // Core tracking methods
+  public trackPageView(): void {
+    this.track({
+      event: 'page_view',
+      category: 'pricing',
+      properties: {
+        ...this.userContext,
+        url: window.location.href,
+        title: document.title
+      }
+    });
+
+    this.addFunnelStep('page_view');
+  }
+
+  public trackSectionView(section: string): void {
+    this.track({
+      event: 'section_view',
+      category: 'engagement',
+      label: section,
+      properties: {
+        section,
+        timeOnPage: Date.now() - this.startTime
+      }
+    });
+
+    this.addFunnelStep('section_view', { section });
+  }
+
+  public trackPlanHover(plan: string, duration: number): void {
+    this.track({
+      event: 'plan_hover',
+      category: 'engagement',
+      label: plan,
+      value: duration,
+      properties: {
+        plan,
+        duration,
+        section: this.getCurrentSection()
+      }
+    });
+  }
+
+  public trackCTAClick(cta: string, plan: string, position: string): void {
+    this.track({
+      event: 'cta_click',
+      category: 'conversion',
+      label: `${cta}_${plan}`,
+      properties: {
+        cta,
+        plan,
+        position,
+        timeToClick: Date.now() - this.startTime
+      }
+    });
+
+    this.addFunnelStep('cta_click', { cta, plan, position });
+  }
+
+  public trackQuizStart(): void {
+    this.track({
+      event: 'quiz_start',
+      category: 'engagement',
+      properties: {
+        timeToStart: Date.now() - this.startTime
+      }
+    });
+
+    this.addFunnelStep('quiz_start');
+  }
+
+  public trackQuizStep(step: number, question: string, answer: string): void {
+    this.track({
+      event: 'quiz_step',
+      category: 'engagement',
+      label: `step_${step}`,
+      value: step,
+      properties: {
+        step,
+        question,
+        answer,
+        timeInQuiz: Date.now() - this.getQuizStartTime()
+      }
+    });
+  }
+
+  public trackQuizComplete(recommendation: string, answers: Record<string, string>): void {
+    const quizDuration = Date.now() - this.getQuizStartTime();
     
-    // Plausible automatically tracks page views, but we can track custom events
-    if (page) {
-      this.trackEvent('Custom Page View', { page });
+    this.track({
+      event: 'quiz_complete',
+      category: 'conversion',
+      label: recommendation,
+      value: quizDuration,
+      properties: {
+        recommendation,
+        answers,
+        duration: quizDuration,
+        completionRate: 100
+      }
+    });
+
+    this.addFunnelStep('quiz_complete', { recommendation, answers });
+  }
+
+  public trackROICalculatorStart(): void {
+    this.track({
+      event: 'roi_calculator_start',
+      category: 'engagement',
+      properties: {
+        timeToStart: Date.now() - this.startTime
+      }
+    });
+
+    this.addFunnelStep('roi_calculator_start');
+  }
+
+  public trackROICalculated(inputs: Record<string, any>, results: Record<string, any>): void {
+    this.track({
+      event: 'roi_calculated',
+      category: 'conversion',
+      label: results.recommendedPlan,
+      value: Math.round(results.roi),
+      properties: {
+        inputs,
+        results,
+        calculationTime: Date.now() - this.getROIStartTime()
+      }
+    });
+
+    this.addFunnelStep('roi_calculated', { inputs, results });
+  }
+
+  public trackIndustrySelection(industry: string): void {
+    this.userContext.industry = industry;
+    
+    this.track({
+      event: 'industry_selection',
+      category: 'engagement',
+      label: industry,
+      properties: {
+        industry,
+        previousIndustry: this.userContext.industry
+      }
+    });
+
+    this.addFunnelStep('industry_selection', { industry });
+  }
+
+  public trackBillingCycleChange(cycle: 'monthly' | 'annual'): void {
+    this.track({
+      event: 'billing_cycle_change',
+      category: 'engagement',
+      label: cycle,
+      properties: {
+        cycle,
+        timeToChange: Date.now() - this.startTime
+      }
+    });
+  }
+
+  public trackFAQExpand(question: string, index: number): void {
+    this.track({
+      event: 'faq_expand',
+      category: 'engagement',
+      label: question,
+      value: index,
+      properties: {
+        question,
+        index,
+        timeToExpand: Date.now() - this.startTime
+      }
+    });
+  }
+
+  public trackScrollDepth(percentage: number): void {
+    // Only track at 25%, 50%, 75%, 100%
+    if ([25, 50, 75, 100].includes(percentage)) {
+      this.track({
+        event: 'scroll_depth',
+        category: 'engagement',
+        label: `${percentage}%`,
+        value: percentage,
+        properties: {
+          percentage,
+          timeToScroll: Date.now() - this.startTime
+        }
+      });
     }
   }
 
-  // Track feature usage without personal data
-  trackEvent(eventName: string, properties?: Record<string, string | number>) {
-    if (!this.isEnabled) return;
+  public trackExitIntent(): void {
+    this.track({
+      event: 'exit_intent',
+      category: 'engagement',
+      properties: {
+        timeOnPage: Date.now() - this.startTime,
+        funnelSteps: this.funnelSteps.length,
+        lastStep: this.funnelSteps[this.funnelSteps.length - 1]?.step
+      }
+    });
+  }
+
+  public trackConversion(plan: string, type: 'session' | 'subscription' | 'enterprise'): void {
+    const conversionTime = Date.now() - this.startTime;
     
-    try {
-      window.plausible(eventName, {
-        props: properties
+    this.track({
+      event: 'conversion',
+      category: 'conversion',
+      label: plan,
+      value: this.getPlanValue(plan),
+      properties: {
+        plan,
+        type,
+        conversionTime,
+        funnelSteps: this.funnelSteps.length,
+        userJourney: this.funnelSteps.map(s => s.step),
+        industry: this.userContext.industry
+      }
+    });
+
+    this.addFunnelStep('conversion', { plan, type });
+  }
+
+  // Helper methods
+  private addFunnelStep(step: string, data?: Record<string, any>): void {
+    this.funnelSteps.push({
+      step,
+      timestamp: Date.now(),
+      data
+    });
+  }
+
+  private getQuizStartTime(): number {
+    const quizStart = this.funnelSteps.find(s => s.step === 'quiz_start');
+    return quizStart?.timestamp || Date.now();
+  }
+
+  private getROIStartTime(): number {
+    const roiStart = this.funnelSteps.find(s => s.step === 'roi_calculator_start');
+    return roiStart?.timestamp || Date.now();
+  }
+
+  private getCurrentSection(): string {
+    // Determine current section based on scroll position
+    const scrollY = window.scrollY;
+    const sections = ['hero', 'session-passes', 'subscriptions', 'enterprise', 'interactive-tools', 'faq'];
+    
+    // Simple section detection - could be enhanced
+    if (scrollY < 800) return 'hero';
+    if (scrollY < 1600) return 'session-passes';
+    if (scrollY < 2400) return 'subscriptions';
+    if (scrollY < 3200) return 'enterprise';
+    if (scrollY < 4000) return 'interactive-tools';
+    return 'faq';
+  }
+
+  private getPlanValue(plan: string): number {
+    const values = {
+      'day': 2.99,
+      'week': 9.99,
+      'month': 49.99,
+      'individual': 19,
+      'professional': 49,
+      'business': 149,
+      'enterprise': 499
+    };
+    return values[plan as keyof typeof values] || 0;
+  }
+
+  // Core tracking method
+  public track(event: AnalyticsEvent): void {
+    // Google Analytics 4
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', event.event, {
+        event_category: event.category,
+        event_label: event.label,
+        value: event.value,
+        custom_parameters: event.properties
       });
-    } catch (error: unknown) {
+    }
+
+    // Custom analytics endpoint
+    this.sendToCustomAnalytics(event).catch(error => {
+      console.error('Failed to send analytics event:', error);
+    });
+
+    // Console logging for development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('📊 Analytics Event:', event);
+    }
+  }
+
+  // Generic event tracking method
+  public trackEvent(event: string, category: string, value?: number, properties?: Record<string, any>): void {
+    this.track({
+      event,
+      category,
+      value,
+      properties
+    });
+  }
+
+  // Enhanced event tracking with label and full options
+  public trackEventWithDetails(
+    event: string, 
+    category: string, 
+    label?: string,
+    value?: number, 
+    properties?: Record<string, any>
+  ): void {
+    this.track({
+      event,
+      category,
+      label,
+      value,
+      properties: {
+        timestamp: Date.now(),
+        timeSinceSessionStart: Date.now() - this.startTime,
+        currentUrl: window.location.href,
+        ...this.userContext,
+        ...properties
+      }
+    });
+
+    // Add to funnel steps if it's a significant event
+    if (
+      category === 'conversion' || 
+      category === 'engagement' || 
+      event.includes('view_') || 
+      event.includes('click_')
+    ) {
+      this.addFunnelStep(event, { category, label, value, ...properties });
+    }
+  }
+
+  private async sendToCustomAnalytics(event: AnalyticsEvent): Promise<void> {
+    try {
+      await fetch('/api/analytics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...event,
+          sessionId: this.sessionId,
+          timestamp: Date.now(),
+          userContext: this.userContext
+        })
+      });
+    } catch (error) {
       console.warn('Analytics tracking failed:', error);
     }
   }
 
-  // Track file processing events
-  trackFileProcessing(fileType: string, hasGPS: boolean, metadataKeys: number) {
-    this.trackEvent('File Processed', {
-      file_type: fileType,
-      has_gps: hasGPS ? 'yes' : 'no',
-      metadata_fields: metadataKeys
-    });
+  // Public API for getting analytics data
+  public getFunnelData(): ConversionFunnelStep[] {
+    return [...this.funnelSteps];
   }
 
-  // Track export actions
-  trackExport(exportType: 'pdf' | 'json' | 'image', format?: string) {
-    this.trackEvent('Export Used', {
-      export_type: exportType,
-      format: format || 'unknown'
-    });
-  }
-
-  // Track feature usage
-  trackFeatureUsage(feature: string, context?: string) {
-    this.trackEvent('Feature Used', {
-      feature,
-      context: context || 'general'
-    });
-  }
-
-  // Track errors (anonymized)
-  trackError(errorType: string, errorCategory: string) {
-    this.trackEvent('Error Occurred', {
-      error_type: errorType,
-      category: errorCategory
-    });
-  }
-
-  // Phase 2: Email capture tracking
-  trackEmailCapture(trigger: string, data?: any) {
-    this.trackEvent('Email Capture', {
-      trigger,
-      action: data?.action || 'submitted',
-      use_case: data?.useCase || 'not_specified'
-    });
-  }
-
-  // Phase 2: Batch processing tracking
-  trackBatchUpload(fileCount: number) {
-    this.trackEvent('Batch Upload', {
-      file_count: fileCount
-    });
-  }
-
-  trackBatchProcessingStart(fileCount: number) {
-    this.trackEvent('Batch Processing Started', {
-      file_count: fileCount
-    });
-  }
-
-  trackBatchProcessingComplete(total: number, successful: number, errors: number) {
-    this.trackEvent('Batch Processing Complete', {
-      total_files: total,
-      successful_files: successful,
-      error_files: errors,
-      success_rate: Math.round((successful / total) * 100)
-    });
-  }
-
-  trackBatchProcessingError(error: any) {
-    this.trackEvent('Batch Processing Error', {
-      error_type: error?.name || 'unknown',
-      error_message: error?.message?.substring(0, 50) || 'unknown'
-    });
-  }
-
-  trackBatchProcessingCancelled() {
-    this.trackEvent('Batch Processing Cancelled');
-  }
-
-  trackBatchExport(fileCount: number) {
-    this.trackEvent('Batch Export', {
-      file_count: fileCount
-    });
-  }
-
-  // Phase 2: Enterprise tracking
-  trackEnterpriseInquiry(trigger: string, useCase: string) {
-    this.trackEvent('Enterprise Inquiry', {
-      trigger,
-      use_case: useCase
-    });
-  }
-
-  // Phase 2: Advanced analytics tracking
-  trackAnalyticsDashboardView(timeRange: string) {
-    this.trackEvent('Analytics Dashboard View', {
-      time_range: timeRange
-    });
-  }
-
-  trackAnalyticsExport(format: string) {
-    this.trackEvent('Analytics Export', {
-      format
-    });
-  }
-
-  // Phase 2: Comparison tool tracking
-  trackComparisonToolUsage(fileCount: number, hasResults: boolean) {
-    this.trackEvent('Comparison Tool Used', {
-      file_count: fileCount,
-      has_results: hasResults ? 'yes' : 'no'
-    });
-  }
-
-  // Phase 2: Usage limit tracking
-  trackUsageLimitReached(limitType: string, currentUsage: number, limit: number) {
-    this.trackEvent('Usage Limit Reached', {
-      limit_type: limitType,
-      current_usage: currentUsage,
-      limit_value: limit,
-      usage_percentage: Math.round((currentUsage / limit) * 100)
-    });
-  }
-
-  // Phase 2: Upgrade prompt tracking
-  trackUpgradePrompt(trigger: string, action: 'shown' | 'clicked' | 'dismissed') {
-    this.trackEvent('Upgrade Prompt', {
-      trigger,
-      action
-    });
+  public getSessionData(): Record<string, any> {
+    return {
+      sessionId: this.sessionId,
+      duration: Date.now() - this.startTime,
+      funnelSteps: this.funnelSteps.length,
+      userContext: this.userContext,
+      lastActivity: this.funnelSteps[this.funnelSteps.length - 1]?.timestamp
+    };
   }
 }
 
-// Create singleton instance
-export const analytics = new PrivacyAnalytics();
+// Singleton instance
+export const pricingAnalytics = new PricingAnalytics();
 
-// Helper functions for common tracking events
-export const trackFileUpload = (fileType: string, fileSize: number) => {
-  analytics.trackEvent('File Upload', {
-    file_type: fileType,
-    file_size_mb: Math.round(fileSize / (1024 * 1024))
-  });
-};
-
-export const trackTimestampOverlay = () => {
-  analytics.trackFeatureUsage('Timestamp Overlay');
-};
-
-export const trackPDFExport = () => {
-  analytics.trackExport('pdf');
-};
-
-export const trackEnterpriseTrialSignup = (companySize?: string) => {
-  analytics.trackEvent('Enterprise Trial Signup', {
-    company_size: companySize || 'unknown',
-    timestamp: new Date().toISOString()
-  });
-};
-
-export const trackEnterpriseDemo = (source: string) => {
-  analytics.trackEvent('Enterprise Demo Request', {
-    source,
-    timestamp: new Date().toISOString()
-  });
-};
-
-export const trackJSONExport = () => {
-  analytics.trackExport('json');
-};
-
-export const trackImageExport = (format: string) => {
-  analytics.trackExport('image', format);
-};
-
-// Usage tracking for displaying stats
-export class UsageTracker {
-  private storageKey = 'proofpix_usage_stats';
-  private limitsKey = 'proofpix_usage_limits';
-
-  getUsageStats() {
-    const stored = localStorage.getItem(this.storageKey);
-    const defaultStats = {
-      uploads: 0,
-      pdfDownloads: 0,
-      imageDownloads: 0,
-      dataExports: 0,
-      batchProcessing: 0,
-      comparisons: 0,
-      imagesProcessed: 0,
-      lastReset: new Date().toDateString()
-    };
-
-    if (!stored) {
-      return defaultStats;
-    }
-
-    try {
-      const stats = JSON.parse(stored);
-      
-      // Reset daily stats if it's a new day
-      if (stats.lastReset !== new Date().toDateString()) {
-        return defaultStats;
-      }
-      
-      return { ...defaultStats, ...stats };
-    } catch {
-      return defaultStats;
-    }
+// Scroll depth tracking
+let maxScrollDepth = 0;
+window.addEventListener('scroll', () => {
+  const scrollDepth = Math.round(
+    (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+  );
+  
+  if (scrollDepth > maxScrollDepth) {
+    maxScrollDepth = scrollDepth;
+    pricingAnalytics.trackScrollDepth(scrollDepth);
   }
+});
 
-  // Phase 2: Get current usage for limit checking
-  getCurrentUsage() {
-    return this.getUsageStats();
+// Exit intent tracking
+document.addEventListener('mouseleave', (e) => {
+  if (e.clientY <= 0) {
+    pricingAnalytics.trackExitIntent();
   }
+});
 
-  // Phase 2: Get usage limits based on tier
-  getLimits() {
-    const stored = localStorage.getItem(this.limitsKey);
-    const defaultLimits = {
-      imagesPerSession: 5,
-      pdfExportsPerDay: 2,
-      dataExportsPerDay: 1,
-      comparisonsPerDay: 3,
-      batchProcessingPerDay: 0, // Free tier doesn't get batch processing
-      tier: 'free'
-    };
-
-    if (!stored) {
-      return defaultLimits;
-    }
-
-    try {
-      return { ...defaultLimits, ...JSON.parse(stored) };
-    } catch {
-      return defaultLimits;
-    }
+// Page visibility tracking
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    pricingAnalytics.trackExitIntent();
   }
+});
 
-  // Phase 2: Set user tier and limits
-  setUserTier(tier: 'free' | 'pro' | 'teams' | 'enterprise') {
-    const limits = {
-      free: {
-        imagesPerSession: 5,
-        pdfExportsPerDay: 2,
-        dataExportsPerDay: 1,
-        comparisonsPerDay: 3,
-        batchProcessingPerDay: 0,
-        tier: 'free'
-      },
-      pro: {
-        imagesPerSession: 50,
-        pdfExportsPerDay: -1, // unlimited
-        dataExportsPerDay: -1, // unlimited
-        comparisonsPerDay: -1, // unlimited
-        batchProcessingPerDay: -1, // unlimited
-        tier: 'pro'
-      },
-      teams: {
-        imagesPerSession: -1, // unlimited
-        pdfExportsPerDay: -1, // unlimited
-        dataExportsPerDay: -1, // unlimited
-        comparisonsPerDay: -1, // unlimited
-        batchProcessingPerDay: -1, // unlimited
-        tier: 'teams'
-      },
-      enterprise: {
-        imagesPerSession: -1, // unlimited
-        pdfExportsPerDay: -1, // unlimited
-        dataExportsPerDay: -1, // unlimited
-        comparisonsPerDay: -1, // unlimited
-        batchProcessingPerDay: -1, // unlimited
-        tier: 'enterprise'
-      }
-    };
-
-    localStorage.setItem(this.limitsKey, JSON.stringify(limits[tier]));
-  }
-
-  // Phase 2: Check if action is allowed
-  canPerformAction(action: 'upload' | 'pdf_export' | 'data_export' | 'comparison' | 'batch_processing'): boolean {
-    // 🚀 LOCAL DEVELOPMENT BYPASS: Allow all actions in local development
-    if (typeof window !== 'undefined') {
-      const hostname = window.location.hostname;
-      const isLocalhost = hostname === 'localhost' || 
-                         hostname === '127.0.0.1' || 
-                         hostname.includes('localhost');
-      
-      console.log(`🔍 UsageTracker Debug:`, {
-        action,
-        hostname,
-        isLocalhost,
-        fullUrl: window.location.href
-      });
-      
-      if (isLocalhost) {
-        console.log(`🚀 UsageTracker local development bypass: Allowing ${action}`);
-        return true;
-      }
-    }
-
-    const usage = this.getCurrentUsage();
-    const limits = this.getLimits();
-
-    switch (action) {
-      case 'upload':
-        return limits.imagesPerSession === -1 || usage.uploads < limits.imagesPerSession;
-      case 'pdf_export':
-        return limits.pdfExportsPerDay === -1 || usage.pdfDownloads < limits.pdfExportsPerDay;
-      case 'data_export':
-        return limits.dataExportsPerDay === -1 || usage.dataExports < limits.dataExportsPerDay;
-      case 'comparison':
-        return limits.comparisonsPerDay === -1 || usage.comparisons < limits.comparisonsPerDay;
-      case 'batch_processing':
-        return limits.batchProcessingPerDay === -1 || usage.batchProcessing < limits.batchProcessingPerDay;
-      default:
-        return false;
-    }
-  }
-
-  incrementUpload() {
-    this.incrementStat('uploads');
-  }
-
-  incrementPdfDownload() {
-    this.incrementStat('pdfDownloads');
-  }
-
-  incrementImageDownload() {
-    this.incrementStat('imageDownloads');
-  }
-
-  incrementDataExport() {
-    this.incrementStat('dataExports');
-  }
-
-  trackDataExport() {
-    this.incrementDataExport();
-  }
-
-  // Phase 2: New tracking methods
-  incrementBatchProcessing() {
-    this.incrementStat('batchProcessing');
-  }
-
-  incrementComparison() {
-    this.incrementStat('comparisons');
-  }
-
-  trackImageProcessed() {
-    this.incrementStat('imagesProcessed');
-  }
-
-  resetStats() {
-    localStorage.removeItem(this.storageKey);
-  }
-
-  private incrementStat(statName: keyof ReturnType<typeof this.getUsageStats>) {
-    const stats = this.getUsageStats();
-    if (typeof stats[statName] === 'number') {
-      (stats[statName] as number)++;
-      localStorage.setItem(this.storageKey, JSON.stringify(stats));
-    }
-  }
-}
-
-export const usageTracker = new UsageTracker(); 
+export default pricingAnalytics;

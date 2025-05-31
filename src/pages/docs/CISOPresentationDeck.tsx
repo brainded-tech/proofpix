@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowLeft as PrevArrow, Download, Shield, Target, TrendingUp, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 const CISOPresentationDeck: React.FC = () => {
@@ -32,25 +40,25 @@ const CISOPresentationDeck: React.FC = () => {
         <div className="text-center space-y-8">
           <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-8">
             <h2 className="text-3xl font-bold text-blue-400 mb-4">CISO Presentation</h2>
-            <p className="text-xl text-gray-300 mb-6">
+            <p className="text-xl text-slate-300 mb-6">
               Eliminating 90% of Traditional SaaS Security Risks
             </p>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-2xl font-bold text-green-400">0</div>
-                <div className="text-sm text-gray-400">Server Storage</div>
+                <div className="text-sm text-slate-400">Server Storage</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-green-400">100%</div>
-                <div className="text-sm text-gray-400">Client Processing</div>
+                <div className="text-sm text-slate-400">Client Processing</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-green-400">95%</div>
-                <div className="text-sm text-gray-400">Risk Reduction</div>
+                <div className="text-sm text-slate-400">Risk Reduction</div>
               </div>
             </div>
           </div>
-          <p className="text-gray-400">
+          <p className="text-slate-400">
             Presented to: [CISO Name] • [Company] • [Date]
           </p>
         </div>
@@ -121,27 +129,27 @@ const CISOPresentationDeck: React.FC = () => {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="text-gray-300">User uploads sensitive data</span>
+                  <span className="text-slate-300">User uploads sensitive data</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="text-gray-300">Network transmission (TLS)</span>
+                  <span className="text-slate-300">Network transmission (TLS)</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="text-gray-300">Server-side processing</span>
+                  <span className="text-slate-300">Server-side processing</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="text-gray-300">Database storage</span>
+                  <span className="text-slate-300">Database storage</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="text-gray-300">Backup systems</span>
+                  <span className="text-slate-300">Backup systems</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="text-gray-300">Long-term retention</span>
+                  <span className="text-slate-300">Long-term retention</span>
                 </div>
               </div>
               <div className="mt-4 text-center">
@@ -157,27 +165,27 @@ const CISOPresentationDeck: React.FC = () => {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-gray-300">User selects local files</span>
+                  <span className="text-slate-300">User selects local files</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-gray-300">Browser memory processing</span>
+                  <span className="text-slate-300">Browser memory processing</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-gray-300">Metadata extraction (local)</span>
+                  <span className="text-slate-300">Metadata extraction (local)</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-gray-300">Results display</span>
+                  <span className="text-slate-300">Results display</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-gray-300">Local export generation</span>
+                  <span className="text-slate-300">Local export generation</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <span className="text-gray-300">Automatic memory cleanup</span>
+                  <span className="text-slate-300">Automatic memory cleanup</span>
                 </div>
               </div>
               <div className="mt-4 text-center">
@@ -791,48 +799,70 @@ const CISOPresentationDeck: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="CISO Presentation Deck"
+      description="Executive security presentation for enterprise decision makers"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleBackToDocs}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Back to Documentation</span>
-            </button>
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={handleDownload}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <Download className="h-4 w-4" />
-                <span>Download PDF</span>
-              </button>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300">
-                CISO Deck
-              </span>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-purple-600 p-3 rounded-lg">
+            <Shield className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">CISO Presentation Deck</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Executive security presentation for enterprise decision makers
+            </p>
           </div>
         </div>
-      </header>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<Shield className="enterprise-icon-sm" />}>
+            Executive Presentation
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="danger" icon={<Target className="enterprise-icon-sm" />}>
+            Security Architecture
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            Risk Reduction
+          </EnterpriseBadge>
+          <EnterpriseButton
+            variant="primary"
+            onClick={handleDownload}
+            className="ml-auto"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Download PDF
+          </EnterpriseButton>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Slide Navigation */}
         <div className="flex items-center justify-between mb-8">
-          <button
+          <EnterpriseButton
+            variant="secondary"
             onClick={prevSlide}
-            className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
             disabled={currentSlide === 0}
           >
-            <PrevArrow className="h-4 w-4" />
-            <span>Previous</span>
-          </button>
+            <PrevArrow className="h-4 w-4 mr-2" />
+            Previous
+          </EnterpriseButton>
           
           <div className="flex items-center space-x-4">
-            <span className="text-gray-400">
+            <span className="text-slate-600">
               Slide {currentSlide + 1} of {slides.length}
             </span>
             <div className="flex space-x-1">
@@ -841,30 +871,30 @@ const CISOPresentationDeck: React.FC = () => {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide ? 'bg-blue-500' : 'bg-gray-600'
+                    index === currentSlide ? 'bg-blue-500' : 'bg-slate-300'
                   }`}
                 />
               ))}
             </div>
           </div>
           
-          <button
+          <EnterpriseButton
+            variant="secondary"
             onClick={nextSlide}
-            className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
             disabled={currentSlide === slides.length - 1}
           >
-            <span>Next</span>
-            <ArrowRight className="h-4 w-4" />
-          </button>
+            Next
+            <ArrowRight className="h-4 w-4 ml-2" />
+          </EnterpriseButton>
         </div>
 
         {/* Current Slide */}
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-8 min-h-[600px]">
+        <EnterpriseCard className="min-h-[600px]">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">
               {slides[currentSlide].title}
             </h1>
-            <p className="text-lg text-gray-300">
+            <p className="text-lg text-slate-600">
               {slides[currentSlide].subtitle}
             </p>
           </div>
@@ -872,12 +902,12 @@ const CISOPresentationDeck: React.FC = () => {
           <div className="slide-content">
             {slides[currentSlide].content}
           </div>
-        </div>
+        </EnterpriseCard>
       </div>
 
       {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 };
 

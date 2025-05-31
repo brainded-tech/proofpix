@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Calendar, CheckSquare, Rocket, ArrowRight, CheckCircle, Clock, Users, Settings, AlertTriangle } from 'lucide-react';
+import { BookOpen, Calendar, CheckSquare, Rocket, ArrowRight, CheckCircle, Clock, Users, Settings, AlertTriangle, ArrowLeft } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
+import { useNavigate } from 'react-router-dom';
 
 export const ImplementationGuides: React.FC = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('30-day');
+
+  const handleBackToDocs = () => {
+    navigate('/docs');
+  };
 
   const implementationPlan = {
     week1: {
@@ -464,265 +478,269 @@ const client = new ProofPix({
   ];
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Breadcrumb navigation */}
-      <nav className="mb-6 text-sm">
-        <Link to="/docs" className="text-blue-600 hover:underline">Documentation</Link>
-        <span className="mx-2">/</span>
-        <Link to="/docs" className="text-blue-600 hover:underline">Implementation</Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-600">Implementation Guides</span>
-      </nav>
-
-      {/* Page title */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4 flex items-center">
-          <BookOpen className="mr-3 text-blue-600" size={32} />
-          Implementation Guides
-        </h1>
-        <p className="text-xl text-gray-600">
-          Complete guides to successfully implement ProofPix in your organization
-        </p>
-      </div>
-
-      {/* Tab navigation */}
-      <div className="mb-8">
-        <nav className="flex space-x-8 border-b border-gray-200">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <tab.icon className="mr-2" size={16} />
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-      </div>
-
-      {/* 30-Day Implementation Plan */}
-      {activeTab === '30-day' && (
-        <div className="space-y-8">
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
-            <h2 className="text-xl font-bold text-blue-900 mb-2">30-Day Implementation Plan</h2>
-            <p className="text-blue-800">
-              A comprehensive week-by-week plan to successfully implement ProofPix across your organization.
-              This plan ensures proper setup, thorough testing, and smooth rollout to production.
+    <EnterpriseLayout
+      showHero
+      title="Implementation Guides"
+      description="Complete guides to successfully implement ProofPix in your organization"
+      maxWidth="6xl"
+    >
+      {/* Header */}
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <BookOpen className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Implementation Guides</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Complete guides to successfully implement ProofPix in your organization
             </p>
           </div>
+        </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<BookOpen className="enterprise-icon-sm" />}>
+            Implementation Guide
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckSquare className="enterprise-icon-sm" />}>
+            Step-by-Step
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<Rocket className="enterprise-icon-sm" />}>
+            Production Ready
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
-          {Object.entries(implementationPlan).map(([weekKey, week]) => (
-            <div key={weekKey} className="border rounded-lg p-6 bg-white shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <Calendar className="mr-2 text-blue-600" size={20} />
-                {week.title}
-              </h3>
-              
-              <div className="space-y-6">
-                {week.days.map((day, dayIndex) => (
-                  <div key={dayIndex} className="border-l-2 border-gray-200 pl-6 relative">
-                    <div className="absolute -left-2 top-0 w-4 h-4 bg-blue-500 rounded-full"></div>
-                    
-                    <div className="mb-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-gray-900">Day {day.day}: {day.title}</h4>
-                        <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                          {day.owner}
-                        </span>
-                      </div>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Tab navigation */}
+        <div className="mb-8">
+          <nav className="flex space-x-8 border-b border-slate-200">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                }`}
+              >
+                <tab.icon className="mr-2" size={16} />
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* 30-Day Implementation Plan */}
+        {activeTab === '30-day' && (
+          <div className="space-y-8">
+            <EnterpriseCard className="border-l-4 border-blue-500">
+              <h2 className="text-xl font-bold text-blue-900 mb-2">30-Day Implementation Plan</h2>
+              <p className="text-blue-800">
+                A comprehensive week-by-week plan to successfully implement ProofPix across your organization.
+                This plan ensures proper setup, thorough testing, and smooth rollout to production.
+              </p>
+            </EnterpriseCard>
+
+            {Object.entries(implementationPlan).map(([weekKey, week]) => (
+              <EnterpriseCard key={weekKey}>
+                <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
+                  <Calendar className="mr-2 text-blue-600" size={20} />
+                  {week.title}
+                </h3>
+                
+                <div className="space-y-6">
+                  {week.days.map((day, dayIndex) => (
+                    <div key={dayIndex} className="border-l-2 border-slate-200 pl-6 relative">
+                      <div className="absolute -left-2 top-0 w-4 h-4 bg-blue-500 rounded-full"></div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <h5 className="font-medium text-gray-900 mb-2">Tasks:</h5>
-                          <ul className="space-y-1">
-                            {day.tasks.map((task, taskIndex) => (
-                              <li key={taskIndex} className="flex items-start text-sm text-gray-600">
-                                <CheckCircle className="mr-2 text-green-500 mt-0.5" size={12} />
-                                {task}
-                              </li>
-                            ))}
-                          </ul>
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-semibold text-slate-900">Day {day.day}: {day.title}</h4>
+                          <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                            {day.owner}
+                          </span>
                         </div>
                         
-                        <div>
-                          <h5 className="font-medium text-gray-900 mb-2">Deliverables:</h5>
-                          <ul className="space-y-1">
-                            {day.deliverables.map((deliverable, deliverableIndex) => (
-                              <li key={deliverableIndex} className="flex items-start text-sm text-gray-600">
-                                <CheckSquare className="mr-2 text-blue-500 mt-0.5" size={12} />
-                                {deliverable}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                        <EnterpriseGrid columns={2}>
+                          <div>
+                            <h5 className="font-medium text-slate-900 mb-2">Tasks:</h5>
+                            <ul className="space-y-1">
+                              {day.tasks.map((task, taskIndex) => (
+                                <li key={taskIndex} className="flex items-start text-sm text-slate-600">
+                                  <CheckCircle className="mr-2 text-green-500 mt-0.5" size={12} />
+                                  {task}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          
+                          <div>
+                            <h5 className="font-medium text-slate-900 mb-2">Deliverables:</h5>
+                            <ul className="space-y-1">
+                              {day.deliverables.map((deliverable, deliverableIndex) => (
+                                <li key={deliverableIndex} className="flex items-start text-sm text-slate-600">
+                                  <CheckSquare className="mr-2 text-blue-500 mt-0.5" size={12} />
+                                  {deliverable}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </EnterpriseGrid>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </EnterpriseCard>
+            ))}
+          </div>
+        )}
+
+        {/* Integration Checklist */}
+        {activeTab === 'checklist' && (
+          <div className="space-y-8">
+            <EnterpriseCard className="border-l-4 border-green-500">
+              <h2 className="text-xl font-bold text-green-900 mb-2">Integration Checklist</h2>
+              <p className="text-green-800">
+                Complete checklist to ensure all aspects of your ProofPix integration are properly implemented.
+                Check off items as you complete them to track your progress.
+              </p>
+            </EnterpriseCard>
+
+            {integrationChecklist.map((category, categoryIndex) => (
+              <EnterpriseCard key={categoryIndex}>
+                <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
+                  <CheckSquare className="mr-2 text-green-600" size={20} />
+                  {category.category}
+                </h3>
+                
+                <div className="space-y-3">
+                  {category.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center flex-1">
+                        <input
+                          type="checkbox"
+                          className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded"
+                        />
+                        <span className="text-slate-900">{item.task}</span>
+                        {item.required && (
+                          <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-1 rounded">
+                            Required
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Clock className="text-slate-400" size={14} />
+                        <span className="text-sm text-slate-500">{item.estimated}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </EnterpriseCard>
+            ))}
+
+            <EnterpriseCard className="border border-yellow-200 bg-yellow-50">
+              <div className="flex items-center mb-3">
+                <AlertTriangle className="mr-2 text-yellow-600" size={20} />
+                <h3 className="text-lg font-semibold text-yellow-900">Implementation Tips</h3>
+              </div>
+              <ul className="space-y-2 text-yellow-800">
+                <li>• Focus on required items first to establish basic functionality</li>
+                <li>• Test each category thoroughly before moving to the next</li>
+                <li>• Keep detailed documentation of any custom configurations</li>
+                <li>• Schedule regular checkpoints with stakeholders</li>
+                <li>• Plan for additional time if implementing optional features</li>
+              </ul>
+            </EnterpriseCard>
+          </div>
+        )}
+
+        {/* Quick Start Guide */}
+        {activeTab === 'quick-start' && (
+          <div className="space-y-8">
+            <EnterpriseCard className="border-l-4 border-purple-500">
+              <h2 className="text-xl font-bold text-purple-900 mb-2">Quick Start Guide</h2>
+              <p className="text-purple-800">
+                Get up and running with ProofPix in under 2 hours. This guide covers the essential steps
+                to implement basic image processing functionality.
+              </p>
+            </EnterpriseCard>
+
+            <div className="space-y-8">
+              {quickStartSteps.map((step, stepIndex) => (
+                <EnterpriseCard key={stepIndex}>
+                  <div className="flex items-center mb-4">
+                    <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold mr-4">
+                      {step.step}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-slate-900">{step.title}</h3>
+                      <div className="flex items-center text-sm text-slate-500">
+                        <Clock className="mr-1" size={14} />
+                        {step.duration}
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Integration Checklist */}
-      {activeTab === 'checklist' && (
-        <div className="space-y-8">
-          <div className="bg-green-50 border-l-4 border-green-500 p-6 rounded-lg">
-            <h2 className="text-xl font-bold text-green-900 mb-2">Integration Checklist</h2>
-            <p className="text-green-800">
-              Complete checklist to ensure all aspects of your ProofPix integration are properly implemented.
-              Check off items as you complete them to track your progress.
-            </p>
-          </div>
-
-          {integrationChecklist.map((category, categoryIndex) => (
-            <div key={categoryIndex} className="border rounded-lg p-6 bg-white shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <CheckSquare className="mr-2 text-green-600" size={20} />
-                {category.category}
-              </h3>
-              
-              <div className="space-y-3">
-                {category.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center flex-1">
-                      <input
-                        type="checkbox"
-                        className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <span className="text-gray-900">{item.task}</span>
-                      {item.required && (
-                        <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-1 rounded">
-                          Required
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="text-gray-400" size={14} />
-                      <span className="text-sm text-gray-500">{item.estimated}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-            <div className="flex items-center mb-3">
-              <AlertTriangle className="mr-2 text-yellow-600" size={20} />
-              <h3 className="text-lg font-semibold text-yellow-900">Implementation Tips</h3>
-            </div>
-            <ul className="space-y-2 text-yellow-800">
-              <li>• Focus on required items first to establish basic functionality</li>
-              <li>• Test each category thoroughly before moving to the next</li>
-              <li>• Keep detailed documentation of any custom configurations</li>
-              <li>• Schedule regular checkpoints with stakeholders</li>
-              <li>• Plan for additional time if implementing optional features</li>
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {/* Quick Start Guide */}
-      {activeTab === 'quick-start' && (
-        <div className="space-y-8">
-          <div className="bg-purple-50 border-l-4 border-purple-500 p-6 rounded-lg">
-            <h2 className="text-xl font-bold text-purple-900 mb-2">Quick Start Guide</h2>
-            <p className="text-purple-800">
-              Get up and running with ProofPix in under 2 hours. This guide covers the essential steps
-              to implement basic image processing functionality.
-            </p>
-          </div>
-
-          <div className="space-y-8">
-            {quickStartSteps.map((step, stepIndex) => (
-              <div key={stepIndex} className="border rounded-lg p-6 bg-white shadow-sm">
-                <div className="flex items-center mb-4">
-                  <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold mr-4">
-                    {step.step}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900">{step.title}</h3>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Clock className="mr-1" size={14} />
-                      {step.duration}
-                    </div>
-                  </div>
-                </div>
-                
-                <p className="text-gray-600 mb-4">{step.description}</p>
-                
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Tasks:</h4>
-                    <ul className="space-y-2">
-                      {step.tasks.map((task, taskIndex) => (
-                        <li key={taskIndex} className="flex items-start text-sm text-gray-600">
-                          <CheckCircle className="mr-2 text-green-500 mt-0.5" size={12} />
-                          {task}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                   
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Code Example:</h4>
-                    <pre className="bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto">
-                      <code>{step.code}</code>
-                    </pre>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                  <p className="text-slate-600 mb-4">{step.description}</p>
+                  
+                  <EnterpriseGrid columns={2}>
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-3">Tasks:</h4>
+                      <ul className="space-y-2">
+                        {step.tasks.map((task, taskIndex) => (
+                          <li key={taskIndex} className="flex items-start text-sm text-slate-600">
+                            <CheckCircle className="mr-2 text-green-500 mt-0.5" size={12} />
+                            {task}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-3">Code Example:</h4>
+                      <pre className="bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto">
+                        <code>{step.code}</code>
+                      </pre>
+                    </div>
+                  </EnterpriseGrid>
+                </EnterpriseCard>
+              ))}
+            </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-green-900 mb-3">🎉 Congratulations!</h3>
-            <p className="text-green-800 mb-4">
-              You've successfully implemented basic ProofPix functionality. Your integration can now:
-            </p>
-            <ul className="space-y-1 text-green-800">
-              <li>• Process images with client-side security</li>
-              <li>• Extract comprehensive metadata</li>
-              <li>• Handle errors gracefully</li>
-              <li>• Scale to production workloads</li>
-            </ul>
-            <div className="mt-4 pt-4 border-t border-green-200">
-              <p className="text-sm text-green-700">
-                <strong>Next steps:</strong> Explore advanced features like batch processing, custom fields, 
-                and webhook integrations in our comprehensive documentation.
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-green-900 mb-3">🎉 Congratulations!</h3>
+              <p className="text-green-800 mb-4">
+                You've successfully implemented basic ProofPix functionality. Your integration can now:
               </p>
+              <ul className="space-y-1 text-green-800">
+                <li>• Process images with client-side security</li>
+                <li>• Extract comprehensive metadata</li>
+                <li>• Handle errors gracefully</li>
+                <li>• Scale to production workloads</li>
+              </ul>
+              <div className="mt-4 pt-4 border-t border-green-200">
+                <p className="text-sm text-green-700">
+                  <strong>Next steps:</strong> Explore advanced features like batch processing, custom fields, 
+                  and webhook integrations in our comprehensive documentation.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Footer navigation */}
-      <nav className="mt-12 pt-6 border-t border-gray-200">
-        <div className="flex justify-between items-center">
-          <Link 
-            to="/docs/customer-success-stories" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            ← Previous: Customer Success Stories
-          </Link>
-          <Link 
-            to="/docs/enterprise-api" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            Next: Enterprise API Documentation →
-            <ArrowRight className="ml-1" size={16} />
-          </Link>
-        </div>
-      </nav>
+        )}
+      </div>
 
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
 }; 

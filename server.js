@@ -1,11 +1,36 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const morgan = require('morgan');
 const compression = require('compression');
-require('dotenv').config();
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+const hpp = require('hpp');
+const { testConnection, logger } = require('./config/database');
+const { verifyEmailConfig } = require('./services/emailService');
+const scheduledJobs = require('./services/scheduledJobs');
+const monitoringService = require('./services/monitoring');
+
+// Import security middleware
+const { 
+  sanitizeInput, 
+  securityHeaders, 
+  detectSuspiciousActivity,
+  speedLimiter,
+  gdprCompliance
+} = require('./middleware/security');
+
+// Import routes
+const authRoutes = require('./routes/auth');
+const paymentRoutes = require('./routes/payments');
+const apiKeyRoutes = require('./routes/apiKeys');
+const healthRoutes = require('./api/routes/health');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Trust proxy for accurate IP addresses
+app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet({
@@ -61,14 +86,17 @@ try {
   const whitelabelRoutes = require('./api/routes/whitelabel');
   const customFieldsRoutes = require('./api/routes/custom-fields');
   const teamRoutes = require('./api/routes/team');
+  const brandingRoutes = require('./api/routes/branding');
   
   // Mount routes
+  app.use('/health', healthRoutes);
   app.use('/api/analytics', analyticsRoutes);
   app.use('/api/auth', authRoutes);
   app.use('/api/exif', exifRoutes);
   app.use('/api/whitelabel', whitelabelRoutes);
   app.use('/api/custom-fields', customFieldsRoutes);
   app.use('/api/team', teamRoutes);
+  app.use('/api/branding', brandingRoutes);
   
   console.log('✅ All API routes mounted successfully');
   
@@ -132,27 +160,40 @@ app.use((req, res) => {
   });
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  process.exit(0);
-});
-
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
-  process.exit(0);
-});
-
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 ProofPix Enterprise API Server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 Health check: http://localhost:${PORT}/health`);
-  console.log(`📚 API docs: http://localhost:${PORT}/api/docs`);
+const server = app.listen(PORT, async () => {
+  try {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+    console.log(`📚 API docs: http://localhost:${PORT}/api/docs`);
+    
+    // Start monitoring service
+    await monitoringService.start();
+    console.log('✅ Monitoring service started');
+    
+  } catch (error) {
+    console.error('❌ Error during server startup:', error);
+  }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('Received SIGTERM signal. Starting graceful shutdown...');
   
-  if (process.env.NODE_ENV === 'production') {
-    console.log('🔒 Production security enabled');
-    console.log('⚡ Performance optimizations active');
+  try {
+    // Stop monitoring service
+    monitoringService.stop();
+    console.log('✅ Monitoring service stopped');
+    
+    // Close server
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  } catch (error) {
+    console.error('Error during shutdown:', error);
+    process.exit(1);
   }
 });
 

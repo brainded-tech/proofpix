@@ -1,9 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Award, Building, Shield, Scale, TrendingUp, ArrowRight, CheckCircle, Clock, DollarSign, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Award, Building, Shield, Scale, TrendingUp, ArrowRight, CheckCircle, Clock, DollarSign, Users, ArrowLeft, AlertCircle, Mail, Star } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 import DocumentationFooter from '../../components/DocumentationFooter';
 
 export const CustomerSuccessStories: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBackToDocs = () => {
+    navigate('/docs');
+  };
+
   const caseStudies = [
     {
       company: "Morrison & Associates Law Firm",
@@ -171,293 +185,299 @@ export const CustomerSuccessStories: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Breadcrumb navigation */}
-      <nav className="mb-6 text-sm">
-        <Link to="/docs" className="text-blue-600 hover:underline">Documentation</Link>
-        <span className="mx-2">/</span>
-        <Link to="/docs" className="text-blue-600 hover:underline">Sales</Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-600">Customer Success Stories</span>
-      </nav>
-
-      {/* Page title */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4 flex items-center">
-          <Award className="mr-3 text-blue-600" size={32} />
-          Customer Success Stories
-        </h1>
-        <p className="text-xl text-gray-600">
-          Real results from organizations transforming their image processing workflows
-        </p>
-      </div>
-
-      {/* Industry overview */}
-      <section className="mb-12 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Success Across Industries</h2>
+    <EnterpriseLayout
+      showHero
+      title="Customer Success Stories"
+      description="See how ProofPix can transform document processing workflows"
+      maxWidth="6xl"
+    >
+      {/* Header */}
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackToDocs}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Documentation
+        </EnterpriseButton>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {industryStats.map((stat, index) => (
-            <div key={index} className="text-center bg-white rounded-lg p-6 shadow-sm">
-              <stat.icon className="mx-auto text-blue-600 mb-3" size={32} />
-              <h3 className="font-semibold text-gray-900 mb-2">{stat.industry}</h3>
-              <div className="space-y-1 text-sm text-gray-600">
-                <div><strong>{stat.customers}</strong> customers</div>
-                <div><strong>{stat.avgSavings}</strong> avg savings</div>
-                <div><strong>{stat.satisfaction}</strong> satisfaction</div>
-              </div>
-            </div>
-          ))}
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <Award className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Customer Success Stories</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              See how ProofPix can transform document processing workflows
+            </p>
+          </div>
         </div>
-      </section>
-
-      {/* Case studies */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">Detailed Case Studies</h2>
         
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<Award className="enterprise-icon-sm" />}>
+            Success Stories
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<TrendingUp className="enterprise-icon-sm" />}>
+            Proven Results
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            Customer Validated
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
+
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Representative Examples Notice */}
+        <EnterpriseCard className="mb-8 bg-blue-50 border-blue-200">
+          <div className="flex items-start space-x-4">
+            <AlertCircle className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Representative Examples</h3>
+              <p className="text-slate-700">
+                The following case studies represent composite examples based on projected results and industry benchmarks. 
+                They illustrate how organizations in different sectors can benefit from ProofPix's document intelligence platform. 
+                While based on extensive research and industry expertise, these specific organizations are representative examples rather than actual customers.
+              </p>
+            </div>
+          </div>
+        </EnterpriseCard>
+
+        {/* Industry overview */}
+        <EnterpriseCard className="mb-12 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 text-center">Projected Results Across Industries</h2>
+          
+          <EnterpriseGrid columns={4}>
+            {industryStats.map((stat, index) => (
+              <EnterpriseCard key={index} className="text-center">
+                <stat.icon className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+                <h3 className="font-semibold text-slate-900 mb-2">{stat.industry}</h3>
+                <div className="space-y-1 text-sm">
+                  <div className="text-slate-600">Target Users: <span className="font-bold text-blue-600">{stat.customers}</span></div>
+                  <div className="text-slate-600">Projected Savings: <span className="font-bold text-green-600">{stat.avgSavings}</span></div>
+                  <div className="text-slate-600">Expected Satisfaction: <span className="font-bold text-purple-600">{stat.satisfaction}</span></div>
+                </div>
+              </EnterpriseCard>
+            ))}
+          </EnterpriseGrid>
+        </EnterpriseCard>
+
+        {/* Case studies */}
         <div className="space-y-12">
           {caseStudies.map((study, index) => (
-            <div key={index} className={`border-2 border-${study.color}-200 rounded-lg p-8 bg-${study.color}-50`}>
-              {/* Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center">
-                  <study.icon className={`mr-4 text-${study.color}-600`} size={40} />
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900">{study.company}</h3>
-                    <p className="text-gray-600">{study.industry} • {study.size}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-3xl font-bold text-${study.color}-600`}>
-                    {Object.values(study.results)[0]}
-                  </div>
-                  <div className="text-sm text-gray-600">improvement</div>
-                </div>
-              </div>
-
-              {/* Challenge & Solution */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-3">Challenge</h4>
-                  <p className="text-gray-700 mb-4">{study.challenge}</p>
-                  
-                  <h5 className="font-medium text-gray-900 mb-2">Before ProofPix:</h5>
-                  <ul className="space-y-1">
-                    {study.details.before.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start text-sm text-gray-600">
-                        <span className="text-red-500 mr-2">•</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+            <EnterpriseCard key={index} className="border-2 border-slate-200">
+              <div className="flex items-start space-x-6">
+                <div className={`p-4 rounded-lg ${
+                  study.color === 'blue' ? 'bg-blue-100' :
+                  study.color === 'green' ? 'bg-green-100' :
+                  'bg-purple-100'
+                }`}>
+                  <study.icon className={`h-8 w-8 ${
+                    study.color === 'blue' ? 'text-blue-600' :
+                    study.color === 'green' ? 'text-green-600' :
+                    'text-purple-600'
+                  }`} />
                 </div>
                 
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-3">Solution</h4>
-                  <p className="text-gray-700 mb-4">{study.solution}</p>
-                  
-                  <h5 className="font-medium text-gray-900 mb-2">After ProofPix:</h5>
-                  <ul className="space-y-1">
-                    {study.details.after.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start text-sm text-gray-600">
-                        <CheckCircle className="mr-2 text-green-500 mt-0.5" size={12} />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Results metrics */}
-              <div className="mb-6">
-                <h4 className="font-semibold text-gray-900 mb-4">Key Metrics</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {study.details.metrics.map((metric, metricIndex) => (
-                    <div key={metricIndex} className="bg-white rounded-lg p-4 shadow-sm">
-                      <h5 className="font-medium text-gray-900 text-sm mb-2">{metric.label}</h5>
-                      <div className="space-y-1 text-xs">
-                        <div className="text-red-600">Before: {metric.before}</div>
-                        <div className="text-green-600">After: {metric.after}</div>
-                        <div className={`font-bold text-${study.color}-600`}>{metric.improvement}</div>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-1">{study.company}</h3>
+                      <div className="flex items-center space-x-4 text-sm text-slate-600">
+                        <span>{study.industry}</span>
+                        <span>•</span>
+                        <span>{study.size}</span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                    <div className="flex space-x-2">
+                      <EnterpriseBadge variant="primary">
+                        {study.industry}
+                      </EnterpriseBadge>
+                    </div>
+                  </div>
 
-              {/* Quote */}
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <blockquote className="text-lg text-gray-700 italic mb-4">
-                  "{study.quote}"
-                </blockquote>
-                <div className="text-sm text-gray-600">
-                  <strong>{study.quotePerson}</strong>
-                  <br />
-                  {study.company}
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-slate-900 mb-2">Challenge:</h4>
+                    <p className="text-slate-600 mb-4">{study.challenge}</p>
+                    
+                    <h4 className="font-semibold text-slate-900 mb-2">Solution:</h4>
+                    <p className="text-slate-600">{study.solution}</p>
+                  </div>
+
+                  {/* Results metrics */}
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-slate-900 mb-3">Key Results:</h4>
+                    <EnterpriseGrid columns={4}>
+                      {Object.entries(study.results).map(([key, value], resultIndex) => (
+                        <div key={resultIndex} className="text-center p-3 bg-slate-50 rounded-lg">
+                          <div className="text-lg font-bold text-blue-600">{value}</div>
+                          <div className="text-xs text-slate-600 capitalize">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}
+                          </div>
+                        </div>
+                      ))}
+                    </EnterpriseGrid>
+                  </div>
+
+                  {/* Quote */}
+                  <div className="bg-slate-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <blockquote className="text-slate-700 italic mb-2">
+                      "{study.quote}"
+                    </blockquote>
+                    <cite className="text-sm text-slate-600 font-medium">
+                      — {study.quotePerson}
+                    </cite>
+                  </div>
+
+                  {/* Detailed metrics */}
+                  <div className="mt-6">
+                    <h4 className="font-semibold text-slate-900 mb-3">Detailed Impact:</h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead className="bg-slate-50">
+                          <tr>
+                            <th className="px-4 py-2 text-left text-slate-700">Metric</th>
+                            <th className="px-4 py-2 text-left text-slate-700">Before</th>
+                            <th className="px-4 py-2 text-left text-slate-700">After</th>
+                            <th className="px-4 py-2 text-left text-slate-700">Improvement</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200">
+                          {study.details.metrics.map((metric, metricIndex) => (
+                            <tr key={metricIndex}>
+                              <td className="px-4 py-2 font-medium text-slate-900">{metric.label}</td>
+                              <td className="px-4 py-2 text-slate-600">{metric.before}</td>
+                              <td className="px-4 py-2 text-slate-600">{metric.after}</td>
+                              <td className="px-4 py-2 font-medium text-green-600">{metric.improvement}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Before/After comparison */}
+                  <div className="mt-6">
+                    <EnterpriseGrid columns={2}>
+                      <div>
+                        <h4 className="font-semibold text-slate-900 mb-3 flex items-center">
+                          <Clock className="h-4 w-4 text-red-500 mr-2" />
+                          Before ProofPix
+                        </h4>
+                        <ul className="space-y-2">
+                          {study.details.before.map((item, beforeIndex) => (
+                            <li key={beforeIndex} className="flex items-start text-sm text-slate-600">
+                              <span className="text-red-500 mr-2">•</span>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-semibold text-slate-900 mb-3 flex items-center">
+                          <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                          After ProofPix
+                        </h4>
+                        <ul className="space-y-2">
+                          {study.details.after.map((item, afterIndex) => (
+                            <li key={afterIndex} className="flex items-start text-sm text-slate-600">
+                              <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </EnterpriseGrid>
+                  </div>
                 </div>
               </div>
-            </div>
+            </EnterpriseCard>
           ))}
         </div>
-      </section>
 
-      {/* Additional testimonials */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">What Our Customers Say</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white border rounded-lg p-6 shadow-sm">
-              <blockquote className="text-gray-700 mb-4">
-                "{testimonial.quote}"
-              </blockquote>
-              <div className="text-sm">
-                <div className="font-semibold text-gray-900">{testimonial.person}</div>
-                <div className="text-gray-600">{testimonial.title}</div>
-                <div className="text-blue-600">{testimonial.company}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Implementation success factors */}
-      <section className="mb-12 bg-gray-50 border rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Keys to Implementation Success</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Critical Success Factors</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <CheckCircle className="mr-3 text-green-500 mt-1" size={16} />
-                <div>
-                  <strong>Executive Sponsorship:</strong> C-level support ensures smooth adoption and resource allocation
-                </div>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="mr-3 text-green-500 mt-1" size={16} />
-                <div>
-                  <strong>Pilot Program:</strong> Start with a small team to demonstrate value before full rollout
-                </div>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="mr-3 text-green-500 mt-1" size={16} />
-                <div>
-                  <strong>Training Investment:</strong> Comprehensive training ensures teams maximize platform benefits
-                </div>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="mr-3 text-green-500 mt-1" size={16} />
-                <div>
-                  <strong>Process Integration:</strong> Align ProofPix with existing workflows for seamless adoption
-                </div>
-              </li>
-            </ul>
-          </div>
+        {/* Testimonials */}
+        <EnterpriseCard className="mt-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 text-center">What Our Customers Say</h2>
           
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Implementation Timeline</h3>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">1</div>
-                <div>
-                  <strong>Week 1:</strong> Platform setup and initial team training
+          <EnterpriseGrid columns={1}>
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-slate-50 p-6 rounded-lg border-l-4 border-blue-500">
+                <blockquote className="text-slate-700 italic mb-4 text-lg">
+                  "{testimonial.quote}"
+                </blockquote>
+                <div className="flex items-center space-x-4">
+                  <div className="bg-blue-100 p-2 rounded-full">
+                    <Users className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <cite className="font-semibold text-slate-900">{testimonial.person}</cite>
+                    <div className="text-sm text-slate-600">{testimonial.title}</div>
+                    <EnterpriseBadge variant="neutral">
+                      {testimonial.company}
+                    </EnterpriseBadge>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center">
-                <div className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">2</div>
-                <div>
-                  <strong>Week 2-3:</strong> Pilot program with core use cases
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">4</div>
-                <div>
-                  <strong>Week 4-6:</strong> Full team rollout and process optimization
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">8</div>
-                <div>
-                  <strong>Week 8+:</strong> Advanced features and custom integrations
-                </div>
-              </div>
+            ))}
+          </EnterpriseGrid>
+        </EnterpriseCard>
+
+        {/* Call to Action */}
+        <EnterpriseCard className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 text-center">
+          <h3 className="text-2xl font-bold text-slate-900 mb-4">Ready to Join Our Success Stories?</h3>
+          <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
+            See how ProofPix can transform your organization's image processing workflows. 
+            Schedule a demo to discuss your specific use case and requirements.
+          </p>
+          <div className="flex justify-center space-x-4">
+            <EnterpriseButton variant="primary">
+              Schedule Demo
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </EnterpriseButton>
+            <EnterpriseButton variant="secondary">
+              View ROI Calculator
+            </EnterpriseButton>
+          </div>
+        </EnterpriseCard>
+
+        {/* Become a Featured Case Study */}
+        <EnterpriseCard className="mt-16 mb-8 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Star className="h-8 w-8 text-purple-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Become Our First Featured Case Study</h2>
+            <p className="text-slate-700 mb-6">
+              Are you achieving exceptional results with ProofPix? We'd love to feature your organization as one of our 
+              first official case studies. Share your success story and inspire others in your industry.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <EnterpriseButton
+                variant="primary"
+                size="lg"
+                icon={<Mail className="h-5 w-5" />}
+                onClick={() => window.location.href = 'mailto:success@proofpixapp.com'}
+              >
+                Submit Your Story
+              </EnterpriseButton>
+              <EnterpriseButton
+                variant="secondary"
+                size="lg"
+                onClick={() => navigate('/enterprise/demo')}
+              >
+                <ArrowRight className="h-5 w-5 mr-2" />
+                Try ProofPix Enterprise
+              </EnterpriseButton>
             </div>
           </div>
-        </div>
-      </section>
+        </EnterpriseCard>
+      </div>
 
-      {/* ROI summary */}
-      <section className="mb-12 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Average Customer ROI</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="text-center">
-            <DollarSign className="mx-auto text-green-600 mb-2" size={32} />
-            <div className="text-3xl font-bold text-green-600 mb-1">$2.4M</div>
-            <div className="text-sm text-gray-600">Average Annual Savings</div>
-          </div>
-          <div className="text-center">
-            <TrendingUp className="mx-auto text-blue-600 mb-2" size={32} />
-            <div className="text-3xl font-bold text-blue-600 mb-1">340%</div>
-            <div className="text-sm text-gray-600">Average ROI</div>
-          </div>
-          <div className="text-center">
-            <Clock className="mx-auto text-purple-600 mb-2" size={32} />
-            <div className="text-3xl font-bold text-purple-600 mb-1">2.3</div>
-            <div className="text-sm text-gray-600">Months to Payback</div>
-          </div>
-          <div className="text-center">
-            <CheckCircle className="mx-auto text-orange-600 mb-2" size={32} />
-            <div className="text-3xl font-bold text-orange-600 mb-1">97%</div>
-            <div className="text-sm text-gray-600">Customer Satisfaction</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to action */}
-      <section className="mb-12 bg-white border rounded-lg p-8 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Ready to Join Our Success Stories?</h2>
-        <p className="text-gray-600 mb-6">
-          See how ProofPix can transform your organization's image processing workflow
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link 
-            to="/enterprise/demo" 
-            className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Try Enterprise Demo
-          </Link>
-          <Link 
-            to="/docs/roi-calculator" 
-            className="inline-flex items-center border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            Calculate Your ROI
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer navigation */}
-      <nav className="mt-12 pt-6 border-t border-gray-200">
-        <div className="flex justify-between items-center">
-          <Link 
-            to="/docs/roi-calculator" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            ← Previous: ROI Calculator
-          </Link>
-          <Link 
-            to="/docs/implementation-guides" 
-            className="flex items-center text-blue-600 hover:underline"
-          >
-            Next: Implementation Guides →
-            <ArrowRight className="ml-1" size={16} />
-          </Link>
-        </div>
-      </nav>
-
+      {/* Footer */}
       <DocumentationFooter />
-    </div>
+    </EnterpriseLayout>
   );
-}; 
+};
+
+export default CustomerSuccessStories; 

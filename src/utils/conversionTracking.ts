@@ -479,4 +479,3 @@ export const trackContactRequested = (industry: string, metadata: any = {}) => {
 };
 
 // Export types for use in components
-export type { CustomerSegment, ConversionEvent, ConversionFunnel, IndustryPerformance }; 

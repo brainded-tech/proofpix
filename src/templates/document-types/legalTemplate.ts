@@ -1,0 +1,2 @@
+// Legal Template
+export {};

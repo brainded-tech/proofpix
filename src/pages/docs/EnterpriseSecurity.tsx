@@ -337,7 +337,7 @@ const EnterpriseSecurity: React.FC = () => {
             Contact Enterprise Sales
           </a>
           <a 
-            href="/docs/api-reference" 
+            href="/docs/api"
             className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors"
           >
             View API Documentation

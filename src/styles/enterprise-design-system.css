@@ -1,0 +1,763 @@
+/* 🏢 PROOFPIX ENTERPRISE DESIGN SYSTEM - COMPREHENSIVE UI OVERHAUL */
+/* Complete Visual Transformation for Enterprise Solution */
+
+:root {
+  /* 🎯 ENTERPRISE COLOR PALETTE */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  
+  --purple-400: #a78bfa;
+  --purple-500: #8b5cf6;
+  --purple-600: #7c3aed;
+  
+  --red-400: #f87171;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  
+  --orange-400: #fb923c;
+  --orange-500: #f97316;
+  --orange-600: #ea580c;
+  
+  --yellow-400: #facc15;
+  --yellow-500: #eab308;
+  --yellow-600: #ca8a04;
+  
+  /* 📏 SPACING SYSTEM */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  
+  /* 📝 TYPOGRAPHY SCALE */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+  --text-5xl: 3rem;       /* 48px */
+  --text-6xl: 3.75rem;    /* 60px */
+  
+  /* 🔲 BORDER RADIUS */
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.375rem;  /* 6px */
+  --radius-lg: 0.5rem;    /* 8px */
+  --radius-xl: 0.75rem;   /* 12px */
+  --radius-2xl: 1rem;     /* 16px */
+  --radius-full: 9999px;
+  
+  /* 🌟 SHADOWS */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  
+  /* ⚡ TRANSITIONS */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Dark Mode Colors */
+  --bg-dark-primary: #0f1729;
+  --bg-dark-secondary: #1a202c;
+  --bg-dark-tertiary: #2d3748;
+  --text-dark-primary: #f7fafc;
+  --text-dark-secondary: #e2e8f0;
+  --text-dark-tertiary: #a0aec0;
+  --border-dark: #2d3748;
+}
+
+/* 🎯 GLOBAL RESET AND BASE STYLES */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: var(--slate-900);
+  background-color: var(--slate-50);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 🏢 ENTERPRISE LAYOUT COMPONENTS */
+.enterprise-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .enterprise-container {
+    padding: 0 var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .enterprise-container {
+    padding: 0 var(--space-8);
+  }
+}
+
+.enterprise-section {
+  padding: var(--space-20) 0;
+}
+
+.enterprise-section-sm {
+  padding: var(--space-16) 0;
+}
+
+.enterprise-section-lg {
+  padding: var(--space-24) 0;
+}
+
+/* 🎨 ENTERPRISE CARDS */
+.enterprise-card {
+  background: white;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.enterprise-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.enterprise-card-dark {
+  background: var(--slate-800);
+  border: 1px solid var(--slate-700);
+  color: white;
+}
+
+.enterprise-card-dark:hover {
+  border-color: var(--blue-500);
+  box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1);
+}
+
+/* 🎯 ENTERPRISE BUTTONS */
+.btn-enterprise {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-enterprise-primary {
+  background: var(--blue-600);
+  color: white;
+}
+
+.btn-enterprise-primary:hover {
+  background: var(--blue-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-enterprise-secondary {
+  background: transparent;
+  color: var(--blue-600);
+  border: 1px solid var(--blue-600);
+}
+
+.btn-enterprise-secondary:hover {
+  background: var(--blue-600);
+  color: white;
+}
+
+.btn-enterprise-ghost {
+  background: transparent;
+  color: var(--slate-600);
+  border: 1px solid var(--slate-300);
+}
+
+.btn-enterprise-ghost:hover {
+  background: var(--slate-50);
+  color: var(--slate-900);
+}
+
+.btn-enterprise-success {
+  background: var(--green-600);
+  color: white;
+}
+
+.btn-enterprise-success:hover {
+  background: var(--green-700);
+}
+
+.btn-enterprise-danger {
+  background: var(--red-600);
+  color: white;
+}
+
+.btn-enterprise-danger:hover {
+  background: var(--red-700);
+}
+
+/* Button Sizes */
+.btn-enterprise-sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-xs);
+}
+
+.btn-enterprise-lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-lg);
+}
+
+.btn-enterprise-xl {
+  padding: var(--space-5) var(--space-10);
+  font-size: var(--text-xl);
+}
+
+/* 📝 ENTERPRISE FORMS */
+.enterprise-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  border: 1px solid var(--slate-300);
+  border-radius: var(--radius-lg);
+  background: white;
+  transition: all var(--transition-fast);
+}
+
+.enterprise-input:focus {
+  outline: none;
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.enterprise-input-dark {
+  background: var(--slate-800);
+  border-color: var(--slate-700);
+  color: white;
+}
+
+.enterprise-input-dark:focus {
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.enterprise-input-dark::placeholder {
+  color: var(--slate-400);
+}
+
+.enterprise-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.enterprise-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--space-3) center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: var(--space-10);
+}
+
+/* 🏷️ ENTERPRISE BADGES */
+.enterprise-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.enterprise-badge-primary {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--blue-600);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.enterprise-badge-success {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--green-600);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.enterprise-badge-warning {
+  background: rgba(234, 179, 8, 0.1);
+  color: var(--yellow-600);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+}
+
+.enterprise-badge-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--red-600);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.enterprise-badge-neutral {
+  background: rgba(100, 116, 139, 0.1);
+  color: var(--slate-600);
+  border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+/* 📊 ENTERPRISE TABLES */
+.enterprise-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.enterprise-table th {
+  background: var(--slate-50);
+  padding: var(--space-4) var(--space-6);
+  text-align: left;
+  font-weight: 600;
+  color: var(--slate-700);
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.enterprise-table td {
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--slate-100);
+}
+
+.enterprise-table tr:hover {
+  background: var(--slate-50);
+}
+
+.enterprise-table-dark {
+  background: var(--slate-800);
+  color: white;
+}
+
+.enterprise-table-dark th {
+  background: var(--slate-700);
+  color: var(--slate-200);
+  border-bottom-color: var(--slate-600);
+}
+
+.enterprise-table-dark td {
+  border-bottom-color: var(--slate-700);
+}
+
+.enterprise-table-dark tr:hover {
+  background: var(--slate-700);
+}
+
+/* 🎯 ENTERPRISE NAVIGATION */
+.enterprise-nav {
+  background: white;
+  border-bottom: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.enterprise-nav-dark {
+  background: var(--slate-900);
+  border-bottom-color: var(--slate-700);
+}
+
+.enterprise-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  color: var(--slate-600);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-md);
+}
+
+.enterprise-nav-link:hover {
+  color: var(--slate-900);
+  background: var(--slate-100);
+}
+
+.enterprise-nav-link-active {
+  color: var(--blue-600);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.enterprise-nav-link-dark {
+  color: var(--slate-300);
+}
+
+.enterprise-nav-link-dark:hover {
+  color: white;
+  background: var(--slate-800);
+}
+
+/* 📱 ENTERPRISE MOBILE MENU */
+.enterprise-mobile-menu {
+  background: white;
+  border-top: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-lg);
+}
+
+.enterprise-mobile-menu-dark {
+  background: var(--slate-800);
+  border-top-color: var(--slate-700);
+}
+
+/* 🎨 ENTERPRISE ICONS */
+.enterprise-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.enterprise-icon-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.enterprise-icon-lg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.enterprise-icon-xl {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* 🏢 ENTERPRISE HERO SECTIONS */
+.enterprise-hero {
+  background: linear-gradient(135deg, var(--slate-900) 0%, var(--slate-800) 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.enterprise-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.enterprise-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* 📊 ENTERPRISE METRICS */
+.enterprise-metric {
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.enterprise-metric-value {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  color: var(--blue-600);
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.enterprise-metric-label {
+  font-size: var(--text-sm);
+  color: var(--slate-600);
+  font-weight: 500;
+}
+
+.enterprise-metric-dark .enterprise-metric-value {
+  color: var(--blue-400);
+}
+
+.enterprise-metric-dark .enterprise-metric-label {
+  color: var(--slate-400);
+}
+
+/* 🎯 ENTERPRISE GRID SYSTEM */
+.enterprise-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.enterprise-grid-1 {
+  grid-template-columns: 1fr;
+}
+
+.enterprise-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.enterprise-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.enterprise-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .enterprise-grid-2,
+  .enterprise-grid-3,
+  .enterprise-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 🎨 ENTERPRISE UTILITIES */
+.enterprise-text-gradient {
+  background: linear-gradient(135deg, var(--blue-600) 0%, var(--purple-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.enterprise-backdrop-blur {
+  backdrop-filter: blur(20px);
+}
+
+.enterprise-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 🎯 ENTERPRISE ANIMATIONS */
+@keyframes enterprise-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes enterprise-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes enterprise-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.enterprise-animate-fade-in {
+  animation: enterprise-fade-in 0.6s ease-out;
+}
+
+.enterprise-animate-scale-in {
+  animation: enterprise-scale-in 0.4s ease-out;
+}
+
+.enterprise-animate-slide-in {
+  animation: enterprise-slide-in 0.5s ease-out;
+}
+
+/* 🎯 ENTERPRISE RESPONSIVE DESIGN */
+@media (max-width: 640px) {
+  .enterprise-container {
+    padding: 0 var(--space-4);
+  }
+  
+  .enterprise-section {
+    padding: var(--space-16) 0;
+  }
+  
+  .enterprise-card {
+    padding: var(--space-6);
+  }
+  
+  .btn-enterprise {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .enterprise-table {
+    font-size: var(--text-sm);
+  }
+  
+  .enterprise-table th,
+  .enterprise-table td {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+/* 🎯 ENTERPRISE ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .enterprise-animate-fade-in,
+  .enterprise-animate-scale-in,
+  .enterprise-animate-slide-in {
+    animation: none;
+  }
+  
+  .enterprise-card:hover,
+  .btn-enterprise:hover {
+    transform: none;
+  }
+}
+
+/* Focus styles for accessibility */
+.btn-enterprise:focus,
+.enterprise-input:focus,
+.enterprise-nav-link:focus {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 2px;
+}
+
+/* 🎯 ENTERPRISE PRINT STYLES */
+@media print {
+  .enterprise-hero {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .enterprise-card-dark {
+    background: white !important;
+    color: black !important;
+    border-color: var(--slate-300) !important;
+  }
+  
+  .btn-enterprise {
+    background: white !important;
+    color: black !important;
+    border: 1px solid var(--slate-300) !important;
+  }
+}
+
+/* Apply dark backgrounds to main content areas */
+.enterprise-content {
+  background-color: var(--bg-dark-primary);
+  color: var(--text-dark-primary);
+}
+
+/* Force dark mode for components that might be using light mode */
+.enterprise-card,
+.enterprise-panel,
+.enterprise-form,
+.enterprise-modal,
+.enterprise-dialog,
+.enterprise-drawer,
+.enterprise-sidebar {
+  background-color: var(--bg-dark-secondary);
+  color: var(--text-dark-primary);
+  border-color: var(--border-dark);
+}
+
+/* Override any white backgrounds in standard components */
+.bg-white {
+  background-color: var(--bg-dark-secondary) !important;
+  color: var(--text-dark-primary) !important;
+}
+
+/* Override slate colors */
+.bg-slate-50,
+.bg-slate-100,
+.bg-slate-200 {
+  background-color: var(--bg-dark-tertiary) !important;
+  color: var(--text-dark-primary) !important;
+}
+
+/* Force dark mode text colors */
+.text-gray-900,
+.text-gray-800,
+.text-gray-700,
+.text-slate-900,
+.text-slate-800,
+.text-slate-700 {
+  color: var(--text-dark-primary) !important;
+}
+
+.text-gray-600,
+.text-gray-500,
+.text-slate-600,
+.text-slate-500 {
+  color: var(--text-dark-secondary) !important;
+}
+
+/* Dark mode form elements */
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  background-color: var(--bg-dark-tertiary);
+  color: var(--text-dark-primary);
+  border-color: var(--border-dark);
+}
+
+/* Dark mode table components */
+table, th, td {
+  background-color: var(--bg-dark-secondary);
+  color: var(--text-dark-primary);
+  border-color: var(--border-dark);
+}
+
+/* Dark mode for headers and footers */
+header, footer {
+  background-color: var(--bg-dark-primary);
+  color: var(--text-dark-primary);
+  border-color: var(--border-dark);
+}
+
+/* Override any light mode shadows */
+.shadow,
+.shadow-sm,
+.shadow-md,
+.shadow-lg,
+.shadow-xl {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+} 

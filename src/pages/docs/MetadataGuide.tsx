@@ -18,6 +18,14 @@ import {
   Tag,
   User
 } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 
 const MetadataGuide: React.FC = () => {
   const navigate = useNavigate();
@@ -205,45 +213,46 @@ const MetadataGuide: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Metadata Extraction Guide"
+      description="Complete guide to understanding and extracting image metadata"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <button
-            onClick={handleBackHome}
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
-          >
-            ← Back to ProofPix
-          </button>
-          
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="bg-purple-600 p-3 rounded-lg">
-              <FileText className="h-8 w-8" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold">Understanding Photo Metadata</h1>
-              <p className="text-xl text-gray-300 mt-2">
-                Learn about the hidden data in your digital images
-              </p>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-teal-600 p-3 rounded-lg">
+            <Eye className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span className="flex items-center">
-              <Clock className="h-4 w-4 mr-1" />
-              15 minute read
-            </span>
-            <span className="flex items-center">
-              <Eye className="h-4 w-4 mr-1" />
-              Technical guide
-            </span>
-            <span className="flex items-center">
-              <Info className="h-4 w-4 mr-1" />
-              Comprehensive reference
-            </span>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Metadata Extraction Guide</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Complete guide to understanding and extracting image metadata
+            </p>
           </div>
         </div>
-      </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="neutral" icon={<FileText className="enterprise-icon-sm" />}>
+            Technical Guide
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="warning" icon={<AlertTriangle className="enterprise-icon-sm" />}>
+            Privacy-focused
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="primary" icon={<Info className="enterprise-icon-sm" />}>
+            Educational
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* What is Metadata */}
@@ -548,7 +557,7 @@ const MetadataGuide: React.FC = () => {
           </div>
         </section>
       </div>
-    </div>
+    </EnterpriseLayout>
   );
 };
 

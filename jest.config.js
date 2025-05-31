@@ -1,31 +1,49 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
-  moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+  setupFilesAfterEnv: ['<rootDir>/src/tests/setupTests.ts'],
+  
+  moduleNameMapping: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
+
   transform: {
-    '^.+\\.(ts|tsx|js|jsx)$': ['babel-jest', {
-      presets: [
-        '@babel/preset-env',
-        '@babel/preset-react',
-        '@babel/preset-typescript'
-      ],
-    }],
+    '^.+\\.tsx?$': 'ts-jest'
   },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
+
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  modulePathIgnorePatterns: [
-    '<rootDir>/backups/',
+
+  testMatch: [
+    '<rootDir>/src/tests/**/*.test.{ts,tsx}',
   ],
-  transformIgnorePatterns: [
-    'node_modules/(?!(@testing-library|react|react-dom)/)',
+
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/tests/**',
+    '!src/index.tsx',
   ],
+
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70
+    }
+  },
+
+  coverageReporters: ['text', 'lcov', 'html'],
+  clearMocks: true,
+  restoreMocks: true,
+  testTimeout: 30000,
+
   globals: {
     'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
-  },
+      tsconfig: {
+        jsx: 'react-jsx'
+      }
+    }
+  }
 }; 

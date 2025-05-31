@@ -12,8 +12,24 @@ import {
   Bug,
   Target,
   Play,
-  ArrowRight
+  ArrowRight,
+  AlertTriangle,
+  Clock,
+  FileText,
+  Eye,
+  Lock,
+  Users,
+  Settings
 } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
+import DocumentationFooter from '../../components/DocumentationFooter';
 
 const TestingGuide: React.FC = () => {
   const navigate = useNavigate();
@@ -124,45 +140,46 @@ const TestingGuide: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Testing Guide"
+      description="Comprehensive testing strategies for privacy-focused applications"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-900/50 to-blue-900/50 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <button
-            onClick={handleBackHome}
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
-          >
-            ← Back to ProofPix
-          </button>
-          
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="bg-green-600 p-3 rounded-lg">
-              <TestTube className="h-8 w-8" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold">Testing Guide</h1>
-              <p className="text-xl text-gray-300 mt-2">
-                Comprehensive testing strategies for privacy-focused applications
-              </p>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-green-600 p-3 rounded-lg">
+            <TestTube className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span className="flex items-center">
-              <TestTube className="h-4 w-4 mr-1" />
-              Testing Documentation
-            </span>
-            <span className="flex items-center">
-              <Shield className="h-4 w-4 mr-1" />
-              Privacy-focused
-            </span>
-            <span className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-1" />
-              Production Ready
-            </span>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Testing Guide</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Comprehensive testing strategies for privacy-focused applications
+            </p>
           </div>
         </div>
-      </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="neutral" icon={<TestTube className="enterprise-icon-sm" />}>
+            Testing Documentation
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="danger" icon={<Shield className="enterprise-icon-sm" />}>
+            Privacy-focused
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            Production Ready
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Testing Philosophy */}
@@ -340,31 +357,32 @@ describe('Metadata Extraction', () => {
             <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
               <pre className="text-sm text-gray-300">
 {`// FileUpload.test.tsx
-import { render, screen, fireEvent } from '@testing-library/react';
+// Note: This example uses @testing-library/react (install separately for testing)
+// import { render, screen, fireEvent } from '@testing-library/react';
 import { FileUpload } from '../components/FileUpload';
 
 describe('FileUpload Component', () => {
   test('should accept valid image files', () => {
     const mockOnFileSelect = jest.fn();
-    render(<FileUpload onFileSelect={mockOnFileSelect} />);
+    // render(<FileUpload onFileSelect={mockOnFileSelect} />);
     
     const file = new File([''], 'test.jpg', { type: 'image/jpeg' });
-    const input = screen.getByLabelText(/upload/i);
+    // const input = screen.getByLabelText(/upload/i);
     
-    fireEvent.change(input, { target: { files: [file] } });
+    // fireEvent.change(input, { target: { files: [file] } });
     expect(mockOnFileSelect).toHaveBeenCalledWith(file);
   });
 
   test('should reject unsupported file types', () => {
     const mockOnFileSelect = jest.fn();
-    render(<FileUpload onFileSelect={mockOnFileSelect} />);
+    // render(<FileUpload onFileSelect={mockOnFileSelect} />);
     
     const file = new File([''], 'test.txt', { type: 'text/plain' });
-    const input = screen.getByLabelText(/upload/i);
+    // const input = screen.getByLabelText(/upload/i);
     
-    fireEvent.change(input, { target: { files: [file] } });
+    // fireEvent.change(input, { target: { files: [file] } });
     expect(mockOnFileSelect).not.toHaveBeenCalled();
-    expect(screen.getByText(/unsupported file format/i)).toBeInTheDocument();
+    // expect(screen.getByText(/unsupported file format/i)).toBeInTheDocument();
   });
 });`}
               </pre>
@@ -606,7 +624,7 @@ describe('FileUpload Component', () => {
           </button>
         </div>
       </div>
-    </div>
+    </EnterpriseLayout>
   );
 };
 

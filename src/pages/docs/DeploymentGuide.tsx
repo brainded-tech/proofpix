@@ -14,8 +14,20 @@ import {
   Database,
   ArrowRight,
   Copy,
-  Terminal
+  Terminal,
+  AlertTriangle,
+  Users,
+  Lock,
+  Eye
 } from 'lucide-react';
+import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../../components/ui/EnterpriseComponents';
 
 const DeploymentGuide: React.FC = () => {
   const navigate = useNavigate();
@@ -110,45 +122,46 @@ const DeploymentGuide: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <EnterpriseLayout
+      showHero
+      title="Deployment Guide"
+      description="Complete deployment guide for ProofPix in enterprise environments"
+      maxWidth="6xl"
+    >
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-900/50 to-red-900/50 border-b border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <button
-            onClick={handleBackHome}
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
-          >
-            ← Back to ProofPix
-          </button>
-          
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="bg-orange-600 p-3 rounded-lg">
-              <Rocket className="h-8 w-8" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold">Deployment Guide</h1>
-              <p className="text-xl text-gray-300 mt-2">
-                Complete guide for deploying ProofPix to production environments
-              </p>
-            </div>
+      <EnterpriseSection size="sm">
+        <EnterpriseButton
+          variant="ghost"
+          onClick={handleBackHome}
+          className="mb-6"
+        >
+          ← Back to ProofPix
+        </EnterpriseButton>
+        
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="bg-blue-600 p-3 rounded-lg">
+            <Rocket className="h-8 w-8 text-white" />
           </div>
-          
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span className="flex items-center">
-              <Rocket className="h-4 w-4 mr-1" />
-              Deployment Documentation
-            </span>
-            <span className="flex items-center">
-              <Shield className="h-4 w-4 mr-1" />
-              Security-focused
-            </span>
-            <span className="flex items-center">
-              <CheckCircle className="h-4 w-4 mr-1" />
-              Production Ready
-            </span>
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900">Deployment Guide</h1>
+            <p className="text-xl text-slate-600 mt-2">
+              Complete deployment guide for ProofPix in enterprise environments
+            </p>
           </div>
         </div>
-      </div>
+        
+        <div className="flex items-center space-x-6 text-sm">
+          <EnterpriseBadge variant="primary" icon={<Rocket className="enterprise-icon-sm" />}>
+            Deployment Guide
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="neutral" icon={<Server className="enterprise-icon-sm" />}>
+            Infrastructure
+          </EnterpriseBadge>
+          <EnterpriseBadge variant="success" icon={<CheckCircle className="enterprise-icon-sm" />}>
+            Production Ready
+          </EnterpriseBadge>
+        </div>
+      </EnterpriseSection>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Deployment Overview */}
@@ -893,7 +906,7 @@ server {
           </button>
         </div>
       </div>
-    </div>
+    </EnterpriseLayout>
   );
 };
 
