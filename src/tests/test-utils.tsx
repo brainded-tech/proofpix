@@ -68,12 +68,11 @@ export const createMockAPIEndpoint = (overrides: Partial<APIEndpoint> = {}): API
   version: '1.0.0',
   category: 'document',
   authentication: 'api-key',
-  rateLimit: { requests: 1000, window: 3600 },
+  rateLimit: { requests: 1000, window: '1h', tier: 'free' },
   pricing: {
-    model: 'tiered',
-    tiers: [
-      { name: 'Free', price: 0, requests: 100 }
-    ]
+    model: 'free',
+    price: 0,
+    currency: 'USD'
   },
   parameters: [],
   responses: [],
