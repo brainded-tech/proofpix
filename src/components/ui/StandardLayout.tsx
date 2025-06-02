@@ -66,7 +66,9 @@ export const StandardLayout: React.FC<StandardLayoutProps> = ({
       label: 'Product',
       children: [
         { label: 'Features', href: '/#features' },
+        { label: 'AI Capabilities', href: '/ai-features' },
         { label: 'Security', href: '/security' },
+        { label: 'Trust Verification', href: '/trust-verification' },
         { label: 'API Documentation', href: '/docs/api' },
         { label: 'Pricing', href: '/pricing' },
         { label: 'Enterprise Demo', href: '/enterprise/demo' }
@@ -330,8 +332,8 @@ export const StandardLayout: React.FC<StandardLayoutProps> = ({
           
           {/* Bottom Footer */}
           <div className="border-t border-slate-700 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between">
-            <p className="text-sm text-slate-400">
-              © 2024 ProofPix. All rights reserved.
+            <p className="text-slate-400 text-sm">
+              © 2025 ProofPix. All rights reserved.
             </p>
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
               <Link to="/privacy" className="text-sm text-slate-400 hover:text-white transition-colors">

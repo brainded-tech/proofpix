@@ -83,10 +83,11 @@ const EnterpriseContactForm: React.FC = () => {
         className="bg-white rounded-xl shadow-xl p-8"
       >
         <h2 className="text-3xl font-semibold text-gray-900 mb-2">
-          Contact Our Enterprise Team
+          Eliminate Your $2.3M Breach Risk—Free Consultation
         </h2>
         <p className="text-gray-600 mb-8">
-          Learn how ProofPix can help your organization with secure image metadata management.
+          See how 500+ legal teams, insurance companies, and healthcare organizations eliminated data breach risks 
+          while saving 80% on security costs. Get your custom ROI analysis in 15 minutes.
         </p>
 
         {submitSuccess ? (
@@ -96,10 +97,11 @@ const EnterpriseContactForm: React.FC = () => {
             className="bg-green-50 border border-green-200 rounded-lg p-6 text-center"
           >
             <h3 className="text-xl font-semibold text-green-800 mb-2">
-              Thank you for your interest!
+              Your Custom ROI Analysis is On the Way!
             </h3>
             <p className="text-green-700">
-              Our enterprise team will contact you within one business day.
+              Our enterprise security team will contact you within 4 hours with your personalized breach risk assessment 
+              and cost savings analysis. Check your email for immediate access to our security architecture guide.
             </p>
           </motion.div>
         ) : (
@@ -297,7 +299,7 @@ const EnterpriseContactForm: React.FC = () => {
                     Processing...
                   </span>
                 ) : (
-                  'Contact Enterprise Sales'
+                  'Get My Custom ROI Analysis—Free'
                 )}
               </button>
             </div>

@@ -36,7 +36,13 @@ import { Elements } from '@stripe/react-stripe-js';
 import { getStripe, PaymentClient } from '../utils/paymentClient';
 import { SubscriptionManager } from '../components/payment/SubscriptionManager';
 import { UsageTracker } from '../components/payment/UsageTracker';
-import { Sponsorship } from '../components/Sponsorships';
+import { useTestAuth } from '../components/auth/TestAuthProvider';
+import { EnterpriseLayout } from '../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge 
+} from '../components/ui/EnterpriseComponents';
 
 interface BillingPageState {
   paymentMethods: PaymentMethodData[];
@@ -659,8 +665,6 @@ export const BillingPage: React.FC = () => {
           </div>
         </div>
       )}
-
-      <Sponsorship placement="bottom" />
     </div>
   );
 }; 

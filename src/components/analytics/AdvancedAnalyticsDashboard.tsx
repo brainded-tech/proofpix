@@ -265,28 +265,24 @@ export const AdvancedAnalyticsDashboard: React.FC = () => {
               value={computedMetrics?.totalFiles?.toLocaleString() || '0'}
               change={12.5}
               icon={<FileText className="h-6 w-6 text-blue-600" />}
-              loading={usageLoading}
             />
             <MetricCard
               title="Processed"
               value={computedMetrics?.totalProcessed?.toLocaleString() || '0'}
               change={8.3}
               icon={<CheckCircle className="h-6 w-6 text-green-600" />}
-              loading={usageLoading}
             />
             <MetricCard
               title="API Calls"
               value={computedMetrics?.apiCalls?.toLocaleString() || '0'}
               change={15.7}
               icon={<Link className="h-6 w-6 text-purple-600" />}
-              loading={usageLoading}
             />
             <MetricCard
               title="Active Users"
               value={computedMetrics?.activeUsers?.toLocaleString() || '0'}
               change={5.2}
               icon={<Users className="h-6 w-6 text-orange-600" />}
-              loading={usageLoading}
             />
           </div>
         );

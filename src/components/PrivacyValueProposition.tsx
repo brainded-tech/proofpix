@@ -129,10 +129,10 @@ const PrivacyValueProposition: React.FC<PrivacyValuePropositionProps> = ({
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {breachStats.map((stat, index) => (
-          <div key={index} className="bg-white rounded-lg border border-gray-200 p-4 text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">{stat.stat}</div>
-            <p className="text-sm text-gray-600 mb-1">{stat.description}</p>
-            <p className="text-xs text-gray-500 italic">Source: {stat.source}</p>
+          <div key={index} className="bg-slate-700 rounded-lg border border-slate-600 p-4 text-center">
+            <div className="text-3xl font-bold text-blue-400 mb-2">{stat.stat}</div>
+            <p className="text-sm text-slate-200 mb-1">{stat.description}</p>
+            <p className="text-xs text-slate-400 italic">Source: {stat.source}</p>
           </div>
         ))}
       </div>
@@ -197,14 +197,14 @@ const PrivacyValueProposition: React.FC<PrivacyValuePropositionProps> = ({
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {securityFeatures.map((feature, index) => (
-          <div key={index} className="bg-white rounded-lg border border-gray-200 p-4">
+          <div key={index} className="bg-slate-700 rounded-lg border border-slate-600 p-4">
             <div className="flex items-start">
-              <div className="bg-blue-100 p-2 rounded-full mr-3">
+              <div className="bg-blue-900/50 p-2 rounded-full mr-3 text-blue-400">
                 {feature.icon}
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 mb-1">{feature.title}</h4>
-                <p className="text-sm text-gray-600">{feature.description}</p>
+                <h4 className="font-semibold text-slate-100 mb-1">{feature.title}</h4>
+                <p className="text-sm text-slate-200">{feature.description}</p>
               </div>
             </div>
           </div>
@@ -216,12 +216,12 @@ const PrivacyValueProposition: React.FC<PrivacyValuePropositionProps> = ({
           <h4 className="font-semibold text-gray-900 mb-4 text-center">How ProofPix Works vs. Traditional Solutions</h4>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg p-4">
-              <h5 className="font-medium text-gray-900 mb-2 flex items-center">
-                <Shield className="text-green-600 mr-2" size={16} />
+            <div className="bg-slate-600 rounded-lg p-4 border border-slate-500">
+              <h5 className="font-medium text-slate-100 mb-2 flex items-center">
+                <Shield className="text-green-400 mr-2" size={16} />
                 ProofPix (Client-Side)
               </h5>
-              <ol className="space-y-2 text-sm">
+              <ol className="space-y-2 text-sm text-slate-200">
                 <li className="flex items-start">
                   <span className="bg-green-100 text-green-600 rounded-full w-5 h-5 flex items-center justify-center mr-2 flex-shrink-0">1</span>
                   <span>Upload image to your browser (stays on your device)</span>
@@ -241,12 +241,12 @@ const PrivacyValueProposition: React.FC<PrivacyValuePropositionProps> = ({
               </ol>
             </div>
             
-            <div className="bg-white rounded-lg p-4">
-              <h5 className="font-medium text-gray-900 mb-2 flex items-center">
-                <AlertTriangle className="text-red-600 mr-2" size={16} />
+            <div className="bg-slate-600 rounded-lg p-4 border border-slate-500">
+              <h5 className="font-medium text-slate-100 mb-2 flex items-center">
+                <AlertTriangle className="text-red-400 mr-2" size={16} />
                 Traditional Solutions (Server-Side)
               </h5>
-              <ol className="space-y-2 text-sm">
+              <ol className="space-y-2 text-sm text-slate-200">
                 <li className="flex items-start">
                   <span className="bg-red-100 text-red-600 rounded-full w-5 h-5 flex items-center justify-center mr-2 flex-shrink-0">1</span>
                   <span>Upload image to third-party servers (data leaves your control)</span>
@@ -288,16 +288,16 @@ const PrivacyValueProposition: React.FC<PrivacyValuePropositionProps> = ({
       
       <div className="space-y-6 mb-6">
         {complianceBenefits.map((item, index) => (
-          <div key={index} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div className="bg-blue-50 px-4 py-3 border-b border-gray-200">
-              <h4 className="font-semibold text-gray-900">{item.regulation} Compliance Benefits</h4>
+          <div key={index} className="bg-slate-600 rounded-lg border border-slate-500 overflow-hidden">
+            <div className="bg-slate-700 px-4 py-3 border-b border-slate-500">
+              <h4 className="font-semibold text-slate-100">{item.regulation} Compliance Benefits</h4>
             </div>
             <div className="p-4">
               <ul className="space-y-2">
                 {item.benefits.map((benefit, i) => (
                   <li key={i} className="flex items-start">
                     <Check className="text-green-500 mr-2 flex-shrink-0 mt-0.5" size={16} />
-                    <span className="text-gray-600 text-sm">{benefit}</span>
+                    <span className="text-slate-200 text-sm">{benefit}</span>
                   </li>
                 ))}
               </ul>
@@ -325,7 +325,7 @@ const PrivacyValueProposition: React.FC<PrivacyValuePropositionProps> = ({
   );
 
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-slate-700 rounded-xl border border-slate-600 p-6 ${className}`}>
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Privacy by Design</h2>
         <p className="text-gray-600">

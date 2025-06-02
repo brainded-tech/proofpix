@@ -75,54 +75,58 @@ const DemoModeController: React.FC<DemoModeControllerProps> = ({
 
   if (isActive && sessionInfo) {
     return (
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="font-semibold">DEMO MODE ACTIVE</span>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="font-semibold">DEMO MODE ACTIVE</span>
+                </div>
+                
+                <div className="flex items-center space-x-2 text-blue-100">
+                  <Monitor className="w-4 h-4" />
+                  <span className="text-sm">{sessionInfo.scenario?.name}</span>
+                </div>
+                
+                <div className="flex items-center space-x-2 text-blue-100">
+                  <Clock className="w-4 h-4" />
+                  <span className="text-sm">
+                    {formatTime(sessionInfo.timeRemaining)} remaining
+                  </span>
+                </div>
               </div>
-              
-              <div className="flex items-center space-x-2 text-blue-100">
-                <Monitor className="w-4 h-4" />
-                <span className="text-sm">{sessionInfo.scenario?.name}</span>
-              </div>
-              
-              <div className="flex items-center space-x-2 text-blue-100">
-                <Clock className="w-4 h-4" />
-                <span className="text-sm">
-                  {formatTime(sessionInfo.timeRemaining)} remaining
-                </span>
-              </div>
-            </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-blue-100">
-                <Brain className="w-4 h-4" />
-                <span className="text-sm">AI Features Active</span>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 text-blue-100">
+                  <Brain className="w-4 h-4" />
+                  <span className="text-sm">AI Features Active</span>
+                </div>
+                
+                <button
+                  onClick={endDemo}
+                  className="px-4 py-1 bg-red-500 hover:bg-red-600 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-300"
+                >
+                  End Demo
+                </button>
               </div>
-              
-              <button
-                onClick={endDemo}
-                className="px-4 py-1 bg-red-500 hover:bg-red-600 rounded-lg text-sm font-medium transition-colors"
-              >
-                End Demo
-              </button>
             </div>
           </div>
         </div>
         
-        {/* Demo Content */}
-        <div className="pt-16">
-          {children}
+        {/* Demo Content with proper scrolling */}
+        <div className="pt-16 min-h-screen overflow-auto">
+          <div className="p-4">
+            {children}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-auto">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">

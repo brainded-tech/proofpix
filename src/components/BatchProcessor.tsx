@@ -1,5 +1,17 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Lock, Crown } from 'lucide-react';
+import { 
+  Lock, 
+  Crown, 
+  Zap, 
+  Upload, 
+  Play, 
+  Square, 
+  Download, 
+  Clock, 
+  RefreshCw, 
+  CheckCircle, 
+  AlertCircle 
+} from 'lucide-react';
 import { extractMetadata } from '../utils/metadata';
 import { analytics } from '../utils/analytics';
 import SessionManager from '../utils/sessionManager';
@@ -339,48 +351,54 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
     return `${minutes}m ${remainingSeconds}s`;
   };
 
-  // 🔒 PAYMENT PROTECTION: Show upgrade prompt for free users
+  // 🔒 PAYMENT PROTECTION: Show upgrade prompt if user can't access batch processing
   if (!canUseBatch) {
     return (
-      <div className="batch-processor bg-gray-800 rounded-lg p-6">
-        <div className="text-center py-12">
-          <div className="bg-yellow-500/20 p-6 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
-            <Lock className="h-12 w-12 text-yellow-400" />
-          </div>
-          
-          <h2 className="text-2xl font-bold text-white mb-4">
-            🚀 Batch Processing - Premium Feature
-          </h2>
-          
-          <p className="text-gray-300 mb-6 max-w-md mx-auto">
-            Process multiple images simultaneously with advanced export options. 
-            Upgrade to unlock batch processing for faster workflows.
-          </p>
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <div className="max-w-md w-full">
+          {/* Modern Enterprise Upgrade Card */}
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 border border-slate-700">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+            <div className="relative z-10 text-center">
+              <div className="bg-purple-600/20 p-4 rounded-2xl w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Zap className="h-8 w-8 text-purple-400" />
+              </div>
+              
+              <h2 className="text-2xl font-bold text-white mb-4">
+                Batch Processing - Premium Feature
+              </h2>
+              
+              <p className="text-slate-300 mb-6">
+                Process multiple images simultaneously with advanced export options. 
+                Upgrade to unlock batch processing for faster workflows.
+              </p>
 
-          <div className="bg-gray-700/50 rounded-lg p-4 mb-6 max-w-sm mx-auto">
-            <h3 className="text-white font-semibold mb-2">Current Plan: {currentPlan.plan?.name || 'Free'}</h3>
-            <p className="text-gray-400 text-sm">
-              {currentPlan.type === 'free' 
-                ? 'Single image processing only' 
-                : 'Batch processing not included in this plan'
-              }
-            </p>
-          </div>
+              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-4 mb-6">
+                <h3 className="text-white font-semibold mb-2">Current Plan: {currentPlan.plan?.name || 'Free'}</h3>
+                <p className="text-slate-400 text-sm">
+                  {currentPlan.type === 'free' 
+                    ? 'Single image processing only' 
+                    : 'Batch processing not included in this plan'
+                  }
+                </p>
+              </div>
 
-          <div className="space-y-3">
-            <button
-              onClick={() => {
-                window.location.href = '/pricing';
-              }}
-              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium py-3 px-8 rounded-xl transition-all duration-200 flex items-center justify-center mx-auto"
-            >
-              <Crown className="h-5 w-5 mr-2" />
-              Upgrade to Pro
-            </button>
-            
-            <p className="text-xs text-gray-500">
-              Starting at $2.99 for 24-hour access • No account required
-            </p>
+              <div className="space-y-3">
+                <button
+                  onClick={() => {
+                    window.location.href = '/pricing';
+                  }}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  <Crown className="h-5 w-5 mr-2" />
+                  Upgrade to Pro
+                </button>
+                
+                <p className="text-xs text-slate-500">
+                  Starting at $2.99 for 24-hour access • No account required
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -388,208 +406,216 @@ const BatchProcessor: React.FC<BatchProcessorProps> = ({
   }
 
   return (
-    <div className="batch-processor bg-gray-800 rounded-lg p-6">
-      <div className="batch-header mb-6">
-        <h2 className="text-xl font-bold text-white mb-2">Batch Image Processing</h2>
-        <p className="text-gray-400">Upload multiple images for batch processing and export</p>
-      </div>
-
-      {/* File Upload Area */}
-      <div className="mb-6">
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept={allowedFormats.join(',')}
-          onChange={(e) => handleFileSelect(e.target.files)}
-          className="hidden"
-        />
-        
-        <div
-          onClick={() => fileInputRef.current?.click()}
-          className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 transition-colors"
-        >
-          <div className="text-4xl mb-4">📁</div>
-          <h3 className="text-lg font-semibold text-white mb-2">
-            Select Multiple Images
-          </h3>
-          <p className="text-gray-400 mb-2">
-            Choose up to {maxFiles} images for batch processing
-          </p>
-          <p className="text-sm text-gray-500">
-            Supported: JPEG, PNG, TIFF, WebP (max 50MB each)
-          </p>
-        </div>
-      </div>
-
-      {/* Processing Stats */}
-      {files.length > 0 && (
-        <div className="batch-stats bg-gray-700 rounded-lg p-4 mb-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div>
-              <div className="text-2xl font-bold text-blue-400">
-                {processingStats.total}
-              </div>
-              <div className="text-gray-400 text-sm">Total Files</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-green-400">
-                {processingStats.completed}
-              </div>
-              <div className="text-gray-400 text-sm">Completed</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-red-400">
-                {processingStats.errors}
-              </div>
-              <div className="text-gray-400 text-sm">Errors</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-yellow-400">
-                {Math.round(overallProgress)}%
-              </div>
-              <div className="text-gray-400 text-sm">Progress</div>
-            </div>
+    <div className="min-h-screen bg-slate-900">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Modern Header */}
+        <div className="text-center mb-8">
+          <div className="bg-purple-600/20 p-4 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+            <Zap className="h-8 w-8 text-purple-400" />
           </div>
+          <h1 className="text-3xl font-bold text-white mb-2">Batch Image Processing</h1>
+          <p className="text-slate-400">Upload multiple images for batch processing and export</p>
+        </div>
+
+        {/* File Upload Area */}
+        <div className="mb-8">
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept={allowedFormats.join(',')}
+            onChange={(e) => handleFileSelect(e.target.files)}
+            className="hidden"
+          />
           
-          {processingStats.estimatedTimeRemaining !== null && (
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-400">
-                Estimated time remaining: {formatTime(processingStats.estimatedTimeRemaining)}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Overall Progress Bar */}
-      {isProcessing && (
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-400">Overall Progress</span>
-            <span className="text-sm text-gray-400">{Math.round(overallProgress)}%</span>
-          </div>
-          <div className="w-full bg-gray-700 rounded-full h-2">
-            <div
-              className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${overallProgress}%` }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Action Buttons */}
-      {files.length > 0 && (
-        <div className="flex gap-4 mb-6">
-          {!isProcessing ? (
-            <button
-              onClick={processBatch}
-              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              🚀 Start Processing ({files.length} files)
-            </button>
-          ) : (
-            <button
-              onClick={cancelProcessing}
-              className="flex-1 bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors"
-            >
-              ⏹️ Cancel Processing
-            </button>
-          )}
-          
-          {processingStats.completed > 0 && (
-            <button
-              onClick={exportResults}
-              className="bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors"
-              disabled={isProcessing}
-            >
-              📥 Export Results
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* File List */}
-      {files.length > 0 && (
-        <div className="space-y-2 max-h-96 overflow-y-auto">
-          {files.map((file) => (
-            <div
-              key={file.id}
-              className="flex items-center justify-between p-3 bg-gray-700 rounded-lg"
-            >
-              <div className="flex items-center space-x-3 flex-1 min-w-0">
-                <div className="flex-shrink-0">
-                  {file.status === 'pending' && (
-                    <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center">
-                      <span className="text-xs">⏳</span>
-                    </div>
-                  )}
-                  {file.status === 'processing' && (
-                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center animate-spin">
-                      <span className="text-xs">⚙️</span>
-                    </div>
-                  )}
-                  {file.status === 'completed' && (
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-xs">✅</span>
-                    </div>
-                  )}
-                  {file.status === 'error' && (
-                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-xs">❌</span>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <p className="text-white font-medium truncate">
-                    {file.file.name}
-                  </p>
-                  <p className="text-sm text-gray-400">
-                    {formatFileSize(file.file.size)}
-                    {file.error && (
-                      <span className="text-red-400 ml-2">• {file.error}</span>
-                    )}
-                  </p>
-                </div>
-              </div>
-              
-              {file.status === 'processing' && (
-                <div className="flex items-center space-x-2">
-                  <div className="w-20 bg-gray-600 rounded-full h-2">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${file.progress}%` }}
-                    />
-                  </div>
-                  <span className="text-xs text-gray-400 w-10">
-                    {file.progress}%
-                  </span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Empty State */}
-      {files.length === 0 && (
-        <div className="text-center py-8">
-          <div className="text-6xl mb-4">📊</div>
-          <h3 className="text-xl font-semibold text-white mb-2">
-            Ready for Batch Processing
-          </h3>
-          <p className="text-gray-400 mb-4">
-            Upload multiple images to analyze them simultaneously
-          </p>
-          <button
+          <div
             onClick={() => fileInputRef.current?.click()}
-            className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="border-2 border-dashed border-slate-600 rounded-2xl p-12 text-center cursor-pointer hover:border-blue-500 hover:bg-slate-800/30 transition-all duration-300"
           >
-            Select Images
-          </button>
+            <div className="bg-slate-700/50 p-4 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <Upload className="h-8 w-8 text-slate-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">
+              Select Multiple Images
+            </h3>
+            <p className="text-slate-400 mb-2">
+              Choose up to {maxFiles} images for batch processing
+            </p>
+            <p className="text-sm text-slate-500">
+              Supported: JPEG, PNG, TIFF, WebP (max 50MB each)
+            </p>
+          </div>
         </div>
-      )}
+
+        {/* Processing Stats */}
+        {files.length > 0 && (
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div>
+                <div className="text-3xl font-bold text-blue-400 mb-1">
+                  {processingStats.total}
+                </div>
+                <div className="text-slate-400 text-sm">Total Files</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-green-400 mb-1">
+                  {processingStats.completed}
+                </div>
+                <div className="text-slate-400 text-sm">Completed</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-400 mb-1">
+                  {processingStats.errors}
+                </div>
+                <div className="text-slate-400 text-sm">Errors</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-400 mb-1">
+                  {Math.round(overallProgress)}%
+                </div>
+                <div className="text-slate-400 text-sm">Progress</div>
+              </div>
+            </div>
+            
+            {processingStats.estimatedTimeRemaining !== null && (
+              <div className="mt-6 text-center">
+                <p className="text-sm text-slate-400">
+                  Estimated time remaining: {formatTime(processingStats.estimatedTimeRemaining)}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Overall Progress Bar */}
+        {isProcessing && (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-sm font-medium text-slate-300">Overall Progress</span>
+              <span className="text-sm font-medium text-slate-300">{Math.round(overallProgress)}%</span>
+            </div>
+            <div className="w-full bg-slate-700 rounded-full h-3">
+              <div
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-300"
+                style={{ width: `${overallProgress}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        {files.length > 0 && (
+          <div className="flex gap-4 mb-8">
+            {!isProcessing ? (
+              <button
+                onClick={processBatch}
+                className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                <Play className="h-5 w-5 mr-2 inline" />
+                Start Processing ({files.length} files)
+              </button>
+            ) : (
+              <button
+                onClick={cancelProcessing}
+                className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-6 rounded-xl font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                <Square className="h-5 w-5 mr-2 inline" />
+                Cancel Processing
+              </button>
+            )}
+            
+            {processingStats.completed > 0 && (
+              <button
+                onClick={exportResults}
+                className="bg-gradient-to-r from-green-600 to-green-700 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isProcessing}
+              >
+                <Download className="h-5 w-5 mr-2 inline" />
+                Export Results
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* File List */}
+        {files.length > 0 && (
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl">
+            <div className="px-6 py-4 border-b border-slate-700">
+              <h3 className="text-lg font-semibold text-white">Processing Queue</h3>
+            </div>
+            <div className="divide-y divide-slate-700 max-h-96 overflow-y-auto">
+              {files.map((file) => (
+                <div
+                  key={file.id}
+                  className="flex items-center justify-between p-4 hover:bg-slate-800/30 transition-colors"
+                >
+                  <div className="flex items-center space-x-4 flex-1 min-w-0">
+                    <div className="flex-shrink-0">
+                      {file.status === 'pending' && (
+                        <div className="w-10 h-10 bg-slate-600/20 border border-slate-500/30 rounded-lg flex items-center justify-center">
+                          <Clock className="h-5 w-5 text-slate-400" />
+                        </div>
+                      )}
+                      {file.status === 'processing' && (
+                        <div className="w-10 h-10 bg-blue-600/20 border border-blue-500/30 rounded-lg flex items-center justify-center">
+                          <RefreshCw className="h-5 w-5 text-blue-400 animate-spin" />
+                        </div>
+                      )}
+                      {file.status === 'completed' && (
+                        <div className="w-10 h-10 bg-green-600/20 border border-green-500/30 rounded-lg flex items-center justify-center">
+                          <CheckCircle className="h-5 w-5 text-green-400" />
+                        </div>
+                      )}
+                      {file.status === 'error' && (
+                        <div className="w-10 h-10 bg-red-600/20 border border-red-500/30 rounded-lg flex items-center justify-center">
+                          <AlertCircle className="h-5 w-5 text-red-400" />
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-medium truncate">
+                        {file.file.name}
+                      </p>
+                      <div className="flex items-center space-x-4 text-sm text-slate-400">
+                        <span>{formatFileSize(file.file.size)}</span>
+                        {file.status === 'processing' && (
+                          <span>{file.progress}% complete</span>
+                        )}
+                        {file.error && (
+                          <span className="text-red-400">Error: {file.error}</span>
+                        )}
+                      </div>
+                      
+                      {file.status === 'processing' && (
+                        <div className="mt-2">
+                          <div className="w-full bg-slate-700 rounded-full h-2">
+                            <div
+                              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                              style={{ width: `${file.progress}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2 ml-4">
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                      file.status === 'pending' ? 'bg-slate-600/20 text-slate-400 border border-slate-500/30' :
+                      file.status === 'processing' ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' :
+                      file.status === 'completed' ? 'bg-green-600/20 text-green-400 border border-green-500/30' :
+                      'bg-red-600/20 text-red-400 border border-red-500/30'
+                    }`}>
+                      {file.status.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

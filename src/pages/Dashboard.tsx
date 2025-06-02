@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../components/auth/AuthContext';
+import { useTestAuth } from '../components/auth/TestAuthProvider';
 import { 
   userRepository,
   subscriptionRepository,
@@ -34,7 +34,8 @@ import {
   FileText,
   Book,
   Brain,
-  Layers
+  Layers,
+  X
 } from 'lucide-react';
 import type { 
   SubscriptionData, 
@@ -43,6 +44,191 @@ import type {
   DashboardStats,
   InvoiceData
 } from '../utils/apiClient';
+import { EnterpriseLayout } from '../components/ui/EnterpriseLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge 
+} from '../components/ui/EnterpriseComponents';
+
+// Simple Image Metadata Viewer Component
+const ImageMetadataViewer: React.FC = () => {
+  const [uploadedImages, setUploadedImages] = useState<Array<{
+    id: string;
+    name: string;
+    size: number;
+    url: string;
+    metadata: any;
+    expanded: boolean;
+  }>>([]);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) return;
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newImage = {
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          name: file.name,
+          size: file.size,
+          url: e.target?.result as string,
+          metadata: {
+            fileName: file.name,
+            fileSize: `${(file.size / 1024).toFixed(2)} KB`,
+            fileType: file.type,
+            lastModified: new Date(file.lastModified).toLocaleString(),
+            dimensions: 'Analyzing...',
+            camera: 'Canon EOS R5 (simulated)',
+            location: 'San Francisco, CA (simulated)',
+            timestamp: new Date().toISOString(),
+            hash: 'sha256:' + Math.random().toString(36).substr(2, 16)
+          },
+          expanded: false
+        };
+        setUploadedImages(prev => [...prev, newImage]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const toggleExpanded = (id: string) => {
+    setUploadedImages(prev => 
+      prev.map(img => 
+        img.id === id ? { ...img, expanded: !img.expanded } : img
+      )
+    );
+  };
+
+  const removeImage = (id: string) => {
+    setUploadedImages(prev => prev.filter(img => img.id !== id));
+  };
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Image Metadata Analysis</h3>
+      
+      {/* Upload Area */}
+      <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center mb-6">
+        <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+        <p className="text-gray-600 dark:text-gray-400 mb-4">Upload images to view their metadata</p>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleImageUpload}
+          className="hidden"
+          id="image-upload"
+        />
+        <label
+          htmlFor="image-upload"
+          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
+        >
+          <Upload className="h-4 w-4 mr-2" />
+          Select Images
+        </label>
+      </div>
+
+      {/* Uploaded Images */}
+      {uploadedImages.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="font-semibold text-gray-900 dark:text-gray-100">Uploaded Images ({uploadedImages.length})</h4>
+          {uploadedImages.map((image) => (
+            <div key={image.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={image.url}
+                    alt={image.name}
+                    className="w-16 h-16 object-cover rounded-lg"
+                  />
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">{image.name}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{image.metadata.fileSize}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => toggleExpanded(image.id)}
+                    className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 text-sm"
+                  >
+                    {image.expanded ? 'Hide' : 'View'} Metadata
+                  </button>
+                  <button
+                    onClick={() => removeImage(image.id)}
+                    className="p-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-900 rounded"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Expanded Metadata */}
+              {image.expanded && (
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mt-3">
+                  <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Metadata Details</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">File Name:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">{image.metadata.fileName}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">File Size:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">{image.metadata.fileSize}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">File Type:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">{image.metadata.fileType}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">Last Modified:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">{image.metadata.lastModified}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">Camera:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">{image.metadata.camera}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">Location:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">{image.metadata.location}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">Timestamp:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400">{new Date(image.metadata.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">Hash:</span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-400 font-mono text-xs">{image.metadata.hash}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Enterprise Actions */}
+                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                    <div className="flex flex-wrap gap-2">
+                      <button className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded text-sm hover:bg-green-200 dark:hover:bg-green-800">
+                        Generate Report
+                      </button>
+                      <button className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded text-sm hover:bg-purple-200 dark:hover:bg-purple-800">
+                        Chain of Custody
+                      </button>
+                      <button className="px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 rounded text-sm hover:bg-orange-200 dark:hover:bg-orange-800">
+                        Export Metadata
+                      </button>
+                      <button className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded text-sm hover:bg-blue-200 dark:hover:bg-blue-800">
+                        Compare Images
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface DashboardState {
   stats: DashboardStats | null;
@@ -57,7 +243,7 @@ interface DashboardState {
 }
 
 export const Dashboard: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useTestAuth();
   const [state, setState] = useState<DashboardState>({
     stats: null,
     subscription: null,
@@ -435,6 +621,9 @@ export const Dashboard: React.FC = () => {
               </div>
             )}
 
+            {/* Image Metadata Viewer */}
+            <ImageMetadataViewer />
+
             {/* Privacy Risk Breakdown */}
             {state.analytics?.metrics.privacyRisksDetected && (
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
@@ -809,6 +998,62 @@ export const Dashboard: React.FC = () => {
                   <p className="text-sm text-gray-600">Validate and analyze documentation quality</p>
                 </div>
               )}
+
+              {/* AI Packages Quick Access */}
+              {(tier === 'pro' || tier === 'enterprise') && (
+                <div 
+                  onClick={() => navigate('/ai/legal-ai-package')}
+                  className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <Brain className="h-8 w-8 text-blue-600" />
+                    <span className="text-sm text-gray-500">AI Package</span>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Legal AI Package</h3>
+                  <p className="text-sm text-gray-600">Contract analysis & evidence processing</p>
+                </div>
+              )}
+
+              {(tier === 'pro' || tier === 'enterprise') && (
+                <div 
+                  onClick={() => navigate('/ai/healthcare-ai-package')}
+                  className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <Brain className="h-8 w-8 text-green-600" />
+                    <span className="text-sm text-gray-500">AI Package</span>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Healthcare AI Package</h3>
+                  <p className="text-sm text-gray-600">HIPAA-compliant medical records processing</p>
+                </div>
+              )}
+
+              {(tier === 'pro' || tier === 'enterprise') && (
+                <div 
+                  onClick={() => navigate('/ai/financial-ai-package')}
+                  className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <Brain className="h-8 w-8 text-purple-600" />
+                    <span className="text-sm text-gray-500">AI Package</span>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Financial AI Package</h3>
+                  <p className="text-sm text-gray-600">SOX compliance & audit automation</p>
+                </div>
+              )}
+
+              {/* Workflow Templates Quick Access */}
+              <div 
+                onClick={() => navigate('/workflow-templates')}
+                className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow cursor-pointer"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <Layers className="h-8 w-8 text-indigo-600" />
+                  <span className="text-sm text-gray-500">Templates</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Workflow Templates</h3>
+                <p className="text-sm text-gray-600">Pre-built automation workflows</p>
+              </div>
 
               <div 
                 onClick={() => navigate('/advanced-analytics')}

@@ -21,7 +21,7 @@ import {
   Building2,
   Briefcase
 } from 'lucide-react';
-import { PRICING_PLANS, INDUSTRY_AI_PACKAGES, AI_TRAINING_PACKAGES } from '../utils/stripe';
+import { PRICING_PLANS, INDUSTRY_AI_PACKAGES, AI_TRAINING_PACKAGES, redirectToCheckout } from '../utils/stripe';
 
 interface PricingFeature {
   name: string;
@@ -43,6 +43,7 @@ interface PricingTier {
   badge?: string;
   color: string;
   icon: React.ComponentType<any>;
+  stripePriceId: string;
 }
 
 export const AIEnhancedPricingPage: React.FC = () => {
@@ -50,116 +51,118 @@ export const AIEnhancedPricingPage: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState<string>('professional');
   const [showIndustryPackages, setShowIndustryPackages] = useState(false);
   const [showTrainingPackages, setShowTrainingPackages] = useState(false);
+  const [isLoading, setIsLoading] = useState<string | null>(null);
 
-  const aiPricingTiers: PricingTier[] = [
+  const pricingTiers: PricingTier[] = [
     {
       id: 'individual',
       name: 'Individual AI',
-      price: billingCycle === 'yearly' ? 39 : 49,
-      originalPrice: billingCycle === 'yearly' ? 49 : 49,
+      price: 49,
       interval: 'month',
-      description: 'AI-powered document processing for professionals',
+      description: 'Perfect for freelancers and solo professionals',
+      features: [
+        { name: 'AI-powered OCR', included: true, highlight: true },
+        { name: 'Smart document classification', included: true },
+        { name: 'Quality assessment', included: true },
+        { name: 'Fraud detection', included: true },
+        { name: '100 AI credits/month', included: true, highlight: true },
+        { name: 'Email support', included: true },
+        { name: 'API access', included: false },
+        { name: 'Custom models', included: false }
+      ],
       aiCredits: 100,
       color: 'blue',
       icon: Users,
-      features: [
-        { name: 'Unlimited image processing', included: true },
-        { name: 'AI-powered OCR with 95% accuracy', included: true, highlight: true },
-        { name: 'Smart document classification', included: true, highlight: true },
-        { name: 'AI quality assessment & enhancement', included: true },
-        { name: 'Basic fraud detection', included: true },
-        { name: 'Enhanced PDF reports with AI insights', included: true },
-        { name: '100 AI credits/month', included: true },
-        { name: 'Email support', included: true },
-        { name: 'Advanced AI analysis', included: false },
-        { name: 'Custom model training', included: false },
-        { name: 'Industry-specific models', included: false },
-        { name: 'API access', included: false }
-      ]
+      stripePriceId: 'price_1RVJ08RwqAvTbIKuWpD9T8TJ'
     },
     {
       id: 'professional',
       name: 'Professional AI',
-      price: billingCycle === 'yearly' ? 119 : 149,
-      originalPrice: billingCycle === 'yearly' ? 149 : 149,
+      price: 149,
       interval: 'month',
       description: 'Advanced AI features for growing teams',
+      features: [
+        { name: 'Everything in Individual', included: true },
+        { name: 'Advanced AI features', included: true, highlight: true },
+        { name: 'Entity extraction', included: true },
+        { name: 'Custom AI models', included: true, highlight: true },
+        { name: 'Team collaboration', included: true },
+        { name: '500 AI credits/month', included: true, highlight: true },
+        { name: 'Priority support', included: true },
+        { name: 'API access', included: true }
+      ],
       aiCredits: 500,
       popular: true,
       badge: 'Most Popular',
       color: 'purple',
-      icon: Briefcase,
-      features: [
-        { name: 'Everything in Individual AI', included: true },
-        { name: 'Advanced AI analysis (entity extraction)', included: true, highlight: true },
-        { name: 'Predictive processing time estimation', included: true, highlight: true },
-        { name: 'AI-powered fraud detection (advanced)', included: true },
-        { name: 'Smart workflow recommendations', included: true },
-        { name: 'Basic custom model training', included: true },
-        { name: '500 AI credits/month', included: true },
-        { name: 'Team collaboration (up to 5 users)', included: true },
-        { name: 'API access with AI endpoints', included: true },
-        { name: 'Priority support', included: true },
-        { name: 'Industry-specific models', included: false },
-        { name: 'White-label capabilities', included: false }
-      ]
+      icon: Users,
+      stripePriceId: 'price_1RVJ0aRwqAvTbIKuDQ57QNkL'
     },
     {
       id: 'business',
       name: 'Business AI',
-      price: billingCycle === 'yearly' ? 399 : 499,
-      originalPrice: billingCycle === 'yearly' ? 499 : 499,
+      price: 499,
       interval: 'month',
       description: 'Enterprise-grade AI for organizations',
-      aiCredits: 2000,
-      color: 'emerald',
-      icon: Building2,
       features: [
-        { name: 'Everything in Professional AI', included: true },
-        { name: 'Industry-specific AI models', included: true, highlight: true },
-        { name: 'Advanced custom model training', included: true, highlight: true },
-        { name: 'AI-powered compliance monitoring', included: true },
-        { name: 'Intelligent document routing', included: true },
-        { name: 'Advanced predictive analytics', included: true },
-        { name: '2000 AI credits/month', included: true },
-        { name: 'Team management (up to 25 users)', included: true },
-        { name: 'Advanced API access', included: true },
+        { name: 'Everything in Professional', included: true },
+        { name: 'Industry-specific models', included: true, highlight: true },
+        { name: 'Compliance monitoring', included: true },
+        { name: 'Advanced analytics', included: true },
         { name: 'SSO integration', included: true },
-        { name: 'Business support', included: true },
-        { name: 'White-label capabilities', included: false }
-      ]
+        { name: '2000 AI credits/month', included: true, highlight: true },
+        { name: 'Dedicated support', included: true },
+        { name: 'Custom integrations', included: true }
+      ],
+      aiCredits: 2000,
+      color: 'green',
+      icon: Building2,
+      stripePriceId: 'price_1RVJ0bRwqAvTbIKuh4ABzpLt'
     },
     {
       id: 'enterprise',
       name: 'Enterprise AI',
-      price: billingCycle === 'yearly' ? 1599 : 1999,
-      originalPrice: billingCycle === 'yearly' ? 1999 : 1999,
+      price: 1999,
       interval: 'month',
       description: 'Unlimited AI with custom development',
+      features: [
+        { name: 'Everything in Business', included: true },
+        { name: 'Unlimited AI credits', included: true, highlight: true },
+        { name: 'Custom development', included: true, highlight: true },
+        { name: 'White-label solution', included: true },
+        { name: 'Dedicated team', included: true },
+        { name: 'On-premise deployment', included: true },
+        { name: '24/7 support', included: true },
+        { name: 'SLA guarantee', included: true }
+      ],
       aiCredits: -1, // Unlimited
-      badge: 'Best Value',
+      badge: 'Enterprise',
       color: 'gold',
       icon: Crown,
-      features: [
-        { name: 'Everything in Business AI', included: true },
-        { name: 'Unlimited AI processing', included: true, highlight: true },
-        { name: 'Custom AI model development', included: true, highlight: true },
-        { name: 'White-label AI capabilities', included: true },
-        { name: 'Advanced security & compliance AI', included: true },
-        { name: 'Real-time AI monitoring', included: true },
-        { name: 'Unlimited AI credits', included: true },
-        { name: 'Unlimited users', included: true },
-        { name: 'Full API access', included: true },
-        { name: 'On-premise deployment', included: true },
-        { name: 'Dedicated support + SLA', included: true },
-        { name: '24/7 AI monitoring', included: true }
-      ]
+      stripePriceId: 'price_1RVJ0cRwqAvTbIKuEniR6biz'
     }
   ];
 
   const getDiscountPercentage = (tier: PricingTier) => {
     if (!tier.originalPrice) return 0;
     return Math.round(((tier.originalPrice - tier.price) / tier.originalPrice) * 100);
+  };
+
+  const handleCheckout = async (tier: PricingTier) => {
+    if (!tier.stripePriceId) {
+      alert('This plan is not yet available. Please contact support.');
+      return;
+    }
+
+    setIsLoading(tier.id);
+    try {
+      await redirectToCheckout(tier.stripePriceId);
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('There was an error starting checkout. Please try again.');
+    } finally {
+      setIsLoading(null);
+    }
   };
 
   const renderPricingCard = (tier: PricingTier) => (
@@ -199,8 +202,8 @@ export const AIEnhancedPricingPage: React.FC = () => {
 
         {/* Pricing */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-2">
-            {tier.originalPrice && (
+          <div className="flex items-baseline justify-center mb-2">
+            {tier.originalPrice && tier.originalPrice !== tier.price && (
               <span className="text-lg text-gray-400 line-through mr-2">
                 ${tier.originalPrice}
               </span>
@@ -213,35 +216,32 @@ export const AIEnhancedPricingPage: React.FC = () => {
             </span>
           </div>
           
-          {tier.originalPrice && (
+          {billingCycle === 'yearly' && getDiscountPercentage(tier) > 0 && (
             <div className="inline-flex items-center bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400 px-3 py-1 rounded-full text-sm font-medium">
               Save {getDiscountPercentage(tier)}%
             </div>
           )}
-
-          <div className="mt-4 flex items-center justify-center">
-            <Brain className="w-5 h-5 text-purple-600 mr-2" />
-            <span className="text-lg font-semibold text-purple-600">
-              {tier.aiCredits === -1 ? 'Unlimited' : `${tier.aiCredits}`} AI Credits
-            </span>
+          
+          <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            {tier.aiCredits === -1 ? 'Unlimited AI credits' : `${tier.aiCredits} AI credits/month`}
           </div>
         </div>
 
         {/* Features */}
         <div className="space-y-3 mb-8">
           {tier.features.map((feature, index) => (
-            <div key={index} className="flex items-center">
+            <div key={index} className="flex items-start">
               {feature.included ? (
-                <Check className={`w-5 h-5 mr-3 ${feature.highlight ? 'text-purple-600' : 'text-green-600'}`} />
+                <Check className={`w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0 ${feature.highlight ? 'text-purple-500' : ''}`} />
               ) : (
-                <X className="w-5 h-5 text-gray-400 mr-3" />
+                <X className="w-5 h-5 text-gray-300 mr-3 mt-0.5 flex-shrink-0" />
               )}
               <span className={`text-sm ${
                 feature.included 
                   ? feature.highlight 
-                    ? 'text-purple-600 font-semibold' 
-                    : 'text-gray-900 dark:text-gray-100'
-                  : 'text-gray-400'
+                    ? 'text-purple-600 dark:text-purple-400 font-medium' 
+                    : 'text-gray-700 dark:text-gray-300'
+                  : 'text-gray-400 dark:text-gray-500'
               }`}>
                 {feature.name}
               </span>
@@ -251,15 +251,25 @@ export const AIEnhancedPricingPage: React.FC = () => {
 
         {/* CTA Button */}
         <button
-          className={`w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-300 ${
+          onClick={() => handleCheckout(tier)}
+          disabled={isLoading === tier.id}
+          className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${
             tier.popular
-              ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg'
-              : selectedTier === tier.id
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600'
-          }`}
+              ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl'
+              : 'bg-gray-900 dark:bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white'
+          } ${isLoading === tier.id ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          {tier.id === 'enterprise' ? 'Contact Sales' : 'Start Free Trial'}
+          {isLoading === tier.id ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+              Processing...
+            </div>
+          ) : (
+            <>
+              Get Started
+              <ChevronRight className="w-4 h-4 ml-2 inline" />
+            </>
+          )}
         </button>
       </div>
     </div>
@@ -340,7 +350,7 @@ export const AIEnhancedPricingPage: React.FC = () => {
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-16">
-          {aiPricingTiers.map(renderPricingCard)}
+          {pricingTiers.map(renderPricingCard)}
         </div>
       </div>
 
@@ -403,7 +413,7 @@ export const AIEnhancedPricingPage: React.FC = () => {
                 ${pkg.price.toLocaleString()}/month
               </div>
               <ul className="space-y-2 mb-6">
-                {pkg.features.map((feature, index) => (
+                {pkg.features.map((feature: string, index: number) => (
                   <li key={index} className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                     <Check className="w-4 h-4 text-green-600 mr-2" />
                     {feature}
@@ -430,37 +440,40 @@ export const AIEnhancedPricingPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {Object.entries(AI_TRAINING_PACKAGES).map(([key, pkg]) => (
-            <div key={key} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                {pkg.name}
-              </h3>
-              <div className="mb-4">
-                <div className="text-2xl font-bold text-purple-600">
-                  ${pkg.price.toLocaleString()}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {(pkg as any).interval === 'one-time' ? 'One-time setup' : 'Setup fee'}
-                </div>
-                {(pkg as any).monthlyFee && (
-                  <div className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">
-                    + ${(pkg as any).monthlyFee}/month
+          {Object.entries(AI_TRAINING_PACKAGES).map(([key, pkg]) => {
+            const trainingPkg = pkg as any; // Type assertion for training packages
+            return (
+              <div key={key} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  {trainingPkg.name}
+                </h3>
+                <div className="mb-4">
+                  <div className="text-2xl font-bold text-purple-600">
+                    ${trainingPkg.price.toLocaleString()}
                   </div>
-                )}
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    {trainingPkg.interval === 'one-time' ? 'One-time setup' : 'Setup fee'}
+                  </div>
+                  {trainingPkg.monthlyPrice && (
+                    <div className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">
+                      + ${trainingPkg.monthlyPrice.toLocaleString()}/month
+                    </div>
+                  )}
+                </div>
+                <ul className="space-y-2 mb-6">
+                  {trainingPkg.features.map((feature: string, index: number) => (
+                    <li key={index} className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <Check className="w-4 h-4 text-green-600 mr-2" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                  Get Started
+                </button>
               </div>
-              <ul className="space-y-2 mb-6">
-                {pkg.features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                    <Check className="w-4 h-4 text-green-600 mr-2" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <button className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
-                Get Started
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

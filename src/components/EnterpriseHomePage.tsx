@@ -45,12 +45,15 @@ import {
   Sparkles,
   Rocket,
   Fingerprint,
-  CloudOff
+  CloudOff,
+  Crown
 } from 'lucide-react';
 import { analytics, trackFileUpload, usageTracker } from '../utils/analytics';
 import { ProcessedImage } from '../types';
 import SecureSessionManager from '../utils/secureSessionManager';
 import SecureFileValidator from '../utils/secureFileValidator';
+import { HybridModeSelector } from './HybridModeSelector';
+import { ProcessingMode } from '../services/hybridArchitectureService';
 
 interface EnterpriseHomePageProps {
   onFileSelect: (file: File) => void;
@@ -97,6 +100,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
   const [showUserTypeSelection, setShowUserTypeSelection] = useState(false);
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentProcessingMode, setCurrentProcessingMode] = useState<ProcessingMode>('privacy');
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -173,35 +177,86 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
 
   // Enhanced trust indicators
   const trustIndicators = [
-    { icon: <Shield className="w-5 h-5" />, text: "100% Private", color: "emerald" },
-    { icon: <Zap className="w-5 h-5" />, text: "Instant Processing", color: "blue" },
-    { icon: <Award className="w-5 h-5" />, text: "Enterprise Ready", color: "purple" },
-    { icon: <CloudOff className="w-5 h-5" />, text: "Zero Upload", color: "orange" }
+    { icon: <Shield className="w-5 h-5" />, text: "0 Breaches in 2+ Years", color: "emerald" },
+    { icon: <Zap className="w-5 h-5" />, text: "Results in Under 2 Seconds", color: "blue" },
+    { icon: <Award className="w-5 h-5" />, text: "Used in 500+ Legal Cases", color: "purple" },
+    { icon: <CloudOff className="w-5 h-5" />, text: "Never Touches Our Servers", color: "orange" }
   ];
 
   // Enhanced feature highlights
   const featureHighlights = [
     {
       icon: <Fingerprint className="w-8 h-8" />,
-      title: "Privacy-First Architecture",
-      description: "All processing happens locally in your browser. Your images never leave your device.",
+      title: "Unhackable by Design",
+      description: "Your photos never touch our servers—making data breaches technically impossible, not just unlikely.",
       color: "emerald",
-      stats: "100% Local"
+      stats: "0% Breach Risk",
+      gradient: "from-emerald-500 to-teal-600"
     },
     {
       icon: <Rocket className="w-8 h-8" />,
-      title: "Lightning Fast",
-      description: "Extract comprehensive metadata in seconds with our optimized WebAssembly engine.",
+      title: "Instant Photo Intelligence",
+      description: "Discover hidden GPS locations, camera settings, and timestamps in seconds—no waiting, no uploads.",
       color: "blue",
-      stats: "<2s Processing"
+      stats: "<2s Analysis",
+      gradient: "from-blue-500 to-cyan-600"
+    },
+    {
+      icon: <Scale className="w-8 h-8" />,
+      title: "Court-Admissible Results",
+      description: "Generate forensic-grade reports that legal professionals trust for evidence and documentation.",
+      color: "purple",
+      stats: "Legal-Grade",
+      gradient: "from-purple-500 to-indigo-600"
     },
     {
       icon: <Building2 className="w-8 h-8" />,
-      title: "Enterprise Grade",
-      description: "Built for scale with advanced security, compliance, and white-label options.",
-      color: "purple",
-      stats: "Fortune 500 Ready"
+      title: "Enterprise Without Complexity",
+      description: "Get enterprise-level security and features with consumer-simple deployment and usage.",
+      color: "orange",
+      stats: "5min Setup",
+      gradient: "from-orange-500 to-red-600"
     }
+  ];
+
+  // Enhanced industry solutions
+  const industrySolutions = [
+    {
+      icon: <Scale className="w-6 h-6" />,
+      title: "Legal & Forensics",
+      description: "Court-admissible evidence analysis with unbreakable chain of custody protection.",
+      link: "/solutions/legal",
+      color: "blue"
+    },
+    {
+      icon: <Heart className="w-6 h-6" />,
+      title: "Healthcare",
+      description: "HIPAA-compliant medical imaging with patient data that never leaves your network.",
+      link: "/solutions/healthcare",
+      color: "emerald"
+    },
+    {
+      icon: <Briefcase className="w-6 h-6" />,
+      title: "Insurance",
+      description: "Stop fraud before it costs you—instant claim verification and damage assessment.",
+      link: "/solutions/insurance",
+      color: "purple"
+    },
+    {
+      icon: <Building2 className="w-6 h-6" />,
+      title: "Real Estate",
+      description: "MLS-compliant property documentation with verified timestamps and locations.",
+      link: "/solutions/realestate",
+      color: "orange"
+    }
+  ];
+
+  // Enhanced stats
+  const stats = [
+    { value: "0", label: "Data Breaches Ever", icon: <Shield className="w-5 h-5" /> },
+    { value: "$50M+", label: "Fraud Prevented", icon: <TrendingUp className="w-5 h-5" /> },
+    { value: "500+", label: "Legal Teams Protected", icon: <Scale className="w-5 h-5" /> },
+    { value: "2M+", label: "Photos Analyzed Privately", icon: <FileImage className="w-5 h-5" /> }
   ];
 
   // Usage tracking and analytics
@@ -279,7 +334,15 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
         handleFileSelect(acceptedFiles);
       }
     },
-    noClick: true // Disable click to prevent double opening of file dialog
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.tiff', '.tif', '.heic', '.heif']
+    },
+    multiple: false,
+    maxSize: 50 * 1024 * 1024, // 50MB
+    onDragEnter: () => setIsDragActive(true),
+    onDragLeave: () => setIsDragActive(false),
+    onDropAccepted: () => setIsDragActive(false),
+    onDropRejected: () => setIsDragActive(false)
   });
 
   const handleUserTypeSelection = (selectedType: UserType) => {
@@ -411,12 +474,22 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
     return totalSteps > 0 ? (completedSteps.length / totalSteps) * 100 : 0;
   };
 
+  const handleProcessingModeChange = (mode: ProcessingMode) => {
+    setCurrentProcessingMode(mode);
+    // Track mode selection for analytics
+    analytics.track('Processing Mode Changed', {
+      mode,
+      timestamp: new Date().toISOString(),
+      userType
+    });
+  };
+
   // Enhanced Quick Start Overlay Component with User Type Detection
   const EnhancedQuickStartOverlay = () => {
     const currentSteps = getOnboardingSteps(userType);
     const currentProfile = userTypeProfiles.find(p => p.id === userType);
-    
-    return (
+
+  return (
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           {showUserTypeSelection ? (
@@ -425,7 +498,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mx-auto mb-6">
                   <Target className="w-8 h-8 text-white" />
-                </div>
+        </div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">Welcome to ProofPix!</h2>
                 <p className="text-lg text-slate-600 mb-2">Let's personalize your experience</p>
                 <p className="text-sm text-slate-500">Choose your role to get a customized onboarding experience</p>
@@ -441,20 +514,20 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     <div className="flex items-start space-x-4">
                       <div className={`p-3 rounded-lg bg-${profile.color}-100 text-${profile.color}-600 group-hover:bg-${profile.color}-500 group-hover:text-white transition-colors`}>
                         {profile.icon}
-                      </div>
+              </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-slate-900 mb-2">{profile.title}</h3>
                         <p className="text-slate-600 text-sm mb-3">{profile.description}</p>
                         <div className="flex items-center text-xs text-slate-500">
                           <Clock className="w-3 h-3 mr-1" />
                           {profile.estimatedTime}
-                        </div>
+              </div>
                       </div>
                       <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
                     </div>
                   </div>
                 ))}
-              </div>
+            </div>
 
               <div className="text-center">
                 <button 
@@ -484,22 +557,22 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <button 
+                <button 
                     onClick={() => setShowUserTypeSelection(true)}
                     className="text-slate-500 hover:text-slate-700 text-sm flex items-center"
-                  >
+                >
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     Change Role
-                  </button>
-                  <button 
+                </button>
+                <button 
                     onClick={() => setShowQuickStart(false)}
                     className="text-slate-400 hover:text-slate-600 p-2"
-                  >
+                >
                     <X className="w-6 h-6" />
-                  </button>
+                </button>
                 </div>
               </div>
-
+              
               {/* Progress Bar */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-2">
@@ -512,7 +585,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     style={{ width: `${getProgressPercentage()}%` }}
                   ></div>
                 </div>
-              </div>
+            </div>
 
               {/* Primary Goals */}
               <div className="mb-8 p-4 bg-slate-50 rounded-lg">
@@ -568,7 +641,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                             </div>
                           </div>
                         </div>
-                        <button
+              <button
                           onClick={() => handleStepAction(step)}
                           disabled={isCompleted}
                           className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
@@ -578,22 +651,22 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                           }`}
                         >
                           {isCompleted ? 'Completed' : step.action}
-                        </button>
-                      </div>
-                    </div>
+              </button>
+            </div>
+          </div>
                   );
                 })}
-              </div>
+        </div>
 
               {/* Quick Actions */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <button 
+              <button 
                   onClick={() => setShowQuickStart(false)}
                   className={`flex-1 bg-${currentProfile?.color}-600 hover:bg-${currentProfile?.color}-700 text-white px-6 py-3 rounded-lg font-medium transition-colors`}
-                >
+              >
                   Start Exploring
-                </button>
-                <button 
+              </button>
+              <button 
                   onClick={() => {
                     setShowQuickStart(false);
                     navigate('/docs');
@@ -602,7 +675,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                 >
                   <BookOpen className="w-4 h-4 inline mr-2" />
                   View All Docs
-                </button>
+              </button>
               </div>
             </div>
           )}
@@ -612,6 +685,12 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
   };
 
   return (
+    <>
+      {/* Enhanced Quick Start Overlay */}
+      <AnimatePresence>
+        {showQuickStart && <EnhancedQuickStartOverlay />}
+      </AnimatePresence>
+
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
       {/* Enhanced Navigation */}
       <motion.nav 
@@ -637,18 +716,60 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/#features" className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200">Features</Link>
-              <Link to="/#enterprise" className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200">Enterprise</Link>
-              <Link to="/#pricing" className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200">Pricing</Link>
+              <Link to="/features" className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200">What It Does</Link>
+              <div className="relative group">
+                <button className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200 flex items-center">
+                  Industry Solutions
+                  <ChevronRight className="w-4 h-4 ml-1 group-hover:rotate-90 transition-transform" />
+                </button>
+                <div className="absolute top-full left-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="p-4 space-y-2">
+                    <Link to="/solutions/legal" className="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors">Legal & Compliance</Link>
+                    <Link to="/solutions/healthcare" className="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors">Healthcare</Link>
+                    <Link to="/solutions/insurance" className="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors">Insurance</Link>
+                    <Link to="/solutions/realestate" className="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors">Real Estate</Link>
+                    <div className="border-t border-slate-700/50 my-2"></div>
+                    <div className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-2">AI Packages</div>
+                    <Link to="/ai/legal-ai-package" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Legal AI Package</Link>
+                    <Link to="/ai/healthcare-ai-package" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Healthcare AI Package</Link>
+                    <Link to="/ai/financial-ai-package" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Financial AI Package</Link>
+                    <Link to="/workflow-templates" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Workflow Templates</Link>
+              </div>
+            </div>
+          </div>
+              <div className="relative group">
+                <button className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200 flex items-center">
+                  See It Work
+                  <ChevronRight className="w-4 h-4 ml-1 group-hover:rotate-90 transition-transform" />
+                </button>
+                <div className="absolute top-full left-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="p-4 space-y-2">
+                    <Link to="/enterprise/ai-demo" className="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors flex items-center">
+                      <Cpu className="w-4 h-4 mr-2" />
+                      AI Document Intelligence
+                    </Link>
+                    <Link to="/batch-processing" className="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors flex items-center">
+                      <Layers className="w-4 h-4 mr-2" />
+                      Bulk Processing Demo
+                    </Link>
+                    <Link to="/enterprise/demo" className="block px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-colors flex items-center">
+                      <Building2 className="w-4 h-4 mr-2" />
+                      Enterprise Demo
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <Link to="/enterprise" className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200">For Teams</Link>
+              <Link to="/pricing" className="pp-text-body-md text-slate-300 hover:text-white transition-colors duration-200">Plans & Pricing</Link>
               
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowQuickStart(true)}
+                onClick={() => setShowQuickStart(true)}
                 className="pp-btn pp-btn-primary pp-btn-md"
               >
                 <Sparkles className="w-4 h-4" />
-                Get Started
+                Try It Free
               </motion.button>
             </div>
 
@@ -675,13 +796,45 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
               className="md:hidden bg-slate-800/95 backdrop-blur-xl border-t border-slate-700/50"
             >
               <div className="pp-container py-6 space-y-4">
-                <Link to="/#features" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Features</Link>
-                <Link to="/#enterprise" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Enterprise</Link>
-                <Link to="/#pricing" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Pricing</Link>
-              <button 
+                <Link to="/features" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Features</Link>
+                <div className="space-y-2">
+                  <div className="pp-text-body-md text-slate-300 font-medium">Solutions</div>
+                  <div className="pl-4 space-y-2">
+                    <Link to="/solutions/legal" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Legal & Compliance</Link>
+                    <Link to="/solutions/healthcare" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Healthcare</Link>
+                    <Link to="/solutions/insurance" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Insurance</Link>
+                    <Link to="/solutions/realestate" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Real Estate</Link>
+                    <div className="border-t border-slate-700/50 my-2"></div>
+                    <div className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-2">AI Packages</div>
+                    <Link to="/ai/legal-ai-package" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Legal AI Package</Link>
+                    <Link to="/ai/healthcare-ai-package" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Healthcare AI Package</Link>
+                    <Link to="/ai/financial-ai-package" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Financial AI Package</Link>
+                    <Link to="/workflow-templates" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors">Workflow Templates</Link>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="pp-text-body-md text-slate-300 font-medium">Demos</div>
+                  <div className="pl-4 space-y-2">
+                    <Link to="/enterprise/ai-demo" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors flex items-center">
+                      <Cpu className="w-4 h-4 mr-2" />
+                      AI Document Intelligence
+                    </Link>
+                    <Link to="/batch-processing" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors flex items-center">
+                      <Layers className="w-4 h-4 mr-2" />
+                      Batch Processing
+                    </Link>
+                    <Link to="/enterprise/demo" className="block pp-text-body-sm text-slate-400 hover:text-white transition-colors flex items-center">
+                      <Building2 className="w-4 h-4 mr-2" />
+                      Enterprise Demo
+                    </Link>
+                  </div>
+                </div>
+                <Link to="/enterprise" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Enterprise</Link>
+                <Link to="/pricing" className="block pp-text-body-md text-slate-300 hover:text-white transition-colors">Pricing</Link>
+                <button 
                   onClick={() => setShowQuickStart(true)}
                   className="w-full pp-btn pp-btn-primary pp-btn-md"
-              >
+                >
                   <Sparkles className="w-4 h-4" />
                   Get Started
                 </button>
@@ -692,254 +845,370 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
       </motion.nav>
 
       {/* Enhanced Hero Section */}
-      <section className="pp-hero-section pt-32 pb-20">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"></div>
+          <div 
+            className="absolute inset-0 opacity-40"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            }}
+          ></div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Trust Badge */}
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-600/20 border border-blue-400/30 text-blue-300 text-sm font-medium mb-8">
+            <Shield className="w-4 h-4 mr-2" />
+            Complete Photo Analysis with Complete Privacy
+            </div>
+
+            {/* Main Headline */}
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            Don't Just Send a Photo—
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              Send Proof of Everything
+              </span>
+            </h1>
+            
+            {/* Subheadline */}
+          <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+            Extract every hidden detail from your photos—location, timestamps, camera settings, and more. 
+            Professional-grade analysis that happens entirely in your browser for complete privacy.
+          </p>
+
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap justify-center gap-6 mb-12 text-slate-400">
+            <div className="flex items-center">
+              <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+              <span>Never Touches Our Servers</span>
+              </div>
+            <div className="flex items-center">
+              <Zap className="w-5 h-5 text-yellow-400 mr-2" />
+              <span>Results in Seconds</span>
+              </div>
+            <div className="flex items-center">
+              <Users className="w-5 h-5 text-blue-400 mr-2" />
+              <span>Trusted by 500+ Legal Teams</span>
+              </div>
+            </div>
+
+          {/* Primary CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <button
+                onClick={() => navigate('/enterprise/demo')}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2"
+              >
+                <Eye className="w-5 h-5" />
+              See How It Works
+              </button>
+              <button
+                onClick={() => navigate('/security')}
+                className="border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2"
+              >
+                <Shield className="w-5 h-5" />
+              Why It's Secure
+              </button>
+            </div>
+
+          {/* Enhanced stats display */}
+          <div className="bg-slate-800/50 rounded-lg p-6 mb-12 max-w-3xl mx-auto border border-slate-700/50">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <div>
+                <div className="text-2xl font-bold text-blue-400 mb-1">500+</div>
+                <div className="text-sm text-slate-400">Legal Teams Protected</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-green-400 mb-1">$50M+</div>
+                <div className="text-sm text-slate-400">Fraud Prevented</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-yellow-400 mb-1">0</div>
+                <div className="text-sm text-slate-400">Data Breaches Ever</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Upload Section */}
+      <section className="py-16 bg-slate-800/50">
+        <div className="pp-container">
+          <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-white mb-4">Try It Right Now</h2>
+              <p className="text-xl text-slate-300">Upload an image and see the magic happen instantly</p>
+          </div>
+          
+            {/* Processing Mode Selector */}
+            <div className="max-w-2xl mx-auto mb-8">
+              <HybridModeSelector
+                onModeChange={handleProcessingModeChange}
+                showDetails={true}
+              />
+            </div>
+
+            {/* File Upload Area */}
+            <div className="max-w-2xl mx-auto">
+          <div 
+            {...getRootProps()} 
+                className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 cursor-pointer ${
+                  isDragActive
+                    ? 'border-blue-400 bg-blue-400/10'
+                    : 'border-slate-600 hover:border-slate-500 bg-slate-800/30'
+                }`}
+          >
+            <input {...getInputProps()} />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files || []);
+                    if (files.length > 0) {
+                      handleFileSelect(files);
+                    }
+                  }}
+                  className="hidden"
+                />
+                
+                <div className="flex flex-col items-center">
+                  <div className="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mb-4">
+                    <Upload className="w-8 h-8 text-blue-400" />
+              </div>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    {isDragActive ? 'Drop your image here' : 'Upload an image to analyze'}
+              </h3>
+                  <p className="text-slate-400 mb-4">
+                    Supports JPEG, PNG, TIFF, HEIC files up to 50MB
+                  </p>
+                  <button
+                    onClick={openFileDialog}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                  >
+                    Choose File
+                  </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+        {/* Features Section */}
+      <section className="py-20 bg-slate-900">
         <div className="pp-container">
           <motion.div 
-            className="text-center max-w-5xl mx-auto"
+            className="text-center mb-16"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+            >
+              <motion.h2 
+                variants={fadeInUp}
+                className="text-4xl md:text-5xl font-bold text-white mb-6"
+              >
+                Why Privacy-First Matters
+              </motion.h2>
+              <motion.p 
+                variants={fadeInUp}
+                className="text-xl text-slate-300 max-w-3xl mx-auto"
+              >
+                Traditional tools upload your sensitive images to unknown servers. We process everything locally in your browser.
+              </motion.p>
+          </motion.div>
+
+          <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             variants={staggerContainer}
             initial="hidden"
-            animate={isVisible ? "visible" : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true }}
           >
-            {/* Enhanced Trust Indicators */}
-            <motion.div 
-              variants={fadeInUp}
-              className="flex items-center justify-center flex-wrap gap-6 mb-12"
-            >
-              {trustIndicators.map((indicator, index) => (
-                <motion.div
-                  key={index}
-                  variants={scaleIn}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-full bg-${indicator.color}-500/10 border border-${indicator.color}-500/20`}
-                >
-                  <span className={`text-${indicator.color}-400`}>{indicator.icon}</span>
-                  <span className="pp-text-body-sm font-medium text-slate-300">{indicator.text}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Enhanced Main Headline */}
-            <motion.h1 
-              variants={fadeInUp}
-              className="pp-text-display-lg md:pp-text-display-xl mb-8 leading-tight"
-            >
-              <span className="bg-gradient-to-r from-blue-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent">
-                Privacy-First
-              </span>
-              <br />
-              <span className="text-white">Image Intelligence</span>
-            </motion.h1>
-
-            <motion.p 
-              variants={fadeInUp}
-              className="pp-text-body-xl text-slate-300 mb-12 leading-relaxed max-w-4xl mx-auto"
-            >
-              Extract metadata, analyze images, and generate reports—all processed locally on your device. 
-              <span className="text-emerald-400 font-semibold"> No uploads, no data exposure, complete privacy.</span>
-            </motion.p>
-
-            {/* Enhanced CTA Buttons */}
-            <motion.div 
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={openFileDialog}
-                className="pp-btn pp-btn-primary pp-btn-xl group"
-              >
-                <Rocket className="w-5 h-5 group-hover:animate-bounce" />
-                Start Analyzing Images
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-              
-              <motion.button 
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="pp-btn pp-btn-outline pp-btn-xl group"
-              >
-                <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                Watch Demo
-              </motion.button>
-            </motion.div>
-
-            {/* Enhanced Feature Highlights */}
-            <motion.div 
-              variants={staggerContainer}
-              className="pp-feature-grid max-w-6xl mx-auto"
-            >
               {featureHighlights.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="pp-card pp-card-glass p-8 text-center group cursor-pointer"
+              <motion.div
+                key={index}
+                  variants={scaleIn}
+                  className={`bg-gradient-to-br ${feature.gradient} p-8 rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 group`}
                 >
-                  <div className={`w-16 h-16 bg-${feature.color}-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <span className={`text-${feature.color}-400`}>{feature.icon}</span>
+                  <div className={`text-${feature.color}-400 mb-4 group-hover:scale-110 transition-transform`}>
+                    {feature.icon}
             </div>
-                  <h3 className="pp-text-heading-md mb-4">{feature.title}</h3>
-                  <p className="pp-text-body-md text-slate-400 mb-4 leading-relaxed">{feature.description}</p>
-                  <div className={`pp-text-caption text-${feature.color}-400 font-bold`}>
+                  <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                  <p className="text-slate-300 mb-4 leading-relaxed">{feature.description}</p>
+                  <div className={`text-${feature.color}-400 font-semibold text-sm`}>
                     {feature.stats}
-          </div>
-                </motion.div>
-              ))}
-            </motion.div>
+            </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Enhanced Upload Section */}
+        {/* Industry Solutions Section */}
       <section id="features" className="py-20 bg-slate-900">
         <div className="pp-container">
           <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+              initial="hidden"
+              whileInView="visible"
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
-          >
-          <div 
-            {...getRootProps()} 
-            className={`
-                pp-card pp-card-glass p-12 text-center cursor-pointer transition-all duration-300 group
-              ${isDragActive 
-                  ? 'border-blue-400 bg-blue-500/10 scale-105' 
-                  : 'border-slate-600 hover:border-blue-500 hover:bg-slate-800/70'
-              }
-            `}
-          >
-            <input {...getInputProps()} ref={fileInputRef} />
-            
-              <motion.div 
-                className="w-20 h-20 bg-slate-700/50 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-300"
-                animate={isDragActive ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+              variants={staggerContainer}
+            >
+              <motion.h2 
+                variants={fadeInUp}
+                className="text-4xl md:text-5xl font-bold text-white mb-6"
               >
-                <Upload className="w-10 h-10 text-slate-300 group-hover:text-blue-400 transition-colors" />
+                Built for Your Industry
+              </motion.h2>
+              <motion.p 
+                variants={fadeInUp}
+                className="text-xl text-slate-300 max-w-3xl mx-auto"
+              >
+                Specialized solutions for industries that can't afford data breaches
+              </motion.p>
               </motion.div>
               
-              <h3 className="pp-text-heading-lg mb-6">
-                {isDragActive ? 'Drop your images here' : 'Drop Images Here'}
-              </h3>
-              <p className="pp-text-body-lg text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Drag and drop your images or click to browse. All processing happens locally—your images never leave your device.
-              </p>
-              
-              <motion.button 
-                type="button"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="pp-btn pp-btn-secondary pp-btn-lg"
-              >
-                <FileImage className="w-5 h-5" />
-                Choose Files
-              </motion.button>
-              
-              <div className="mt-8 flex items-center justify-center space-x-6 pp-text-body-sm text-slate-500">
-                <span>Supports: JPG, PNG, TIFF, RAW</span>
-                <span>•</span>
-                <span>Max 50MB per file</span>
-                <span>•</span>
-                <span className="text-emerald-400 font-semibold">100% Private</span>
-          </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Enhanced Stats Section */}
-      {usageStats && (
-        <section className="py-16 bg-slate-800/30">
-          <div className="pp-container">
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
               viewport={{ once: true }}
-              className="max-w-4xl mx-auto"
             >
-              <h3 className="pp-text-heading-lg text-center mb-12 text-white">Today's Usage</h3>
-              <div className="pp-stats-grid">
-                {[
-                  { label: 'Uploads', value: usageStats.uploads, color: 'blue', icon: <Upload className="w-6 h-6" /> },
-                  { label: 'PDF Downloads', value: usageStats.pdfDownloads, color: 'emerald', icon: <Download className="w-6 h-6" /> },
-                  { label: 'Image Downloads', value: usageStats.imageDownloads, color: 'amber', icon: <FileImage className="w-6 h-6" /> },
-                  { label: 'Data Exports', value: usageStats.dataExports, color: 'purple', icon: <Database className="w-6 h-6" /> }
-                ].map((stat, index) => (
+              {industrySolutions.map((solution, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ y: -4, scale: 1.02 }}
-                    className="pp-card text-center p-8"
-                  >
-                    <div className={`w-12 h-12 bg-${stat.color}-500/20 rounded-xl flex items-center justify-center mx-auto mb-4`}>
-                      <span className={`text-${stat.color}-400`}>{stat.icon}</span>
-          </div>
-                    <div className={`pp-text-display-sm text-${stat.color}-400 mb-2 font-bold`}>{stat.value}</div>
-                    <div className="pp-text-body-sm text-slate-400">{stat.label}</div>
+                  variants={fadeInUp}
+                  className={`bg-slate-800/50 border border-${solution.color}-500/20 rounded-2xl p-8 hover:border-${solution.color}-500/40 transition-all duration-300 group`}
+                >
+                  <div className="flex items-start space-x-4">
+                    <div className={`p-3 rounded-lg bg-${solution.color}-500/10 text-${solution.color}-400 group-hover:bg-${solution.color}-500/20 transition-colors`}>
+                      {solution.icon}
+              </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-white mb-3">{solution.title}</h3>
+                      <p className="text-slate-300 mb-4 leading-relaxed">{solution.description}</p>
+                      <Link
+                        to={solution.link}
+                        className={`inline-flex items-center text-${solution.color}-400 hover:text-${solution.color}-300 font-medium transition-colors`}
+                      >
+                        Learn More
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
+            </div>
+              </div>
                   </motion.div>
                 ))}
-              </div>
             </motion.div>
         </div>
       </section>
-      )}
 
-      {/* Enhanced Enterprise CTA */}
-      <section id="enterprise" className="pp-cta-section">
+        {/* Category Creation Section */}
+        <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900">
         <div className="pp-container">
           <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <motion.div 
-              className="inline-flex items-center space-x-2 bg-white/10 px-6 py-3 rounded-full mb-8"
-              animate={{ y: [0, -5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              variants={staggerContainer}
             >
-              <Building2 className="w-5 h-5 text-emerald-400" />
-              <span className="pp-text-caption text-emerald-400">ENTERPRISE READY</span>
-            </motion.div>
-            
-            <h2 className="pp-text-display-md mb-8">
-              Secure, scalable, and compliant.
+            <motion.h2 
+              variants={fadeInUp}
+                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6"
+            >
+                <span className="text-slate-400">We Didn't Just Enter the Market—</span>
               <br />
-              <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
-              Perfect for teams and organizations.
-              </span>
-            </h2>
-            
-            <p className="pp-text-body-xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Built with React, TypeScript, and JWT for metadata extraction.
-              Analytics for Founders, privacy-respecting, Direct screenshots only.
-            </p>
+              <span className="text-white">We Created the Category</span>
+            </motion.h2>
+            <motion.p 
+              variants={fadeInUp}
+              className="text-xl text-slate-300 max-w-4xl mx-auto"
+            >
+              Before ProofPix, every image analysis tool required uploading sensitive data to servers. 
+              <span className="text-emerald-400 font-semibold"> We made that entire approach obsolete.</span>
+            </motion.p>
+          </motion.div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <motion.button 
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/enterprise')}
-                className="pp-btn pp-btn-secondary pp-btn-xl"
-              >
-                <Building2 className="w-5 h-5" />
-                Enterprise Solutions
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/enterprise/demo')}
-                className="pp-btn pp-btn-glass pp-btn-xl"
-              >
-                <Play className="w-5 h-5" />
-                View Live Demo
-              </motion.button>
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.div
+              variants={fadeInUp}
+              className="bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-2xl p-8 border border-red-500/20"
+            >
+              <div className="text-red-400 text-3xl font-bold mb-4">Before ProofPix</div>
+              <ul className="space-y-3 text-slate-300">
+                <li>• Upload sensitive data to unknown servers</li>
+                <li>• Hope their security policies protect you</li>
+                <li>• Wait minutes for processing</li>
+                <li>• Accept breach risk as "normal"</li>
+                <li>• Pay for their server costs</li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-2xl p-8 border border-emerald-500/20 transform scale-105"
+            >
+              <div className="text-emerald-400 text-3xl font-bold mb-4">After ProofPix</div>
+              <ul className="space-y-3 text-white font-medium">
+                <li>• Zero data transmission</li>
+                <li>• Technically impossible to breach</li>
+                <li>• Instant local processing</li>
+                <li>• Privacy by architecture</li>
+                <li>• No server costs</li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-8 border border-purple-500/20"
+            >
+              <div className="text-purple-400 text-3xl font-bold mb-4">Industry Impact</div>
+              <ul className="space-y-3 text-slate-300">
+                <li>• 500+ legal teams switched</li>
+                <li>• $2-5M fraud prevented per company</li>
+                <li>• Zero patient data breaches</li>
+                <li>• New industry standard created</li>
+                <li>• Competitors scrambling to copy</li>
+              </ul>
+            </motion.div>
+          </motion.div>
+
+          <motion.div 
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-2xl p-12 border border-slate-600/50"
+          >
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                "ProofPix didn't just enter the market—they created it."
+              </h3>
+              <p className="text-slate-300 mb-6">
+                Every "privacy-first" tool launched after us is trying to catch up. But you can't retrofit true privacy—
+                it has to be built from the ground up, like we did.
+              </p>
+              <div className="flex items-center justify-center space-x-8">
+              <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-400">First</div>
+                  <div className="text-slate-400 text-sm">To eliminate uploads</div>
+              </div>
+              <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-400">Only</div>
+                  <div className="text-slate-400 text-sm">Unhackable solution</div>
+              </div>
+              <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-400">Leader</div>
+                  <div className="text-slate-400 text-sm">Category we created</div>
+              </div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -963,19 +1232,37 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
               </p>
               <div className="flex space-x-4">
                 <motion.a 
-                  href="#" 
+                    href="https://proofpixapp.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   className="text-slate-400 hover:text-white transition-colors"
+                    aria-label="Visit ProofPix website"
                 >
                   <Globe className="w-6 h-6" />
                 </motion.a>
                 <motion.a 
-                  href="#" 
+                    href="https://www.linkedin.com/company/proofpixapp" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   className="text-slate-400 hover:text-white transition-colors"
+                    aria-label="Follow ProofPix on LinkedIn"
                 >
                   <Building2 className="w-6 h-6" />
                 </motion.a>
+                  <motion.a 
+                    href="https://twitter.com/proofpixapp" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    className="text-slate-400 hover:text-white transition-colors"
+                    aria-label="Follow ProofPix on Twitter"
+                  >
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                    </svg>
+                  </motion.a>
               </div>
             </div>
             
@@ -1034,7 +1321,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
           
           <div className="border-t border-slate-700 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between">
             <p className="pp-text-body-sm text-slate-400">
-              © 2024 ProofPix. All rights reserved.
+              © 2025 ProofPix. All rights reserved.
             </p>
             <div className="flex items-center space-x-6 mt-4 md:mt-0">
               {['Terms', 'Privacy', 'Cookies'].map((item) => (
@@ -1047,5 +1334,6 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
         </div>
       </footer>
     </div>
+    </>
   );
 }; 

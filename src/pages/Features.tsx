@@ -1,582 +1,414 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   Shield, 
   Zap, 
   Eye, 
+  Lock,
+  Database,
+  FileImage,
+  Layers,
+  BarChart3,
   Download, 
-  FileText, 
-  Settings, 
+  Upload,
+  Cpu,
   Globe, 
-  Lock, 
   Users, 
   Building2, 
-  Camera, 
-  Layers, 
-  BarChart3, 
-  Clock, 
-  CheckCircle, 
-  Star, 
-  Crown, 
-  Sparkles,
-  ArrowRight,
-  Play,
-  Code,
-  Database,
-  Cloud,
-  Smartphone,
-  Monitor,
-  Palette,
-  Search,
-  Filter,
-  Share2,
-  Archive,
-  Workflow,
-  Target,
-  TrendingUp,
-  Award,
-  Briefcase,
   Scale,
   Heart,
+  Briefcase,
+  ArrowRight,
+  CheckCircle, 
+  Star, 
+  Sparkles,
+  Camera,
+  FileCheck,
+  Clock,
+  Target,
+  Fingerprint,
+  CloudOff,
+  GitCompareArrows,
+  X,
   MapPin,
-  Calendar,
-  Image,
-  FileImage,
-  Cpu,
-  HardDrive,
-  Network,
-  Server,
-  Upload
+  Smartphone,
+  Monitor,
+  Tablet,
+  Search,
+  Share2,
+  AlertTriangle,
+  Award,
+  Settings,
+  FileText
 } from 'lucide-react';
-import { StandardLayout } from '../components/ui/StandardLayout';
+import { ConsistentLayout } from '../components/ui/ConsistentLayout';
 
-const Features: React.FC = () => {
-  const navigate = useNavigate();
-  const [selectedTier, setSelectedTier] = useState<'free' | 'pro' | 'enterprise'>('free');
+export const Features: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('analysis');
+  const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
 
-  const tiers = {
-    free: {
-      name: 'Free',
-      icon: <Sparkles className="h-6 w-6" />,
-      color: 'blue',
-      description: 'Perfect for personal use and getting started',
-      features: [
-        'Basic EXIF data extraction',
-        'Single image processing',
-        'Standard metadata viewing',
-        'Basic export options (JSON)',
-        'Privacy-first local processing',
-        'Mobile-friendly interface'
-      ]
-    },
-    pro: {
-      name: 'Pro',
-      icon: <Star className="h-6 w-6" />,
-      color: 'emerald',
-      description: 'Advanced features for professionals',
-      features: [
-        'Batch processing (up to 50 images)',
-        'Advanced metadata analysis',
-        'PDF report generation',
-        'Custom export formats',
-        'Timestamp overlay tools',
-        'Enhanced image comparison',
-        'Priority processing',
-        'Advanced filtering & search'
-      ]
-    },
-    enterprise: {
-      name: 'Enterprise',
-      icon: <Crown className="h-6 w-6" />,
-      color: 'purple',
-      description: 'Complete solution for organizations',
-      features: [
-        'Unlimited batch processing',
-        'White-label PDF reports',
-        'Custom branding options',
-        'API access & integrations',
-        'Team management tools',
-        'Advanced security features',
-        'Custom metadata fields',
-        'Dedicated support',
-        'SLA guarantees',
-        'On-premise deployment options'
-      ]
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
     }
   };
+
+  const tabs = [
+    { id: 'analysis', label: 'Image Analysis', icon: <Search className="w-5 h-5" /> },
+    { id: 'privacy', label: 'Privacy & Security', icon: <Shield className="w-5 h-5" /> },
+    { id: 'enterprise', label: 'Enterprise Tools', icon: <Users className="w-5 h-5" /> },
+    { id: 'export', label: 'Export & Sharing', icon: <Share2 className="w-5 h-5" /> }
+  ];
 
   const coreFeatures = [
     {
-      icon: <Eye className="h-8 w-8" />,
-      title: 'Metadata Extraction',
-      description: 'Extract comprehensive EXIF, IPTC, and XMP metadata from images',
-      details: [
-        'Camera settings and technical data',
-        'GPS location information',
-        'Timestamp and date information',
-        'Creator and copyright details',
-        'Custom metadata fields',
-        'Lens and equipment information'
-      ],
-      tier: 'free'
+      icon: <Shield className="w-8 h-8" />,
+      title: "Complete Privacy Protection",
+      description: "Your photos never leave your device—we can't see them even if we wanted to. Analysis happens entirely in your browser.",
+      details: ["Zero server uploads", "Local processing only", "No data collection", "Impossible to breach", "GDPR compliant"],
+      gradient: "from-emerald-500 to-green-600"
     },
     {
-      icon: <Shield className="h-8 w-8" />,
-      title: 'Privacy-First Processing',
-      description: 'All image processing happens locally in your browser',
-      details: [
-        'No server uploads required',
-        'Complete data privacy',
-        'GDPR compliant by design',
-        'No tracking or analytics on images',
-        'Secure local processing',
-        'Zero data retention'
-      ],
-      tier: 'free'
+      icon: <Zap className="w-8 h-8" />,
+      title: "Instant Photo Analysis",
+      description: "Get comprehensive results in seconds. Discover location, timestamps, camera settings, and hidden details instantly.",
+      details: ["Results in 2-3 seconds", "Real-time processing", "No waiting queues", "Immediate insights", "Lightning fast"],
+      gradient: "from-blue-500 to-cyan-600"
     },
     {
-      icon: <Layers className="h-8 w-8" />,
-      title: 'Batch Processing',
-      description: 'Process multiple images simultaneously for efficiency',
-      details: [
-        'Drag & drop multiple files',
-        'Progress tracking',
-        'Bulk export options',
-        'Parallel processing',
-        'Queue management',
-        'Error handling & recovery'
-      ],
-      tier: 'pro'
+      icon: <Eye className="w-8 h-8" />,
+      title: "Discover Hidden Information",
+      description: "Reveal the complete story behind any photo—where it was taken, when, with what camera, and much more.",
+      details: ["GPS location mapping", "Exact timestamps", "Camera identification", "Technical settings", "Editing history"],
+      gradient: "from-purple-500 to-pink-600"
     },
     {
-      icon: <FileText className="h-8 w-8" />,
-      title: 'Professional Reports',
-      description: 'Generate detailed PDF reports with custom branding',
-      details: [
-        'Comprehensive metadata reports',
-        'Custom company branding',
-        'Multiple export formats',
-        'Automated report generation',
-        'Template customization',
-        'Digital signatures'
-      ],
-      tier: 'pro'
+      icon: <FileText className="w-8 h-8" />,
+      title: "Professional Reports",
+      description: "Generate court-ready documentation with customizable PDF reports that meet legal and business standards.",
+      details: ["4 report templates", "Custom branding", "Legal formatting", "Detailed analysis", "Export options"],
+      gradient: "from-orange-500 to-red-600"
     },
     {
-      icon: <Code className="h-8 w-8" />,
-      title: 'API Integration',
-      description: 'Integrate ProofPix capabilities into your applications',
-      details: [
-        'RESTful API endpoints',
-        'Webhook support',
-        'SDK libraries',
-        'Rate limiting & quotas',
-        'Authentication & security',
-        'Comprehensive documentation'
-      ],
-      tier: 'enterprise'
+      icon: <Globe className="w-8 h-8" />,
+      title: "Universal Compatibility",
+      description: "Works with photos from any camera, phone, or device. Supports all major formats including professional RAW files.",
+      details: ["15+ file formats", "RAW file support", "Mobile photos", "Professional cameras", "Social media images"],
+      gradient: "from-teal-500 to-blue-600"
     },
     {
-      icon: <Users className="h-8 w-8" />,
-      title: 'Team Management',
-      description: 'Collaborate with team members and manage permissions',
-      details: [
-        'User role management',
-        'Permission controls',
-        'Activity tracking',
-        'Team analytics',
-        'Shared workspaces',
-        'Audit logs'
-      ],
-      tier: 'enterprise'
+      icon: <Smartphone className="w-8 h-8" />,
+      title: "Works Everywhere",
+      description: "Access from any device with a web browser. No downloads, installations, or special software required.",
+      details: ["Any web browser", "Mobile responsive", "Cross-platform", "No installation", "Always available"],
+      gradient: "from-indigo-500 to-purple-600"
     }
   ];
 
-  const useCases = [
+  const advancedFeatures = [
     {
-      icon: <Scale className="h-6 w-6" />,
-      title: 'Legal & Forensics',
-      description: 'Evidence analysis and digital forensics',
-      features: ['Chain of custody tracking', 'Tamper detection', 'Court-ready reports']
+      icon: <Layers className="w-8 h-8" />,
+      title: "Analyze Multiple Photos at Once",
+      description: "Process hundreds of images simultaneously with intelligent queue management and progress tracking.",
+      details: ["Unlimited batch size", "Progress tracking", "Error handling", "Resume capability", "Priority queues"],
+      gradient: "from-blue-500 to-cyan-600"
     },
     {
-      icon: <Building2 className="h-6 w-6" />,
-      title: 'Insurance Claims',
-      description: 'Photo verification for claims processing',
-      features: ['Timestamp verification', 'Location validation', 'Fraud detection']
+      icon: <BarChart3 className="w-8 h-8" />,
+      title: "Track Usage and Insights",
+      description: "Understand your photo analysis patterns, identify privacy risks, and monitor team usage with detailed analytics.",
+      details: ["Usage analytics", "Risk reporting", "Trend analysis", "Custom dashboards", "Export reports"],
+      gradient: "from-emerald-500 to-teal-600"
     },
     {
-      icon: <Heart className="h-6 w-6" />,
-      title: 'Healthcare',
-      description: 'Medical imaging metadata management',
-      features: ['HIPAA compliance', 'Patient privacy', 'Secure processing']
+      icon: <Users className="w-8 h-8" />,
+      title: "Team Collaboration Tools",
+      description: "Manage team access, assign roles, and collaborate on photo analysis projects with enterprise-grade controls.",
+      details: ["Role-based access", "User permissions", "Team collaboration", "Activity logs", "SSO integration"],
+      gradient: "from-purple-500 to-indigo-600"
     },
     {
-      icon: <Camera className="h-6 w-6" />,
-      title: 'Photography',
-      description: 'Professional photo management',
-      features: ['Portfolio organization', 'Copyright protection', 'Technical analysis']
-    },
-    {
-      icon: <Globe className="h-6 w-6" />,
-      title: 'Media & Publishing',
-      description: 'Content verification and management',
-      features: ['Source verification', 'Rights management', 'Workflow integration']
-    },
-    {
-      icon: <Briefcase className="h-6 w-6" />,
-      title: 'Corporate Security',
-      description: 'Enterprise data protection',
-      features: ['Data loss prevention', 'Compliance monitoring', 'Risk assessment']
+      icon: <Settings className="w-8 h-8" />,
+      title: "Integrate with Your Systems",
+      description: "Connect ProofPix to your existing workflow with powerful APIs and seamless enterprise integrations.",
+      details: ["REST API", "Webhook support", "Custom integrations", "SDK libraries", "Documentation"],
+      gradient: "from-orange-500 to-red-600"
     }
   ];
 
-  const technicalCapabilities = [
+  const exportFeatures = [
     {
-      category: 'Supported Formats',
-      icon: <FileImage className="h-6 w-6" />,
-      items: ['JPEG/JPG', 'PNG', 'TIFF', 'HEIC/HEIF', 'WebP', 'RAW formats']
+      icon: <Download className="w-8 h-8" />,
+      title: "Export in Any Format You Need",
+      description: "Get your analysis results in the format that works best for your workflow and requirements.",
+      details: ["JSON export", "CSV reports", "PDF documents", "XML format", "Excel spreadsheets"],
+      gradient: "from-blue-500 to-cyan-600"
     },
     {
-      category: 'Metadata Standards',
-      icon: <Database className="h-6 w-6" />,
-      items: ['EXIF 2.3', 'IPTC Core', 'XMP', 'Dublin Core', 'Custom schemas']
+      icon: <FileCheck className="w-8 h-8" />,
+      title: "Professional Reports",
+      description: "Generate court-ready documentation with detailed analysis and evidence chains.",
+      details: ["Legal templates", "Evidence chains", "Digital signatures", "Watermarking", "Audit trails"],
+      gradient: "from-emerald-500 to-teal-600"
     },
     {
-      category: 'Export Options',
-      icon: <Download className="h-6 w-6" />,
-      items: ['JSON', 'CSV', 'XML', 'PDF Reports', 'Excel', 'Custom formats']
+      icon: <Share2 className="w-8 h-8" />,
+      title: "Secure Sharing",
+      description: "Share analysis results securely with encrypted links and access controls.",
+      details: ["Encrypted sharing", "Access controls", "Expiration dates", "Password protection", "View tracking"],
+      gradient: "from-purple-500 to-indigo-600"
     },
     {
-      category: 'Security Features',
-      icon: <Lock className="h-6 w-6" />,
-      items: ['End-to-end encryption', 'Zero-knowledge processing', 'Secure APIs', 'Audit trails']
-    },
-    {
-      category: 'Platform Support',
-      icon: <Monitor className="h-6 w-6" />,
-      items: ['Web browsers', 'Mobile responsive', 'Desktop apps', 'API integration']
-    },
-    {
-      category: 'Performance',
-      icon: <Zap className="h-6 w-6" />,
-      items: ['Real-time processing', 'Parallel execution', 'Optimized algorithms', 'Scalable architecture']
+      icon: <Globe className="w-8 h-8" />,
+      title: "Cloud Integration",
+      description: "Seamlessly integrate with popular cloud storage and collaboration platforms.",
+      details: ["Cloud storage", "Platform integration", "Sync capabilities", "Backup options", "Version control"],
+      gradient: "from-orange-500 to-red-600"
     }
   ];
 
-  const getTierColor = (tier: string) => {
-    switch (tier) {
-      case 'free': return 'blue';
-      case 'pro': return 'emerald';
-      case 'enterprise': return 'purple';
-      default: return 'blue';
+  const getActiveFeatures = () => {
+    switch (activeTab) {
+      case 'analysis': return coreFeatures;
+      case 'privacy': return coreFeatures;
+      case 'enterprise': return advancedFeatures;
+      case 'export': return exportFeatures;
+      default: return coreFeatures;
     }
   };
 
-  const getTierBadge = (tier: string) => {
-    const colors = {
-      free: 'bg-blue-100 text-blue-800 border-blue-200',
-      pro: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-      enterprise: 'bg-purple-100 text-purple-800 border-purple-200'
-    };
-    
-    return (
-      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${colors[tier as keyof typeof colors]}`}>
-        {tier.charAt(0).toUpperCase() + tier.slice(1)}
-      </span>
-    );
-  };
+  const comparisonData = [
+    { feature: "Client-side processing", free: true, pro: true, enterprise: true },
+    { feature: "Basic EXIF analysis", free: true, pro: true, enterprise: true },
+    { feature: "GPS location extraction", free: true, pro: true, enterprise: true },
+    { feature: "Privacy risk detection", free: false, pro: true, enterprise: true },
+    { feature: "Batch processing", free: false, pro: true, enterprise: true },
+    { feature: "Professional reports", free: false, pro: true, enterprise: true },
+    { feature: "API access", free: false, pro: false, enterprise: true },
+    { feature: "Team management", free: false, pro: false, enterprise: true },
+    { feature: "Custom integrations", free: false, pro: false, enterprise: true },
+  ];
 
   return (
-    <StandardLayout
-      title="Features & Capabilities"
-      description="Comprehensive image metadata analysis tools for every use case"
-      showHero={true}
-      heroContent={
-        <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-100 mb-6 leading-tight">
-            Powerful Features for
-            <span className="block bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-              Every Use Case
-            </span>
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
-            From basic metadata extraction to enterprise-grade analysis tools, 
-            ProofPix provides comprehensive image intelligence solutions.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <button 
-              onClick={() => navigate('/enterprise/demo')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-medium transition-colors flex items-center space-x-2"
+    <ConsistentLayout>
+      <div className="bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {/* Hero Section */}
+          <motion.div 
+            className="text-center mb-16"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
+            <motion.div 
+              variants={fadeInUp}
+              className="inline-flex items-center px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-8"
             >
-              <Play className="h-5 w-5" />
-              <span>Try Demo</span>
-            </button>
-            <button 
-              onClick={() => navigate('/pricing')}
-              className="bg-slate-700 hover:bg-slate-600 text-slate-100 px-8 py-3 rounded-xl font-medium transition-colors flex items-center space-x-2"
-            >
-              <TrendingUp className="h-5 w-5" />
-              <span>View Pricing</span>
-            </button>
-          </div>
-        </div>
-      }
-    >
-      {/* Tier Overview */}
-      <section className="mb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">Choose Your Tier</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Select a tier to explore features tailored to your needs
-          </p>
-        </div>
+              <Sparkles className="w-4 h-4 mr-2" />
+              Comprehensive Image Analysis Platform
+            </motion.div>
 
-        {/* Tier Selector */}
-        <div className="flex flex-col sm:flex-row justify-center mb-8 space-y-2 sm:space-y-0 sm:space-x-2">
-          {Object.entries(tiers).map(([key, tier]) => (
-            <button
-              key={key}
-              onClick={() => setSelectedTier(key as any)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center space-x-2 ${
-                selectedTier === key
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-              }`}
+            <motion.h1 
+              variants={fadeInUp}
+              className="text-5xl md:text-6xl font-bold mb-6"
             >
-              {tier.icon}
-              <span>{tier.name}</span>
-            </button>
-          ))}
-        </div>
+              <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                Powerful Features
+              </span>
+              <br />
+              <span className="text-white">Built for Professionals</span>
+            </motion.h1>
 
-        {/* Selected Tier Details */}
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              {tiers[selectedTier].icon}
-              <h3 className="text-2xl font-bold text-slate-100 ml-3">
-                {tiers[selectedTier].name} Tier
-              </h3>
+            <motion.p 
+              variants={fadeInUp}
+              className="text-xl text-slate-300 max-w-3xl mx-auto"
+            >
+              Discover the comprehensive suite of tools that make ProofPix the leading choice for image metadata analysis and privacy protection.
+            </motion.p>
+          </motion.div>
+
+          {/* Feature Tabs */}
+          <motion.div 
+            className="mb-16"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+          >
+            <div className="flex flex-wrap justify-center gap-2 mb-12">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    activeTab === tab.id
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                  }`}
+                >
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                </button>
+              ))}
             </div>
-            <p className="text-slate-400 text-lg">
-              {tiers[selectedTier].description}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tiers[selectedTier].features.map((feature, index) => (
-              <div key={index} className="flex items-center space-x-3 bg-slate-700/30 rounded-lg p-4">
-                <CheckCircle className="h-5 w-5 text-emerald-400 flex-shrink-0" />
-                <span className="text-slate-200">{feature}</span>
+            
+            {/* Feature Grid */}
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              key={activeTab}
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
+              {getActiveFeatures().map((feature, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                  className="group relative"
+                  onMouseEnter={() => setHoveredFeature(`${activeTab}-${index}`)}
+                  onMouseLeave={() => setHoveredFeature(null)}
+                >
+                  <div className="h-full bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 hover:border-slate-600/50 transition-all duration-300 hover:transform hover:-translate-y-2">
+                    <div className={`w-16 h-16 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <div className="text-white">
+                        {feature.icon}
+                      </div>
               </div>
+              
+                    <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
+                    <p className="text-slate-300 mb-6 leading-relaxed">{feature.description}</p>
+                    
+                    {/* Feature Details */}
+                    <div className={`transition-all duration-300 ${
+                      hoveredFeature === `${activeTab}-${index}` ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                    } overflow-hidden`}>
+                      <div className="border-t border-slate-600/50 pt-4">
+                        <ul className="space-y-2">
+                          {feature.details.map((detail, detailIndex) => (
+                            <li key={detailIndex} className="flex items-center text-sm text-slate-400">
+                      <CheckCircle className="w-4 h-4 text-emerald-400 mr-2 flex-shrink-0" />
+                              {detail}
+                  </li>
+                ))}
+              </ul>
+            </div>
+        </div>
+
+                    <div className="flex items-center justify-between mt-6">
+                      <span className="text-sm font-semibold text-emerald-400">
+                        {hoveredFeature === `${activeTab}-${index}` ? 'View Details' : 'Hover for Details'}
+              </span>
+                      <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+        </div>
+              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
+          </motion.div>
 
-          <div className="text-center mt-8">
-            <button 
-              onClick={() => navigate('/pricing')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-medium transition-colors flex items-center space-x-2 mx-auto"
-            >
-              <span>Get Started with {tiers[selectedTier].name}</span>
-              <ArrowRight className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Features */}
-      <section className="mb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">Core Features</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Comprehensive tools for image metadata analysis and management
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {coreFeatures.map((feature, index) => (
-            <div key={index} className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 hover:border-slate-600/50 transition-colors">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center text-blue-400">
-                  {feature.icon}
-                </div>
-                {getTierBadge(feature.tier)}
-              </div>
-              
-              <h3 className="text-xl font-semibold text-slate-100 mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-slate-400 mb-4">
-                {feature.description}
+          {/* Comparison Table */}
+          <motion.div 
+            className="mb-16"
+            initial="hidden"
+            animate="visible"
+                variants={fadeInUp}
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-6 text-white">
+                Choose Your Plan
+              </h2>
+              <p className="text-xl text-slate-300">
+                Compare features across all ProofPix plans
               </p>
-              
-              <ul className="space-y-2">
-                {feature.details.map((detail, detailIndex) => (
-                  <li key={detailIndex} className="flex items-start space-x-2 text-sm text-slate-300">
-                    <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Use Cases */}
-      <section className="mb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">Industry Use Cases</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Trusted by professionals across various industries
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {useCases.map((useCase, index) => (
-            <div key={index} className="bg-slate-800/30 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6 hover:bg-slate-800/50 transition-colors">
-              <div className="w-10 h-10 bg-emerald-600/20 rounded-lg flex items-center justify-center text-emerald-400 mb-4">
-                {useCase.icon}
-              </div>
-              
-              <h3 className="text-lg font-semibold text-slate-100 mb-2">
-                {useCase.title}
-              </h3>
-              <p className="text-slate-400 text-sm mb-4">
-                {useCase.description}
-              </p>
-              
-              <ul className="space-y-1">
-                {useCase.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-center space-x-2 text-sm text-slate-300">
-                    <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Technical Capabilities */}
-      <section className="mb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">Technical Capabilities</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Built on cutting-edge technology for reliable performance
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {technicalCapabilities.map((capability, index) => (
-            <div key={index} className="bg-slate-800/30 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-purple-600/20 rounded-lg flex items-center justify-center text-purple-400">
-                  {capability.icon}
-                </div>
-                <h3 className="text-lg font-semibold text-slate-100">
-                  {capability.category}
-                </h3>
-              </div>
-              
-              <div className="flex flex-wrap gap-2">
-                {capability.items.map((item, itemIndex) => (
-                  <span key={itemIndex} className="bg-slate-700/50 text-slate-300 px-3 py-1 rounded-full text-sm">
-                    {item}
-                  </span>
-                ))}
+            
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-700/50">
+                      <th className="text-left p-6 text-slate-300 font-semibold">Feature</th>
+                      <th className="text-center p-6 text-slate-300 font-semibold">Free</th>
+                      <th className="text-center p-6 text-blue-400 font-semibold">Pro</th>
+                      <th className="text-center p-6 text-emerald-400 font-semibold">Enterprise</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparisonData.map((row, index) => (
+                      <tr key={index} className="border-b border-slate-700/30 hover:bg-slate-700/20 transition-colors">
+                        <td className="p-6 text-white font-medium">{row.feature}</td>
+                        <td className="p-6 text-center">
+                          {row.free ? (
+                            <CheckCircle className="w-5 h-5 text-emerald-400 mx-auto" />
+                          ) : (
+                            <X className="w-5 h-5 text-slate-500 mx-auto" />
+                          )}
+                        </td>
+                        <td className="p-6 text-center">
+                          {row.pro ? (
+                            <CheckCircle className="w-5 h-5 text-emerald-400 mx-auto" />
+                          ) : (
+                            <X className="w-5 h-5 text-slate-500 mx-auto" />
+                          )}
+                        </td>
+                        <td className="p-6 text-center">
+                          {row.enterprise ? (
+                            <CheckCircle className="w-5 h-5 text-emerald-400 mx-auto" />
+                          ) : (
+                            <X className="w-5 h-5 text-slate-500 mx-auto" />
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+          </motion.div>
 
-      {/* Performance Stats */}
-      <section className="mb-16">
-        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-sm rounded-2xl border border-slate-600/50 p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-100 mb-4">Performance & Scale</h2>
-            <p className="text-slate-400 text-lg">
-              Built for speed, reliability, and scale
+          {/* Device Compatibility */}
+          <motion.div 
+            className="text-center"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+          >
+            <h2 className="text-4xl font-bold mb-6 text-white">
+              Works Everywhere
+            </h2>
+            <p className="text-xl text-slate-300 mb-12 max-w-3xl mx-auto">
+              ProofPix runs seamlessly across all your devices with consistent performance and features.
             </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600/20 rounded-2xl flex items-center justify-center text-blue-400 mx-auto mb-4">
-                <Zap className="h-8 w-8" />
-              </div>
-              <div className="text-3xl font-bold text-slate-100 mb-2">&lt; 1s</div>
-              <div className="text-slate-400">Processing Time</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { icon: <Monitor className="w-12 h-12" />, title: "Desktop", description: "Full-featured experience on Windows, macOS, and Linux" },
+                { icon: <Tablet className="w-12 h-12" />, title: "Tablet", description: "Optimized interface for iPad and Android tablets" },
+                { icon: <Smartphone className="w-12 h-12" />, title: "Mobile", description: "Complete functionality on iOS and Android phones" }
+              ].map((device, index) => (
+                <div key={index} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 hover:border-slate-600/50 transition-all duration-300">
+                  <div className="text-blue-400 mb-4 flex justify-center">
+                    {device.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">{device.title}</h3>
+                  <p className="text-slate-300">{device.description}</p>
+                </div>
+              ))}
             </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600/20 rounded-2xl flex items-center justify-center text-emerald-400 mx-auto mb-4">
-                <HardDrive className="h-8 w-8" />
-              </div>
-              <div className="text-3xl font-bold text-slate-100 mb-2">50MB</div>
-              <div className="text-slate-400">Max File Size</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-600/20 rounded-2xl flex items-center justify-center text-purple-400 mx-auto mb-4">
-                <Layers className="h-8 w-8" />
-              </div>
-              <div className="text-3xl font-bold text-slate-100 mb-2">1000+</div>
-              <div className="text-slate-400">Batch Capacity</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-orange-600/20 rounded-2xl flex items-center justify-center text-orange-400 mx-auto mb-4">
-                <Shield className="h-8 w-8" />
-              </div>
-              <div className="text-3xl font-bold text-slate-100 mb-2">100%</div>
-              <div className="text-slate-400">Privacy Protected</div>
-            </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="text-center">
-        <div className="bg-gradient-to-r from-blue-600/20 to-emerald-600/20 backdrop-blur-sm rounded-2xl border border-blue-500/30 p-12">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">
-            Ready to Get Started?
-          </h2>
-          <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of professionals who trust ProofPix for their image metadata analysis needs.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <button 
-              onClick={() => navigate('/')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-medium transition-colors flex items-center space-x-2"
-            >
-              <Upload className="h-5 w-5" />
-              <span>Start Free Analysis</span>
-            </button>
-            
-            <button 
-              onClick={() => navigate('/enterprise/demo')}
-              className="bg-slate-700 hover:bg-slate-600 text-slate-100 px-8 py-4 rounded-xl font-medium transition-colors flex items-center space-x-2"
-            >
-              <Play className="h-5 w-5" />
-              <span>Watch Demo</span>
-            </button>
-            
-            <button 
-              onClick={() => navigate('/contact')}
-              className="text-slate-300 hover:text-slate-100 px-8 py-4 rounded-xl font-medium transition-colors flex items-center space-x-2"
-            >
-              <span>Contact Sales</span>
-              <ArrowRight className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      </section>
-    </StandardLayout>
+    </div>
+    </ConsistentLayout>
   );
 };
 

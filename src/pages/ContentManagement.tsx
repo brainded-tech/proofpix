@@ -17,7 +17,7 @@ import {
 import { EnterpriseLayout } from '../components/ui/EnterpriseLayout';
 import ContentQualityDashboard from '../components/content/ContentQualityDashboard';
 import { contentQualityService } from '../services/contentQualityService';
-import { useAuth } from '../components/auth/AuthContext';
+import { useTestAuth } from '../components/auth/TestAuthProvider';
 
 // Simple subscription hook - replace with actual implementation
 const useSubscription = () => {
@@ -43,7 +43,7 @@ interface ContentItem {
 
 export const ContentManagement: React.FC = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useTestAuth();
   const { subscription, tier } = useSubscription();
   
   const [activeTab, setActiveTab] = useState<'dashboard' | 'content' | 'validation' | 'analytics'>('dashboard');

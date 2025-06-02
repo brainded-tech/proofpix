@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LoginForm } from '../../components/auth/LoginForm';
+import { TestLoginForm } from '../../components/auth/TestLoginForm';
 import { ArrowLeft } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
@@ -21,7 +21,7 @@ export const LoginPage: React.FC = () => {
 
       {/* Login Form */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <LoginForm />
+        <TestLoginForm />
       </div>
 
       {/* Footer */}

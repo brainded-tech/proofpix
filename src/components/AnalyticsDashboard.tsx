@@ -21,7 +21,7 @@ import {
   subscriptionRepository
 } from '../utils/repositories';
 import { errorHandler } from '../utils/errorHandler';
-import { Sponsorship } from './Sponsorships';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { AnalyticsData, UsageTrackingData, SubscriptionData } from '../utils/apiClient';
 
 interface EnhancedAnalyticsState {
@@ -391,7 +391,6 @@ export const AnalyticsDashboard: React.FC = () => {
                 </button>
             </div>
           </div>
-          <Sponsorship placement="content" />
         </div>
       </div>
     );
@@ -656,8 +655,6 @@ export const AnalyticsDashboard: React.FC = () => {
       </div>
         )}
       </div>
-      
-      <Sponsorship placement="bottom" />
     </div>
   );
 }; 

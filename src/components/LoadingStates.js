@@ -6,7 +6,7 @@ import './LoadingStates.css';
 // Main loading spinner with customizable size and message
 export const LoadingSpinner = memo(({ 
   size = 'medium', 
-  message = 'Loading...', 
+  message = 'Working on it...', 
   showMessage = true,
   color = 'primary' 
 }) => {
@@ -25,7 +25,7 @@ export const LoadingSpinner = memo(({
 // Progress bar with percentage and custom messages
 export const ProgressBar = memo(({ 
   progress = 0, 
-  message = 'Processing...', 
+  message = 'Analyzing your photo\'s hidden information...', 
   showPercentage = true,
   animated = true,
   color = 'primary'
@@ -117,7 +117,7 @@ export const FileProcessingIndicator = memo(({
   fileName, 
   progress = 0, 
   status = 'processing',
-  stage = 'Reading file...',
+  stage = 'Extracting hidden photo information...',
   onCancel 
 }) => {
   const getStatusIcon = () => {
@@ -246,7 +246,7 @@ export const PulsingDots = memo(({
 // Loading overlay for full-screen loading
 export const LoadingOverlay = memo(({ 
   isVisible = false, 
-  message = 'Loading...', 
+  message = 'Analyzing your photo privately...', 
   progress = null,
   onCancel = null,
   blur = true 
@@ -284,7 +284,7 @@ export const useLoadingState = (initialState = false) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState(null);
 
-  const startLoading = (loadingMessage = 'Loading...') => {
+  const startLoading = (loadingMessage = 'Getting everything ready...') => {
     setIsLoading(true);
     setProgress(0);
     setMessage(loadingMessage);

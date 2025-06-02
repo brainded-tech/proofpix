@@ -330,7 +330,7 @@ export const PoweredBy: React.FC<{ className?: string }> = ({ className = '' }) 
     <div className={`text-xs text-gray-500 dark:text-gray-400 ${className}`}>
       Powered by{' '}
       <a 
-        href="https://proofpix.com" 
+        href="https://proofpixapp.com" 
         target="_blank" 
         rel="noopener noreferrer"
         className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
@@ -378,9 +378,9 @@ export const useBrandedContact = () => {
   const { branding } = useWhiteLabel();
   
   return {
-    supportEmail: branding.supportEmail || 'support@proofpix.com',
+    supportEmail: branding.supportEmail || 'support@proofpixapp.com',
     supportPhone: branding.supportPhone,
-    supportUrl: branding.supportUrl || 'https://proofpix.com/support',
+    supportUrl: branding.supportUrl || 'https://proofpixapp.com/support',
     companyName: branding.companyName
   };
 };

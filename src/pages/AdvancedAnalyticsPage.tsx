@@ -21,7 +21,7 @@ import {
   EnterpriseSection
 } from '../components/ui/EnterpriseComponents';
 import AdvancedAnalyticsDashboard from '../components/analytics/AdvancedAnalyticsDashboard';
-import { useAuth } from '../components/auth/AuthContext';
+import { useTestAuth } from '../components/auth/TestAuthProvider';
 
 // Simple subscription hook - replace with actual implementation
 const useSubscription = () => {
@@ -34,7 +34,7 @@ const useSubscription = () => {
 
 export const AdvancedAnalyticsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useTestAuth();
   const { subscription, tier } = useSubscription();
   
   const [activeView, setActiveView] = useState<'dashboard' | 'overview'>('dashboard');

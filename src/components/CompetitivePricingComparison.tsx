@@ -276,7 +276,7 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
         )}
         
         {/* Comparison Table */}
-        <div className="overflow-x-auto bg-white rounded-lg border border-gray-200">
+        <div className="overflow-x-auto bg-slate-700 rounded-lg border border-slate-600">
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr className="bg-gray-50">
@@ -296,7 +296,7 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
                 ))}
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-slate-700 divide-y divide-slate-600">
               {/* Pricing Row */}
               <tr>
                 <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
@@ -443,7 +443,7 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
   };
 
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-slate-700 rounded-xl border border-slate-600 p-6 ${className}`}>
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">How We Compare to the Competition</h2>
         <p className="text-gray-600">

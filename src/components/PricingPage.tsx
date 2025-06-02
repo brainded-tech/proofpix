@@ -27,12 +27,12 @@ const PricingPage: React.FC = () => {
       description: 'Perfect for trying ProofPix and occasional photo analysis',
       price: { monthly: 0, annual: 0 },
       features: [
-        'Analyze unlimited photos',
-        'See all hidden photo information',
-        'View GPS locations on maps',
-        'Download basic reports',
-        'Complete privacy protection',
-        'Community support'
+        'Discover what any photo reveals—location, camera, timestamps',
+        'Analyze unlimited photos with complete privacy',
+        'See exact GPS locations on interactive maps',
+        'Download professional analysis reports',
+        'Your photos never leave your device—guaranteed',
+        'Get help from our community of users'
       ],
       limitations: [
         'One photo at a time',
@@ -48,14 +48,14 @@ const PricingPage: React.FC = () => {
       description: 'For professionals who need powerful tools and time-saving features',
       price: { monthly: 9, annual: 75 },
       features: [
-        'Everything in Free',
-        'Analyze up to 100 photos at once',
-        'Professional PDF reports',
-        'Export data as spreadsheets',
-        'Remove hidden information from photos',
-        'Priority email support',
-        'Custom report templates',
-        'Advanced GPS mapping'
+        'Everything in Free, plus:',
+        'Save hours—analyze up to 100 photos at once',
+        'Generate court-ready PDF reports instantly',
+        'Export data to Excel and other formats you need',
+        'Protect privacy—remove hidden information from photos',
+        'Get priority support when you need help',
+        'Create custom report templates with your branding',
+        'Advanced GPS mapping with detailed location data'
       ],
       limitations: [],
       cta: 'Start Free Trial',
@@ -67,16 +67,16 @@ const PricingPage: React.FC = () => {
       description: 'For organizations that need custom solutions and dedicated support',
       price: { monthly: 'Custom', annual: 'Custom' },
       features: [
-        'Everything in Professional',
-        'Analyze unlimited photos simultaneously',
-        'Custom branding with your logo',
-        'Team management and user roles',
-        'Advanced security controls',
-        'Dedicated account manager',
-        'Custom integrations and API access',
-        'Service level agreements',
-        'On-premise deployment options',
-        'Court-ready forensic reports'
+        'Everything in Professional, plus:',
+        'Scale unlimited—analyze thousands of photos simultaneously',
+        'White-label with your company logo and branding',
+        'Manage teams with role-based access controls',
+        'Enterprise-grade security and compliance features',
+        'Dedicated account manager for your success',
+        'Custom integrations with your existing systems',
+        'Service level agreements with guaranteed uptime',
+        'On-premise deployment for maximum security',
+        'Generate forensic reports that hold up in court'
       ],
       limitations: [],
       cta: 'Get Custom Quote',
@@ -88,33 +88,33 @@ const PricingPage: React.FC = () => {
   const enterpriseFeatures = [
     {
       icon: Shield,
-      title: 'Privacy & Security',
-      description: 'Local processing ensures your photos never leave your device'
+      title: 'Complete Privacy Protection',
+      description: 'Your photos are processed locally in your browser—we never see them'
     },
     {
       icon: Building2,
-      title: 'Custom Branding',
-      description: 'White-label the interface with your organization\'s branding'
+      title: 'Your Brand, Your Platform',
+      description: 'White-label the entire interface with your organization\'s branding'
     },
     {
       icon: Users,
-      title: 'Team Features',
-      description: 'User management, shared templates, and team collaboration'
+      title: 'Team Collaboration Made Easy',
+      description: 'Manage users, share templates, and collaborate on photo analysis projects'
     },
     {
       icon: Zap,
-      title: 'Batch Processing',
-      description: 'Analyze hundreds of photos simultaneously with advanced tools'
+      title: 'Process Thousands at Once',
+      description: 'Analyze hundreds of photos simultaneously with enterprise-grade tools'
     },
     {
       icon: Lock,
-      title: 'Forensic Grade',
-      description: 'Court-ready reports and chain of custody documentation'
+      title: 'Court-Ready Documentation',
+      description: 'Generate forensic reports and maintain chain of custody for legal cases'
     },
     {
       icon: Globe,
-      title: 'Global Support',
-      description: 'Dedicated support team with expertise in photo analysis'
+      title: 'Expert Support When You Need It',
+      description: 'Dedicated support team with deep expertise in photo analysis and forensics'
     }
   ];
 
@@ -332,7 +332,7 @@ const PricingPage: React.FC = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => window.location.href = 'mailto:sales@proofpix.com'}
+              onClick={() => window.location.href = 'mailto:sales@proofpixapp.com'}
               className="bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-lg font-semibold transition-colors inline-flex items-center justify-center space-x-2"
             >
               <Mail className="w-5 h-5" />

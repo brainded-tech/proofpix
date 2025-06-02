@@ -1,0 +1,404 @@
+/* ===== COMPREHENSIVE CONTAINER BACKGROUND FIXES ===== */
+
+/* Fix ALL white backgrounds in the application */
+.bg-white,
+.dark .bg-white,
+*[class*="bg-white"] {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  backdrop-filter: blur(4px);
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix light colored backgrounds that clash */
+.bg-blue-50,
+.bg-purple-50,
+.bg-green-50,
+.bg-gray-50,
+.bg-slate-50,
+.bg-red-50,
+.bg-yellow-50,
+.bg-orange-50,
+.bg-pink-50,
+.bg-indigo-50,
+.bg-teal-50,
+.bg-cyan-50,
+.dark .bg-blue-50,
+.dark .bg-purple-50,
+.dark .bg-green-50,
+.dark .bg-gray-50,
+.dark .bg-slate-50,
+.dark .bg-red-50,
+.dark .bg-yellow-50,
+.dark .bg-orange-50,
+.dark .bg-pink-50,
+.dark .bg-indigo-50,
+.dark .bg-teal-50,
+.dark .bg-cyan-50 {
+  background-color: rgb(30 41 59 / 0.2) !important; /* slate-800/20 */
+  border: 1px solid rgb(71 85 105 / 0.2) !important; /* slate-600/20 */
+}
+
+/* Fix gradient backgrounds that include light colors */
+.bg-gradient-to-r.from-blue-50,
+.bg-gradient-to-r.from-purple-50,
+.bg-gradient-to-r.from-green-50,
+.bg-gradient-to-r.from-gray-50,
+.bg-gradient-to-r.from-slate-50,
+.bg-gradient-to-br.from-slate-50,
+.bg-gradient-to-l.from-white,
+*[class*="from-blue-50"],
+*[class*="from-purple-50"],
+*[class*="from-green-50"],
+*[class*="from-gray-50"],
+*[class*="from-slate-50"],
+*[class*="to-blue-50"],
+*[class*="to-purple-50"],
+*[class*="to-green-50"],
+*[class*="to-gray-50"],
+*[class*="to-slate-50"] {
+  background: linear-gradient(135deg, rgb(30 41 59 / 0.3), rgb(30 41 59 / 0.1)) !important;
+  border: 1px solid rgb(71 85 105 / 0.3) !important;
+}
+
+/* Fix specific problematic sections */
+section.bg-white,
+section[class*="bg-white"] {
+  background-color: rgb(15 23 42) !important; /* slate-900 */
+}
+
+/* Fix the "Why 50,000+ professionals choose ProofPix" section specifically */
+.bg-gradient-to-r.from-blue-50.to-purple-50,
+*[class*="from-blue-50"][class*="to-purple-50"] {
+  background: linear-gradient(135deg, rgb(30 41 59 / 0.5), rgb(30 41 59 / 0.3)) !important;
+  border: 1px solid rgb(71 85 105 / 0.3) !important;
+}
+
+/* Fix text colors for fixed backgrounds */
+.bg-white .text-slate-900,
+.bg-white .text-gray-900,
+*[class*="bg-white"] .text-slate-900,
+*[class*="bg-white"] .text-gray-900 {
+  color: rgb(248 250 252) !important; /* slate-100 */
+}
+
+.bg-white .text-slate-600,
+.bg-white .text-slate-700,
+.bg-white .text-gray-600,
+.bg-white .text-gray-700,
+*[class*="bg-white"] .text-slate-600,
+*[class*="bg-white"] .text-slate-700,
+*[class*="bg-white"] .text-gray-600,
+*[class*="bg-white"] .text-gray-700 {
+  color: rgb(203 213 225) !important; /* slate-300 */
+}
+
+/* Fix specific component backgrounds */
+.exit-intent-popup .bg-white,
+.pricing-card .bg-white,
+.session-passes .bg-white,
+.professional-plans .bg-white,
+.discount-container .bg-white,
+.discount-popup .bg-white,
+.mode-switcher .bg-white,
+.healthcare-ai .bg-white,
+.pricing-page .bg-white,
+.ai-package-container,
+.healthcare-ai-container,
+.legal-ai-container,
+.insurance-ai-container {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  backdrop-filter: blur(4px);
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix modal and popup backgrounds */
+.modal .bg-white,
+.popup .bg-white,
+.dialog .bg-white {
+  background-color: rgb(30 41 59) !important; /* slate-800 */
+  border: 1px solid rgb(71 85 105 / 0.5) !important; /* slate-600/50 */
+}
+
+/* Fix card and container backgrounds */
+.container .bg-white,
+.card .bg-white,
+.panel .bg-white,
+.box .bg-white,
+.feature-card .bg-white,
+.plan-card .bg-white,
+.testimonial .bg-white,
+.review .bg-white,
+.quote .bg-white,
+.faq-item .bg-white,
+.accordion-item .bg-white {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  backdrop-filter: blur(4px);
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix form and input backgrounds */
+.form-container .bg-white,
+.input-group .bg-white,
+.form-section .bg-white {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix table backgrounds */
+.table-container .bg-white,
+.data-table .bg-white,
+.comparison-table,
+.feature-comparison,
+.cost-comparison {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix button styling on fixed backgrounds */
+.bg-white button,
+.bg-white .btn,
+*[class*="bg-white"] button,
+*[class*="bg-white"] .btn {
+  background-color: rgb(59 130 246) !important; /* blue-500 */
+  color: white !important;
+  border-radius: 0.75rem !important; /* rounded-xl */
+  border: none !important;
+}
+
+.bg-white button:hover,
+.bg-white .btn:hover,
+*[class*="bg-white"] button:hover,
+*[class*="bg-white"] .btn:hover {
+  background-color: rgb(37 99 235) !important; /* blue-600 */
+}
+
+/* Fix badge and tag styling */
+.badge,
+.tag,
+*[class*="badge"],
+*[class*="tag"] {
+  border-radius: 0.75rem !important; /* rounded-xl */
+  border: 1px solid rgb(71 85 105 / 0.3) !important;
+}
+
+/* Fix all rectangular borders to be rounded */
+button,
+.btn,
+input,
+textarea,
+select,
+.card,
+.panel,
+.container,
+.box,
+.modal,
+.popup,
+.dialog {
+  border-radius: 0.75rem !important; /* rounded-xl */
+}
+
+/* Fix specific clashing sections */
+.live-chat-container {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+.live-chat-container.bg-green-500,
+.live-chat-container[class*="bg-green"] {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+}
+
+/* Fix "How Traditional Processing works" section */
+*[class*="traditional-processing"],
+*[class*="how-traditional"] {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix all CTA sections with problematic backgrounds */
+.cta-section,
+*[class*="cta-section"],
+*[class*="ready-to-secure"],
+*[class*="schedule-demo"],
+*[class*="contact-sales"] {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix industry-specific sections */
+.healthcare-cta-section,
+.legal-cta-section,
+.insurance-cta-section {
+  background: linear-gradient(135deg, rgb(30 41 59 / 0.5), rgb(30 41 59 / 0.3)) !important;
+  border: 1px solid rgb(71 85 105 / 0.3) !important;
+  color: rgb(248 250 252) !important; /* slate-100 */
+}
+
+.healthcare-cta-section h2,
+.healthcare-cta-section h3,
+.legal-cta-section h2,
+.legal-cta-section h3,
+.insurance-cta-section h2,
+.insurance-cta-section h3 {
+  color: rgb(248 250 252) !important; /* slate-100 */
+}
+
+.healthcare-cta-section p,
+.legal-cta-section p,
+.insurance-cta-section p {
+  color: rgb(203 213 225) !important; /* slate-300 */
+}
+
+/* Fix icon containers */
+div[class*="bg-white"][class*="rounded-xl"][class*="p-3"],
+div[class*="bg-white"][class*="rounded-lg"][class*="p-4"] {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix highlight and info boxes */
+.feature-highlight,
+.benefit-box,
+.value-prop,
+.callout,
+.highlight-box,
+.info-box,
+.warning-box,
+.alert,
+.success-box,
+.achievement,
+.error-box,
+.danger {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+  border-radius: 0.75rem !important; /* rounded-xl */
+}
+
+/* Fix stats and metrics containers */
+.stats-container,
+.metrics-box,
+.kpi-card {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+  border-radius: 0.75rem !important; /* rounded-xl */
+}
+
+/* Fix hero and banner sections */
+.hero-container,
+.banner {
+  background: linear-gradient(135deg, rgb(15 23 42), rgb(30 41 59)) !important; /* slate-900 to slate-800 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix sidebar and navigation */
+.sidebar,
+.navigation {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix footer */
+.footer {
+  background-color: rgb(15 23 42) !important; /* slate-900 */
+  border-top: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Ensure proper text contrast */
+.container,
+.section,
+.card,
+.panel,
+.box {
+  color: rgb(203 213 225) !important; /* slate-300 */
+}
+
+.container h1,
+.container h2,
+.container h3,
+.container h4,
+.container h5,
+.container h6,
+.section h1,
+.section h2,
+.section h3,
+.section h4,
+.section h5,
+.section h6 {
+  color: rgb(248 250 252) !important; /* slate-100 */
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .container,
+  .section,
+  .card,
+  .panel,
+  .box {
+    background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+    border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+    color: rgb(248 250 252) !important; /* slate-100 */
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .container,
+  .section,
+  .card,
+  .panel,
+  .box {
+    border-width: 2px !important;
+  }
+}
+
+/* Fix specific component overrides */
+.UnifiedPricingPage *[class*="bg-white"],
+.ExitIntentPopup *[class*="bg-white"],
+.HybridModeSelector *[class*="bg-white"],
+.ModernHomePage *[class*="bg-white"],
+.FAQ *[class*="bg-white"] {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  backdrop-filter: blur(4px);
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Fix any remaining problematic backgrounds */
+*[style*="background-color: white"],
+*[style*="background-color: #ffffff"],
+*[style*="background-color: #fff"],
+*[style*="background: white"],
+*[style*="background: #ffffff"],
+*[style*="background: #fff"] {
+  background-color: rgb(30 41 59 / 0.5) !important; /* slate-800/50 */
+  border: 1px solid rgb(71 85 105 / 0.3) !important; /* slate-600/30 */
+}
+
+/* Ensure all elements have rounded corners */
+* {
+  border-radius: 0.5rem; /* Default rounded-lg */
+}
+
+button,
+.btn,
+.card,
+.modal,
+.popup {
+  border-radius: 0.75rem !important; /* rounded-xl */
+}
+
+/* Fix container width issues */
+.max-w-4xl {
+  max-width: 56rem !important; /* Increase from default */
+}
+
+.max-w-5xl {
+  max-width: 64rem !important; /* Increase from default */
+}
+
+.max-w-6xl {
+  max-width: 72rem !important; /* Increase from default */
+}
+
+.max-w-7xl {
+  max-width: 80rem !important; /* Increase from default */
+} 

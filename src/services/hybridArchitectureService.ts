@@ -549,6 +549,33 @@ class HybridArchitectureService extends EventEmitter {
   }
 
   /**
+   * Get authentication token
+   */
+  private getAuthToken(): string | null {
+    // Check for stored auth tokens
+    const authToken = localStorage.getItem('auth_token') || 
+                     sessionStorage.getItem('auth_token') ||
+                     localStorage.getItem('authToken') ||
+                     sessionStorage.getItem('authToken');
+    
+    // Development/Demo mode fallback
+    if (!authToken && (process.env.NODE_ENV === 'development' || process.env.REACT_APP_DEMO_MODE === 'true')) {
+      console.warn('Using demo auth token for development/demo mode');
+      return 'demo_auth_token_for_collaboration_mode';
+    }
+    
+    return authToken;
+  }
+
+  /**
+   * Check if user is authenticated for collaboration mode
+   */
+  private isAuthenticated(): boolean {
+    const token = this.getAuthToken();
+    return !!token;
+  }
+
+  /**
    * Create ephemeral processing session for collaboration mode
    */
   async createEphemeralSession(options: {
@@ -558,7 +585,29 @@ class HybridArchitectureService extends EventEmitter {
     try {
       const token = this.getAuthToken();
       if (!token) {
-        throw new Error('Authentication required for collaboration mode');
+        throw new Error('Authentication required for collaboration mode. Please log in to use team features.');
+      }
+
+      // For demo/development mode, create a mock session
+      if (token === 'demo_auth_token_for_collaboration_mode') {
+        console.log('Creating demo ephemeral session');
+        const mockSession: EphemeralSession = {
+          sessionId: 'demo_session_' + Date.now(),
+          expiresAt: Date.now() + (24 * 60 * 60 * 1000), // 24 hours
+          maxFiles: options.maxFiles || 10,
+          config: {
+            maxFileSize: 50 * 1024 * 1024, // 50MB
+            allowedFileTypes: ['image/jpeg', 'image/png', 'image/tiff', 'image/webp', 'application/pdf'],
+            maxSessionDuration: 24 * 60 * 60 // 24 hours in seconds
+          }
+        };
+
+        this.ephemeralSession = mockSession;
+        localStorage.setItem('ephemeral_session', JSON.stringify(this.ephemeralSession));
+        this.scheduleSessionCleanup();
+        
+        console.log('Demo ephemeral session created:', mockSession);
+        return mockSession;
       }
 
       const response = await fetch(`${this.API_BASE_URL}/ephemeral/session`, {
@@ -574,7 +623,9 @@ class HybridArchitectureService extends EventEmitter {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to create ephemeral session: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('Server response:', response.status, errorText);
+        throw new Error(`Failed to create ephemeral session: ${response.status} ${response.statusText}`);
       }
 
       const result = await response.json();
@@ -593,7 +644,19 @@ class HybridArchitectureService extends EventEmitter {
       return this.ephemeralSession;
     } catch (error) {
       console.error('Failed to create ephemeral session:', error);
-      throw error;
+      
+      // Provide more specific error messages
+      if (error instanceof Error) {
+        if (error.message.includes('Authentication required')) {
+          throw new Error('Please log in to use collaboration mode. Team features require authentication.');
+        } else if (error.message.includes('Failed to fetch')) {
+          throw new Error('Unable to connect to server. Please check your internet connection and try again.');
+        } else {
+          throw error;
+        }
+      }
+      
+      throw new Error('Failed to create collaboration session. Please try again.');
     }
   }
 
@@ -826,13 +889,6 @@ class HybridArchitectureService extends EventEmitter {
         this.deleteEphemeralSession();
       }, timeUntilExpiry);
     }
-  }
-
-  /**
-   * Get authentication token
-   */
-  private getAuthToken(): string | null {
-    return localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
   }
 
   /**

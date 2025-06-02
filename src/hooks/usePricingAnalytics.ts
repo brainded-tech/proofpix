@@ -209,35 +209,47 @@ export const usePricingAnalytics = (options: UsePricingAnalyticsOptions = {}) =>
     action: 'view' | 'hover' | 'click',
     metadata?: Record<string, any>
   ) => {
-    const interaction: PricingInteraction = {
-      component: componentId || pageName,
-      action: `cta_${action}`,
-      metadata: {
+    try {
+      const interaction: PricingInteraction = {
+        component: componentId || pageName,
+        action: `cta_${action}`,
+        metadata: {
+          ctaId,
+          timestamp: Date.now(),
+          timeSincePageLoad: Math.floor((Date.now() - startTime) / 1000),
+          ...metadata
+        }
+      };
+      
+      // Use setTimeout to prevent nested state updates during render
+      setTimeout(() => {
+        try {
+          setInteractions(prev => [...prev, interaction]);
+          setLastInteraction(Date.now());
+        } catch (error) {
+          console.warn('Failed to update interaction state:', error);
+        }
+      }, 0);
+      
+      // Use trackEventWithDetails
+      pricingAnalytics.trackEventWithDetails(
+        `cta_${action}`,
+        action === 'click' ? 'conversion' : 'engagement',
         ctaId,
-        timestamp: Date.now(),
-        timeSincePageLoad: Math.floor((Date.now() - startTime) / 1000),
-        ...metadata
+        undefined,
+        interaction.metadata
+      );
+      
+      // Also track as A/B test event for urgency banner test
+      if (urgencyTest.isInTest && metadata?.bannerId) {
+        urgencyTest.trackEvent(`banner_${action}`, undefined, metadata);
       }
-    };
-    
-    setInteractions(prev => [...prev, interaction]);
-    setLastInteraction(Date.now());
-    
-    // Use trackEventWithDetails
-    pricingAnalytics.trackEventWithDetails(
-      `cta_${action}`,
-      action === 'click' ? 'conversion' : 'engagement',
-      ctaId,
-      undefined,
-      interaction.metadata
-    );
-    
-    // Also track as A/B test event for urgency banner test
-    if (urgencyTest.isInTest && metadata?.bannerId) {
-      urgencyTest.trackEvent(`banner_${action}`, undefined, metadata);
+      
+      return interaction;
+    } catch (error) {
+      console.warn('Failed to track CTA interaction:', error);
+      return null;
     }
-    
-    return interaction;
   }, [componentId, pageName, startTime, urgencyTest]);
 
   // Track UI component interactions

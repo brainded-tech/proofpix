@@ -70,9 +70,9 @@ export const EnterpriseLayout: React.FC<EnterpriseLayoutProps> = ({
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
                   <Camera className="w-6 h-6 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-xl font-bold text-slate-100">ProofPix</h1>
-                  <p className="text-xs text-slate-400 -mt-0.5">Document Intelligence Platform</p>
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-lg font-bold text-slate-100 truncate">ProofPix</h1>
+                  <p className="text-xs text-slate-400 -mt-0.5 truncate hidden sm:block">Document Intelligence Platform</p>
                 </div>
               </div>
             </div>

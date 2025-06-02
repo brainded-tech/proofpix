@@ -721,7 +721,7 @@ const FilesScreen: React.FC = () => {
             <View style={styles.emptyState}>
               <Icon name="folder-open" size={64} color={colors.textSecondary} />
               <Text style={styles.emptyStateText}>
-                {searchQuery ? 'No files match your search' : 'No files yet.\nStart by uploading your first file!'}
+                {searchQuery ? 'No files match your search' : 'Ready to discover what your photos reveal?\n\nTap the + button to analyze your first photo and uncover its hidden story!'}
               </Text>
             </View>
           ) : null

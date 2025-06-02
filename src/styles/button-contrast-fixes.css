@@ -1,0 +1,383 @@
+/* ===== BUTTON & BADGE CONTRAST FIXES ===== */
+
+/* Fix white background buttons with white text */
+button[class*="bg-white"],
+.btn[class*="bg-white"],
+.button[class*="bg-white"] {
+  background-color: #3b82f6 !important; /* Blue background */
+  color: white !important;
+  border: 1px solid #2563eb !important;
+}
+
+button[class*="bg-white"]:hover,
+.btn[class*="bg-white"]:hover,
+.button[class*="bg-white"]:hover {
+  background-color: #2563eb !important;
+  color: white !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Fix light gray buttons with poor contrast */
+button[class*="bg-gray-100"],
+button[class*="bg-gray-200"],
+button[class*="bg-slate-100"],
+button[class*="bg-slate-200"],
+.btn[class*="bg-gray-100"],
+.btn[class*="bg-gray-200"],
+.btn[class*="bg-slate-100"],
+.btn[class*="bg-slate-200"] {
+  background-color: #1e293b !important; /* Dark slate background */
+  color: white !important;
+  border: 1px solid #334155 !important;
+}
+
+button[class*="bg-gray-100"]:hover,
+button[class*="bg-gray-200"]:hover,
+button[class*="bg-slate-100"]:hover,
+button[class*="bg-slate-200"]:hover,
+.btn[class*="bg-gray-100"]:hover,
+.btn[class*="bg-gray-200"]:hover,
+.btn[class*="bg-slate-100"]:hover,
+.btn[class*="bg-slate-200"]:hover {
+  background-color: #334155 !important;
+  color: white !important;
+  transform: translateY(-1px);
+}
+
+/* Fix badges with poor contrast */
+.badge[class*="bg-white"],
+span[class*="bg-white"],
+div[class*="bg-white"][class*="rounded-full"],
+div[class*="bg-white"][class*="px-"] {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border: 1px solid #2563eb !important;
+}
+
+/* Fix light colored badges */
+.badge[class*="bg-gray-100"],
+.badge[class*="bg-gray-200"],
+.badge[class*="bg-slate-100"],
+.badge[class*="bg-slate-200"],
+span[class*="bg-gray-100"],
+span[class*="bg-gray-200"],
+span[class*="bg-slate-100"],
+span[class*="bg-slate-200"] {
+  background-color: #1e293b !important;
+  color: white !important;
+  border: 1px solid #334155 !important;
+}
+
+/* Fix specific badge variants */
+.badge-light,
+.badge-secondary,
+.tag-light {
+  background-color: #1e293b !important;
+  color: white !important;
+  border: 1px solid #334155 !important;
+}
+
+/* Fix trust badges and status indicators */
+div[class*="bg-green-100"],
+div[class*="bg-blue-100"],
+div[class*="bg-yellow-100"],
+div[class*="bg-purple-100"],
+div[class*="bg-red-100"] {
+  background-color: rgba(30, 41, 59, 0.9) !important;
+  color: white !important;
+  border: 1px solid #334155 !important;
+}
+
+/* Specific color fixes for trust badges */
+div[class*="bg-green-100"] {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+div[class*="bg-blue-100"] {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  color: #3b82f6 !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+div[class*="bg-yellow-100"] {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+  color: #f59e0b !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+div[class*="bg-purple-100"] {
+  background-color: rgba(139, 92, 246, 0.2) !important;
+  color: #8b5cf6 !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+}
+
+div[class*="bg-red-100"] {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Fix Getting Started page buttons */
+.getting-started button[class*="bg-white"],
+.demo-walkthrough button[class*="bg-white"],
+.onboarding button[class*="bg-white"] {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border: 1px solid #2563eb !important;
+  font-weight: 500 !important;
+}
+
+.getting-started button[class*="bg-white"]:hover,
+.demo-walkthrough button[class*="bg-white"]:hover,
+.onboarding button[class*="bg-white"]:hover {
+  background-color: #2563eb !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Fix CTA buttons with poor contrast */
+.cta-button[class*="bg-white"],
+.call-to-action[class*="bg-white"],
+button[class*="cta"][class*="bg-white"] {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.cta-button[class*="bg-white"]:hover,
+.call-to-action[class*="bg-white"]:hover,
+button[class*="cta"][class*="bg-white"]:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Fix outline buttons with poor contrast */
+button[class*="border-white"],
+.btn[class*="border-white"],
+button[class*="border-gray-300"],
+.btn[class*="border-gray-300"] {
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+  background-color: transparent !important;
+}
+
+button[class*="border-white"]:hover,
+.btn[class*="border-white"]:hover,
+button[class*="border-gray-300"]:hover,
+.btn[class*="border-gray-300"]:hover {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Fix ghost buttons */
+.btn-ghost[class*="text-white"],
+button[class*="ghost"][class*="text-white"] {
+  color: #3b82f6 !important;
+  background-color: transparent !important;
+  border: 1px solid #3b82f6 !important;
+}
+
+.btn-ghost[class*="text-white"]:hover,
+button[class*="ghost"][class*="text-white"]:hover {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Fix status badges */
+.status-badge,
+.feature-badge,
+.plan-badge {
+  background-color: #1e293b !important;
+  color: white !important;
+  border: 1px solid #334155 !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 9999px !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+
+/* Fix specific badge colors */
+.badge-success,
+.status-success {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.badge-warning,
+.status-warning {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+  color: #f59e0b !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+.badge-error,
+.status-error {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.badge-info,
+.status-info {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  color: #3b82f6 !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Fix toggle buttons */
+.toggle-button,
+.switch-button {
+  background-color: #1e293b !important;
+  color: white !important;
+  border: 1px solid #334155 !important;
+}
+
+.toggle-button.active,
+.switch-button.active,
+.toggle-button[aria-pressed="true"],
+.switch-button[aria-pressed="true"] {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border: 1px solid #2563eb !important;
+}
+
+/* Fix tab buttons */
+.tab-button,
+.nav-tab {
+  background-color: transparent !important;
+  color: #64748b !important;
+  border: 1px solid transparent !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+.tab-button.active,
+.nav-tab.active,
+.tab-button[aria-selected="true"],
+.nav-tab[aria-selected="true"] {
+  background-color: transparent !important;
+  color: #3b82f6 !important;
+  border-bottom: 2px solid #3b82f6 !important;
+}
+
+.tab-button:hover,
+.nav-tab:hover {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: #3b82f6 !important;
+}
+
+/* Fix dropdown buttons */
+.dropdown-button,
+.select-button {
+  background-color: white !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.dropdown-button:hover,
+.select-button:hover {
+  background-color: #f9fafb !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Fix pagination buttons */
+.pagination-button,
+.page-button {
+  background-color: transparent !important;
+  color: #64748b !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.pagination-button.active,
+.page-button.active,
+.pagination-button[aria-current="page"],
+.page-button[aria-current="page"] {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border: 1px solid #3b82f6 !important;
+}
+
+.pagination-button:hover,
+.page-button:hover {
+  background-color: #f1f5f9 !important;
+  color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Fix floating action buttons */
+.fab,
+.floating-button {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+.fab:hover,
+.floating-button:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Ensure proper text contrast on all buttons */
+button,
+.btn,
+.button {
+  min-height: 44px; /* Touch target size */
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Focus states for accessibility */
+button:focus,
+.btn:focus,
+.button:focus {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+/* Disabled state fixes */
+button:disabled,
+.btn:disabled,
+.button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Mobile responsive fixes */
+@media (max-width: 768px) {
+  button,
+  .btn,
+  .button {
+    min-height: 48px; /* Larger touch targets on mobile */
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .badge,
+  .tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  button,
+  .btn,
+  .button {
+    border-width: 2px !important;
+  }
+  
+  .badge,
+  .tag {
+    border-width: 2px !important;
+  }
+} 

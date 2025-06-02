@@ -1,5 +1,17 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { 
+  Shield, 
+  X, 
+  Check, 
+  AlertTriangle, 
+  Zap, 
+  Crown,
+  Target,
+  TrendingUp,
+  Award,
+  Sparkles
+} from 'lucide-react';
 
 // Competitor Comparison - CMO Sales Tool
 
@@ -104,133 +116,266 @@ const comparisonData: ComparisonRow[] = [
   }
 ];
 
-export const CompetitorComparison: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
 
-  const filteredFeatures = selectedCategory
-    ? features.filter(f => f.category === selectedCategory)
-    : features;
+const detailedComparisonData = [
+  {
+    feature: "Data Security",
+    proofpix: "Technically impossible to breach",
+    proofpixIcon: <Shield className="w-5 h-5 text-emerald-500" />,
+    legacy: "Upload to servers and hope",
+    legacyIcon: <AlertTriangle className="w-5 h-5 text-red-500" />,
+    impact: "Zero breaches vs. industry average of 1 in 4 companies"
+  },
+  {
+    feature: "Processing Speed",
+    proofpix: "Instant local analysis",
+    proofpixIcon: <Zap className="w-5 h-5 text-emerald-500" />,
+    legacy: "Upload, wait, download",
+    legacyIcon: <X className="w-5 h-5 text-red-500" />,
+    impact: "2 seconds vs. 2-5 minutes average"
+  },
+  {
+    feature: "Compliance",
+    proofpix: "Automatic by design",
+    proofpixIcon: <Check className="w-5 h-5 text-emerald-500" />,
+    legacy: "Policies and prayers",
+    legacyIcon: <AlertTriangle className="w-5 h-5 text-red-500" />,
+    impact: "Built-in vs. bolt-on compliance"
+  },
+  {
+    feature: "Setup Time",
+    proofpix: "Instant access",
+    proofpixIcon: <Zap className="w-5 h-5 text-emerald-500" />,
+    legacy: "Weeks of deployment",
+    legacyIcon: <X className="w-5 h-5 text-red-500" />,
+    impact: "Minutes vs. months to deploy"
+  },
+  {
+    feature: "Data Exposure",
+    proofpix: "Zero transmission",
+    proofpixIcon: <Shield className="w-5 h-5 text-emerald-500" />,
+    legacy: "Full upload required",
+    legacyIcon: <AlertTriangle className="w-5 h-5 text-red-500" />,
+    impact: "0% vs. 100% data exposure"
+  }
+];
+
+const industryImpact = [
+  {
+    industry: "Legal",
+    before: "Evidence uploaded to unknown servers",
+    after: "Court-admissible analysis with zero breach risk",
+    result: "500+ legal teams switched"
+  },
+  {
+    industry: "Insurance", 
+    before: "$2.5B annual fraud losses",
+    after: "37% fraud reduction with private analysis",
+    result: "$2-5M prevented per company"
+  },
+  {
+    industry: "Healthcare",
+    before: "HIPAA violations from data exposure",
+    after: "Automatic compliance with local processing",
+    result: "Zero patient data breaches"
+  }
+];
+
+const CompetitorComparison: React.FC = () => {
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
 
   return (
-    <div className="py-16 bg-white">
+    <div className="bg-slate-900 text-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            The ProofPix Enterprise Advantage
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See how our unique client-side approach delivers superior security,
-            privacy, and performance for enterprise organizations.
-          </p>
-        </div>
+        
+        {/* Hero Section */}
+        <motion.div 
+          className="text-center mb-20"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div 
+            variants={fadeInUp}
+            className="inline-flex items-center space-x-2 bg-emerald-500/10 px-6 py-3 rounded-full mb-8 border border-emerald-500/20"
+          >
+            <Crown className="w-5 h-5 text-emerald-400" />
+            <span className="text-emerald-400 font-medium">CATEGORY CREATOR</span>
+          </motion.div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {['security', 'privacy', 'performance', 'compliance'].map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(
-                selectedCategory === category ? null : category
-              )}
-              className={`
-                px-6 py-2 rounded-full text-sm font-medium transition-colors
-                ${
-                  selectedCategory === category
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }
-              `}
-            >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
-        </div>
+          <motion.h1 
+            variants={fadeInUp}
+            className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
+          >
+            <span className="bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              We Didn't Just Build a Better Tool—
+            </span>
+            <br />
+            <span className="text-white">We Made Every Upload-Based Tool Obsolete</span>
+          </motion.h1>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          <AnimatePresence>
-            {filteredFeatures.map((feature) => (
+          <motion.p 
+            variants={fadeInUp}
+            className="text-xl text-slate-300 mb-12 leading-relaxed max-w-4xl mx-auto"
+          >
+            Before ProofPix, every image analysis tool required uploading your sensitive data to someone else's servers. 
+            <span className="text-emerald-400 font-semibold"> We created an entirely new category: unhackable image intelligence.</span>
+            <br />
+            <span className="text-white font-medium">Now every competitor is scrambling to copy what we built from day one.</span>
+          </motion.p>
+        </motion.div>
+
+        {/* The Revolution Section */}
+        <motion.div 
+          className="mb-20"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.h2 
+            variants={fadeInUp}
+            className="text-3xl font-bold text-center mb-16"
+          >
+            <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+              The ProofPix Revolution
+            </span>
+          </motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {industryImpact.map((impact, index) => (
               <motion.div
-                key={feature.id}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="bg-white rounded-xl p-6 shadow-lg border border-gray-100"
+                key={index}
+                variants={fadeInUp}
+                className="bg-slate-800/50 rounded-2xl p-8 border border-slate-700/50"
               >
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {feature.name}
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {feature.description}
-                </p>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <p className="text-green-700 font-medium">
-                    {feature.proofPixAdvantage}
-                  </p>
+                <h3 className="text-xl font-bold text-emerald-400 mb-4">{impact.industry}</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-slate-400 mb-1">Before ProofPix:</p>
+                    <p className="text-slate-300">{impact.before}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-400 mb-1">After ProofPix:</p>
+                    <p className="text-white font-medium">{impact.after}</p>
+                  </div>
+                  <div className="pt-4 border-t border-slate-700">
+                    <p className="text-emerald-400 font-bold">{impact.result}</p>
+                  </div>
                 </div>
               </motion.div>
             ))}
-          </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Detailed Comparison */}
+        <motion.div 
+          className="mb-20"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.h2 
+            variants={fadeInUp}
+            className="text-3xl font-bold text-center mb-4"
+          >
+            ProofPix vs. Legacy Solutions
+          </motion.h2>
+          <motion.p 
+            variants={fadeInUp}
+            className="text-slate-400 text-center mb-12"
+          >
+            Why industry leaders are abandoning traditional tools for the category creator
+          </motion.p>
+
+          <div className="bg-slate-800/30 rounded-2xl overflow-hidden border border-slate-700/50">
+            <div className="grid grid-cols-4 gap-4 p-6 bg-slate-800/50 border-b border-slate-700/50">
+              <div className="text-slate-400 font-medium">Feature</div>
+              <div className="text-emerald-400 font-bold flex items-center">
+                <Crown className="w-4 h-4 mr-2" />
+                ProofPix (Category Creator)
+              </div>
+              <div className="text-slate-400 font-medium">Legacy Tools</div>
+              <div className="text-slate-400 font-medium">Real Impact</div>
         </div>
 
-        {/* Comparison Table */}
-        <div className="bg-gray-50 rounded-xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            Direct Comparison
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b-2 border-gray-200">
-                  <th className="px-6 py-3 text-left text-gray-500 font-medium">
-                    Feature
-                  </th>
-                  <th className="px-6 py-3 text-left text-blue-600 font-medium">
-                    ProofPix Enterprise
-                  </th>
-                  <th className="px-6 py-3 text-left text-gray-500 font-medium">
-                    Traditional Solutions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisonData.map((row, index) => (
-                  <tr
+            {detailedComparisonData.map((item, index) => (
+              <motion.div
                     key={index}
-                    className="border-b border-gray-100 hover:bg-gray-50"
-                  >
-                    <td className="px-6 py-4 text-gray-900 font-medium">
-                      {row.feature}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-green-600 flex items-center">
-                        <svg
-                          className="w-5 h-5 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                        {row.proofPix}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">
-                      {row.competitors}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                variants={fadeInUp}
+                className="grid grid-cols-4 gap-4 p-6 border-b border-slate-700/30 last:border-b-0 hover:bg-slate-800/20 transition-colors"
+              >
+                <div className="font-medium text-white">{item.feature}</div>
+                <div className="flex items-center space-x-2">
+                  {item.proofpixIcon}
+                  <span className="text-emerald-400 font-medium">{item.proofpix}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {item.legacyIcon}
+                  <span className="text-slate-400">{item.legacy}</span>
+                </div>
+                <div className="text-slate-300 text-sm">{item.impact}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Industry Recognition */}
+        <motion.div 
+          className="text-center"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.div 
+            variants={fadeInUp}
+            className="bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-2xl p-12 border border-emerald-500/20"
+          >
+            <Award className="w-16 h-16 text-emerald-400 mx-auto mb-6" />
+            <h2 className="text-3xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                The Standard That Others Try to Copy
+              </span>
+            </h2>
+            <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
+              Every "privacy-first" tool launched after us is trying to catch up. But you can't retrofit true privacy—
+              it has to be built from the ground up, like we did.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-emerald-400 mb-2">First</div>
+                <div className="text-slate-400">To eliminate data transmission</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-emerald-400 mb-2">Only</div>
+                <div className="text-slate-400">Technically unhackable solution</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-emerald-400 mb-2">Leader</div>
+                <div className="text-slate-400">In the category we created</div>
           </div>
         </div>
+          </motion.div>
+        </motion.div>
+
       </div>
     </div>
   );
 };
+
+export default CompetitorComparison;

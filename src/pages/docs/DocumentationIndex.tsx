@@ -38,6 +38,14 @@ export const DocumentationIndex: React.FC = () => {
       estimatedTime: "5 min"
     },
     {
+      title: "Comprehensive API Guide",
+      description: "Complete REST API reference with 50+ endpoints and SDK examples",
+      path: "/docs/comprehensive-api-guide",
+      icon: <Code className="h-5 w-5" />,
+      priority: "high",
+      estimatedTime: "15 min"
+    },
+    {
       title: "Content Quality Dashboard",
       description: "Monitor documentation quality, validate links, and track content analytics",
       path: "/docs/content-quality",
@@ -254,6 +262,46 @@ export const DocumentationIndex: React.FC = () => {
       priority: "low", 
       docs: [
         {
+          title: "AI Document Intelligence Guide",
+          description: "Comprehensive technical guide for AI Document Intelligence Dashboard",
+          path: "/docs/ai-document-intelligence-guide",
+          internal: true,
+          badge: "AI/ML",
+          time: "20 min read"
+        },
+        {
+          title: "Smart Document Assistant Guide",
+          description: "Technical documentation for Smart Document Assistant conversational AI",
+          path: "/docs/smart-document-assistant-guide",
+          internal: true,
+          badge: "AI/ML",
+          time: "15 min read"
+        },
+        {
+          title: "Comprehensive API Guide",
+          description: "Complete REST API reference with 50+ endpoints and SDK examples",
+          path: "/docs/comprehensive-api-guide",
+          internal: true,
+          badge: "API",
+          time: "35 min read"
+        },
+        {
+          title: "Security & Compliance Guide",
+          description: "Complete security architecture and compliance framework documentation",
+          path: "/docs/security-compliance-guide",
+          internal: true,
+          badge: "Security",
+          time: "30 min read"
+        },
+        {
+          title: "Enterprise Integrations Guide",
+          description: "Technical guide for integrating with Salesforce, Microsoft 365, and more",
+          path: "/docs/enterprise-integrations-guide",
+          internal: true,
+          badge: "Enterprise",
+          time: "25 min read"
+        },
+        {
           title: "System Architecture",
           description: "Complete system design and technical architecture",
           path: "/docs/architecture",
@@ -300,6 +348,12 @@ export const DocumentationIndex: React.FC = () => {
         return 'success';
       case 'Sales Tool':
         return 'warning';
+      case 'AI/ML':
+        return 'primary';
+      case 'API':
+        return 'success';
+      case 'Security':
+        return 'danger';
       default:
         return 'neutral';
     }
@@ -350,7 +404,7 @@ export const DocumentationIndex: React.FC = () => {
           <p className="text-blue-100 mb-6">
             Get started in just 15 minutes with our guided quick start path
           </p>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {quickStartPath.map((doc, index) => (
               <div 
                 key={index}

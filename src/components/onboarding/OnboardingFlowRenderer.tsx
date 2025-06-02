@@ -377,10 +377,10 @@ export const OnboardingFlowRenderer: React.FC<OnboardingFlowRendererProps> = ({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+        className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col"
       >
         {/* Progress Header */}
-        <div className="bg-slate-50 dark:bg-slate-900 p-6 border-b border-slate-200 dark:border-slate-700">
+        <div className="bg-slate-50 dark:bg-slate-900 p-6 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
               {userIntent.title}
@@ -401,8 +401,8 @@ export const OnboardingFlowRenderer: React.FC<OnboardingFlowRendererProps> = ({
           </div>
         </div>
 
-        {/* Step Content */}
-        <div className="p-8">
+        {/* Step Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep.id}
@@ -456,39 +456,41 @@ export const OnboardingFlowRenderer: React.FC<OnboardingFlowRendererProps> = ({
                   </div>
                 </div>
               )}
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between max-w-2xl mx-auto pt-6">
-                <button
-                  onClick={handlePrevious}
-                  className="flex items-center space-x-2 px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  <span>{isFirstStep ? 'Back to Selection' : 'Previous'}</span>
-                </button>
-
-                <div className="flex space-x-3">
-                  {currentStep.secondary && (
-                    <button
-                      onClick={onComplete}
-                      className="px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-                    >
-                      {currentStep.secondary}
-                    </button>
-                  )}
-                  
-                  <button
-                    onClick={currentStep.action ? () => handleAction(currentStep.action!) : handleNext}
-                    disabled={isTransitioning}
-                    className="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-                  >
-                    <span>{currentStep.cta || currentStep.nextButton}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
             </motion.div>
           </AnimatePresence>
+        </div>
+
+        {/* Fixed Footer with Action Buttons */}
+        <div className="bg-slate-50 dark:bg-slate-900 p-6 border-t border-slate-200 dark:border-slate-700 flex-shrink-0">
+          <div className="flex items-center justify-between max-w-2xl mx-auto">
+            <button
+              onClick={handlePrevious}
+              className="flex items-center space-x-2 px-4 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{isFirstStep ? 'Back to Selection' : 'Previous'}</span>
+            </button>
+
+            <div className="flex space-x-3">
+              {currentStep.secondary && (
+                <button
+                  onClick={onComplete}
+                  className="px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                >
+                  {currentStep.secondary}
+                </button>
+              )}
+              
+              <button
+                onClick={currentStep.action ? () => handleAction(currentStep.action!) : handleNext}
+                disabled={isTransitioning}
+                className="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              >
+                <span>{currentStep.cta || currentStep.nextButton}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </motion.div>
     </motion.div>

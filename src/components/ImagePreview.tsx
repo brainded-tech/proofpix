@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, FileDown, FileJson, Clock, Image, Settings, Sparkles } from 'lucide-react';
+import { Download, Clock, Image, Settings, Sparkles, Eye, Maximize2 } from 'lucide-react';
 import { ImagePreviewProps, OutputSize, ImageFormat } from '../types';
 
 export const ImagePreview = ({ 
@@ -13,148 +13,233 @@ export const ImagePreview = ({
   outputOptions,
   onOutputOptionsChange
 }: ImagePreviewProps): JSX.Element => {
-  const sizeOptions: { value: OutputSize; label: string }[] = [
-    { value: 'original', label: 'Original Size' },
-    { value: 'large', label: '2048px' },
-    { value: 'medium', label: '1024px' },
-    { value: 'small', label: '640px' }
+  const sizeOptions: { value: OutputSize; label: string; description: string }[] = [
+    { value: 'original', label: 'Original Size', description: 'Keep original dimensions' },
+    { value: 'large', label: '2048px', description: 'High quality' },
+    { value: 'medium', label: '1024px', description: 'Balanced size' },
+    { value: 'small', label: '640px', description: 'Compact size' }
   ];
 
-  const formatOptions: { value: ImageFormat; label: string }[] = [
-    { value: 'jpeg', label: 'JPEG' },
-    { value: 'png', label: 'PNG' }
+  const formatOptions: { value: ImageFormat; label: string; description: string }[] = [
+    { value: 'jpeg', label: 'JPEG', description: 'Smaller file size' },
+    { value: 'png', label: 'PNG', description: 'Lossless quality' }
   ];
+
+  const getImageDimensions = () => {
+    if (image.metadata?.imageWidth && image.metadata?.imageHeight) {
+      return `${image.metadata.imageWidth} × ${image.metadata.imageHeight}`;
+    }
+    return 'Unknown';
+  };
+
+  const getFileSize = () => {
+    if (image.file?.size) {
+      const sizeInMB = (image.file.size / (1024 * 1024)).toFixed(2);
+      return `${sizeInMB} MB`;
+    }
+    return 'Unknown';
+  };
 
   return (
-    <div className="preview-panel bg-gray-800 rounded-lg shadow-lg p-6">
-      <h2 className="text-xl font-bold mb-4 text-white">Image Preview</h2>
-      
-      <div className="preview-container mb-6">
-        <div className="relative bg-gray-700 rounded-lg overflow-hidden">
-          <img 
-            src={showTimestamp && image.timestampedUrl ? image.timestampedUrl : image.previewUrl} 
-            alt={image.file?.name || 'Processed image'}
-            className="w-full h-auto max-h-96 object-contain"
-          />
+    <div className="space-y-6">
+      {/* Image Preview */}
+      <div className="relative group">
+        <div className="relative bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-700/50">
+          {/* Image Info Overlay */}
+          <div className="absolute top-4 left-4 z-10">
+            <div className="flex items-center space-x-2">
+              <div className="bg-slate-900/80 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-slate-600/50">
+                <div className="flex items-center space-x-2 text-xs text-slate-300">
+                  <Eye size={12} />
+                  <span>{getImageDimensions()}</span>
+                  <span>•</span>
+                  <span>{getFileSize()}</span>
+                </div>
+              </div>
+              {showTimestamp && (
+                <div className="bg-blue-500/20 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-blue-500/30">
+                  <div className="flex items-center space-x-1 text-xs text-blue-300">
+                    <Clock size={12} />
+                    <span>Timestamped</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Full Screen Button */}
+          <button 
+            className="absolute top-4 right-4 z-10 p-2 bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-600/50 text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all duration-200 opacity-0 group-hover:opacity-100"
+            title="View full size"
+            onClick={() => {
+              const imageUrl = showTimestamp && image.timestampedUrl ? image.timestampedUrl : image.previewUrl;
+              window.open(imageUrl, '_blank');
+            }}
+          >
+            <Maximize2 size={16} />
+          </button>
+
+          {/* Main Image */}
+          <div className="p-6">
+            <img 
+              src={showTimestamp && image.timestampedUrl ? image.timestampedUrl : image.previewUrl} 
+              alt={image.file?.name || 'Processed image'}
+              className="w-full h-auto max-h-96 object-contain rounded-lg shadow-lg"
+            />
+          </div>
         </div>
       </div>
 
-      <div className="preview-actions space-y-4">
-        {/* Output Options */}
-        <div className="output-options bg-gray-700 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-300 mb-3 flex items-center">
-            <Settings size={16} className="mr-2" />
-            Output Options
-          </h3>
+      {/* Output Configuration */}
+      <div className="bg-slate-800/30 rounded-2xl border border-slate-700/30 p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <div className="p-2 bg-blue-500/20 rounded-lg">
+            <Settings size={20} className="text-blue-400" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-slate-100">Output Configuration</h3>
+            <p className="text-sm text-slate-400">Customize your image export settings</p>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Size Selection */}
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-slate-300">
+              <Image size={16} className="inline mr-2" />
+              Output Size
+            </label>
+            <div className="space-y-2">
+              {sizeOptions.map(option => (
+                <label key={option.value} className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="size"
+                    value={option.value}
+                    checked={outputOptions.size === option.value}
+                    onChange={(e) => onOutputOptionsChange({ size: e.target.value as OutputSize })}
+                    className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 focus:ring-blue-500 focus:ring-2"
+                  />
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
+                      {option.label}
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      {option.description}
+                    </div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
           
-          <div className="options-grid grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Size selection */}
-            <div className="option-item">
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                <Image size={14} className="inline mr-1" />
-                Size
-              </label>
-              <select 
-                value={outputOptions.size}
-                onChange={(e) => onOutputOptionsChange({ size: e.target.value as OutputSize })}
-                className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white"
-              >
-                {sizeOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            
-            {/* Format selection */}
-            <div className="option-item">
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                <Settings size={14} className="inline mr-1" />
-                Format
-              </label>
-              <select 
-                value={outputOptions.format}
-                onChange={(e) => onOutputOptionsChange({ format: e.target.value as ImageFormat })}
-                className="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white"
-              >
-                {formatOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Quality slider */}
-            <div className="option-item md:col-span-2">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Quality: {Math.round(outputOptions.quality * 100)}%
-              </label>
-              <input 
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={outputOptions.quality}
-                onChange={(e) => onOutputOptionsChange({ quality: parseFloat(e.target.value) })}
-                className="w-full h-2 bg-gray-600 rounded-lg cursor-pointer"
-                style={{
-                  background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${outputOptions.quality * 100}%, #4b5563 ${outputOptions.quality * 100}%, #4b5563 100%)`
-                }}
-              />
+          {/* Format Selection */}
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-slate-300">
+              <Settings size={16} className="inline mr-2" />
+              Output Format
+            </label>
+            <div className="space-y-2">
+              {formatOptions.map(option => (
+                <label key={option.value} className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="format"
+                    value={option.value}
+                    checked={outputOptions.format === option.value}
+                    onChange={(e) => onOutputOptionsChange({ format: e.target.value as ImageFormat })}
+                    className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 focus:ring-blue-500 focus:ring-2"
+                  />
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
+                      {option.label}
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      {option.description}
+                    </div>
+                  </div>
+                </label>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Action buttons */}
-        <div className="action-buttons flex flex-wrap gap-3">
+        {/* Quality Slider */}
+        <div className="mt-6 space-y-3">
+          <label className="block text-sm font-medium text-slate-300">
+            Quality: {Math.round(outputOptions.quality * 100)}%
+          </label>
+          <div className="relative">
+            <input 
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={outputOptions.quality}
+              onChange={(e) => onOutputOptionsChange({ quality: parseFloat(e.target.value) })}
+              className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
+            />
+            <div 
+              className="absolute top-0 left-0 h-2 bg-gradient-to-r from-blue-500 to-blue-400 rounded-lg pointer-events-none"
+              style={{ width: `${outputOptions.quality * 100}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-xs text-slate-400">
+            <span>Lower file size</span>
+            <span>Higher quality</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-3">
+        <button 
+          className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
+            showTimestamp 
+              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/25' 
+              : 'bg-slate-700/50 hover:bg-slate-700 text-slate-300 border border-slate-600/50'
+          }`}
+          onClick={onToggleTimestamp}
+        >
+          <Clock size={18} />
+          <span>{showTimestamp ? 'Hide Timestamp' : 'Add Timestamp'}</span>
+        </button>
+        
+        <button 
+          className="flex items-center space-x-2 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg shadow-emerald-500/25"
+          onClick={onDownload}
+        >
+          <Download size={18} />
+          <span>Download Image</span>
+        </button>
+        
+        {/* Enhanced Export Button - Only show if available */}
+        {onEnhancedExport && (
           <button 
-            className={`action-button flex items-center px-4 py-2 rounded-lg font-medium transition-colors ${
-              showTimestamp 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'bg-gray-600 text-gray-200 hover:bg-gray-500'
-            }`}
-            onClick={onToggleTimestamp}
+            className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-200 shadow-lg shadow-purple-500/25"
+            onClick={onEnhancedExport}
           >
-            <Clock size={16} className="mr-2" />
-            {showTimestamp ? 'Hide Timestamp' : 'Show Timestamp'}
+            <Sparkles size={18} />
+            <span>Enhanced Export</span>
           </button>
-          
-          <button 
-            className="action-button flex items-center px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
-            onClick={onDownload}
-          >
-            <Download size={16} className="mr-2" />
-            Download Image
-          </button>
-          
-          {/* Enhanced Export Button */}
-          {onEnhancedExport && (
-            <button 
-              className="action-button flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg"
-              onClick={onEnhancedExport}
-            >
-              <Sparkles size={16} className="mr-2" />
-              Enhanced Export
-            </button>
-          )}
-          
-          <button 
-            className="action-button flex items-center px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
-            onClick={onExportPDF}
-          >
-            <FileDown size={16} className="mr-2" />
-            Export PDF
-          </button>
-          
-          <button 
-            className="action-button flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors"
-            onClick={onExportJSON}
-          >
-            <FileJson size={16} className="mr-2" />
-            Export JSON
-          </button>
+        )}
+      </div>
+
+      {/* Export Info */}
+      <div className="bg-slate-800/20 rounded-xl border border-slate-700/30 p-4">
+        <div className="flex items-start space-x-3">
+          <div className="p-2 bg-slate-700/50 rounded-lg">
+            <Settings size={16} className="text-slate-400" />
+          </div>
+          <div className="flex-1">
+            <h4 className="text-sm font-medium text-slate-200 mb-1">Export Settings</h4>
+            <div className="text-xs text-slate-400 space-y-1">
+              <div>Format: {outputOptions.format.toUpperCase()}</div>
+              <div>Size: {outputOptions.size}</div>
+              <div>Quality: {Math.round(outputOptions.quality * 100)}%</div>
+              {showTimestamp && <div>Timestamp: Enabled</div>}
+            </div>
+          </div>
         </div>
       </div>
     </div>

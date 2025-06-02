@@ -137,6 +137,35 @@ h6 {
   font-weight: 500;
 }
 
+/* Responsive text sizing to prevent headers from being too large */
+@media (max-width: 768px) {
+  .text-7xl {
+    font-size: 3.75rem !important; /* 60px instead of 72px */
+  }
+  
+  .text-6xl {
+    font-size: 3rem !important; /* 48px instead of 60px */
+  }
+  
+  .text-5xl {
+    font-size: 2.25rem !important; /* 36px instead of 48px */
+  }
+}
+
+@media (max-width: 640px) {
+  .text-7xl {
+    font-size: 2.25rem !important; /* 36px on mobile */
+  }
+  
+  .text-6xl {
+    font-size: 2rem !important; /* 32px on mobile */
+  }
+  
+  .text-5xl {
+    font-size: 1.875rem !important; /* 30px on mobile */
+  }
+}
+
 p {
   font-size: var(--font-size-base);
   line-height: 1.6;

@@ -70,9 +70,21 @@ export const EnhancedNavigation: React.FC<NavigationProps> = ({
           icon: <Zap className="w-4 h-4" />
         },
         {
+          label: 'AI Capabilities',
+          href: '/ai-features',
+          icon: <Sparkles className="w-4 h-4" />,
+          badge: 'New'
+        },
+        {
           label: 'Security',
           href: '/security',
           icon: <Shield className="w-4 h-4" />
+        },
+        {
+          label: 'Trust Verification',
+          href: '/trust-verification',
+          icon: <Shield className="w-4 h-4" />,
+          badge: 'Verify'
         },
         {
           label: 'API Documentation',

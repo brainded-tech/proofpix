@@ -591,8 +591,8 @@ const PlanRecommenderQuiz: React.FC = () => {
       return (
         <div className="text-center py-8">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Analyzing your needs...</h3>
-          <p className="text-gray-600">We're finding the perfect plan for you</p>
+          <h3 className="text-xl font-semibold text-slate-100 mb-2">Analyzing your needs...</h3>
+          <p className="text-slate-300">We're finding the perfect plan for you</p>
         </div>
       );
     }
@@ -609,13 +609,13 @@ const PlanRecommenderQuiz: React.FC = () => {
       >
         <div className="mb-6">
           <div className="flex items-center justify-between mb-1">
-            <h3 className="text-xl font-semibold text-gray-900">{question.question}</h3>
-            <div className="text-sm text-gray-500">
+            <h3 className="text-xl font-semibold text-slate-100">{question.question}</h3>
+            <div className="text-sm text-slate-400">
               Step {currentStep + 1} of {questions.length}
             </div>
           </div>
           {question.description && (
-            <p className="text-gray-600">{question.description}</p>
+            <p className="text-slate-300">{question.description}</p>
           )}
         </div>
         
@@ -625,7 +625,7 @@ const PlanRecommenderQuiz: React.FC = () => {
           <button
             onClick={goToPreviousStep}
             className={`
-              flex items-center text-gray-500 hover:text-gray-700 font-medium
+              flex items-center text-slate-400 hover:text-slate-200 font-medium
               ${currentStep === 0 ? 'opacity-0 pointer-events-none' : ''}
             `}
           >
@@ -661,14 +661,14 @@ const PlanRecommenderQuiz: React.FC = () => {
     return (
       <div className="animate-fadeIn">
         <div className="mb-8 text-center">
-          <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Star className="text-green-600" size={32} />
+          <div className="bg-green-900/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/30">
+            <Star className="text-green-400" size={32} />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Recommended Plan</h2>
-          <p className="text-gray-600">Based on your needs, we recommend:</p>
+          <h2 className="text-2xl font-bold text-slate-100 mb-2">Your Recommended Plan</h2>
+          <p className="text-slate-300">Based on your needs, we recommend:</p>
         </div>
 
-        <div className="bg-white rounded-xl border-2 border-blue-500 p-6 mb-8 relative">
+        <div className="bg-slate-700 rounded-xl border-2 border-blue-500 p-6 mb-8 relative">
           <div className="absolute -top-3 left-8">
             <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
               {recommendation.confidence}% Match
@@ -677,29 +677,29 @@ const PlanRecommenderQuiz: React.FC = () => {
 
           <div className="flex items-start">
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              <h3 className="text-2xl font-bold text-slate-100 mb-2">
                 {recommendation.planName} Plan
               </h3>
               <div className="flex items-center mb-4">
-                <Zap className="text-yellow-500 mr-2" size={18} />
-                <span className="text-gray-600">Best plan for your needs</span>
+                <Zap className="text-yellow-400 mr-2" size={18} />
+                <span className="text-slate-300">Best plan for your needs</span>
               </div>
               
               <button
                 onClick={() => setShowReasoning(!showReasoning)}
-                className="text-blue-600 hover:text-blue-800 font-medium text-sm underline mb-4"
+                className="text-blue-400 hover:text-blue-300 font-medium text-sm underline mb-4"
               >
                 {showReasoning ? 'Hide why we recommend this' : 'See why we recommend this'}
               </button>
               
               {showReasoning && (
-                <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">Why we recommend this plan:</h4>
+                <div className="bg-blue-900/20 rounded-lg p-4 mb-4 border border-blue-500/30">
+                  <h4 className="font-semibold text-slate-100 mb-2">Why we recommend this plan:</h4>
               <ul className="space-y-2">
                 {recommendation.reasons.map((reason, index) => (
                       <li key={index} className="flex items-start">
-                        <CheckCircle className="text-green-500 mr-2 flex-shrink-0 mt-0.5" size={16} />
-                        <span className="text-gray-600">{reason}</span>
+                        <CheckCircle className="text-green-400 mr-2 flex-shrink-0 mt-0.5" size={16} />
+                        <span className="text-slate-300">{reason}</span>
                   </li>
                 ))}
               </ul>
@@ -721,17 +721,17 @@ const PlanRecommenderQuiz: React.FC = () => {
         {/* Alternative Plans */}
         {recommendation.alternativePlans.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Other plans to consider:</h3>
+            <h3 className="text-lg font-semibold text-slate-100 mb-4">Other plans to consider:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {recommendation.alternativePlans.map(plan => (
-                <div key={plan.planId} className="bg-white rounded-lg border border-gray-200 p-4">
-                  <h4 className="font-semibold text-gray-900 mb-1">{plan.planName}</h4>
-                  <p className="text-sm text-gray-600 mb-3">{plan.description}</p>
+                <div key={plan.planId} className="bg-slate-600 rounded-lg border border-slate-500 p-4">
+                  <h4 className="font-semibold text-slate-100 mb-1">{plan.planName}</h4>
+                  <p className="text-sm text-slate-300 mb-3">{plan.description}</p>
                   <button
                     onClick={() => {
                       window.location.href = `/checkout?plan=${plan.planId}`;
                     }}
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    className="text-blue-400 hover:text-blue-300 text-sm font-medium"
                   >
                     View plan details
                   </button>
@@ -744,7 +744,7 @@ const PlanRecommenderQuiz: React.FC = () => {
         <div className="text-center">
           <button
             onClick={handleRestart}
-            className="text-gray-500 hover:text-gray-700 text-sm"
+            className="text-slate-400 hover:text-slate-200 text-sm"
           >
             Restart quiz
           </button>
@@ -754,27 +754,27 @@ const PlanRecommenderQuiz: React.FC = () => {
   };
 
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 p-6 ${quizLayout === 'compact' || quizLayout.includes('compact') ? 'max-w-2xl mx-auto' : ''}`}>
+    <div className={`bg-slate-700 rounded-xl border border-slate-600 p-6 ${quizLayout === 'compact' || quizLayout.includes('compact') ? 'max-w-2xl mx-auto' : ''}`}>
       {isSubmitting ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Finding your perfect plan...</h3>
-          <p className="text-gray-600">We're analyzing your responses to recommend the best option</p>
+          <h3 className="text-xl font-semibold text-slate-100 mb-2">Finding your perfect plan...</h3>
+          <p className="text-slate-300">We're analyzing your responses to recommend the best option</p>
         </div>
       ) : recommendation ? (
         renderRecommendation()
       ) : (
         <>
       <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Find Your Perfect Plan</h2>
-            <p className="text-gray-600">Answer a few questions to get a personalized recommendation</p>
+            <h2 className="text-2xl font-bold text-slate-100 mb-2">Find Your Perfect Plan</h2>
+            <p className="text-slate-300">Answer a few questions to get a personalized recommendation</p>
       </div>
 
           {/* Progress bar */}
           <div className="mb-8">
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-2 bg-slate-600 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-blue-600 transition-all duration-300"
+                className="h-full bg-blue-500 transition-all duration-300"
                 style={{ width: `${(currentStep / questions.length) * 100}%` }}
               ></div>
             </div>

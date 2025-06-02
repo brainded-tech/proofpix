@@ -495,7 +495,7 @@ export const DocumentIntelligenceIntegration: React.FC = () => {
                         </p>
                       </div>
                     )}
-                    {doc.results?.privacy && (
+                    {doc.results?.privacy?.riskLevel && (
                       <div className="mt-2 flex items-center">
                         <span className="text-xs text-gray-500 dark:text-gray-400 mr-2">Privacy Risk:</span>
                         <span className={`text-xs font-medium ${getRiskColor(doc.results.privacy.riskLevel)}`}>
@@ -571,17 +571,17 @@ export const DocumentIntelligenceIntegration: React.FC = () => {
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600 dark:text-gray-400">Risk Level:</span>
-                          <span className={`text-sm font-medium ${getRiskColor(selectedDocument.results.privacy.riskLevel)}`}>
-                            {selectedDocument.results.privacy.riskLevel.toUpperCase()}
+                          <span className={`text-sm font-medium ${getRiskColor(selectedDocument.results.privacy?.riskLevel || 'low')}`}>
+                            {(selectedDocument.results.privacy?.riskLevel || 'low').toUpperCase()}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-600 dark:text-gray-400">PII Detected:</span>
                           <span className="text-sm text-gray-900 dark:text-gray-100">
-                            {selectedDocument.results.privacy.piiDetected ? 'Yes' : 'No'}
+                            {selectedDocument.results.privacy?.piiDetected ? 'Yes' : 'No'}
                           </span>
                         </div>
-                        {selectedDocument.results.privacy.piiTypes.length > 0 && (
+                        {selectedDocument.results.privacy?.piiTypes && selectedDocument.results.privacy.piiTypes.length > 0 && (
                           <div>
                             <span className="text-sm text-gray-600 dark:text-gray-400 block mb-2">PII Types:</span>
                             <div className="flex flex-wrap gap-2">

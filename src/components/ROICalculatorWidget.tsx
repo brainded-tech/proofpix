@@ -154,11 +154,11 @@ export const ROICalculatorWidget: React.FC = () => {
 
   if (!isVisible) {
     return (
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-200">
+      <div className="bg-gradient-to-r from-green-900/20 to-blue-900/20 rounded-2xl p-8 border border-green-500/30">
         <div className="text-center">
-          <Calculator className="w-12 h-12 text-green-600 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-slate-900 mb-4">Calculate Your ROI</h3>
-          <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
+          <Calculator className="w-12 h-12 text-green-400 mx-auto mb-4" />
+          <h3 className="text-2xl font-bold text-slate-100 mb-4">Calculate Your ROI</h3>
+          <p className="text-slate-300 mb-6 max-w-2xl mx-auto">
             See how much time and money ProofPix can save your organization with our interactive ROI calculator.
           </p>
           <EnterpriseButton
@@ -174,21 +174,21 @@ export const ROICalculatorWidget: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg">
+    <div className="bg-slate-700 rounded-2xl p-8 border border-slate-600 shadow-lg">
       <div className="text-center mb-8">
-        <Calculator className="w-12 h-12 text-green-600 mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-slate-900 mb-2">ROI Calculator</h3>
-        <p className="text-slate-600">Calculate your potential savings with ProofPix</p>
+        <Calculator className="w-12 h-12 text-green-400 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-slate-100 mb-2">ROI Calculator</h3>
+        <p className="text-slate-300">Calculate your potential savings with ProofPix</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Input Section */}
         <div className="space-y-6">
-          <h4 className="text-lg font-semibold text-slate-900 mb-4">Your Current Situation</h4>
+          <h4 className="text-lg font-semibold text-slate-100 mb-4">Your Current Situation</h4>
           
           {/* Current Monthly Cost */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Current monthly metadata tool costs
             </label>
             <div className="relative">
@@ -197,7 +197,7 @@ export const ROICalculatorWidget: React.FC = () => {
                 type="number"
                 value={inputs.currentCost}
                 onChange={(e) => setInputs({...inputs, currentCost: Number(e.target.value)})}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-600 text-slate-100"
                 placeholder="0"
               />
             </div>
@@ -205,7 +205,7 @@ export const ROICalculatorWidget: React.FC = () => {
 
           {/* Team Size */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Team size
             </label>
             <div className="relative">
@@ -214,7 +214,7 @@ export const ROICalculatorWidget: React.FC = () => {
                 type="number"
                 value={inputs.teamSize}
                 onChange={(e) => setInputs({...inputs, teamSize: Number(e.target.value)})}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-600 text-slate-100"
                 placeholder="1"
                 min="1"
               />
@@ -223,14 +223,14 @@ export const ROICalculatorWidget: React.FC = () => {
 
           {/* Photos per Month */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Photos processed per month
             </label>
             <input
               type="number"
               value={inputs.photosPerMonth}
               onChange={(e) => setInputs({...inputs, photosPerMonth: Number(e.target.value)})}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-600 text-slate-100"
               placeholder="100"
               min="1"
             />
@@ -238,7 +238,7 @@ export const ROICalculatorWidget: React.FC = () => {
 
           {/* Time per Photo */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Average time per photo (minutes)
             </label>
             <div className="relative">
@@ -247,7 +247,7 @@ export const ROICalculatorWidget: React.FC = () => {
                 type="number"
                 value={inputs.timePerPhoto}
                 onChange={(e) => setInputs({...inputs, timePerPhoto: Number(e.target.value)})}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-600 text-slate-100"
                 placeholder="5"
                 min="1"
               />
@@ -256,7 +256,7 @@ export const ROICalculatorWidget: React.FC = () => {
 
           {/* Hourly Rate */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Average hourly rate
             </label>
             <div className="relative">
@@ -265,7 +265,7 @@ export const ROICalculatorWidget: React.FC = () => {
                 type="number"
                 value={inputs.hourlyRate}
                 onChange={(e) => setInputs({...inputs, hourlyRate: Number(e.target.value)})}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-600 text-slate-100"
                 placeholder="50"
                 min="1"
               />
@@ -274,13 +274,13 @@ export const ROICalculatorWidget: React.FC = () => {
 
           {/* Compliance Needs */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Compliance requirements
             </label>
             <select
               value={inputs.complianceNeeds}
               onChange={(e) => setInputs({...inputs, complianceNeeds: e.target.value as any})}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-600 text-slate-100"
             >
               <option value="none">No special requirements</option>
               <option value="basic">Basic business compliance</option>
@@ -291,13 +291,13 @@ export const ROICalculatorWidget: React.FC = () => {
 
           {/* Breach Risk */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               Data breach risk level
             </label>
             <select
               value={inputs.breachRisk}
               onChange={(e) => setInputs({...inputs, breachRisk: e.target.value as any})}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-slate-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-600 text-slate-100"
             >
               <option value="low">Low risk</option>
               <option value="medium">Medium risk (Industry average)</option>
@@ -308,91 +308,91 @@ export const ROICalculatorWidget: React.FC = () => {
 
         {/* Results Section */}
         <div className="space-y-6">
-          <h4 className="text-lg font-semibold text-slate-900 mb-4">Your Potential Savings</h4>
+          <h4 className="text-lg font-semibold text-slate-100 mb-4">Your Potential Savings</h4>
           
           {results && (
             <div className="space-y-4">
               {/* ROI Highlight */}
-              <div className="bg-green-50 rounded-xl p-6 border border-green-200">
+              <div className="bg-green-900/20 rounded-xl p-6 border border-green-500/30">
                 <div className="text-center">
-                  <TrendingUp className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <div className="text-3xl font-bold text-green-600 mb-1">
+                  <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                  <div className="text-3xl font-bold text-green-400 mb-1">
                     {formatPercentage(results.roi)}
                   </div>
-                  <div className="text-sm text-green-700">Annual ROI</div>
+                  <div className="text-sm text-green-300">Annual ROI</div>
                 </div>
               </div>
 
               {/* Savings Breakdown */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-blue-600">
+                <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
+                  <div className="text-2xl font-bold text-blue-400">
                     {formatCurrency(results.annualSavings)}
                   </div>
-                  <div className="text-sm text-blue-700">Total Annual Savings</div>
+                  <div className="text-sm text-blue-300">Total Annual Savings</div>
                 </div>
                 
-                <div className="bg-purple-50 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-purple-600">
+                <div className="bg-purple-900/20 rounded-lg p-4 border border-purple-500/30">
+                  <div className="text-2xl font-bold text-purple-400">
                     {results.paybackPeriod.toFixed(1)}
                   </div>
-                  <div className="text-sm text-purple-700">Months to Payback</div>
+                  <div className="text-sm text-purple-300">Months to Payback</div>
                 </div>
               </div>
 
               {/* Detailed Breakdown */}
               <div className="space-y-3">
-                <div className="flex justify-between items-center py-2 border-b border-slate-200">
-                  <span className="text-slate-600">Time savings (80% reduction)</span>
-                  <span className="font-semibold text-green-600">
+                <div className="flex justify-between items-center py-2 border-b border-slate-600">
+                  <span className="text-slate-300">Time savings (80% reduction)</span>
+                  <span className="font-semibold text-green-400">
                     {formatCurrency(results.timesSaved)}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-b border-slate-200">
-                  <span className="text-slate-600">Risk reduction (95% less breach risk)</span>
-                  <span className="font-semibold text-green-600">
+                <div className="flex justify-between items-center py-2 border-b border-slate-600">
+                  <span className="text-slate-300">Risk reduction (95% less breach risk)</span>
+                  <span className="font-semibold text-green-400">
                     {formatCurrency(results.riskReduction)}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-b border-slate-200">
-                  <span className="text-slate-600">ProofPix annual cost</span>
-                  <span className="font-semibold text-red-600">
+                <div className="flex justify-between items-center py-2 border-b border-slate-600">
+                  <span className="text-slate-300">ProofPix annual cost</span>
+                  <span className="font-semibold text-red-400">
                     -{formatCurrency(results.proofPixAnnualCost)}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center py-3 bg-green-50 px-4 rounded-lg">
-                  <span className="font-semibold text-slate-900">Net Annual Savings</span>
-                  <span className="font-bold text-green-600 text-lg">
+                <div className="flex justify-between items-center py-3 bg-green-900/20 px-4 rounded-lg border border-green-500/30">
+                  <span className="font-semibold text-slate-100">Net Annual Savings</span>
+                  <span className="font-bold text-green-400 text-lg">
                     {formatCurrency(results.annualSavings)}
                   </span>
                 </div>
               </div>
 
               {/* Recommended Plan */}
-              <div className="bg-slate-50 rounded-lg p-4">
-                <h5 className="font-semibold text-slate-900 mb-2">Recommended Plan</h5>
+              <div className="bg-slate-600 rounded-lg p-4 border border-slate-500">
+                <h5 className="font-semibold text-slate-100 mb-2">Recommended Plan</h5>
                 <div className="flex items-center space-x-2">
-                  <Shield className="w-4 h-4 text-blue-600" />
-                  <span className="font-medium text-blue-600 capitalize">
+                  <Shield className="w-4 h-4 text-blue-400" />
+                  <span className="font-medium text-blue-400 capitalize">
                     {results.recommendedPlan} Plan
                   </span>
                 </div>
-                <p className="text-sm text-slate-600 mt-1">
+                <p className="text-sm text-slate-300 mt-1">
                   Based on your team size and compliance requirements
                 </p>
               </div>
 
               {/* Risk Warning */}
               {inputs.breachRisk === 'high' && (
-                <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                <div className="bg-orange-900/20 rounded-lg p-4 border border-orange-500/30">
                   <div className="flex items-start space-x-2">
-                    <AlertTriangle className="w-5 h-5 text-orange-600 mt-0.5" />
+                    <AlertTriangle className="w-5 h-5 text-orange-400 mt-0.5" />
                     <div>
-                      <h6 className="font-semibold text-orange-900">High Risk Alert</h6>
-                      <p className="text-sm text-orange-700">
+                      <h6 className="font-semibold text-orange-300">High Risk Alert</h6>
+                      <p className="text-sm text-orange-200">
                         Your current setup has high data breach risk. ProofPix's client-side processing eliminates this risk entirely.
                       </p>
                     </div>
@@ -416,7 +416,7 @@ export const ROICalculatorWidget: React.FC = () => {
                 <EnterpriseButton
                   onClick={() => window.location.href = '/enterprise'}
                   variant="secondary"
-                  className="w-full border-slate-300 text-slate-700 hover:bg-slate-50"
+                  className="w-full border-slate-500 text-slate-300 hover:bg-slate-600"
                 >
                   Schedule Enterprise Demo
                 </EnterpriseButton>
@@ -430,7 +430,7 @@ export const ROICalculatorWidget: React.FC = () => {
       <div className="mt-8 text-center">
         <button
           onClick={() => setIsVisible(false)}
-          className="text-slate-600 hover:text-slate-900 text-sm"
+          className="text-slate-400 hover:text-slate-200 text-sm"
         >
           ← Back to calculator overview
         </button>

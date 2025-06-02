@@ -8,6 +8,8 @@ import './styles/enterprise.css';
 import './styles/enterprise-design-system.css';
 import './styles/enhanced-design-system.css';
 import './styles/dark-mode-overrides.css';
+import './styles/button-contrast-fixes.css';
+import './styles/container-background-fixes.css';
 import { ProofPix } from './ProofPix';
 import { AboutUs } from './components/AboutUs';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
@@ -16,8 +18,8 @@ import { Terms } from './components/Terms';
 import { Support } from './components/Support';
 import PricingPage from './components/PricingPage';
 import UnifiedPricingPage from './components/UnifiedPricingPage';
+import UnifiedPricingPageV2 from './components/UnifiedPricingPageV2';
 import DocumentIntelligencePricing from './components/DocumentIntelligencePricing';
-import SuccessPage from './components/SuccessPage';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { ImageComparisonPage } from './pages/ImageComparisonPage';
 import { BatchProcessingPage } from './pages/BatchProcessingPage';
@@ -45,7 +47,6 @@ import EnterpriseApiDocumentation from './pages/docs/EnterpriseApiDocumentation'
 import EnterpriseDeploymentGuide from './pages/docs/EnterpriseDeploymentGuide';
 import SecurityArchitectureOverview from './pages/docs/SecurityArchitectureOverview';
 import { ChainOfCustodyPage } from './pages/ChainOfCustodyPage';
-
 import ComplianceDocumentationTemplates from './pages/docs/ComplianceDocumentationTemplates';
 import EnterpriseSecurityFAQ from './pages/docs/EnterpriseSecurityFAQ';
 import ComplianceChecklist from './pages/docs/ComplianceChecklist';
@@ -64,7 +65,7 @@ import { CustomerSuccessStories } from './pages/docs/CustomerSuccessStories';
 import { ImplementationGuides } from './pages/docs/ImplementationGuides';
 import Security from './pages/Security';
 import { MainApp } from './pages/MainApp';
-import { AuthProvider, useAuth } from './components/auth/AuthContext';
+import { TestAuthProvider } from './components/auth/TestAuthProvider';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
@@ -78,6 +79,9 @@ import ContentManagement from './pages/ContentManagement';
 import { AdvancedAnalyticsPage } from './pages/AdvancedAnalyticsPage';
 import { AdvancedReportingPage } from './pages/AdvancedReportingPage';
 import { EnterpriseSSOPage } from './pages/EnterpriseSSOPage';
+import { ContactPage } from './pages/ContactPage';
+import SuccessPage from './components/SuccessPage';
+import { CheckoutPage } from './pages/CheckoutPage';
 
 // Priority 4: Enterprise SSO & Security Enhancement - New Imports
 import EnterpriseAuth from './components/auth/EnterpriseAuth';
@@ -107,6 +111,25 @@ import { APIMarketplace } from './components/marketplace/APIMarketplace';
 import { DeveloperPortal } from './components/marketplace/DeveloperPortal';
 import { WhiteLabelInterface } from './components/marketplace/WhiteLabelInterface';
 import { PluginManagementInterface } from './components/marketplace/PluginManagementInterface';
+
+// URGENT: Custom AI Training Dashboard and Visual Workflow Builder
+import { CustomAITrainingDashboard } from './components/ai/CustomAITrainingDashboard';
+import { VisualWorkflowBuilder } from './components/workflow/VisualWorkflowBuilder';
+import { EnterpriseFeatureShowcase } from './components/enterprise/EnterpriseFeatureShowcase';
+
+// Enterprise AI Packages and ROI Components
+import ROIMeasurementDashboard from './components/enterprise/ROIMeasurementDashboard';
+import EnterpriseComplianceTemplates from './components/enterprise/ComplianceDocumentationTemplates';
+
+// Hybrid Architecture Demo for Sales
+import { HybridArchitectureDemo } from './components/demo/HybridArchitectureDemo';
+
+// BILLION-DOLLAR HYBRID ARCHITECTURE PAGES
+import ModeComparisonPage from './pages/ModeComparisonPage';
+import HybridPricingPage from './pages/HybridPricingPage';
+
+// UI Showcase for demonstrating new components
+import UIShowcase from './pages/UIShowcase';
 
 // Import enhanced systems for global access (development/testing)
 import { errorHandler } from './utils/errorHandler';
@@ -138,8 +161,31 @@ import LeadManagementDashboard from './components/automation/LeadManagementDashb
 import LegalSolution from './pages/solutions/LegalSolution';
 import InsuranceSolution from './pages/solutions/InsuranceSolution';
 import HealthcareSolution from './pages/solutions/HealthcareSolution';
-import Blog from './pages/Blog';
+import RealEstateSolution from './pages/solutions/RealEstateSolution';
 import Features from './pages/Features';
+import BatchProcessing from './pages/BatchProcessing';
+import ImageComparison from './pages/ImageComparison';
+
+// Trust Verification Dashboard - Strategic UX Implementation
+import TrustVerificationPage from './pages/TrustVerificationPage';
+import AIFeaturesPositioning from './components/AIFeaturesPositioning';
+
+// AI Package Pages
+import LegalAIPackage from './pages/ai/LegalAIPackage';
+import HealthcareAIPackage from './pages/ai/HealthcareAIPackage';
+import FinancialAIPackage from './pages/ai/FinancialAIPackage';
+import InsuranceAIPackage from './pages/ai/InsuranceAIPackage';
+import { SimpleTestLogin } from './components/auth/SimpleTestLogin';
+
+// Workflow Template Library
+import WorkflowTemplateLibrary from './content/WorkflowTemplateLibrary';
+
+// New Comprehensive Documentation Imports
+import AIDocumentIntelligenceGuide from './pages/docs/AIDocumentIntelligenceGuide';
+import SmartDocumentAssistantGuide from './pages/docs/SmartDocumentAssistantGuide';
+import ComprehensiveAPIGuide from './pages/docs/ComprehensiveAPIGuide';
+import SecurityComplianceGuide from './pages/docs/SecurityComplianceGuide';
+import EnterpriseIntegrationsGuide from './pages/docs/EnterpriseIntegrationsGuide';
 
 // Redirect component for external documentation
 const RedirectComponent: React.FC<{ url: string; title: string }> = ({ url, title }) => {
@@ -174,16 +220,22 @@ const ScrollToTop: React.FC = () => {
 
 export function App() {
   return (
-    <AuthProvider>
+    <TestAuthProvider>
       <Router>
         <ScrollToTop />
         <div className="App">
       <Routes>
             {/* Public Routes */}
         <Route path="/" element={<ProofPix />} />
-            <Route path="/landing" element={<LandingPage />} />
-            <Route path="/auth/login" element={<LoginPage />} />
-            <Route path="/auth/register" element={<RegisterPage />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/batch-processing" element={<BatchProcessing />} />
+        <Route path="/image-comparison" element={<ImageComparison />} />
+        <Route path="/ui-showcase" element={<UIShowcase />} />
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/register" element={<RegisterPage />} />
+        <Route path="/test-auth" element={<SimpleTestLogin />} />
             
             {/* Priority 4: Enterprise SSO & Security Enhancement Routes */}
             <Route 
@@ -212,14 +264,26 @@ export function App() {
             {/* Enterprise Public Routes */}
             <Route path="/enterprise" element={<Enterprise />} />
             <Route path="/enterprise/demo" element={<EnterpriseDemo />} />
+            <Route path="/enterprise/demo-selection" element={<IndustryDemoConfigurations />} />
             <Route path="/enterprise/ai-demo" element={<AIDocumentIntelligenceDashboard />} />
             <Route path="/enterprise/chain-of-custody" element={<ChainOfCustodyPage />} />
             <Route path="/enterprise/branding" element={<EnterpriseBranding />} />
             <Route path="/enterprise/industry-demos" element={<IndustryDemoConfigurations />} />
             <Route path="/security" element={<Security />} />
             
+            {/* 🚀 BILLION-DOLLAR HYBRID ARCHITECTURE ROUTES */}
+            <Route path="/mode-comparison" element={<ModeComparisonPage />} />
+            <Route path="/hybrid-pricing" element={<HybridPricingPage />} />
+            <Route path="/choose-your-architecture" element={<ModeComparisonPage />} />
+            <Route path="/architecture-pricing" element={<HybridPricingPage />} />
+            
             {/* UNIFIED PRICING SYSTEM - All pricing routes redirect to main /pricing */}
             <Route path="/pricing" element={<UnifiedPricingPage />} />
+            <Route path="/pricing-v2" element={<UnifiedPricingPageV2 />} />
+            <Route path="/unified-pricing" element={<UnifiedPricingPageV2 />} />
+            
+            {/* Checkout Route */}
+            <Route path="/checkout" element={<CheckoutPage />} />
             
             {/* Pricing Redirects - Consolidate all pricing pages into unified system */}
             <Route path="/pricing-page" element={<Navigate to="/pricing" replace />} />
@@ -405,6 +469,13 @@ export function App() {
             <Route path="/docs/implementation-guides" element={<ImplementationGuides />} />
             <Route path="/docs/content-quality" element={<ContentQualityDashboard />} />
             
+            {/* New Comprehensive Documentation Routes */}
+            <Route path="/docs/ai-document-intelligence-guide" element={<AIDocumentIntelligenceGuide />} />
+            <Route path="/docs/smart-document-assistant-guide" element={<SmartDocumentAssistantGuide />} />
+            <Route path="/docs/comprehensive-api-guide" element={<ComprehensiveAPIGuide />} />
+            <Route path="/docs/security-compliance-guide" element={<SecurityComplianceGuide />} />
+            <Route path="/docs/enterprise-integrations-guide" element={<EnterpriseIntegrationsGuide />} />
+            
             {/* Legacy Routes */}
             <Route path="/about" element={<AboutUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -429,9 +500,7 @@ export function App() {
             <Route path="/solutions/legal" element={<LegalSolution />} />
             <Route path="/solutions/insurance" element={<InsuranceSolution />} />
             <Route path="/solutions/healthcare" element={<HealthcareSolution />} />
-            
-            {/* Blog Route */}
-            <Route path="/blog" element={<Blog />} />
+            <Route path="/solutions/realestate" element={<RealEstateSolution />} />
             
             {/* AI-Enhanced Pricing Route */}
             <Route path="/ai-pricing" element={<AIEnhancedPricingPage />} />
@@ -556,8 +625,82 @@ export function App() {
             <Route path="/marketplace/plugins" element={<MarketplaceDashboard />} />
             <Route path="/marketplace/workflows" element={<MarketplaceDashboard />} />
             
+            {/* Hybrid Architecture Demo for Sales */}
+            <Route path="/hybrid-architecture-demo" element={<HybridArchitectureDemo />} />
+            
+            {/* Trust Verification Route */}
+            <Route path="/trust-verification" element={<TrustVerificationPage />} />
+            
+            {/* AI Features Positioning Route */}
+            <Route path="/ai-features" element={<AIFeaturesPositioning />} />
+            
+            {/* AI Package Pages */}
+            <Route path="/ai/legal-ai-package" element={<LegalAIPackage />} />
+            <Route path="/ai/healthcare-ai-package" element={<HealthcareAIPackage />} />
+            <Route path="/ai/financial-ai-package" element={<FinancialAIPackage />} />
+            <Route path="/ai/insurance-ai-package" element={<InsuranceAIPackage />} />
+            
+            {/* Workflow Template Library */}
+            <Route path="/workflow-templates" element={<WorkflowTemplateLibrary />} />
+            <Route path="/templates" element={<WorkflowTemplateLibrary />} />
+            <Route path="/ai/workflow-templates" element={<WorkflowTemplateLibrary />} />
+            
+            {/* Enterprise AI Features - ROI and Compliance */}
+            <Route 
+              path="/enterprise/roi-dashboard" 
+              element={
+                <ProtectedRoute>
+                  <ROIMeasurementDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/enterprise/compliance-templates" 
+              element={
+                <ProtectedRoute>
+                  <EnterpriseComplianceTemplates />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Industry-Specific AI Package Routes */}
+            <Route 
+              path="/ai/packages/healthcare" 
+              element={
+                <ProtectedRoute>
+                  <ROIMeasurementDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/ai/packages/finance" 
+              element={
+                <ProtectedRoute>
+                  <ROIMeasurementDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/ai/packages/legal" 
+              element={
+                <ProtectedRoute>
+                  <ROIMeasurementDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* New routes for Custom AI Training and Visual Workflow Builder */}
+            <Route path="/enterprise/ai-training" element={<CustomAITrainingDashboard />} />
+            <Route path="/enterprise/workflow-builder" element={<VisualWorkflowBuilder />} />
+            
+            {/* Enterprise Feature Showcase */}
+            <Route path="/enterprise/feature-showcase" element={<EnterpriseFeatureShowcase />} />
+            
+            {/* New routes for UI Showcase */}
+            <Route path="/ui-showcase" element={<UIShowcase />} />
+            
             {/* Catch-all route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
             </div>
       </Router>
@@ -567,7 +710,7 @@ export function App() {
       
       {/* Global AI Assistant - Available on all pages */}
       <SmartDocumentAssistant />
-    </AuthProvider>
+    </TestAuthProvider>
   );
 }
 
@@ -607,18 +750,49 @@ const SettingsPlaceholder: React.FC = () => (
 const NotFoundPage: React.FC = () => (
   <EnterpriseLayout
     showHero
-    title="404 - Page Not Found"
-    description="The page you're looking for doesn't exist."
+    title="This Page Took a Different Path"
+    description="Let's get you back to analyzing photos securely."
     maxWidth="6xl"
     backgroundColor="dark"
   >
     <div className="text-center">
-      <h1 className="text-6xl font-bold text-slate-100 mb-4">404</h1>
-      <EnterpriseButton onClick={() => window.location.href = '/'}>
-        Back to Home
-      </EnterpriseButton>
+      <h1 className="text-6xl font-bold text-emerald-400 mb-4">404</h1>
+      <h2 className="text-2xl font-semibold text-slate-100 mb-6">
+        This page seems to have gone off the grid
+      </h2>
+      <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+        Don't worry—your photos are still safe and private. Let's get you back to what matters: 
+        analyzing images without any data breach risk.
+      </p>
+      
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <EnterpriseButton onClick={() => window.location.href = '/'}>
+          Start Analyzing Photos
+        </EnterpriseButton>
+        <EnterpriseButton 
+          variant="secondary" 
+          onClick={() => window.location.href = '/pricing'}
+        >
+          View Plans & Pricing
+        </EnterpriseButton>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700/50">
+          <h3 className="text-lg font-semibold text-slate-100 mb-2">Try ProofPix Free</h3>
+          <p className="text-slate-400 text-sm">Upload a photo and see your metadata in seconds</p>
+        </div>
+        <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700/50">
+          <h3 className="text-lg font-semibold text-slate-100 mb-2">Learn More</h3>
+          <p className="text-slate-400 text-sm">Discover why we're the category creator</p>
+        </div>
+        <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700/50">
+          <h3 className="text-lg font-semibold text-slate-100 mb-2">Get Support</h3>
+          <p className="text-slate-400 text-sm">Our team is here to help you succeed</p>
+        </div>
+      </div>
     </div>
   </EnterpriseLayout>
-  );
+);
 
 export default App;

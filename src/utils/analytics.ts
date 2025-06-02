@@ -57,6 +57,8 @@ class PricingAnalytics {
   private funnelSteps: ConversionFunnelStep[] = [];
   private startTime: number;
   private userContext: Partial<UserContext> = {};
+  private eventThrottle: Map<string, number> = new Map();
+  private readonly THROTTLE_DELAY = 1000; // 1 second throttle
 
   constructor() {
     this.sessionId = this.generateSessionId();
@@ -66,7 +68,17 @@ class PricingAnalytics {
   }
 
   private generateSessionId(): string {
-    return `pricing_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // Polyfill for crypto.randomUUID if not available
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    
+    // Fallback UUID generation
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   private initializeContext(): void {
@@ -403,7 +415,7 @@ class PricingAnalytics {
     });
 
     // Console logging for development
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       console.log('📊 Analytics Event:', event);
     }
   }
@@ -452,8 +464,16 @@ class PricingAnalytics {
   }
 
   private async sendToCustomAnalytics(event: AnalyticsEvent): Promise<void> {
+    // Skip analytics in development mode to prevent spam
+    if (process.env.NODE_ENV !== 'production') {
+      return;
+    }
+
     try {
-      await fetch('/api/analytics', {
+      // Only send to production analytics endpoint
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://api.proofpixapp.com';
+      
+      await fetch(`${apiUrl}/api/analytics`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -466,7 +486,10 @@ class PricingAnalytics {
         })
       });
     } catch (error) {
-      console.warn('Analytics tracking failed:', error);
+      // Silently fail in production to avoid console spam
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Analytics tracking failed:', error);
+      }
     }
   }
 

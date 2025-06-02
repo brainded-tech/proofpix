@@ -125,20 +125,24 @@ const BulkProcessingView = memo(() => {
       {files.length === 0 && (
         <div className="bulk-empty-state">
           <LucideIcons.Layers size={48} className="empty-icon" />
-          <h3>Ready for Bulk Processing</h3>
-          <p>Upload multiple images at once to extract EXIF data from all of them simultaneously.</p>
+          <h3>Save Hours with Bulk Analysis</h3>
+          <p>Upload multiple photos at once and let ProofPix analyze them all simultaneously. Perfect for legal cases, insurance claims, or organizing large photo collections.</p>
           <div className="bulk-features">
             <div className="bulk-feature">
               <LucideIcons.Zap size={20} />
-              <span>Process up to 10 files at once</span>
+              <span>Analyze up to 100 photos at once—save hours of time</span>
             </div>
             <div className="bulk-feature">
               <LucideIcons.Download size={20} />
-              <span>Export all metadata as JSON, CSV, or PDF</span>
+              <span>Export comprehensive reports for all photos instantly</span>
             </div>
             <div className="bulk-feature">
               <LucideIcons.Eye size={20} />
-              <span>Monitor progress for each file</span>
+              <span>Track progress and catch any issues in real-time</span>
+            </div>
+            <div className="bulk-feature">
+              <LucideIcons.Shield size={20} />
+              <span>Everything stays private—photos never leave your device</span>
             </div>
           </div>
         </div>

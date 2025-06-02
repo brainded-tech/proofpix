@@ -26,7 +26,6 @@ import {
   BarChart3
 } from 'lucide-react';
 import { errorHandler } from '../utils/errorHandler';
-import { Sponsorship } from '../components/Sponsorships';
 import { ComplianceMonitor } from '../components/security/ComplianceMonitor';
 import { AuditLogger } from '../components/security/AuditLogger';
 import { SecurityAlerts } from '../components/security/SecurityAlerts';
@@ -403,7 +402,6 @@ export const SecurityDashboard: React.FC = () => {
               </button>
             </div>
           </div>
-          <Sponsorship placement="content" />
         </div>
       </div>
     );
@@ -703,8 +701,6 @@ export const SecurityDashboard: React.FC = () => {
           <SecurityConfiguration />
         )}
       </div>
-
-      <Sponsorship placement="bottom" />
     </div>
   );
 }; 

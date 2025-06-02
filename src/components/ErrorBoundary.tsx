@@ -142,7 +142,7 @@ Additional context:
 [Any additional information]
     `);
     
-    window.open(`mailto:support@proofpix.com?subject=${subject}&body=${body}`);
+    window.open(`mailto:support@proofpixapp.com?subject=${subject}&body=${body}`);
   };
 
   render() {

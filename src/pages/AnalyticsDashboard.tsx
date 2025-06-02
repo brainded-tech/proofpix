@@ -19,10 +19,11 @@ import {
   Eye,
   AlertCircle,
   CheckCircle,
-  XCircle
+  XCircle,
+  Shield,
+  Star
 } from 'lucide-react';
 import { errorHandler } from '../utils/errorHandler';
-import { Sponsorship } from '../components/Sponsorships';
 import { InteractiveCharts } from '../components/analytics/InteractiveCharts';
 
 interface AnalyticsMetrics {
@@ -93,39 +94,39 @@ const MetricCard: React.FC<MetricCardProps> = ({
 }) => {
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+          <div className="h-4 bg-slate-700 rounded mb-2"></div>
+          <div className="h-8 bg-slate-700 rounded mb-2"></div>
+          <div className="h-3 bg-slate-700 rounded w-1/2"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 hover:border-slate-600 transition-all duration-300 hover:bg-slate-800/70">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{title}</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{value}</p>
+          <p className="text-slate-400 text-sm font-medium">{title}</p>
+          <p className="text-2xl font-bold text-white mt-1">{value}</p>
           {subtitle && (
-            <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{subtitle}</p>
+            <p className="text-slate-500 text-xs mt-1">{subtitle}</p>
           )}
         </div>
-        <div className={`${color}`}>
-          <Icon className="h-8 w-8" />
+        <div className={`${color} bg-slate-700/50 p-3 rounded-xl`}>
+          <Icon className="h-6 w-6" />
         </div>
       </div>
       {change !== undefined && (
         <div className="mt-4 flex items-center">
           <span className={`text-sm font-medium flex items-center ${
-            change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            change >= 0 ? 'text-green-400' : 'text-red-400'
           }`}>
             {change >= 0 ? <TrendingUp className="h-3 w-3 mr-1" /> : <TrendingDown className="h-3 w-3 mr-1" />}
             {Math.abs(change)}%
           </span>
-          <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">vs last period</span>
+          <span className="text-slate-500 text-sm ml-2">vs last period</span>
         </div>
       )}
     </div>
@@ -341,66 +342,103 @@ export const AnalyticsDashboard: React.FC = () => {
 
   if (!hasProAccess) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-slate-900">
         <div className="max-w-4xl mx-auto px-4 py-16">
           <div className="text-center">
-            <BarChart3 className="h-16 w-16 text-gray-400 mx-auto mb-6" />
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Analytics Dashboard
+            {/* Modern Enterprise Hero Section */}
+            <div className="relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-12 mb-8">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+              <div className="relative z-10">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="bg-blue-600/20 p-4 rounded-2xl backdrop-blur-sm border border-blue-500/30">
+                    <BarChart3 className="h-12 w-12 text-blue-400" />
+                  </div>
+                </div>
+                <h1 className="text-4xl font-bold text-white mb-4">
+                  Advanced Analytics Dashboard
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-              Advanced analytics and insights are available with Pro and Enterprise plans.
-            </p>
+                <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+                  Unlock powerful insights with comprehensive analytics, real-time monitoring, and enterprise-grade reporting capabilities.
+                </p>
+                
+                {/* Feature Highlights */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                    <Activity className="h-8 w-8 text-blue-400 mb-3 mx-auto" />
+                    <h3 className="text-white font-semibold mb-2">Real-Time Monitoring</h3>
+                    <p className="text-slate-400 text-sm">Live performance metrics and system health</p>
+                  </div>
+                  <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                    <Shield className="h-8 w-8 text-green-400 mb-3 mx-auto" />
+                    <h3 className="text-white font-semibold mb-2">Privacy-First Analytics</h3>
+                    <p className="text-slate-400 text-sm">Zero data collection, client-side processing</p>
+                  </div>
+                  <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+                    <Star className="h-8 w-8 text-purple-400 mb-3 mx-auto" />
+                    <h3 className="text-white font-semibold mb-2">Enterprise Reports</h3>
+                    <p className="text-slate-400 text-sm">Comprehensive business intelligence</p>
+                  </div>
+                </div>
+
             <div className="space-y-4">
               <button
                 onClick={() => navigate('/pricing')}
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Upgrade to Pro
               </button>
+                  <div>
               <button
                 onClick={() => navigate('/dashboard')}
-                className="block mx-auto text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                      className="text-slate-400 hover:text-white transition-colors"
               >
-                Back to Dashboard
+                      ← Back to Dashboard
               </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <Sponsorship placement="content" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <div className="min-h-screen bg-slate-900">
+      {/* Modern Enterprise Header */}
+      <header className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <button
                 onClick={() => navigate('/dashboard')}
-                className="mr-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="mr-4 p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
-              <BarChart3 className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-              <h1 className="ml-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+              <div className="flex items-center space-x-3">
+                <div className="bg-blue-600/20 p-2 rounded-lg">
+                  <BarChart3 className="h-6 w-6 text-blue-400" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-semibold text-white">
                 Analytics Dashboard
               </h1>
               {state.lastRefresh && (
-                <span className="ml-4 text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-slate-400">
                   Last updated: {state.lastRefresh.toLocaleTimeString()}
                 </span>
               )}
+                </div>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
               {/* Time Range Filter */}
               <select
                 value={state.timeRange}
                 onChange={(e) => updateState({ timeRange: e.target.value as any })}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="px-3 py-2 border border-slate-600 rounded-lg bg-slate-800 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               >
                 <option value="1h">Last Hour</option>
                 <option value="24h">Last 24 Hours</option>
@@ -412,10 +450,10 @@ export const AnalyticsDashboard: React.FC = () => {
               {/* Auto-refresh Toggle */}
               <button
                 onClick={() => updateState({ autoRefresh: !state.autoRefresh })}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   state.autoRefresh
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                    : 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300'
+                    ? 'bg-green-600/20 text-green-400 border border-green-500/30'
+                    : 'bg-slate-700 text-slate-300 border border-slate-600'
                 }`}
               >
                 {state.autoRefresh ? 'Auto-refresh ON' : 'Auto-refresh OFF'}
@@ -423,7 +461,7 @@ export const AnalyticsDashboard: React.FC = () => {
               
               <button
                 onClick={exportAnalyticsData}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                className="px-4 py-2 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 hover:border-slate-500 transition-all"
               >
                 <Download className="h-4 w-4 mr-2 inline" />
                 Export
@@ -431,7 +469,7 @@ export const AnalyticsDashboard: React.FC = () => {
               
               <button
                 onClick={loadAnalyticsData}
-                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
                 title="Refresh analytics data"
               >
                 <RefreshCw className="h-4 w-4" />
@@ -444,13 +482,13 @@ export const AnalyticsDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Error State */}
         {state.error && (
-          <div className="mb-8 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <div className="mb-8 bg-red-900/20 border border-red-800 rounded-xl p-4">
             <div className="flex items-center">
-              <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mr-2" />
-              <p className="text-red-600 dark:text-red-400">{state.error}</p>
+              <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
+              <p className="text-red-400">{state.error}</p>
               <button
                 onClick={loadAnalyticsData}
-                className="ml-auto text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
+                className="ml-auto text-red-400 hover:text-red-300 transition-colors"
               >
                 Retry
               </button>
@@ -465,7 +503,7 @@ export const AnalyticsDashboard: React.FC = () => {
             value={state.metrics?.totalFiles.toLocaleString() || '0'}
             change={12.5}
             icon={FileImage}
-            color="text-blue-600 dark:text-blue-400"
+            color="text-blue-400"
             subtitle="All time"
             loading={state.isLoading}
           />
@@ -475,7 +513,7 @@ export const AnalyticsDashboard: React.FC = () => {
             value={state.metrics?.filesProcessed.toLocaleString() || '0'}
             change={8.3}
             icon={CheckCircle}
-            color="text-green-600 dark:text-green-400"
+            color="text-green-400"
             subtitle={`${state.metrics?.filesInQueue || 0} in queue`}
             loading={state.isLoading}
           />
@@ -485,7 +523,7 @@ export const AnalyticsDashboard: React.FC = () => {
             value={state.metrics?.activeUsers || 0}
             change={-2.1}
             icon={Users}
-            color="text-purple-600 dark:text-purple-400"
+            color="text-purple-400"
             subtitle={`${state.metrics?.totalUsers || 0} total users`}
             loading={state.isLoading}
           />
@@ -495,7 +533,7 @@ export const AnalyticsDashboard: React.FC = () => {
             value={state.metrics?.apiCalls.toLocaleString() || '0'}
             change={15.7}
             icon={Zap}
-            color="text-orange-600 dark:text-orange-400"
+            color="text-orange-400"
             subtitle="This period"
             loading={state.isLoading}
           />
@@ -508,7 +546,7 @@ export const AnalyticsDashboard: React.FC = () => {
             value={`${state.metrics?.averageProcessingTime || 0}s`}
             change={-5.2}
             icon={Clock}
-            color="text-indigo-600 dark:text-indigo-400"
+            color="text-indigo-400"
             subtitle="Per file"
             loading={state.isLoading}
           />
@@ -518,7 +556,7 @@ export const AnalyticsDashboard: React.FC = () => {
             value={`${state.metrics?.storageUsed || 0} GB`}
             change={3.8}
             icon={Database}
-            color="text-cyan-600 dark:text-cyan-400"
+            color="text-cyan-400"
             subtitle="Total storage"
             loading={state.isLoading}
           />
@@ -528,39 +566,39 @@ export const AnalyticsDashboard: React.FC = () => {
             value={`${state.metrics?.bandwidthUsed || 0} GB`}
             change={7.2}
             icon={Globe}
-            color="text-pink-600 dark:text-pink-400"
+            color="text-pink-400"
             subtitle="This period"
             loading={state.isLoading}
           />
         </div>
 
         {/* Processing Queue */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 mb-8">
+          <div className="px-6 py-4 border-b border-slate-700">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-lg font-semibold text-white">
                 Processing Queue
               </h2>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-slate-400">
                 {state.processingQueue.length} items
               </span>
             </div>
           </div>
-          <div className="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+          <div className="divide-y divide-slate-700 max-h-96 overflow-y-auto">
             {state.isLoading ? (
               <div className="p-6">
                 <div className="animate-pulse space-y-4">
                   {[...Array(5)].map((_, i) => (
                     <div key={i} className="flex items-center space-x-4">
-                      <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                      <div className="flex-1 h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                      <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                      <div className="h-4 w-4 bg-slate-700 rounded"></div>
+                      <div className="flex-1 h-4 bg-slate-700 rounded"></div>
+                      <div className="h-4 w-20 bg-slate-700 rounded"></div>
                     </div>
                   ))}
                 </div>
               </div>
             ) : state.processingQueue.length === 0 ? (
-              <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+              <div className="p-6 text-center text-slate-400">
                 <Activity className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No files currently in processing queue</p>
               </div>
@@ -573,29 +611,29 @@ export const AnalyticsDashboard: React.FC = () => {
                         {getStatusIcon(item.status)}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                        <p className="text-sm font-medium text-white truncate">
                           {item.fileName}
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center space-x-4 text-xs text-slate-400">
                           <span>{formatFileSize(item.fileSize)}</span>
                           <span>User: {item.userId}</span>
                           <span>{item.startTime.toLocaleTimeString()}</span>
                         </div>
                         {item.status === 'processing' && (
                           <div className="mt-2">
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div className="w-full bg-slate-700 rounded-full h-2">
                               <div
                                 className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                                 style={{ width: `${item.progress}%` }}
                               ></div>
                             </div>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            <p className="text-xs text-slate-400 mt-1">
                               {item.progress}% complete
                             </p>
                           </div>
                         )}
                         {item.errorMessage && (
-                          <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+                          <p className="text-xs text-red-400 mt-1">
                             Error: {item.errorMessage}
                           </p>
                         )}
@@ -606,7 +644,7 @@ export const AnalyticsDashboard: React.FC = () => {
                         {item.status.toUpperCase()}
                       </span>
                       {item.endTime && (
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-slate-400">
                           {formatDuration((item.endTime.getTime() - item.startTime.getTime()) / 1000)}
                         </span>
                       )}
@@ -619,12 +657,12 @@ export const AnalyticsDashboard: React.FC = () => {
         </div>
 
         {/* Usage Chart */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
+          <div className="px-6 py-4 border-b border-slate-700">
+            <h2 className="text-lg font-semibold text-white">
               Usage Trends
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-slate-400">
               File processing and API usage over time
             </p>
           </div>
@@ -694,8 +732,6 @@ export const AnalyticsDashboard: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <Sponsorship placement="bottom" />
     </div>
   );
 }; 

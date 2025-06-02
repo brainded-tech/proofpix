@@ -23,3 +23,7 @@ body {
   /* Allow the app to use dark theme */
   color-scheme: dark light;
 }
+
+/* Import UI fixes */
+@import './styles/button-contrast-fixes.css';
+@import './styles/container-background-fixes.css';

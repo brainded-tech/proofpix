@@ -9,6 +9,7 @@ import { errorHandler } from '../utils/errorHandler';
 export interface IntegrationConfig {
   id: string;
   name: string;
+  description?: string;
   type: 'crm' | 'productivity' | 'communication' | 'automation' | 'storage';
   status: 'connected' | 'disconnected' | 'error' | 'configuring';
   credentials: Record<string, any>;
@@ -101,13 +102,18 @@ export interface SyncResult {
 }
 
 export interface BatchResult {
+  id: string;
   batchId: string;
+  integrationName: string;
   totalFiles: number;
   successCount: number;
   errorCount: number;
+  itemsProcessed: number;
+  status: 'completed' | 'processing' | 'failed' | 'pending';
   results: any[];
   startTime: Date;
   endTime: Date;
+  timestamp: Date;
   duration: number;
 }
 
@@ -135,6 +141,7 @@ class EnterpriseIntegrationsService {
       {
         id: 'salesforce',
         name: 'Salesforce CRM',
+        description: 'Connect your Salesforce CRM for seamless lead and opportunity management',
         type: 'crm',
         status: 'disconnected',
         credentials: {},
@@ -154,6 +161,7 @@ class EnterpriseIntegrationsService {
       {
         id: 'microsoft365',
         name: 'Microsoft 365',
+        description: 'Integrate with Microsoft 365 for calendar, contacts, and SharePoint collaboration',
         type: 'productivity',
         status: 'disconnected',
         credentials: {},
@@ -173,6 +181,7 @@ class EnterpriseIntegrationsService {
       {
         id: 'google-workspace',
         name: 'Google Workspace',
+        description: 'Connect Google Workspace for Gmail, Calendar, Drive, and Docs integration',
         type: 'productivity',
         status: 'disconnected',
         credentials: {},
@@ -192,6 +201,7 @@ class EnterpriseIntegrationsService {
       {
         id: 'slack',
         name: 'Slack',
+        description: 'Enable Slack notifications and team collaboration features',
         type: 'communication',
         status: 'disconnected',
         credentials: {},
@@ -982,20 +992,84 @@ class EnterpriseIntegrationsService {
   }
 
   async syncIntegration(id: string): Promise<SyncResult | null> {
+    const integration = this.integrations.get(id);
+    if (!integration) return null;
+
     try {
+      let result: SyncResult;
+      
       switch (id) {
         case 'salesforce':
-          return await this.syncSalesforceData();
+          result = await this.syncSalesforceData();
+          break;
         case 'microsoft365':
-          return await this.syncMicrosoft365Data();
+          result = await this.syncMicrosoft365Data();
+          break;
         case 'google-workspace':
-          return await this.syncGoogleWorkspaceData();
+          result = await this.syncGoogleWorkspaceData();
+          break;
         default:
-          return null;
+          throw new Error(`Sync not implemented for integration: ${id}`);
       }
+
+      return result;
     } catch (error) {
       console.error(`Failed to sync integration ${id}:`, error);
       return null;
+    }
+  }
+
+  // Get recent batch processing results
+  async getRecentBatches(limit: number = 10): Promise<BatchResult[]> {
+    try {
+      // Mock recent batch data for demo purposes
+      const mockBatches: BatchResult[] = [];
+      const integrationNames = ['Salesforce', 'Microsoft 365', 'Google Workspace', 'SharePoint', 'Slack'];
+      
+      for (let i = 0; i < limit; i++) {
+        const batchId = `batch_${Date.now()}_${i}`;
+        const totalFiles = Math.floor(Math.random() * 50) + 10;
+        const successCount = Math.floor(totalFiles * (0.8 + Math.random() * 0.2));
+        const errorCount = totalFiles - successCount;
+        const startTime = new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000);
+        const duration = Math.floor(Math.random() * 300000) + 30000; // 30s to 5min
+        const endTime = new Date(startTime.getTime() + duration);
+        const integrationName = integrationNames[Math.floor(Math.random() * integrationNames.length)];
+
+        mockBatches.push({
+          id: `batch_${Date.now()}_${i}`,
+          batchId,
+          integrationName,
+          totalFiles,
+          successCount,
+          errorCount,
+          itemsProcessed: totalFiles,
+          status: 'completed',
+          results: Array(totalFiles).fill(null).map((_, index) => ({
+            fileId: `file_${batchId}_${index}`,
+            fileName: `document_${index + 1}.pdf`,
+            status: index < successCount ? 'success' : 'error',
+            processingTime: Math.floor(Math.random() * 5000) + 1000,
+            metadata: {
+              size: Math.floor(Math.random() * 10000000) + 100000,
+              pages: Math.floor(Math.random() * 20) + 1
+            }
+          })),
+          startTime,
+          endTime,
+          timestamp: startTime,
+          duration
+        });
+      }
+
+      // Sort by most recent first
+      mockBatches.sort((a, b) => b.startTime.getTime() - a.startTime.getTime());
+      
+      advancedAnalyticsService.trackFeatureUsage('Enterprise Integration', 'Recent Batches Retrieved');
+      return mockBatches;
+    } catch (error) {
+      console.error('Failed to get recent batches:', error);
+      return [];
     }
   }
 }

@@ -16,7 +16,9 @@ import {
   Edit,
   Copyright,
   Tag,
-  User
+  User,
+  BookOpen,
+  Database
 } from 'lucide-react';
 import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
 import { 
@@ -26,6 +28,8 @@ import {
   EnterpriseSection,
   EnterpriseGrid
 } from '../../components/ui/EnterpriseComponents';
+import { StandardLayout } from '../../components/ui/StandardLayout';
+import { BackToHomeButton } from '../../components/ui/BackToHomeButton';
 
 const MetadataGuide: React.FC = () => {
   const navigate = useNavigate();
@@ -213,351 +217,376 @@ const MetadataGuide: React.FC = () => {
   };
 
   return (
-    <EnterpriseLayout
-      showHero
-      title="Metadata Extraction Guide"
-      description="Complete guide to understanding and extracting image metadata"
-      maxWidth="6xl"
+    <StandardLayout
+      title="Understanding Photo Metadata"
+      description="Complete guide to EXIF data and photo metadata"
     >
-      {/* Header */}
-      <EnterpriseSection size="sm">
-        <EnterpriseButton
-          variant="ghost"
-          onClick={handleBackHome}
-          className="mb-6"
-        >
-          ← Back to ProofPix
-        </EnterpriseButton>
-        
-        <div className="flex items-center space-x-4 mb-4">
-          <div className="bg-teal-600 p-3 rounded-lg">
-            <Eye className="h-8 w-8 text-white" />
-          </div>
-          <div>
-            <h1 className="text-4xl font-bold text-slate-900">Metadata Extraction Guide</h1>
-            <p className="text-xl text-slate-600 mt-2">
-              Complete guide to understanding and extracting image metadata
-            </p>
-          </div>
+      {/* Navigation Header */}
+      <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+        <div className="flex items-center space-x-4">
+          <BackToHomeButton variant="minimal" />
+          <div className="h-6 w-px bg-gray-300"></div>
+          <button
+            onClick={() => navigate('/docs')}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <BookOpen className="h-4 w-4" />
+            <span>Documentation</span>
+          </button>
         </div>
-        
-        <div className="flex items-center space-x-6 text-sm">
-          <EnterpriseBadge variant="neutral" icon={<FileText className="enterprise-icon-sm" />}>
-            Technical Guide
-          </EnterpriseBadge>
-          <EnterpriseBadge variant="warning" icon={<AlertTriangle className="enterprise-icon-sm" />}>
-            Privacy-focused
-          </EnterpriseBadge>
-          <EnterpriseBadge variant="primary" icon={<Info className="enterprise-icon-sm" />}>
-            Educational
-          </EnterpriseBadge>
+        <div className="flex items-center space-x-2">
+          <Database className="h-5 w-5 text-gray-600" />
+          <h1 className="text-2xl font-bold text-gray-900">Metadata Guide</h1>
         </div>
-      </EnterpriseSection>
+        <div></div> {/* Spacer for centering */}
+      </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* What is Metadata */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">What is Metadata?</h2>
-          <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
-            <p className="text-lg text-gray-300 mb-6">
-              Metadata is "data about data" - hidden information embedded in image files that describes various aspects 
-              of the photo, from technical camera settings to descriptive information added by photographers.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="bg-blue-600/20 p-4 rounded-lg mb-3 inline-block">
-                  <Eye className="h-8 w-8 text-blue-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Hidden Information</h3>
-                <p className="text-sm text-gray-400">Not visible in the image itself</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-green-600/20 p-4 rounded-lg mb-3 inline-block">
-                  <Settings className="h-8 w-8 text-green-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Automatically Added</h3>
-                <p className="text-sm text-gray-400">Created by cameras and software</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-purple-600/20 p-4 rounded-lg mb-3 inline-block">
-                  <FileText className="h-8 w-8 text-purple-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Multiple Types</h3>
-                <p className="text-sm text-gray-400">EXIF, IPTC, XMP, and more</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-red-600/20 p-4 rounded-lg mb-3 inline-block">
-                  <AlertTriangle className="h-8 w-8 text-red-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Privacy Risk</h3>
-                <p className="text-sm text-gray-400">Can reveal personal information</p>
-              </div>
+      <EnterpriseLayout
+        showHero
+        title="Metadata Extraction Guide"
+        description="Complete guide to understanding and extracting image metadata"
+        maxWidth="6xl"
+      >
+        {/* Header */}
+        <EnterpriseSection size="sm">
+          <EnterpriseButton
+            variant="ghost"
+            onClick={handleBackHome}
+            className="mb-6"
+          >
+            ← Back to ProofPix
+          </EnterpriseButton>
+          
+          <div className="flex items-center space-x-4 mb-4">
+            <div className="bg-teal-600 p-3 rounded-lg">
+              <Eye className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold text-slate-900">Metadata Extraction Guide</h1>
+              <p className="text-xl text-slate-600 mt-2">
+                Complete guide to understanding and extracting image metadata
+              </p>
             </div>
           </div>
-        </section>
-
-        {/* Metadata Types Tabs */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Types of Metadata</h2>
           
-          {/* Tab Navigation */}
-          <div className="flex space-x-1 mb-8 bg-gray-800/50 p-1 rounded-lg">
-            {Object.entries(metadataTypes).map(([key, type]) => (
-              <button
-                key={key}
-                onClick={() => setActiveTab(key)}
-                className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-md transition-all ${
-                  activeTab === key
-                    ? `bg-${getTabColor(key)}-600 text-white`
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                {type.icon}
-                <span className="font-medium">{type.title.split(' ')[0]}</span>
-              </button>
-            ))}
+          <div className="flex items-center space-x-6 text-sm">
+            <EnterpriseBadge variant="neutral" icon={<FileText className="enterprise-icon-sm" />}>
+              Technical Guide
+            </EnterpriseBadge>
+            <EnterpriseBadge variant="warning" icon={<AlertTriangle className="enterprise-icon-sm" />}>
+              Privacy-focused
+            </EnterpriseBadge>
+            <EnterpriseBadge variant="primary" icon={<Info className="enterprise-icon-sm" />}>
+              Educational
+            </EnterpriseBadge>
           </div>
+        </EnterpriseSection>
 
-          {/* Tab Content */}
-          <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
-            {Object.entries(metadataTypes).map(([key, type]) => (
-              activeTab === key && (
-                <div key={key}>
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className={`bg-${type.color}-600/20 p-3 rounded-lg`}>
-                      {type.icon}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* What is Metadata */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6">What is Metadata?</h2>
+            <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
+              <p className="text-lg text-gray-300 mb-6">
+                Metadata is "data about data" - hidden information embedded in image files that describes various aspects 
+                of the photo, from technical camera settings to descriptive information added by photographers.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="bg-blue-600/20 p-4 rounded-lg mb-3 inline-block">
+                    <Eye className="h-8 w-8 text-blue-400" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Hidden Information</h3>
+                  <p className="text-sm text-gray-400">Not visible in the image itself</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="bg-green-600/20 p-4 rounded-lg mb-3 inline-block">
+                    <Settings className="h-8 w-8 text-green-400" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Automatically Added</h3>
+                  <p className="text-sm text-gray-400">Created by cameras and software</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="bg-purple-600/20 p-4 rounded-lg mb-3 inline-block">
+                    <FileText className="h-8 w-8 text-purple-400" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Multiple Types</h3>
+                  <p className="text-sm text-gray-400">EXIF, IPTC, XMP, and more</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="bg-red-600/20 p-4 rounded-lg mb-3 inline-block">
+                    <AlertTriangle className="h-8 w-8 text-red-400" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Privacy Risk</h3>
+                  <p className="text-sm text-gray-400">Can reveal personal information</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Metadata Types Tabs */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6">Types of Metadata</h2>
+            
+            {/* Tab Navigation */}
+            <div className="flex space-x-1 mb-8 bg-gray-800/50 p-1 rounded-lg">
+              {Object.entries(metadataTypes).map(([key, type]) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-md transition-all ${
+                    activeTab === key
+                      ? `bg-${getTabColor(key)}-600 text-white`
+                      : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  {type.icon}
+                  <span className="font-medium">{type.title.split(' ')[0]}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Content */}
+            <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
+              {Object.entries(metadataTypes).map(([key, type]) => (
+                activeTab === key && (
+                  <div key={key}>
+                    <div className="flex items-center space-x-3 mb-6">
+                      <div className={`bg-${type.color}-600/20 p-3 rounded-lg`}>
+                        {type.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold">{type.title}</h3>
+                        <p className="text-gray-300">{type.description}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-bold">{type.title}</h3>
-                      <p className="text-gray-300">{type.description}</p>
+
+                    <div className="space-y-8">
+                      {type.categories.map((category, categoryIndex) => (
+                        <div key={categoryIndex}>
+                          <h4 className="text-xl font-semibold mb-4 flex items-center">
+                            {category.icon}
+                            <span className="ml-3">{category.name}</span>
+                          </h4>
+                          
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            {category.fields.map((field, fieldIndex) => (
+                              <div key={fieldIndex} className={`p-4 rounded-lg border ${privacyLevels[field.privacy as keyof typeof privacyLevels].bg} ${privacyLevels[field.privacy as keyof typeof privacyLevels].border}`}>
+                                <div className="flex items-center justify-between mb-2">
+                                  <h5 className="font-semibold">{field.name}</h5>
+                                  <span className={`px-2 py-1 rounded text-xs font-medium ${privacyLevels[field.privacy as keyof typeof privacyLevels].color}`}>
+                                    {privacyLevels[field.privacy as keyof typeof privacyLevels].label}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-gray-400 mb-2">{field.description}</p>
+                                <div className="bg-gray-700/50 rounded p-2">
+                                  <span className="text-xs text-gray-500">Example: </span>
+                                  <span className="text-sm font-mono text-gray-300">{field.example}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
+                )
+              ))}
+            </div>
+          </section>
 
-                  <div className="space-y-8">
-                    {type.categories.map((category, categoryIndex) => (
-                      <div key={categoryIndex}>
-                        <h4 className="text-xl font-semibold mb-4 flex items-center">
-                          {category.icon}
-                          <span className="ml-3">{category.name}</span>
-                        </h4>
-                        
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          {category.fields.map((field, fieldIndex) => (
-                            <div key={fieldIndex} className={`p-4 rounded-lg border ${privacyLevels[field.privacy as keyof typeof privacyLevels].bg} ${privacyLevels[field.privacy as keyof typeof privacyLevels].border}`}>
-                              <div className="flex items-center justify-between mb-2">
-                                <h5 className="font-semibold">{field.name}</h5>
-                                <span className={`px-2 py-1 rounded text-xs font-medium ${privacyLevels[field.privacy as keyof typeof privacyLevels].color}`}>
-                                  {privacyLevels[field.privacy as keyof typeof privacyLevels].label}
-                                </span>
-                              </div>
-                              <p className="text-sm text-gray-400 mb-2">{field.description}</p>
-                              <div className="bg-gray-700/50 rounded p-2">
-                                <span className="text-xs text-gray-500">Example: </span>
-                                <span className="text-sm font-mono text-gray-300">{field.example}</span>
-                              </div>
-                            </div>
-                          ))}
+          {/* Privacy Risk Levels */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6">Privacy-Sensitive Metadata</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-red-900/30 border border-red-500/30 rounded-xl p-6">
+                <div className="flex items-center mb-4">
+                  <AlertTriangle className="h-6 w-6 text-red-400 mr-3" />
+                  <h3 className="text-xl font-semibold text-red-400">High Risk</h3>
+                </div>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• GPS coordinates (exact location)</li>
+                  <li>• Personal contact information</li>
+                  <li>• Device serial numbers</li>
+                  <li>• Precise timestamps with timezone</li>
+                  <li>• Creator personal details</li>
+                </ul>
+                <p className="text-sm text-red-300 mt-4">
+                  <strong>Risk:</strong> Can reveal personal location, identity, and patterns
+                </p>
+              </div>
+
+              <div className="bg-yellow-900/30 border border-yellow-500/30 rounded-xl p-6">
+                <div className="flex items-center mb-4">
+                  <AlertTriangle className="h-6 w-6 text-yellow-400 mr-3" />
+                  <h3 className="text-xl font-semibold text-yellow-400">Medium Risk</h3>
+                </div>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• Camera/phone model</li>
+                  <li>• Software versions</li>
+                  <li>• Editing software used</li>
+                  <li>• General timestamps</li>
+                  <li>• Keywords and descriptions</li>
+                </ul>
+                <p className="text-sm text-yellow-300 mt-4">
+                  <strong>Risk:</strong> Can enable device fingerprinting and tracking
+                </p>
+              </div>
+
+              <div className="bg-green-900/30 border border-green-500/30 rounded-xl p-6">
+                <div className="flex items-center mb-4">
+                  <CheckCircle className="h-6 w-6 text-green-400 mr-3" />
+                  <h3 className="text-xl font-semibold text-green-400">Low Risk</h3>
+                </div>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• Camera settings (ISO, aperture)</li>
+                  <li>• Color profiles</li>
+                  <li>• Image dimensions</li>
+                  <li>• File format information</li>
+                  <li>• Basic editing adjustments</li>
+                </ul>
+                <p className="text-sm text-green-300 mt-4">
+                  <strong>Risk:</strong> Generally safe to share, minimal privacy impact
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Real-World Examples */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6">Real-World Examples</h2>
+            <div className="space-y-6">
+              {realWorldExamples.map((example, index) => (
+                <div key={index} className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                  <div className="flex items-start space-x-4">
+                    <div className="bg-gray-700 p-3 rounded-lg flex-shrink-0">
+                      {example.icon}
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-xl font-semibold">{example.scenario}</h3>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          example.risk === 'High' ? 'bg-red-600 text-white' :
+                          example.risk === 'Medium' ? 'bg-orange-600 text-white' :
+                          example.risk === 'Beneficial' ? 'bg-green-600 text-white' :
+                          'bg-gray-600 text-white'
+                        }`}>
+                          {example.risk} Risk
+                        </span>
+                      </div>
+                      
+                      <p className="text-gray-300 mb-3">{example.description}</p>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <span className="text-sm text-gray-400">Metadata Type:</span>
+                          <p className="font-medium text-blue-400">{example.metadata}</p>
+                        </div>
+                        <div>
+                          <span className="text-sm text-gray-400">Potential Consequence:</span>
+                          <p className="font-medium">{example.consequence}</p>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )
-            ))}
-          </div>
-        </section>
-
-        {/* Privacy Risk Levels */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Privacy-Sensitive Metadata</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-red-900/30 border border-red-500/30 rounded-xl p-6">
-              <div className="flex items-center mb-4">
-                <AlertTriangle className="h-6 w-6 text-red-400 mr-3" />
-                <h3 className="text-xl font-semibold text-red-400">High Risk</h3>
-              </div>
-              <ul className="space-y-2 text-gray-300">
-                <li>• GPS coordinates (exact location)</li>
-                <li>• Personal contact information</li>
-                <li>• Device serial numbers</li>
-                <li>• Precise timestamps with timezone</li>
-                <li>• Creator personal details</li>
-              </ul>
-              <p className="text-sm text-red-300 mt-4">
-                <strong>Risk:</strong> Can reveal personal location, identity, and patterns
-              </p>
-            </div>
-
-            <div className="bg-yellow-900/30 border border-yellow-500/30 rounded-xl p-6">
-              <div className="flex items-center mb-4">
-                <AlertTriangle className="h-6 w-6 text-yellow-400 mr-3" />
-                <h3 className="text-xl font-semibold text-yellow-400">Medium Risk</h3>
-              </div>
-              <ul className="space-y-2 text-gray-300">
-                <li>• Camera/phone model</li>
-                <li>• Software versions</li>
-                <li>• Editing software used</li>
-                <li>• General timestamps</li>
-                <li>• Keywords and descriptions</li>
-              </ul>
-              <p className="text-sm text-yellow-300 mt-4">
-                <strong>Risk:</strong> Can enable device fingerprinting and tracking
-              </p>
-            </div>
-
-            <div className="bg-green-900/30 border border-green-500/30 rounded-xl p-6">
-              <div className="flex items-center mb-4">
-                <CheckCircle className="h-6 w-6 text-green-400 mr-3" />
-                <h3 className="text-xl font-semibold text-green-400">Low Risk</h3>
-              </div>
-              <ul className="space-y-2 text-gray-300">
-                <li>• Camera settings (ISO, aperture)</li>
-                <li>• Color profiles</li>
-                <li>• Image dimensions</li>
-                <li>• File format information</li>
-                <li>• Basic editing adjustments</li>
-              </ul>
-              <p className="text-sm text-green-300 mt-4">
-                <strong>Risk:</strong> Generally safe to share, minimal privacy impact
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Real-World Examples */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Real-World Examples</h2>
-          <div className="space-y-6">
-            {realWorldExamples.map((example, index) => (
-              <div key={index} className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gray-700 p-3 rounded-lg flex-shrink-0">
-                    {example.icon}
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-semibold">{example.scenario}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        example.risk === 'High' ? 'bg-red-600 text-white' :
-                        example.risk === 'Medium' ? 'bg-orange-600 text-white' :
-                        example.risk === 'Beneficial' ? 'bg-green-600 text-white' :
-                        'bg-gray-600 text-white'
-                      }`}>
-                        {example.risk} Risk
-                      </span>
-                    </div>
-                    
-                    <p className="text-gray-300 mb-3">{example.description}</p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <span className="text-sm text-gray-400">Metadata Type:</span>
-                        <p className="font-medium text-blue-400">{example.metadata}</p>
-                      </div>
-                      <div>
-                        <span className="text-sm text-gray-400">Potential Consequence:</span>
-                        <p className="font-medium">{example.consequence}</p>
-                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
 
-        {/* How ProofPix Helps */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">How ProofPix Helps</h2>
-          <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-xl p-8 border border-gray-700">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
-                  <Eye className="h-5 w-5 mr-3 text-blue-400" />
-                  Complete Metadata Visibility
-                </h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    Identifies all metadata types (EXIF, IPTC, XMP)
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    Highlights privacy-sensitive fields
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    Shows exact GPS coordinates on map
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    Displays technical camera settings
-                  </li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
-                  <Shield className="h-5 w-5 mr-3 text-green-400" />
-                  Privacy Protection Tools
-                </h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    Selective metadata removal options
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    Batch processing for multiple images
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    Professional export formats
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
-                    100% local processing (no uploads)
-                  </li>
-                </ul>
+          {/* How ProofPix Helps */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6">How ProofPix Helps</h2>
+            <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-xl p-8 border border-gray-700">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 flex items-center">
+                    <Eye className="h-5 w-5 mr-3 text-blue-400" />
+                    Complete Metadata Visibility
+                  </h3>
+                  <ul className="space-y-2 text-gray-300">
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      Identifies all metadata types (EXIF, IPTC, XMP)
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      Highlights privacy-sensitive fields
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      Shows exact GPS coordinates on map
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      Displays technical camera settings
+                    </li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 flex items-center">
+                    <Shield className="h-5 w-5 mr-3 text-green-400" />
+                    Privacy Protection Tools
+                  </h3>
+                  <ul className="space-y-2 text-gray-300">
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      Selective metadata removal options
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      Batch processing for multiple images
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      Professional export formats
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-3" />
+                      100% local processing (no uploads)
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Call to Action */}
-        <section className="mb-16">
-          <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 rounded-xl p-8 border border-gray-700">
-            <h2 className="text-2xl font-bold mb-4">Explore Your Photo Metadata</h2>
-            <p className="text-gray-300 mb-6">
-              Now that you understand what metadata is and why it matters, try ProofPix to see what your photos reveal.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={handleBackHome}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center"
-              >
-                <Camera className="h-5 w-5 mr-2" />
-                Analyze Your Photos
-              </button>
+          {/* Call to Action */}
+          <section className="mb-16">
+            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 rounded-xl p-8 border border-gray-700">
+              <h2 className="text-2xl font-bold mb-4">Explore Your Photo Metadata</h2>
+              <p className="text-gray-300 mb-6">
+                Now that you understand what metadata is and why it matters, try ProofPix to see what your photos reveal.
+              </p>
               
-              <button
-                onClick={() => navigate('/docs/privacy-guide')}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center"
-              >
-                <Shield className="h-5 w-5 mr-2" />
-                Learn Privacy Best Practices
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={handleBackHome}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center"
+                >
+                  <Camera className="h-5 w-5 mr-2" />
+                  Analyze Your Photos
+                </button>
+                
+                <button
+                  onClick={() => navigate('/docs/privacy-guide')}
+                  className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center"
+                >
+                  <Shield className="h-5 w-5 mr-2" />
+                  Learn Privacy Best Practices
+                </button>
+              </div>
             </div>
-          </div>
-        </section>
-      </div>
-    </EnterpriseLayout>
+          </section>
+        </div>
+      </EnterpriseLayout>
+    </StandardLayout>
   );
 };
 

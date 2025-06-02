@@ -106,6 +106,24 @@ const ALL_NAV_ITEMS: NavItem[] = [
     href: '/results'
   },
   {
+    id: 'ai_features',
+    label: 'AI Features',
+    icon: <Zap className="w-5 h-5" />,
+    href: '/ai-features',
+    badge: 'New',
+    badgeColor: 'bg-orange-500',
+    isProminent: true
+  },
+  {
+    id: 'trust_verification',
+    label: 'Trust Verification',
+    icon: <Shield className="w-5 h-5" />,
+    href: '/trust-verification',
+    badge: 'Verify',
+    badgeColor: 'bg-green-500',
+    isProminent: true
+  },
+  {
     id: 'batch_processing',
     label: 'Batch Processing',
     icon: <Database className="w-5 h-5" />,

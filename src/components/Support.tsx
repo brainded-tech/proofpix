@@ -297,7 +297,7 @@ export const Support: React.FC = () => {
             </p>
             </div>
             
-          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 shadow-sm">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -311,7 +311,7 @@ export const Support: React.FC = () => {
                     required
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-4 py-3 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     placeholder="Your full name"
                   />
                 </div>
@@ -327,7 +327,7 @@ export const Support: React.FC = () => {
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-4 py-3 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -344,7 +344,7 @@ export const Support: React.FC = () => {
                     required
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-4 py-3 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   >
                     {categories.map((category) => (
                       <option key={category.value} value={category.value}>
@@ -363,7 +363,7 @@ export const Support: React.FC = () => {
                     name="priority"
                     value={formData.priority}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-4 py-3 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   >
                     {priorities.map((priority) => (
                       <option key={priority.value} value={priority.value}>
@@ -385,7 +385,7 @@ export const Support: React.FC = () => {
                   required
                   value={formData.subject}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   placeholder="Brief description of your issue or question"
                 />
               </div>
@@ -401,12 +401,12 @@ export const Support: React.FC = () => {
                   rows={6}
                   value={formData.message}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
+                  className="w-full px-4 py-3 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
                   placeholder="Please provide as much detail as possible about your question or issue..."
                 />
             </div>
             
-              <div className="bg-slate-50 rounded-lg p-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
                   <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                   <div className="text-sm text-slate-600">
@@ -499,7 +499,7 @@ export const Support: React.FC = () => {
               View Professional Plans
             </button>
             <button
-              onClick={() => window.location.href = 'mailto:support@proofpix.com'}
+              onClick={() => window.location.href = 'mailto:support@proofpixapp.com'}
               className="border border-slate-600 hover:border-slate-500 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
             >
               <Mail className="w-5 h-5" />

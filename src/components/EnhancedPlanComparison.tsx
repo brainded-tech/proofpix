@@ -516,7 +516,7 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
                           {showTooltip === feature.name && (
                             <div 
                               ref={tooltipRef}
-                              className="absolute z-10 left-0 mt-2 p-3 bg-white rounded-lg shadow-lg border border-gray-200 w-64"
+                              className="absolute z-10 left-0 mt-2 p-3 bg-slate-700 rounded-lg shadow-lg border border-slate-600 w-64"
                             >
                               <h4 className="font-semibold mb-1">{feature.name}</h4>
                               <p className="text-sm text-gray-600">
@@ -564,8 +564,8 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
 
   // Plan selector component
   const PlanSelector = () => (
-    <div className="bg-gray-50 p-6 rounded-lg mb-8">
-      <h3 className="text-lg font-semibold mb-4">Select plans to compare</h3>
+    <div className="bg-slate-600 p-6 rounded-lg mb-8 border border-slate-500">
+      <h3 className="text-lg font-semibold mb-4 text-slate-100">Select plans to compare</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {plans.map(plan => (
           <div 
@@ -573,14 +573,14 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
             className={`
               border rounded-lg p-4 text-center cursor-pointer transition-all
               ${comparisonPlans.includes(plan.id) 
-                ? `border-2 ${plan.color ? `border-${plan.color}-500` : 'border-blue-500'} shadow-md` 
-                : 'border-gray-200 hover:border-gray-400'
+                ? `border-2 ${plan.color ? `border-${plan.color}-500` : 'border-blue-500'} shadow-md bg-slate-500` 
+                : 'border-slate-500 hover:border-slate-400 bg-slate-600'
               }
             `}
             onClick={() => handlePlanToggle(plan.id)}
           >
-            <div className="font-semibold mb-2">{plan.name}</div>
-            <div className="text-sm text-gray-600">${plan.price.monthly}</div>
+            <div className="font-semibold mb-2 text-slate-100">{plan.name}</div>
+            <div className="text-sm text-slate-300">${plan.price.monthly}</div>
           </div>
         ))}
       </div>
@@ -589,22 +589,15 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
 
   // Settings bar for comparison view
   const ComparisonSettings = () => (
-    <div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-lg shadow-sm mb-6">
-      <div className="flex items-center mb-4 md:mb-0">
-        <label className="flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showOnlyDifferences}
-            onChange={handleDifferenceToggle}
-            className="form-checkbox h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-          />
-          <span className="ml-2 text-gray-700">Show only differences</span>
-        </label>
-          </div>
-          
-      {/* Billing cycle toggle */}
+    <div className="flex flex-col md:flex-row justify-between items-center bg-slate-700 p-4 rounded-lg shadow-sm mb-6 border border-slate-600">
+      <div className="flex items-center space-x-4 mb-4 md:mb-0">
+        <h3 className="text-lg font-semibold text-slate-100">Compare Plans</h3>
+        <span className="text-sm text-slate-300">
+          {comparisonPlans.length} plan{comparisonPlans.length !== 1 ? 's' : ''} selected
+        </span>
+      </div>
       <div className="flex items-center rounded-lg border border-gray-200 p-1">
-            <button
+        <button
           onClick={() => handleBillingCycleChange('monthly')}
           className={`px-4 py-1 rounded-md text-sm ${
             billingCycle === 'monthly' 
@@ -613,8 +606,8 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
           }`}
         >
           Monthly
-            </button>
-            <button
+        </button>
+        <button
           onClick={() => handleBillingCycleChange('annual')}
           className={`px-4 py-1 rounded-md text-sm ${
             billingCycle === 'annual' 
@@ -661,10 +654,10 @@ const EnhancedPlanComparison: React.FC<EnhancedPlanComparisonProps> = ({
   };
 
   return (
-    <div ref={comparatorRef} className={`bg-white rounded-xl border border-gray-200 p-6 ${className}`}>
+    <div ref={comparatorRef} className={`bg-slate-700 rounded-xl border border-slate-600 p-6 ${className}`}>
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Compare Plans</h2>
-        <p className="text-gray-600">
+        <h2 className="text-2xl font-bold text-slate-100 mb-2">Compare Plans</h2>
+        <p className="text-slate-300">
           Select plans below to compare features and find the best option for your needs
         </p>
       </div>

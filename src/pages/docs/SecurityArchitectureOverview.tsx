@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, Lock, Eye, Server, Cloud, CheckCircle, XCircle, AlertTriangle, Users, Settings } from 'lucide-react';
+import { ArrowLeft, Shield, Lock, Eye, Server, Cloud, CheckCircle, XCircle, AlertTriangle, Users, Settings, BookOpen } from 'lucide-react';
 import DocumentationFooter from '../../components/DocumentationFooter';
 import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { BackToHomeButton } from '../../components/ui/BackToHomeButton';
 import { 
   EnterpriseButton, 
   EnterpriseCard, 
@@ -29,6 +30,26 @@ const SecurityArchitectureOverview: React.FC = () => {
       description="Comprehensive security framework and implementation details"
       maxWidth="6xl"
     >
+      {/* Navigation Header */}
+      <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+        <div className="flex items-center space-x-4">
+          <BackToHomeButton variant="minimal" />
+          <div className="h-6 w-px bg-gray-300"></div>
+          <button
+            onClick={() => navigate('/docs')}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <BookOpen className="h-4 w-4" />
+            <span>Documentation</span>
+          </button>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Shield className="h-5 w-5 text-blue-600" />
+          <h1 className="text-2xl font-bold text-gray-900">Security Architecture</h1>
+        </div>
+        <div></div> {/* Spacer for centering */}
+      </div>
+
       {/* Header */}
       <EnterpriseSection size="sm">
         <EnterpriseButton

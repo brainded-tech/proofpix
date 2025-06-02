@@ -228,10 +228,6 @@ export const FAQ: React.FC = () => {
                 </li>
                 <li className="relative">
                   <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
-                  <strong>Privacy-focused sponsorships:</strong> Partnerships with relevant tools, completely separate from your photo processing
-                </li>
-                <li className="relative">
-                  <span className="absolute left-[-15px] text-blue-400 font-bold">•</span>
                   <strong>No data selling:</strong> We never sell user data or photo information
                 </li>
                 <li className="relative">

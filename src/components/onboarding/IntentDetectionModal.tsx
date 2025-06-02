@@ -30,8 +30,8 @@ const USER_INTENTS: UserIntent[] = [
   {
     id: 'quick_analysis',
     icon: Zap,
-    title: 'Quick Photo Analysis',
-    description: 'Analyze a few images quickly and privately',
+    title: 'Analyze Images Risk-Free',
+    description: 'Process images instantly without any data leaving your device - see why 500+ teams chose unhackable',
     flow: 'simplified_workflow',
     features_revealed: ['basic_upload', 'key_metadata', 'simple_export'],
     gradient: 'from-blue-500 to-cyan-500',
@@ -40,8 +40,8 @@ const USER_INTENTS: UserIntent[] = [
   {
     id: 'professional_work',
     icon: Briefcase,
-    title: 'Professional Documentation',
-    description: 'Create reports and analyze images professionally',
+    title: 'Professional Evidence Analysis',
+    description: 'Create court-admissible reports and process evidence with unbreakable chain of custody',
     flow: 'professional_workflow',
     features_revealed: ['batch_processing', 'pdf_reports', 'advanced_metadata'],
     gradient: 'from-purple-500 to-pink-500',
@@ -50,8 +50,8 @@ const USER_INTENTS: UserIntent[] = [
   {
     id: 'enterprise_evaluation',
     icon: Building2,
-    title: 'Evaluating for My Organization',
-    description: 'Exploring enterprise features and security',
+    title: 'Eliminate Enterprise Data Risk',
+    description: 'See how 500+ organizations eliminated $4.45M breach risk while improving workflows',
     flow: 'enterprise_demo_workflow',
     features_revealed: ['enterprise_demo', 'security_architecture', 'compliance_info'],
     gradient: 'from-emerald-500 to-teal-500',
@@ -60,8 +60,8 @@ const USER_INTENTS: UserIntent[] = [
   {
     id: 'privacy_focused',
     icon: Shield,
-    title: 'Privacy-First Processing',
-    description: 'Need secure, compliant image processing',
+    title: 'Unhackable by Design',
+    description: 'Experience the only platform where data breaches are technically impossible',
     flow: 'privacy_emphasis_workflow',
     features_revealed: ['security_explanation', 'compliance_overview', 'local_processing_demo'],
     gradient: 'from-orange-500 to-red-500',

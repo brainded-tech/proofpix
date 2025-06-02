@@ -378,19 +378,6 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
 
             {/* Metadata Analysis Section */}
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-slate-100 flex items-center">
-                  <Settings className="h-5 w-5 text-emerald-400 mr-2" />
-                  Metadata Analysis
-                </h2>
-                <button
-                  onClick={handleExportJSON}
-                  className="text-xs text-slate-400 hover:text-slate-200 bg-slate-700/50 hover:bg-slate-600/50 px-3 py-1 rounded-full transition-colors flex items-center space-x-1"
-                >
-                  <FileText className="h-3 w-3" />
-                  <span>Export JSON</span>
-                </button>
-              </div>
               <MetadataPanel metadata={currentImage.metadata} originalFile={currentImage.file} />
             </div>
           </div>
@@ -523,7 +510,7 @@ export const ProcessingInterface: React.FC<ProcessingInterfaceProps> = ({
             {/* Bottom Footer */}
             <div className="border-t border-slate-700 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between">
               <p className="text-sm text-slate-400">
-                © 2024 ProofPix. All rights reserved. • Privacy-focused image analysis.
+                © 2025 ProofPix. All rights reserved. • Privacy-focused image analysis.
               </p>
               <div className="flex items-center space-x-6 mt-4 md:mt-0">
                 <button onClick={() => navigate('/privacy')} className="text-sm text-slate-400 hover:text-white transition-colors">

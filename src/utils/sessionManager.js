@@ -176,16 +176,19 @@ export class SessionManager {
       const hostname = window.location.hostname;
       const isLocalhost = hostname === 'localhost' || 
                          hostname === '127.0.0.1' || 
-                         hostname.includes('localhost');
+                         hostname.includes('localhost') ||
+                         hostname.includes('127.0.0.1') ||
+                         process.env.NODE_ENV === 'development';
       
       console.log(`🔍 SessionManager Debug:`, {
         actionType,
         hostname,
         isLocalhost,
+        nodeEnv: process.env.NODE_ENV,
         fullUrl: window.location.href
       });
       
-      if (isLocalhost) {
+      if (isLocalhost || process.env.NODE_ENV === 'development') {
         console.log(`🚀 Local development bypass: Allowing ${actionType}`);
         return true;
       }
@@ -204,6 +207,10 @@ export class SessionManager {
         return session.limits.dailyPhotos === Infinity || usage.uploads < session.limits.dailyPhotos;
       case 'batch':
         return session.limits.batchSize > 1;
+      case 'ai_demo':
+        return session.limits.batchSize > 1; // AI demo requires paid plan
+      case 'ai_features':
+        return session.limits.aiFeatures === true;
       case 'priority':
         return session.limits.priority === true;
       case 'advanced_export':
@@ -226,6 +233,10 @@ export class SessionManager {
         return true; // Free users can upload (with daily limits handled elsewhere)
       case 'batch':
         return false; // Batch processing requires payment
+      case 'ai_demo':
+        return false; // AI demo requires payment
+      case 'ai_features':
+        return false; // AI features require payment
       case 'priority':
         return false; // Priority processing requires payment
       case 'advanced_export':
@@ -271,6 +282,16 @@ export class SessionManager {
         title: 'Batch Processing - Premium Feature',
         description: 'Process multiple images simultaneously with advanced export options.',
         minPlan: 'Day Pass ($2.99)'
+      },
+      ai_demo: {
+        title: 'AI Document Intelligence - Premium Feature',
+        description: 'Experience advanced AI-powered document analysis and intelligence features.',
+        minPlan: 'Pro Plan ($9.99/month)'
+      },
+      ai_features: {
+        title: 'AI Features - Premium Feature',
+        description: 'Access AI-powered analysis, smart categorization, and intelligent insights.',
+        minPlan: 'Pro Plan ($9.99/month)'
       },
       advanced_export: {
         title: 'Advanced Export - Premium Feature',
