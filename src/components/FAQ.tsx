@@ -257,42 +257,48 @@ export const FAQ: React.FC = () => {
   };
 
   return (
-    <ConsistentLayout
-      showHero
-      title="Your Questions, Answered"
-      description="Everything you need to know about unhackable photo analysis and why privacy-first actually works better."
-      maxWidth="7xl"
-    >
-        {/* Quick Start Section */}
-      <div className="bg-emerald-900/20 border border-emerald-500/30 rounded-2xl p-8 mb-12 text-center">
-        <h3 className="text-emerald-400 text-xl font-bold mb-4 flex items-center justify-center gap-3">
-            🚀 New to ProofPix?
-          </h3>
-        <p className="text-emerald-300 mb-6">
-            Try it now! Upload a photo and see your metadata in seconds. No account required, completely private.
+    <ConsistentLayout>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Your Questions, Answered
+          </h1>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+            Everything you need to know about unhackable photo analysis and why privacy-first actually works better.
           </p>
-          <button
-          onClick={() => navigate('/')}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-          >
-            Start Now - It's Free
-          </button>
         </div>
 
-      {/* Search and Filter */}
-      <div className="mb-12">
-        <div className="max-w-2xl mx-auto mb-8">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search questions..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            />
+        {/* Quick Start Section */}
+        <div className="bg-emerald-900/20 border border-emerald-500/30 rounded-2xl p-8 mb-12 text-center">
+          <h3 className="text-emerald-400 text-xl font-bold mb-4 flex items-center justify-center gap-3">
+              🚀 New to ProofPix?
+            </h3>
+          <p className="text-emerald-300 mb-6">
+              Try it now! Upload a photo and see your metadata in seconds. No account required, completely private.
+            </p>
+            <button
+            onClick={() => navigate('/')}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Start Now - It's Free
+            </button>
           </div>
-        </div>
+
+        {/* Search and Filter */}
+        <div className="mb-12">
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search questions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+              />
+            </div>
+          </div>
 
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-2">
@@ -311,157 +317,158 @@ export const FAQ: React.FC = () => {
             </button>
           ))}
         </div>
-              </div>
+        </div>
 
-              {/* FAQ Items */}
-      <div className="max-w-4xl mx-auto">
-        {filteredFAQs.length === 0 ? (
-          <div className="text-center py-12">
-            <HelpCircle className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No questions found</h3>
-            <p className="text-slate-600">Try adjusting your search or category filter.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {filteredFAQs.map((faq) => (
-              <div
-                key={faq.id}
-                className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow"
-              >
-                <button
-                  onClick={() => toggleExpanded(faq.id)}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
+        {/* FAQ Items */}
+        <div className="max-w-4xl mx-auto">
+          {filteredFAQs.length === 0 ? (
+            <div className="text-center py-12">
+              <HelpCircle className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-slate-900 mb-2">No questions found</h3>
+              <p className="text-slate-600">Try adjusting your search or category filter.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredFAQs.map((faq) => (
+                <div
+                  key={faq.id}
+                  className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  <h3 className="text-lg font-semibold text-slate-900 pr-4">
-                    {faq.question}
-                  </h3>
-                  {expandedItems.has(faq.id) ? (
-                    <ChevronUp className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                  )}
-                </button>
-                
-                {expandedItems.has(faq.id) && (
-                  <div className="px-6 pb-4">
-                    <div className="border-t border-slate-200 pt-4">
-                      <p className="text-slate-600 leading-relaxed">
-                        {faq.answer}
-                      </p>
+                  <button
+                    onClick={() => toggleExpanded(faq.id)}
+                    className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors"
+                  >
+                    <h3 className="text-lg font-semibold text-slate-900 pr-4">
+                      {faq.question}
+                    </h3>
+                    {expandedItems.has(faq.id) ? (
+                      <ChevronUp className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                    )}
+                  </button>
+                  
+                  {expandedItems.has(faq.id) && (
+                    <div className="px-6 pb-4">
+                      <div className="border-t border-slate-200 pt-4">
+                        <p className="text-slate-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      {/* Quick Actions */}
-      <div className="mt-20">
-        <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-12">
+        {/* Quick Actions */}
+        <div className="mt-20">
+          <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-12">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+                Still have questions?
+              </h2>
+              <p className="text-lg text-slate-600">
+                Our support team is here to help you get the most out of ProofPix.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="text-center p-6 bg-white rounded-xl border border-slate-200">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <HelpCircle className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="font-semibold text-slate-900 mb-2">Contact Support</h3>
+                <p className="text-slate-600 text-sm mb-4">Get help from our support team</p>
+                <button
+                  onClick={() => navigate('/support')}
+                  className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                >
+                  Contact Support →
+                </button>
+              </div>
+
+              <div className="text-center p-6 bg-white rounded-xl border border-slate-200">
+                <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Camera className="w-6 h-6 text-emerald-600" />
+                </div>
+                <h3 className="font-semibold text-slate-900 mb-2">Try ProofPix</h3>
+                <p className="text-slate-600 text-sm mb-4">Start analyzing your photos right now</p>
+                <button
+                  onClick={() => navigate('/')}
+                  className="text-emerald-600 hover:text-emerald-700 font-medium text-sm"
+                >
+                  Start Analyzing →
+                </button>
+              </div>
+
+              <div className="text-center p-6 bg-white rounded-xl border border-slate-200">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-6 h-6 text-purple-600" />
+                </div>
+                <h3 className="font-semibold text-slate-900 mb-2">Learn More</h3>
+                <p className="text-slate-600 text-sm mb-4">Read about ProofPix and photo privacy</p>
+                <button
+                  onClick={() => navigate('/about')}
+                  className="text-purple-600 hover:text-purple-700 font-medium text-sm"
+                >
+                  About ProofPix →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Popular Resources */}
+        <div className="mt-16">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-              Still have questions?
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
+              Popular Resources
             </h2>
-            <p className="text-lg text-slate-600">
-              Our support team is here to help you get the most out of ProofPix.
+            <p className="text-slate-600">
+              Quick links to commonly requested information
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="text-center p-6 bg-white rounded-xl border border-slate-200">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <HelpCircle className="w-6 h-6 text-blue-600" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">Contact Support</h3>
-              <p className="text-slate-600 text-sm mb-4">Get help from our support team</p>
-              <button
-                onClick={() => navigate('/support')}
-                className="text-blue-600 hover:text-blue-700 font-medium text-sm"
-              >
-                Contact Support →
-              </button>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <button
+              onClick={() => navigate('/pricing')}
+              className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
+            >
+              <CreditCard className="w-6 h-6 text-blue-600 mb-2" />
+              <h3 className="font-medium text-slate-900 mb-1">Pricing</h3>
+              <p className="text-sm text-slate-600">Free and professional options</p>
+            </button>
 
-            <div className="text-center p-6 bg-white rounded-xl border border-slate-200">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Camera className="w-6 h-6 text-emerald-600" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">Try ProofPix</h3>
-              <p className="text-slate-600 text-sm mb-4">Start analyzing your photos right now</p>
-              <button
-                onClick={() => navigate('/')}
-                className="text-emerald-600 hover:text-emerald-700 font-medium text-sm"
-              >
-                Start Analyzing →
-              </button>
-            </div>
+            <button
+              onClick={() => navigate('/')}
+              className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
+            >
+              <Camera className="w-6 h-6 text-emerald-600 mb-2" />
+              <h3 className="font-medium text-slate-900 mb-1">Try ProofPix</h3>
+              <p className="text-sm text-slate-600">Analyze your photos now</p>
+            </button>
 
-            <div className="text-center p-6 bg-white rounded-xl border border-slate-200">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-6 h-6 text-purple-600" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">Learn More</h3>
-              <p className="text-slate-600 text-sm mb-4">Read about ProofPix and photo privacy</p>
-              <button
-                onClick={() => navigate('/about')}
-                className="text-purple-600 hover:text-purple-700 font-medium text-sm"
-              >
-                About ProofPix →
-              </button>
-            </div>
+            <button
+              onClick={() => navigate('/about')}
+              className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
+            >
+              <Users className="w-6 h-6 text-purple-600 mb-2" />
+              <h3 className="font-medium text-slate-900 mb-1">About Us</h3>
+              <p className="text-sm text-slate-600">Learn about our mission</p>
+            </button>
+
+            <button
+              onClick={() => navigate('/privacy')}
+              className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
+            >
+              <Lock className="w-6 h-6 text-red-600 mb-2" />
+              <h3 className="font-medium text-slate-900 mb-1">Privacy Policy</h3>
+              <p className="text-sm text-slate-600">How we protect your privacy</p>
+            </button>
           </div>
-        </div>
-        </div>
-
-      {/* Popular Resources */}
-      <div className="mt-16">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">
-            Popular Resources
-          </h2>
-          <p className="text-slate-600">
-            Quick links to commonly requested information
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <button
-            onClick={() => navigate('/pricing')}
-            className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
-          >
-            <CreditCard className="w-6 h-6 text-blue-600 mb-2" />
-            <h3 className="font-medium text-slate-900 mb-1">Pricing</h3>
-            <p className="text-sm text-slate-600">Free and professional options</p>
-          </button>
-
-          <button
-            onClick={() => navigate('/')}
-            className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
-          >
-            <Camera className="w-6 h-6 text-emerald-600 mb-2" />
-            <h3 className="font-medium text-slate-900 mb-1">Try ProofPix</h3>
-            <p className="text-sm text-slate-600">Analyze your photos now</p>
-          </button>
-
-          <button
-            onClick={() => navigate('/about')}
-            className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
-          >
-            <Users className="w-6 h-6 text-purple-600 mb-2" />
-            <h3 className="font-medium text-slate-900 mb-1">About Us</h3>
-            <p className="text-sm text-slate-600">Learn about our mission</p>
-          </button>
-
-          <button
-            onClick={() => navigate('/privacy')}
-            className="p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow text-left"
-          >
-            <Lock className="w-6 h-6 text-red-600 mb-2" />
-            <h3 className="font-medium text-slate-900 mb-1">Privacy Policy</h3>
-            <p className="text-sm text-slate-600">How we protect your privacy</p>
-          </button>
         </div>
       </div>
     </ConsistentLayout>
