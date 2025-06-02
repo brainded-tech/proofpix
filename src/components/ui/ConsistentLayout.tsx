@@ -1,6 +1,6 @@
 import React from 'react';
-import { StandardHeader } from './StandardHeader';
-import { EnhancedFooter } from '../EnhancedFooter';
+import { UnifiedHeader } from './UnifiedHeader';
+import { UnifiedFooter } from './UnifiedFooter';
 
 interface ConsistentLayoutProps {
   children: React.ReactNode;
@@ -17,13 +17,13 @@ export const ConsistentLayout: React.FC<ConsistentLayoutProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col">
-      {showHeader && <StandardHeader />}
+      {showHeader && <UnifiedHeader />}
       
       <main className={`flex-1 ${className}`}>
         {children}
       </main>
       
-      {showFooter && <EnhancedFooter />}
+      {showFooter && <UnifiedFooter />}
     </div>
   );
 }; 

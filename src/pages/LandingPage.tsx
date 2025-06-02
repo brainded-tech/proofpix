@@ -26,6 +26,8 @@ import {
   Timer,
   Target
 } from 'lucide-react';
+import { UnifiedHeader } from '../components/ui/UnifiedHeader';
+import { UnifiedFooter } from '../components/ui/UnifiedFooter';
 
 export const LandingPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -275,43 +277,8 @@ export const LandingPage: React.FC = () => {
         <div className="absolute bottom-32 left-1/4 w-1.5 h-1.5 bg-purple-400/30 rounded-full animate-ping delay-3000"></div>
       </div>
 
-      {/* Enhanced Navigation */}
-      <nav className="relative z-50 bg-slate-900/90 backdrop-blur-xl border-b border-slate-700/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <Link to="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
-                <Shield className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                ProofPix
-              </span>
-            </Link>
-            
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/features" className="text-slate-300 hover:text-white transition-colors relative group">
-                Features
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all group-hover:w-full"></span>
-              </Link>
-              <Link to="/enterprise" className="text-slate-300 hover:text-white transition-colors relative group">
-                Enterprise
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all group-hover:w-full"></span>
-              </Link>
-              <Link to="/pricing" className="text-slate-300 hover:text-white transition-colors relative group">
-                Pricing
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all group-hover:w-full"></span>
-              </Link>
-              <Link 
-                to="/auth/register" 
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-6 py-2.5 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>Get Started</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Unified Header */}
+      <UnifiedHeader />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Enhanced Hero Section */}
@@ -563,6 +530,9 @@ export const LandingPage: React.FC = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Unified Footer */}
+      <UnifiedFooter />
 
       {showDemoPreview && <DemoPreview />}
   </div>
