@@ -72,7 +72,7 @@ export const UnifiedHeader: React.FC<UnifiedHeaderProps> = ({
       dropdown: [
         { label: 'Contact Sales', href: '/contact?type=sales', icon: Phone },
         { label: 'Support', href: '/contact?type=support', icon: Mail },
-        { label: 'Schedule Demo', href: 'https://calendly.com/proofpix/demo', icon: Users, external: true },
+        { label: 'Schedule Demo', href: 'https://www.calendly.com/proofpix-enterprise', icon: Users, external: true },
       ]
     }
   ];
