@@ -24,6 +24,7 @@ const { securityMonitoring } = require('./middleware/securityMonitoring');
 // Import routes
 const authRoutes = require('./routes/auth');
 const paymentRoutes = require('./routes/payments');
+const stripeRoutes = require('./routes/stripe');
 const apiKeyRoutes = require('./routes/apiKeys');
 const securityRoutes = require('./routes/security');
 const fileRoutes = require('./routes/files');
@@ -237,6 +238,7 @@ app.get('/security/scan', async (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/stripe', stripeRoutes);
 app.use('/api/keys', apiKeyRoutes);
 app.use('/api/security', securityRoutes);
 app.use('/api/files', fileRoutes);
