@@ -94,7 +94,7 @@ export const WebhookManager: React.FC = () => {
           url: 'https://api.insurance-co.com/webhooks/proofpix',
           events: ['file.processed', 'batch.completed'],
           isActive: true,
-          secret: 'whsec_1234567890abcdef',
+          secret: 'whsec_your_webhook_secret_here',
           headers: { 'Authorization': 'Bearer token123' },
           retryPolicy: {
             maxRetries: 3,
@@ -113,7 +113,7 @@ export const WebhookManager: React.FC = () => {
           url: 'https://legal-system.law-firm.com/api/evidence',
           events: ['file.uploaded', 'file.analyzed'],
           isActive: true,
-          secret: 'whsec_abcdef1234567890',
+          secret: 'whsec_your_webhook_secret_here',
           headers: {},
           retryPolicy: {
             maxRetries: 5,

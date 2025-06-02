@@ -246,7 +246,7 @@ class StripeIntegrationService {
         accountId: 'acct_' + Math.random().toString(36).substr(2, 16),
         apiKeys: {
           publishable: 'pk_live_' + Math.random().toString(36).substr(2, 24),
-          secret: 'sk_live_' + Math.random().toString(36).substr(2, 24)
+          secret: 'sk_live_your_stripe_secret_key_here'
         },
         setupUrl: '/enterprise/setup-complete'
       };

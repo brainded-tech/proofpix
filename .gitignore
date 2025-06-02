@@ -1,42 +1,31 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Dependencies
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables
+# Production builds
+build/
+dist/
+.next/
+out/
+
+# Environment variables and secrets
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.backup
+*.env
 
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS generated files
-Thumbs.db
-.DS_Store
+# Database
+*.db
+*.sqlite
+*.sqlite3
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -44,7 +33,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # Runtime data
-pids
+pids/
 *.pid
 *.seed
 *.pid.lock
@@ -56,27 +45,9 @@ coverage/
 # nyc test coverage
 .nyc_output
 
-# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
-
-# node-waf configuration
-.lock-wscript
-
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
-
 # Dependency directories
 node_modules/
 jspm_packages/
-
-# TypeScript v1 declaration files
-typings/
-
-# TypeScript cache
-*.tsbuildinfo
 
 # Optional npm cache directory
 .npm
@@ -99,10 +70,6 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-.env.test
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
@@ -116,9 +83,7 @@ dist
 
 # Gatsby files
 .cache/
-# Comment in the public line in if your project uses Gatsby and not Next.js
-# https://nextjs.org/blog/next-9-1#public-directory-support
-# public
+public
 
 # Storybook build outputs
 .out
@@ -130,940 +95,119 @@ temp/
 
 # Editor directories and files
 .vscode/
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.idea/
+*.swp
+*.swo
+*~
 
-# Development server files (exclude specific files but allow main server.js)
-new_server.js
-rest_of_server.js
-server.log
-dev-server.log
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# INTERNAL DOCUMENTATION - DO NOT PUSH TO PUBLIC REPO
+INTERNAL_*.md
+*_INTERNAL.md
+SENIOR_DEV_*.md
+ENTERPRISE_*.md
+TEAM_COMMUNICATIONS_*.md
+EXECUTIVE_TEAM_*.md
+CMO_*.md
+SALES_*.md
+DEPLOYMENT_STRATEGY_*.md
+PHASE_*_*.md
+PRIORITY_*_*.md
+COMPREHENSIVE_*.md
+PROOFPIX_ENTERPRISE_*.md
+PROOFPIX_LANDING_*.md
+HYBRID_*.md
+AI_DOCUMENT_*.md
+COLLABORATION_MODE_*.md
+PRICING_PAGE_*.md
+MODE_SWITCHING_*.md
+ERROR_FIXES_*.md
+UI_ENHANCEMENT_*.md
+FIXES_SUMMARY.md
+AUTHENTICATION_FIX_*.md
+OPEN_SOURCE_*.md
+CODEBASE_QUICK_*.md
+claude_handoff_*.md
+ENTERPRISE_AUTH_*.md
+ENTERPRISE_TESTING_*.md
+ENTERPRISE_AI_*.md
+ENTERPRISE_SALES_*.md
+COMPLETE_REVENUE_*.md
+FINAL_CHECKOUT_*.md
+STRIPE_MANUAL_*.md
+STRIPE_INTEGRATION_*.md
+STRIPE_PRODUCT_*.md
+STRIPE_SETUP_*.md
+INTEGRATION_GUIDE.md
+CHECKOUT_DEBUG_GUIDE.md
+RAILWAY_STRIPE_*.md
+STRIPE_DEPLOYMENT_*.md
+ANALYTICS_FIX_*.md
+CHECKOUT_FIX_*.md
+PRICING_CONSISTENCY_*.md
+COMPREHENSIVE_LINK_*.md
+COMPREHENSIVE_ISSUE_*.md
+COMPREHENSIVE_FIXES_*.md
+NETLIFY_DEPLOYMENT_*.md
+TESTING_STATUS_*.md
+OAUTH_PRODUCTION_*.md
+DEPLOYMENT_ARCHITECTURE_*.md
+HYBRID_SECURITY_*.md
+HYBRID_IMPLEMENTATION_*.md
+HYBRID_SUMMARY.md
+PRODUCTION_DEPLOYMENT_GUIDE.md
+GOOGLE_OAUTH_SCOPES_*.md
+RENDER_DEPLOYMENT_GUIDE.md
+RENDER_CHECKLIST.md
+NETLIFY_ENV_UPDATE.md
+
+# Internal scripts and configs
+deploy-stripe-to-railway.sh
+deploy-to-render.sh
+disable-analytics.sh
+fix-checkout.sh
+test-stripe-config.js
+test-routes-manual.js
+test-links.js
+railway.json
+railway.toml
+nixpacks.toml
+.railwayignore
+render.yaml
+
+# Deployment configs with secrets
+deployment-config/
+scripts/setup-*.sh
+
+# Test files with potential secrets
+backend/tests/setup.js
+
+# Backup files
+*.backup
+src/config/app.config.js.backup
+src/components/*.backup
+
+# Mobile development (if not ready for public)
+mobile/
+
+# Data files that might contain sensitive info
+data/
+
+# Coverage reports
+coverage/
+
+# Temporary documentation
+cursor_technical_documentation_confirmation.md
+CODEBASE.md
+SECURITY_AUDIT_SUMMARY.md
 
 # Netlify
 .netlify/
-
-# Railway
-.railway/
-
-# Testing
-test-results/
-playwright-report/
-playwright/.cache/
-
-# Internal documentation and development files
-internal-docs/
-development-files/
-archived-files/
-deployment-docs/
-
-# Generated PDFs and test files
-*.pdf
-test-*.js
-temp_*.js
-
-# Deployment configuration files
-.railwayignore
-railway.json
-netlify.toml.backup
-Procfile
-render.yaml
-
-# IDE workspace files
-*.code-workspace
-
-# Compressed files
-*.tar.gz
-*.zip
-
-# Temporary files
-temp_*
-*.tmp
-
-# Build artifacts
-build/
-dist/
-
-# Cache directories
-.cache/
-.parcel-cache/
-
-# Internal documentation files (moved to deployment-docs)
-TECH_DOCUMENTATION_*.md
-DOCUMENTATION_PERFECTION_*.md
-PRIVACY_COMPLIANCE_*.md
-UX_TEAM_*.md
-CODEBASE.md
-*_IMPLEMENTATION_*.md
-*_SUMMARY.md
-*_TASKS.md
-*_PROMPT.md
-*_BRIEFING.md
-*_STATUS.md
-
-# Development and test scripts
-deploy-to-netlify.sh
-carrd-footer.html
-generate-template-previews.js
-
-# Stripe development files
-stripe/
-stripe-cli.tar.gz
-setup-stripe-products.sh
-STRIPE_*.md
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# AI Training Data
-/data/training/
-/data/models/
-/data/proprietary/
-*.model
-*.weights
-*.checkpoint
-*.pkl
-*.joblib
-
-# Custom AI Model Configurations
-/config/ai/
-/config/models/
-ai-config.json
-model-config.json
-training-config.json
-
-# Industry-Specific AI Models
-/src/ai/industry/
-/backend/ai/industry/
-legal-ai.js
-healthcare-ai.js
-financial-ai.js
-
-# Advanced Analytics Algorithms
-/src/analytics/proprietary/
-/backend/analytics/proprietary/
-predictive-*.js
-fraud-detection-*.js
-custom-classification-*.js
-
-# AI API Keys and Secrets
-ai-keys.env
-model-secrets.env
-training-secrets.env
-
-# Proprietary Documentation
-AI_PROPRIETARY_*.md
-MODEL_TRAINING_*.md
-ALGORITHM_SECRETS_*.md
-COMPETITIVE_ADVANTAGE_*.md
-
-# Customer-Specific AI Models
-/models/customers/
-/ai/custom/
-customer-*.model
-enterprise-*.weights
-
-# Revenue-Critical AI Components
-/src/components/ai/premium/
-/src/components/ai/enterprise/
-/backend/routes/ai/premium/
-/backend/routes/ai/enterprise/
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**
-
-# ===== PROPRIETARY AI/ML COMPONENTS (HYBRID MODEL) =====
-# These files contain proprietary AI algorithms and models
-# and are kept private to maintain competitive advantage
-
-# AI Model Files
-/src/ai/models/
-/src/ai/training/
-/src/ai/algorithms/
-/backend/ai/models/
-/backend/ai/training/
-/backend/ml/
-
-# Proprietary AI Services
-/src/services/proprietary/
-/backend/services/proprietary/
-**/proprietary/**

@@ -223,7 +223,7 @@ async function triggerEnterpriseSetup(session) {
     // Generate enterprise account credentials
     const accountId = `ent_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const apiKey = `pk_live_${Math.random().toString(36).substr(2, 32)}`;
-    const secretKey = `sk_live_${Math.random().toString(36).substr(2, 32)}`;
+    const secretKey = `sk_live_your_stripe_secret_key_here`;
     
     // In a real implementation, you would:
     // 1. Create database records for the enterprise account

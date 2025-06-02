@@ -1,0 +1,3 @@
+    });
+    expect(screen.getByText("Compliance Score")).toBeInTheDocument();
+    expect(screen.getByText("Standards Checked")).toBeInTheDocument();
