@@ -604,3 +604,5 @@ export const DocumentationIndex: React.FC = () => {
     </ConsistentLayout>
   );
 };
+
+export default DocumentationIndex;

@@ -225,6 +225,13 @@ const ScrollToTop: React.FC = () => {
 // import PerformanceOptimizationDashboard from './components/optimization/PerformanceOptimizationDashboard';
 // import AIMLPlatformDashboard from './components/ai/AIMLPlatformDashboard';
 
+// Plausible Analytics type declaration
+declare global {
+  interface Window {
+    plausible?: (event: string, options?: any) => void;
+  }
+}
+
 export function App() {
   return (
     <TestAuthProvider>
@@ -788,9 +795,10 @@ const NotFoundPage: React.FC = () => (
       </p>
       
       <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-        <EnterpriseButton onClick={() => window.location.href = '/'}>
-          Start Analyzing Photos
-        </EnterpriseButton>
+        <a href="https://upload.proofpixapp.com" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+           onClick={() => window.plausible && window.plausible('Nav CTA Click')}>
+          Analyze Photos Risk-Free
+        </a>
         <EnterpriseButton 
           variant="secondary" 
           onClick={() => window.location.href = '/pricing'}

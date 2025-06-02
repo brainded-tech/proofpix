@@ -5,39 +5,43 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#1f2937" />
-    <meta name="color-scheme" content="dark" />
-    <meta
-      name="description"
-      content="ProofPix - Extract EXIF metadata from your images with complete privacy. All processing happens locally in your browser. Open source and auditable."
-    />
-    <meta name="keywords" content="EXIF, metadata, privacy, image, photo, GPS, camera, local processing, open source, auditable" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="ProofPix - Technically unhackable photo analysis. Extract metadata, verify authenticity, and generate court-admissible reports without uploading photos to servers. Zero data breach risk." />
+    <meta name="keywords" content="photo analysis, metadata extraction, unhackable, privacy-first, court-admissible, legal evidence, insurance fraud detection, HIPAA compliant, enterprise security" />
+    <meta name="author" content="ProofPix" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="ProofPix - Technically Unhackable Photo Analysis" />
+    <meta property="og:description" content="Extract metadata and verify photo authenticity without uploading to servers. Zero data breach risk for legal, insurance, and healthcare professionals." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://proofpixapp.com" />
+    <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ProofPix - Technically Unhackable Photo Analysis" />
+    <meta name="twitter:description" content="Extract metadata and verify photo authenticity without uploading to servers. Zero data breach risk." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/logo512.png" />
     
     <!-- PWA Manifest -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/proofpix-toplogo.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <!-- Privacy-Focused Analytics - Plausible -->
-    <script>
-      // Auto-detect domain for Plausible
-      const domain = window.location.hostname === 'localhost' ? 'localhost:3001' : 'upload.proofpixapp.com';
-      const script = document.createElement('script');
-      script.defer = true;
-      script.setAttribute('data-domain', domain);
-      script.src = 'https://plausible.io/js/script.file-downloads.hash.outbound-links.tagged-events.js';
-      document.head.appendChild(script);
-    </script>
+    <script defer data-domain="proofpixapp.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.tagged-events.js"></script>
     <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
     
-    <title>ProofPix - Privacy-Focused Open Source EXIF Metadata Extraction</title>
+    <title>ProofPix - Technically Unhackable Photo Analysis | Zero Data Breach Risk</title>
   </head>
   <body>
     <noscript>
-      <div style="padding: 20px; text-align: center; color: #333;">
+      <div style="padding: 20px; text-align: center; color: #333; font-family: Arial, sans-serif;">
         <h2>JavaScript Required</h2>
-        <p>ProofPix requires JavaScript to process your images locally in your browser.</p>
-        <p>Please enable JavaScript to use this privacy-focused EXIF metadata tool.</p>
+        <p>ProofPix requires JavaScript to provide unhackable photo analysis in your browser.</p>
+        <p>Please enable JavaScript to experience zero-risk photo metadata extraction.</p>
       </div>
     </noscript>
     <div id="root"></div>
