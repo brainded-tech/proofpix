@@ -37,6 +37,9 @@ const API_CONFIG = {
   retryDelay: 1000
 };
 
+// Named export for API_CONFIG
+export { API_CONFIG };
+
 // Utility function to build full API URLs
 export const buildApiUrl = (endpoint) => {
   const baseUrl = API_CONFIG.getBaseUrl();
