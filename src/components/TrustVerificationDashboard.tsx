@@ -1061,7 +1061,7 @@ ${info.benefits.map(item => `• ${item}`).join('\n')}
 
 Would you like to be notified when this audit is completed?`;
 
-      if (confirm(message)) {
+      if (window.confirm(message)) {
         handleNotifyMe(name);
       }
     } else {

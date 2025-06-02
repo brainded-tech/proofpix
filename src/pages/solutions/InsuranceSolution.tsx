@@ -10,7 +10,10 @@ import {
   Eye,
   Clock,
   Users,
-  BarChart3
+  BarChart3,
+  Search,
+  FileText,
+  Camera
 } from 'lucide-react';
 import { ConsistentLayout } from '../../components/ui/ConsistentLayout';
 import { 
