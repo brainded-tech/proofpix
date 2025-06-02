@@ -13,7 +13,7 @@ import {
   UserCheck,
   Database
 } from 'lucide-react';
-import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { ConsistentLayout } from '../../components/ui/ConsistentLayout';
 import { 
   EnterpriseButton, 
   EnterpriseCard, 
@@ -67,7 +67,7 @@ const HealthcareSolution: React.FC = () => {
   ];
 
   return (
-    <EnterpriseLayout
+    <ConsistentLayout
       showHero
       title="Healthcare Solutions"
       description="HIPAA-compliant metadata analysis for healthcare organizations and medical professionals"
@@ -237,7 +237,7 @@ const HealthcareSolution: React.FC = () => {
           </div>
         </div>
       </EnterpriseSection>
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 };
 

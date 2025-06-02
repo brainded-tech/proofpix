@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, ArrowLeft, Shield, Lock, Eye, Database, Globe } from 'lucide-react';
+import { Shield, Lock, Eye, Server, Database, FileText, Users, Globe, ArrowLeft, CheckCircle, AlertTriangle } from 'lucide-react';
 import { analytics } from '../utils/analytics';
-import { EnterpriseLayout } from './ui/EnterpriseLayout';
+import { ConsistentLayout } from './ui/ConsistentLayout';
 import { EnterpriseButton, EnterpriseCard, EnterpriseBadge, EnterpriseSection } from './ui/EnterpriseComponents';
 import DocumentationFooter from './DocumentationFooter';
 
@@ -41,7 +41,7 @@ export const PrivacyPolicy: React.FC = () => {
   };
 
   return (
-    <EnterpriseLayout
+    <ConsistentLayout
       showHero
       title="Privacy Policy"
       description="How we protect your data and respect your privacy with our client-side processing approach."
@@ -193,6 +193,6 @@ export const PrivacyPolicy: React.FC = () => {
       </EnterpriseSection>
 
       <DocumentationFooter />
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 }; 

@@ -29,7 +29,7 @@ import {
 import { BrandingUploadInterface } from "../components/enterprise/BrandingUploadInterface";
 import { BrandColorPicker } from "../components/enterprise/BrandColorPicker";
 import { BrandingPreview } from "../components/enterprise/BrandingPreview";
-import { StandardLayout } from '../components/ui/StandardLayout';
+import { ConsistentLayout } from '../components/ui/ConsistentLayout';
 import { BackToHomeButton } from '../components/ui/BackToHomeButton';
 import { 
   EnterpriseButton, 
@@ -423,85 +423,64 @@ const EnterpriseDemo: React.FC = () => {
 
   return (
     <DemoModeController>
-      <StandardLayout>
-        <div className="min-h-screen bg-slate-50">
+      <ConsistentLayout>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
           {/* Header */}
-          <div className="bg-white border-b border-slate-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-12">
-              <div className="flex items-center space-x-3">
-                  <div className="scale-75">
-                    <BackToHomeButton />
+          <div className="bg-slate-800/50 border-b border-slate-700/50 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                    <Building2 className="w-5 h-5 text-white" />
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Building2 className="w-4 h-4 text-blue-600" />
-                <div>
-                      <h1 className="text-sm font-semibold text-slate-900">Enterprise Suite</h1>
-                      <p className="text-xs text-slate-500">Document Intelligence Platform</p>
-                    </div>
+                  <div>
+                    <h1 className="text-xl font-bold text-white">ProofPix Enterprise</h1>
+                    <p className="text-sm text-slate-400">Demo Environment</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <EnterpriseButton 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={() => window.open('https://app.proofpixapp.com', '_blank')}
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                    Go to Production
-                  </EnterpriseButton>
+              </div>
+              
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 text-sm text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span>Live Demo</span>
                 </div>
+                <button
+                  onClick={() => navigate('/enterprise')}
+                  className="bg-slate-700/50 hover:bg-slate-600/50 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-slate-600/50"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2 inline" />
+                  Back to Enterprise
+                </button>
               </div>
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="bg-white border-b border-slate-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between py-2">
-                <nav className="flex space-x-8">
-                  {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
-                      className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === tab.id
-                          ? 'border-blue-500 text-blue-600'
-                          : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                  }`}
-                >
-                      <tab.icon className="w-4 h-4" />
-                  <span>{tab.label}</span>
-                </button>
-              ))}
-            </nav>
-
-                {/* Back to Dashboard button */}
-                <div className="flex items-center space-x-2">
-                  <EnterpriseButton 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={() => setActiveTab('dashboard')}
-                    className={activeTab === 'dashboard' ? 'hidden' : ''}
+          <div className="bg-slate-800/30 border-b border-slate-700/50 px-6">
+            <div className="flex space-x-1">
+              {tabs.map((tab) => {
+                const IconComponent = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium rounded-t-lg transition-colors ${
+                      activeTab === tab.id
+                        ? 'bg-slate-700/50 text-white border-b-2 border-blue-400'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-700/30'
+                    }`}
                   >
-                    <ArrowLeft className="w-3 h-3" />
-                    Back to Dashboard
-                  </EnterpriseButton>
-                  <EnterpriseButton 
-                    variant="ghost" 
-                    size="sm"
-                  onClick={() => navigate('/enterprise')}
-                  >
-                    <Building2 className="w-3 h-3" />
-                    Enterprise Home
-                  </EnterpriseButton>
-                </div>
-              </div>
+                    <IconComponent className="w-4 h-4" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Main Content */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="p-6">
             {activeTab === 'dashboard' && renderDashboard()}
             {activeTab === 'processing' && renderProcessing()}
             {activeTab === 'team' && renderTeamManagement()}
@@ -509,7 +488,7 @@ const EnterpriseDemo: React.FC = () => {
             {activeTab === 'settings' && renderSettings()}
           </div>
         </div>
-      </StandardLayout>
+      </ConsistentLayout>
     </DemoModeController>
   );
 };

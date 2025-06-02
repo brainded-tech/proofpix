@@ -138,49 +138,49 @@ const PrivacyValueProposition: React.FC<PrivacyValuePropositionProps> = ({
       </div>
       
       {showAnimation && !compact && (
-        <div className="relative h-64 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg mb-6 overflow-hidden">
+        <div className="relative h-64 bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-lg mb-6 overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <h4 className="font-semibold text-gray-900 mb-2">How Traditional Image Processing Works</h4>
-              <p className="text-sm text-gray-600">Your images travel through multiple servers, creating risk at each step</p>
+              <h4 className="font-semibold text-white mb-2">How Traditional Image Processing Works</h4>
+              <p className="text-sm text-slate-300">Your images travel through multiple servers, creating risk at each step</p>
             </div>
           </div>
           
           {/* Animation elements */}
           <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2">
             <div className="relative">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Globe className="text-blue-600" size={24} />
+              <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center border border-blue-500/50">
+                <Globe className="text-blue-400" size={24} />
               </div>
               <div className="absolute top-0 left-full w-24 h-2 bg-gradient-to-r from-blue-400 to-red-400 animate-pulse"></div>
             </div>
           </div>
           
           <div className="absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2">
-            <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-              <Server className="text-red-600" size={24} />
+            <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center border border-red-500/50">
+              <Server className="text-red-400" size={24} />
             </div>
           </div>
           
           <div className="absolute right-1/4 top-1/2 transform -translate-y-1/2">
             <div className="relative">
               <div className="absolute top-0 right-full w-24 h-2 bg-gradient-to-r from-red-400 to-purple-400 animate-pulse"></div>
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Eye className="text-purple-600" size={24} />
+              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center border border-purple-500/50">
+                <Eye className="text-purple-400" size={24} />
               </div>
             </div>
           </div>
         </div>
       )}
       
-      <div className="bg-green-50 rounded-lg border border-green-200 p-4">
+      <div className="bg-green-500/20 rounded-lg border border-green-500/50 p-4">
         <div className="flex items-start">
-          <div className="bg-green-100 p-2 rounded-full mr-3">
-            <Shield className="text-green-600" size={20} />
+          <div className="bg-green-500/20 p-2 rounded-full mr-3 border border-green-500/50">
+            <Shield className="text-green-400" size={20} />
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 mb-1">The ProofPix Difference: Client-Side Processing</h4>
-            <p className="text-sm text-gray-700">
+            <h4 className="font-semibold text-white mb-1">The ProofPix Difference: Client-Side Processing</h4>
+            <p className="text-sm text-slate-300">
               ProofPix processes everything in your browser or app. Your images never leave your device,
               completely eliminating these risks. No data breach is possible because there's no data stored
               on external servers.

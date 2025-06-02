@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera, Book, Users, Shield, Code, Settings, FileText, ExternalLink, ChevronDown, ChevronRight, Star, Zap, BarChart3, Image } from 'lucide-react';
-import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { ConsistentLayout } from '../../components/ui/ConsistentLayout';
 import { 
   EnterpriseButton, 
   EnterpriseCard, 
@@ -46,11 +46,11 @@ export const DocumentationIndex: React.FC = () => {
       estimatedTime: "15 min"
     },
     {
-      title: "Content Quality Dashboard",
-      description: "Monitor documentation quality, validate links, and track content analytics",
-      path: "/docs/content-quality",
-      icon: <BarChart3 className="h-5 w-5" />,
-      priority: "medium",
+      title: "Privacy Guide",
+      description: "Complete privacy architecture and data protection guide",
+      path: "/docs/privacy-guide",
+      icon: <Shield className="h-5 w-5" />,
+      priority: "high",
       estimatedTime: "10 min"
     },
     {
@@ -103,11 +103,11 @@ export const DocumentationIndex: React.FC = () => {
       priority: "medium",
       docs: [
         {
-          title: "Pro User Guide",
-          description: "Advanced features for Pro subscribers - batch processing, custom exports, and more",
-          path: "https://github.com/brainded-tech/proofpix/blob/main/PRO_USER_GUIDE.md",
-          internal: false,
-          badge: "Pro",
+          title: "Privacy Guide",
+          description: "Complete privacy architecture and data protection guide",
+          path: "/docs/privacy-guide",
+          internal: true,
+          badge: "Essential",
           time: "15 min read"
         },
         {
@@ -115,7 +115,31 @@ export const DocumentationIndex: React.FC = () => {
           description: "Deep dive into EXIF, IPTC, and XMP metadata formats",
           path: "/docs/metadata-guide",
           internal: true,
-          time: "10 min read"
+          time: "20 min read"
+        },
+        {
+          title: "Blog Content Management Guide",
+          description: "Complete guide to managing blog content and CMS features",
+          path: "/docs/blog-content-management",
+          internal: true,
+          badge: "New",
+          time: "12 min read"
+        },
+        {
+          title: "Workflow Template Implementation",
+          description: "Step-by-step guide to implementing workflow templates",
+          path: "/docs/workflow-template-implementation",
+          internal: true,
+          badge: "Popular",
+          time: "18 min read"
+        },
+        {
+          title: "Marketplace Integration Guide",
+          description: "Complete user guide for marketplace and integrations",
+          path: "/docs/marketplace-integration",
+          internal: true,
+          badge: "Enterprise",
+          time: "16 min read"
         }
       ]
     },
@@ -127,6 +151,14 @@ export const DocumentationIndex: React.FC = () => {
       color: "purple",
       priority: "medium",
       docs: [
+        {
+          title: "Enterprise Demo Features Guide",
+          description: "Complete implementation guide for all enterprise demo features",
+          path: "/docs/enterprise-demo-features",
+          internal: true,
+          badge: "Enterprise",
+          time: "25 min read"
+        },
         {
           title: "Enterprise Overview",
           description: "Complete enterprise features and workflows",
@@ -184,6 +216,54 @@ export const DocumentationIndex: React.FC = () => {
           internal: true,
           badge: "Enterprise",
           time: "12 min read"
+        },
+        {
+          title: "Enterprise Security FAQ",
+          description: "Advanced enterprise security questions and answers",
+          path: "/docs/enterprise-security-faq",
+          internal: true,
+          badge: "Enterprise",
+          time: "15 min read"
+        },
+        {
+          title: "Security Architecture Document",
+          description: "Detailed technical security architecture documentation",
+          path: "/docs/security-architecture-doc",
+          internal: true,
+          badge: "Technical",
+          time: "25 min read"
+        },
+        {
+          title: "Security One-Pager",
+          description: "Executive summary of ProofPix security features",
+          path: "/docs/security-onepager",
+          internal: true,
+          badge: "Executive",
+          time: "5 min read"
+        },
+        {
+          title: "CISO Presentation Deck",
+          description: "Complete presentation deck for Chief Information Security Officers",
+          path: "/docs/ciso-presentation",
+          internal: true,
+          badge: "Executive",
+          time: "20 min read"
+        },
+        {
+          title: "Security Questionnaire Responses",
+          description: "Pre-filled responses to common security questionnaires",
+          path: "/docs/security-questionnaire",
+          internal: true,
+          badge: "Sales Tool",
+          time: "15 min read"
+        },
+        {
+          title: "Competitive Security Analysis",
+          description: "Security comparison with competitors and industry standards",
+          path: "/docs/competitive-security",
+          internal: true,
+          badge: "Sales Tool",
+          time: "18 min read"
         },
         {
           title: "Compliance Templates",
@@ -354,6 +434,16 @@ export const DocumentationIndex: React.FC = () => {
         return 'success';
       case 'Security':
         return 'danger';
+      case 'Technical':
+        return 'neutral';
+      case 'Executive':
+        return 'primary';
+      case 'Essential':
+        return 'success';
+      case 'New':
+        return 'primary';
+      case 'Popular':
+        return 'warning';
       default:
         return 'neutral';
     }
@@ -368,202 +458,149 @@ export const DocumentationIndex: React.FC = () => {
   };
 
   return (
-    <EnterpriseLayout
-      showHero
-      title="ProofPix Documentation"
-      description="Comprehensive guides, API references, and resources for all ProofPix users"
-      maxWidth="7xl"
-    >
-      {/* Header */}
-      <EnterpriseSection size="sm">
-        <EnterpriseButton
-          variant="ghost"
-          onClick={handleBackHome}
-          className="mb-6"
-        >
-          ← Back to ProofPix
-        </EnterpriseButton>
-        
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            Documentation Center
-          </h1>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Everything you need to get the most out of ProofPix, from basic usage to enterprise deployment
-          </p>
-        </div>
-      </EnterpriseSection>
-
-      {/* Quick Start Banner */}
-      <EnterpriseSection size="sm">
-        <EnterpriseCard variant="dark" className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <Star className="h-8 w-8 text-yellow-400 mr-3" />
-            <h2 className="text-2xl font-bold text-white">New to ProofPix?</h2>
+    <ConsistentLayout>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        {/* Hero Section */}
+        <section className="py-20 bg-gradient-to-br from-blue-900 via-slate-900 to-emerald-900 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-emerald-600/20"></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                ProofPix Documentation
+              </h1>
+              <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+                Comprehensive guides, API references, and resources for all ProofPix users
+              </p>
+            </div>
           </div>
-          <p className="text-blue-100 mb-6">
-            Get started in just 15 minutes with our guided quick start path
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickStartPath.map((doc, index) => (
-              <div 
-                key={index}
-                className="bg-white/10 rounded-lg p-4 cursor-pointer hover:bg-white/20 transition-colors"
-                onClick={() => handleDocClick(doc)}
-              >
-                <div className="flex items-center mb-2">
-                  {doc.icon}
-                  <span className="ml-2 text-sm text-blue-200">{doc.estimatedTime}</span>
+        </section>
+
+        {/* Main Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          {/* Back Button */}
+          <button
+            onClick={handleBackHome}
+            className="mb-8 bg-slate-800/50 text-white hover:bg-slate-700/50 px-4 py-2 rounded-lg transition-colors border border-slate-600/50"
+          >
+            ← Back to ProofPix
+          </button>
+
+          {/* Quick Start Banner */}
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-2xl p-8 text-center mb-12">
+            <div className="flex items-center justify-center mb-4">
+              <Star className="h-8 w-8 text-yellow-400 mr-3" />
+              <h2 className="text-2xl font-bold text-white">New to ProofPix?</h2>
+            </div>
+            <p className="text-blue-100 mb-6">
+              Get started in just 15 minutes with our guided quick start path
+            </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {quickStartPath.map((doc, index) => (
+                <div 
+                  key={index}
+                  className="bg-slate-700/50 rounded-lg p-4 cursor-pointer hover:bg-slate-600/50 transition-colors border border-slate-600/50"
+                  onClick={() => handleDocClick(doc)}
+                >
+                  <div className="flex items-center mb-2">
+                    {doc.icon}
+                    <span className="ml-2 text-sm text-blue-200">{doc.estimatedTime}</span>
+                  </div>
+                  <h3 className="font-semibold text-white text-sm mb-1">{doc.title}</h3>
+                  <p className="text-blue-200 text-xs">{doc.description}</p>
                 </div>
-                <h3 className="font-semibold text-white text-sm mb-1">{doc.title}</h3>
-                <p className="text-blue-200 text-xs">{doc.description}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </EnterpriseCard>
-      </EnterpriseSection>
 
-      {/* Documentation Sections with Progressive Disclosure */}
-      <EnterpriseSection size="lg">
-        <div className="space-y-6">
-          {documentationSections
-            .filter(section => section.id !== 'getting-started') // Already shown above
-            .sort((a, b) => {
-              const priorityOrder: Record<Priority, number> = { high: 0, medium: 1, low: 2 };
-              return priorityOrder[a.priority] - priorityOrder[b.priority];
-            })
-            .map((section, sectionIndex) => {
-              const isExpanded = expandedSections.includes(section.id);
-            
-            return (
-                <div key={sectionIndex} className="border border-slate-200 rounded-lg overflow-hidden">
-                  {/* Section Header - Always Visible */}
-                  <div 
-                    className={`p-6 cursor-pointer transition-colors ${
-                      isExpanded ? 'bg-slate-50' : 'bg-white hover:bg-slate-50'
-                    }`}
-                    onClick={() => toggleSection(section.id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className={`p-3 rounded-lg ${
-                          section.color === 'blue' ? 'bg-blue-100' :
-                          section.color === 'purple' ? 'bg-purple-100' :
-                          section.color === 'red' ? 'bg-red-100' :
-                          section.color === 'green' ? 'bg-green-100' :
-                          section.color === 'orange' ? 'bg-orange-100' :
-                          'bg-gray-100'
-                        }`}>
-                          <div className={`${
-                            section.color === 'blue' ? 'text-blue-600' :
-                            section.color === 'purple' ? 'text-purple-600' :
-                            section.color === 'red' ? 'text-red-600' :
-                            section.color === 'green' ? 'text-green-600' :
-                            section.color === 'orange' ? 'text-orange-600' :
-                            'text-gray-600'
+          {/* Documentation Sections */}
+          <div className="space-y-6">
+            {documentationSections
+              .filter(section => section.id !== 'getting-started')
+              .sort((a, b) => {
+                const priorityOrder: Record<Priority, number> = { high: 0, medium: 1, low: 2 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+              })
+              .map((section, sectionIndex) => {
+                const isExpanded = expandedSections.includes(section.id);
+              
+                return (
+                  <div key={sectionIndex} className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-2xl overflow-hidden">
+                    {/* Section Header */}
+                    <div 
+                      className={`p-6 cursor-pointer transition-colors ${
+                        isExpanded ? 'bg-slate-700/50' : 'hover:bg-slate-700/30'
+                      }`}
+                      onClick={() => toggleSection(section.id)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className={`p-3 rounded-lg ${
+                            section.color === 'blue' ? 'bg-blue-500/20 text-blue-400' :
+                            section.color === 'purple' ? 'bg-purple-500/20 text-purple-400' :
+                            section.color === 'red' ? 'bg-red-500/20 text-red-400' :
+                            section.color === 'green' ? 'bg-green-500/20 text-green-400' :
+                            section.color === 'orange' ? 'bg-orange-500/20 text-orange-400' :
+                            'bg-slate-500/20 text-slate-400'
                           }`}>
-                    {section.icon}
+                            {section.icon}
                           </div>
-                  </div>
-                  <div>
-                          <h2 className="text-xl font-bold text-slate-900">{section.title}</h2>
-                          <p className="text-slate-600">{section.subtitle}</p>
-                          <div className="flex items-center mt-1">
-                            <span className="text-sm text-slate-500">{section.docs.length} guides</span>
-                            {section.priority === 'high' && (
-                              <EnterpriseBadge variant="success" className="ml-2">Recommended</EnterpriseBadge>
-                            )}
+                          <div>
+                            <h3 className="text-xl font-bold text-white">{section.title}</h3>
+                            <p className="text-slate-300">{section.subtitle}</p>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        {isExpanded ? (
-                          <ChevronDown className="h-5 w-5 text-slate-400" />
-                        ) : (
-                          <ChevronRight className="h-5 w-5 text-slate-400" />
-                        )}
-                      </div>
-                  </div>
-                </div>
-
-                  {/* Section Content - Collapsible */}
-                  {isExpanded && (
-                    <div className="p-6 pt-0 bg-slate-50">
-                      <EnterpriseGrid columns={2}>
-                  {section.docs.map((doc, docIndex) => (
-                          <EnterpriseCard 
-                            key={docIndex}
-                            className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
-                            onClick={() => handleDocClick(doc)}
-                          >
-                      <div className="flex items-start justify-between mb-3">
-                              <h3 className="text-lg font-semibold text-slate-900 flex-1 pr-2">
-                          {doc.title}
-                        </h3>
-                              <div className="flex items-center space-x-2">
-                                {doc.time && (
-                                  <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
-                                    {doc.time}
-                            </span>
-                          )}
-                                {doc.badge && (
-                                  <EnterpriseBadge variant={getBadgeVariant(doc.badge)}>
-                                    {doc.badge}
-                                  </EnterpriseBadge>
-                          )}
-                          {!doc.internal && (
-                                  <ExternalLink className="h-4 w-4 text-slate-400" />
-                          )}
+                        <div className="text-slate-400">
+                          {isExpanded ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
                         </div>
                       </div>
-                            <p className="text-slate-600 text-sm leading-relaxed">{doc.description}</p>
-                          </EnterpriseCard>
-                        ))}
-                      </EnterpriseGrid>
                     </div>
-                  )}
-                </div>
-            );
-          })}
-        </div>
-      </EnterpriseSection>
 
-      {/* Quick Actions Footer */}
-      <EnterpriseSection size="lg">
-        <EnterpriseCard variant="dark" className="text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">Need Help Getting Started?</h2>
-          <p className="text-xl text-slate-300 mb-8">
-            Jump right into the most popular documentation sections
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <EnterpriseButton 
-              variant="primary" 
-              size="lg"
-              onClick={() => navigate('/docs/getting-started')}
-            >
-              Getting Started Guide
-            </EnterpriseButton>
-            <EnterpriseButton 
-              variant="secondary" 
-              size="lg"
-              onClick={() => navigate('/docs/enterprise-api')}
-            >
-              API Documentation
-            </EnterpriseButton>
-            <EnterpriseButton 
-              variant="secondary" 
-              size="lg"
-              onClick={() => navigate('/enterprise')}
-            >
-              Enterprise Features
-            </EnterpriseButton>
+                    {/* Section Content */}
+                    {isExpanded && (
+                      <div className="border-t border-slate-600/50 bg-slate-700/30">
+                        <div className="p-6">
+                          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {section.docs.map((doc, docIndex) => (
+                              <div
+                                key={docIndex}
+                                className="bg-slate-800/50 rounded-lg p-4 cursor-pointer hover:bg-slate-700/50 transition-colors border border-slate-600/50 group"
+                                onClick={() => handleDocClick(doc)}
+                              >
+                                <div className="flex items-start justify-between mb-2">
+                                  <h4 className="font-semibold text-white group-hover:text-blue-400 transition-colors">
+                                    {doc.title}
+                                  </h4>
+                                  {!doc.internal && <ExternalLink className="h-4 w-4 text-slate-400" />}
+                                </div>
+                                <p className="text-slate-300 text-sm mb-3">{doc.description}</p>
+                                <div className="flex items-center justify-between">
+                                  {doc.badge && (
+                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                      getBadgeVariant(doc.badge) === 'primary' ? 'bg-blue-500/20 text-blue-400' :
+                                      getBadgeVariant(doc.badge) === 'success' ? 'bg-green-500/20 text-green-400' :
+                                      getBadgeVariant(doc.badge) === 'warning' ? 'bg-yellow-500/20 text-yellow-400' :
+                                      getBadgeVariant(doc.badge) === 'danger' ? 'bg-red-500/20 text-red-400' :
+                                      'bg-slate-500/20 text-slate-400'
+                                    }`}>
+                                      {doc.badge}
+                                    </span>
+                                  )}
+                                  {doc.time && (
+                                    <span className="text-xs text-slate-400">{doc.time}</span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
           </div>
-        </EnterpriseCard>
-      </EnterpriseSection>
-
-      <DocumentationFooter />
-    </EnterpriseLayout>
+        </div>
+      </div>
+    </ConsistentLayout>
   );
 };
-
-export default DocumentationIndex; 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Lock, Eye, CheckCircle, ArrowLeft } from 'lucide-react';
-import { StandardLayout } from '../components/ui/StandardLayout';
+import { ConsistentLayout } from '../components/ui/ConsistentLayout';
 import { 
   EnterpriseButton, 
   EnterpriseCard, 
@@ -89,170 +89,148 @@ const Security: React.FC = () => {
   ];
 
   return (
-    <StandardLayout
-      showHero
-      title="Security-First by Design"
-      description="ProofPix redefines SaaS security through revolutionary client-side processing. Your images never leave your device - eliminating 90% of traditional security risks."
-      maxWidth="7xl"
-    >
-      {/* Hero Stats Section */}
-      <EnterpriseSection size="lg" className="text-center">
-        <div className="mb-8">
-          <div className="flex justify-center space-x-2 mb-6">
-            <EnterpriseBadge variant="success">Security Leader</EnterpriseBadge>
-            <EnterpriseBadge variant="primary">Zero Risk Architecture</EnterpriseBadge>
-          </div>
-        </div>
-        
-        <h1 className="text-6xl font-bold mb-6 text-slate-900">
-          Security-First<br/>
-          <span className="text-yellow-500">by Design</span>
-        </h1>
-        
-        <p className="text-xl text-slate-600 max-w-4xl mx-auto mb-8">
-          ProofPix redefines SaaS security through revolutionary client-side processing. 
-          Your images never leave your device - eliminating 90% of traditional security risks.
-        </p>
-        
-        <div className="flex justify-center space-x-12 mb-8">
-          <EnterpriseMetric value="0" label="Data Breaches" />
-          <EnterpriseMetric value="95%" label="Risk Reduction" />
-          <EnterpriseMetric value="100%" label="Client-Side Processing" />
-        </div>
-        
-        <EnterpriseButton 
-          variant="primary" 
-          size="lg"
-          onClick={() => navigate('/docs/security-architecture')}
-        >
-          View Security Architecture
-        </EnterpriseButton>
-      </EnterpriseSection>
-
-      {/* Security Principles */}
-      <EnterpriseSection size="lg" background="light">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">Core Security Principles</h2>
-          <p className="text-xl text-slate-600">
-            Built on a foundation of privacy, transparency, and zero-trust architecture
-          </p>
-        </div>
-        
-        <EnterpriseGrid columns={4}>
-          {securityPrinciples.map((principle, index) => (
-            <EnterpriseCard key={index}>
-              <div className="text-center">
-                <div className={`w-16 h-16 bg-${principle.color}-100 rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <principle.icon className={`w-8 h-8 text-${principle.color}-600`} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{principle.title}</h3>
-                <p className="text-slate-600">{principle.description}</p>
+    <ConsistentLayout>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        {/* Hero Section */}
+        <section className="py-20 bg-gradient-to-br from-blue-900 via-slate-900 to-emerald-900 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-emerald-600/20"></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <div className="flex justify-center space-x-2 mb-6">
+                <EnterpriseBadge variant="success">Security Leader</EnterpriseBadge>
+                <EnterpriseBadge variant="primary">Zero Risk Architecture</EnterpriseBadge>
               </div>
-            </EnterpriseCard>
-          ))}
-        </EnterpriseGrid>
-      </EnterpriseSection>
-
-      {/* Enterprise Features */}
-      <EnterpriseSection size="lg">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">Enterprise Security Features</h2>
-          <p className="text-xl text-slate-600">
-            Built for enterprise requirements with comprehensive security controls
-          </p>
-        </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                Security-First<br/>
+                <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">by Design</span>
+              </h1>
+              
+              <p className="text-xl text-blue-100 max-w-4xl mx-auto mb-8">
+                ProofPix redefines SaaS security through revolutionary client-side processing. 
+                Your images never leave your device - eliminating 90% of traditional security risks.
+              </p>
+              
+              <div className="flex justify-center space-x-12 mb-8">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-white mb-1">0</div>
+                  <div className="text-blue-200 text-sm">Data Breaches</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-white mb-1">95%</div>
+                  <div className="text-blue-200 text-sm">Risk Reduction</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-white mb-1">100%</div>
+                  <div className="text-blue-200 text-sm">Client-Side Processing</div>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => navigate('/docs/security-architecture')}
+                className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white hover:from-blue-700 hover:to-emerald-700 px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+              >
+                View Security Architecture
+              </button>
+            </div>
+          </div>
+        </section>
         
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h3 className="text-2xl font-bold text-slate-900 mb-6">Built for Enterprise Requirements</h3>
-            <div className="space-y-4">
-              {enterpriseFeatures.map((feature, index) => (
-                <div key={index} className="flex items-start">
-                  <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-slate-700">{feature}</span>
+        {/* Rest of the content with proper dark theme styling */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          {/* Security Principles */}
+          <section className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-white mb-4">Core Security Principles</h2>
+              <p className="text-xl text-slate-300">
+                Built on a foundation of privacy, transparency, and zero-trust architecture
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {securityPrinciples.map((principle, index) => (
+                <div key={index} className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-2xl p-8 text-center hover:border-slate-500/50 transition-all duration-300">
+                  <div className={`w-16 h-16 bg-${principle.color}-500/20 rounded-full flex items-center justify-center mx-auto mb-4`}>
+                    <principle.icon className={`w-8 h-8 text-${principle.color}-400`} />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">{principle.title}</h3>
+                  <p className="text-slate-300">{principle.description}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
 
-          <EnterpriseCard variant="dark">
-            <h4 className="text-xl font-bold text-white mb-4">Enterprise Security Package</h4>
-            <ul className="space-y-2 text-sm mb-6 text-slate-300">
-              <li>✓ SOC 2 Type II Certification</li>
-              <li>✓ HIPAA Business Associate Agreement</li>
-              <li>✓ Dedicated Security Manager</li>
-              <li>✓ Priority Incident Response</li>
-              <li>✓ Custom Security Reviews</li>
-              <li>✓ Compliance Documentation</li>
-            </ul>
-            <EnterpriseButton
-              variant="primary"
-              onClick={handleContactSales}
-              className="w-full"
-            >
-              Contact Enterprise Sales
-            </EnterpriseButton>
-          </EnterpriseCard>
-        </div>
-      </EnterpriseSection>
-
-      {/* Certifications */}
-      <EnterpriseSection size="lg" background="light">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">Security Certifications & Compliance</h2>
-          <p className="text-xl text-slate-600">
-            Meeting the highest standards for enterprise security and compliance
-          </p>
-        </div>
-        
-        <EnterpriseGrid columns={4}>
-          {certifications.map((cert, index) => (
-            <EnterpriseCard key={index}>
-              <div className="text-center">
-                <div className={`w-16 h-16 bg-${cert.color}-100 rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <span className={`text-2xl font-bold text-${cert.color}-600`}>
-                    {cert.name.split(' ')[0]}
-                  </span>
+          {/* Enterprise Features */}
+          <section className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-white mb-4">Enterprise Security Features</h2>
+              <p className="text-xl text-slate-300">
+                Built for enterprise requirements with comprehensive security controls
+              </p>
+            </div>
+            
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-6">Built for Enterprise Requirements</h3>
+                <div className="space-y-4">
+                  {enterpriseFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-start">
+                      <CheckCircle className="w-6 h-6 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-slate-300">{feature}</span>
+                    </div>
+                  ))}
                 </div>
-                <h3 className="font-bold text-slate-900 mb-2">{cert.name}</h3>
-                <p className="text-sm text-slate-600 mb-3">{cert.status}</p>
-                <EnterpriseBadge 
-                  variant={cert.status === 'Certified' ? 'success' : cert.status === 'In Progress' ? 'warning' : 'neutral'}
-                >
-                  {cert.timeline}
-                </EnterpriseBadge>
               </div>
-            </EnterpriseCard>
-          ))}
-        </EnterpriseGrid>
-      </EnterpriseSection>
 
-      {/* Call to Action */}
-      <EnterpriseSection size="lg">
-        <EnterpriseCard variant="dark" className="text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">Ready to Experience Security Leadership?</h2>
-          <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
-            Join enterprise customers who've chosen ProofPix for unmatched security and privacy protection.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <EnterpriseButton 
-              variant="primary" 
-              size="lg"
-              onClick={() => navigate('/enterprise')}
-            >
-              Start Enterprise Trial
-            </EnterpriseButton>
-            <EnterpriseButton 
-              variant="secondary" 
-              size="lg"
-              onClick={handleContactSales}
-            >
-              Contact Security Team
-            </EnterpriseButton>
-          </div>
-        </EnterpriseCard>
-      </EnterpriseSection>
-    </StandardLayout>
+              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-2xl p-8">
+                <h4 className="text-xl font-bold text-white mb-4">Enterprise Security Package</h4>
+                <ul className="space-y-2 text-sm mb-6 text-slate-300">
+                  <li>✓ SOC 2 Type II Certification</li>
+                  <li>✓ HIPAA Business Associate Agreement</li>
+                  <li>✓ Dedicated Security Manager</li>
+                  <li>✓ Priority Incident Response</li>
+                  <li>✓ Custom Security Reviews</li>
+                  <li>✓ Compliance Documentation</li>
+                </ul>
+                <button
+                  onClick={handleContactSales}
+                  className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white hover:from-blue-700 hover:to-emerald-700 px-6 py-3 rounded-xl font-semibold transition-all duration-200"
+                >
+                  Contact Enterprise Sales
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Certifications */}
+          <section className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-white mb-4">Security Certifications</h2>
+              <p className="text-xl text-slate-300">
+                Industry-leading compliance and security standards
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {certifications.map((cert, index) => (
+                <div key={index} className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-2xl p-6 text-center">
+                  <h4 className="font-semibold text-white mb-2">{cert.name}</h4>
+                  <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-2 ${
+                    cert.status === 'Certified' ? 'bg-green-500/20 text-green-400' :
+                    cert.status === 'In Progress' ? 'bg-blue-500/20 text-blue-400' :
+                    cert.status === 'Available' ? 'bg-purple-500/20 text-purple-400' :
+                    'bg-orange-500/20 text-orange-400'
+                  }`}>
+                    {cert.status}
+                  </div>
+                  <p className="text-sm text-slate-400">{cert.timeline}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+    </ConsistentLayout>
   );
 };
 

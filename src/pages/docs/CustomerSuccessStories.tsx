@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, Building, Shield, Scale, TrendingUp, ArrowRight, CheckCircle, Clock, DollarSign, Users, ArrowLeft, AlertCircle, Mail, Star } from 'lucide-react';
-import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { ConsistentLayout } from '../../components/ui/ConsistentLayout';
 import { 
   EnterpriseButton, 
   EnterpriseCard, 
@@ -185,7 +185,7 @@ export const CustomerSuccessStories: React.FC = () => {
   ];
 
   return (
-    <EnterpriseLayout
+    <ConsistentLayout
       showHero
       title="Customer Success Stories"
       description="See how ProofPix can transform document processing workflows"
@@ -514,7 +514,7 @@ export const CustomerSuccessStories: React.FC = () => {
 
       {/* Footer */}
       <DocumentationFooter />
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 };
 

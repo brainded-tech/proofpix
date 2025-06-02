@@ -13,7 +13,7 @@ import {
   Download,
   ArrowLeft
 } from 'lucide-react';
-import { EnterpriseLayout } from '../components/ui/EnterpriseLayout';
+import { ConsistentLayout } from '../components/ui/ConsistentLayout';
 import { 
   EnterpriseButton, 
   EnterpriseCard, 
@@ -217,7 +217,7 @@ export const AdvancedAnalyticsPage: React.FC = () => {
   }
 
   return (
-    <EnterpriseLayout>
+    <ConsistentLayout>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -297,7 +297,7 @@ export const AdvancedAnalyticsPage: React.FC = () => {
           )}
         </div>
       </div>
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 };
 

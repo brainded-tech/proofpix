@@ -11,7 +11,8 @@ class RedisConfig {
 
   async connect() {
     try {
-      const redisConfig = {
+      // Use REDIS_URL if available, otherwise fall back to individual variables
+      const redisConfig = process.env.REDIS_URL || {
         host: process.env.REDIS_HOST || 'localhost',
         port: process.env.REDIS_PORT || 6379,
         password: process.env.REDIS_PASSWORD || undefined,

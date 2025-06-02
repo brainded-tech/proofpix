@@ -2,17 +2,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Shield, 
-  FileText, 
-  Users, 
+  TrendingUp, 
+  AlertTriangle, 
   CheckCircle, 
   ArrowRight,
-  Camera,
-  Clock,
   DollarSign,
-  AlertTriangle,
-  Search
+  Eye,
+  Clock,
+  Users,
+  BarChart3
 } from 'lucide-react';
-import { EnterpriseLayout } from '../../components/ui/EnterpriseLayout';
+import { ConsistentLayout } from '../../components/ui/ConsistentLayout';
 import { 
   EnterpriseButton, 
   EnterpriseCard, 
@@ -64,7 +64,7 @@ const InsuranceSolution: React.FC = () => {
   ];
 
   return (
-    <EnterpriseLayout
+    <ConsistentLayout
       showHero
       title="Insurance Solutions"
       description="Advanced metadata analysis for insurance claim verification and fraud detection"
@@ -228,7 +228,7 @@ const InsuranceSolution: React.FC = () => {
           </div>
         </div>
       </EnterpriseSection>
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 };
 

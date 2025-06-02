@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera, Shield, CreditCard, Users, FileText, Scale, Phone, AlertTriangle, Lock, Globe, ArrowLeft } from 'lucide-react';
 import { analytics } from '../utils/analytics';
-import { EnterpriseLayout } from './ui/EnterpriseLayout';
+import { ConsistentLayout } from './ui/ConsistentLayout';
 import { EnterpriseButton, EnterpriseCard, EnterpriseBadge, EnterpriseSection } from './ui/EnterpriseComponents';
 import DocumentationFooter from './DocumentationFooter';
 
@@ -40,7 +40,7 @@ export const Terms: React.FC = () => {
   };
 
   return (
-    <EnterpriseLayout
+    <ConsistentLayout
       showHero
       title="Terms of Service"
       description="These terms govern your use of ProofPix and our photo metadata extraction services."
@@ -198,6 +198,6 @@ export const Terms: React.FC = () => {
       </EnterpriseSection>
 
       <DocumentationFooter />
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 }; 

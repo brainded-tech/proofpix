@@ -14,9 +14,18 @@ import {
   Zap,
   Users,
   Send,
-  ExternalLink
+  ExternalLink,
+  ArrowLeft,
+  User,
+  Book,
+  Video,
+  Download,
+  Search
 } from 'lucide-react';
-import { EnterpriseLayout } from './ui/EnterpriseLayout';
+import { analytics } from '../utils/analytics';
+import { ConsistentLayout } from './ui/ConsistentLayout';
+import { EnterpriseButton, EnterpriseCard, EnterpriseBadge, EnterpriseSection, EnterpriseGrid } from './ui/EnterpriseComponents';
+import DocumentationFooter from './DocumentationFooter';
 
 export const Support: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -149,7 +158,7 @@ export const Support: React.FC = () => {
 
   if (submitted) {
   return (
-      <EnterpriseLayout
+      <ConsistentLayout
         showHero
         title="Thank You!"
         description="Your support request has been submitted successfully."
@@ -182,12 +191,12 @@ export const Support: React.FC = () => {
             </button>
           </div>
         </div>
-      </EnterpriseLayout>
+      </ConsistentLayout>
     );
   }
 
   return (
-    <EnterpriseLayout
+    <ConsistentLayout
       showHero
       title="How can we help you?"
       description="Get the support you need to make the most of ProofPix photo metadata analysis. Our team is here to help."
@@ -508,6 +517,6 @@ export const Support: React.FC = () => {
           </div>
         </div>
       </section>
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 }; 

@@ -1,0 +1,287 @@
+/* Comprehensive UI Fixes for ProofPix */
+
+/* Fix all button styling issues - ensure proper padding and rounded corners */
+.btn-fix, 
+button:not(.no-fix),
+.button,
+[role="button"] {
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease-in-out !important;
+  border: 1px solid transparent !important;
+}
+
+/* Fix specific button variants */
+.btn-primary,
+.bg-blue-600,
+.bg-gradient-to-r {
+  background: linear-gradient(135deg, #2563eb, #10b981) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.btn-primary:hover,
+.bg-blue-600:hover {
+  background: linear-gradient(135deg, #1d4ed8, #059669) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+}
+
+.btn-secondary {
+  background: rgba(51, 65, 85, 0.5) !important;
+  color: white !important;
+  border: 1px solid rgba(51, 65, 85, 0.5) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.btn-secondary:hover {
+  background: rgba(51, 65, 85, 0.7) !important;
+  border-color: rgba(71, 85, 105, 0.5) !important;
+}
+
+/* Fix container background conflicts */
+.container-fix,
+.bg-white,
+.bg-gray-50,
+.bg-gray-100,
+.bg-slate-50,
+.bg-slate-100 {
+  background: rgba(51, 65, 85, 0.5) !important;
+  color: white !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 0.75rem !important;
+}
+
+/* Fix specific problematic sections */
+.traditional-processing-section,
+.why-professionals-section,
+.professional-plans-section,
+.session-passes-section {
+  background: rgba(51, 65, 85, 0.5) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 0.75rem !important;
+  padding: 2rem !important;
+  margin: 1rem 0 !important;
+}
+
+/* Fix text contrast in dark containers */
+.container-fix h1,
+.container-fix h2,
+.container-fix h3,
+.container-fix h4,
+.container-fix h5,
+.container-fix h6,
+.bg-slate-800 h1,
+.bg-slate-800 h2,
+.bg-slate-800 h3,
+.bg-slate-800 h4,
+.bg-slate-800 h5,
+.bg-slate-800 h6 {
+  color: white !important;
+}
+
+.container-fix p,
+.container-fix span,
+.container-fix div,
+.bg-slate-800 p,
+.bg-slate-800 span {
+  color: rgb(203, 213, 225) !important;
+}
+
+/* Fix badges and pills */
+.badge,
+.pill,
+.tag {
+  background: rgba(51, 65, 85, 0.7) !important;
+  color: white !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+  border-radius: 9999px !important;
+  padding: 0.25rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+/* Fix specific pricing page elements */
+.pricing-card,
+.plan-card {
+  background: rgba(51, 65, 85, 0.5) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 1rem !important;
+  padding: 2rem !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.pricing-card:hover,
+.plan-card:hover {
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Fix comparison buttons */
+.comparison-button,
+.detailed-comparison-btn {
+  background: rgba(51, 65, 85, 0.5) !important;
+  color: white !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.comparison-button:hover,
+.detailed-comparison-btn:hover {
+  background: rgba(71, 85, 105, 0.7) !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Fix modal and popup backgrounds */
+.modal,
+.popup,
+.dropdown {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 1rem !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+/* Fix form elements */
+input,
+textarea,
+select {
+  background: rgba(51, 65, 85, 0.5) !important;
+  color: white !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+  outline: none !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(148, 163, 184, 0.7) !important;
+}
+
+/* Fix API page badge/button conflicts */
+.api-section .badge,
+.api-section .btn {
+  background: rgba(51, 65, 85, 0.7) !important;
+  color: white !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+}
+
+/* Fix Getting Started page layout */
+.getting-started-header {
+  background: rgba(51, 65, 85, 0.5) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 1rem !important;
+  padding: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Fix watermark button text */
+.watermark-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.watermark-btn:hover {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+}
+
+/* Fix enterprise demo button backgrounds */
+.enterprise-demo .btn-blue {
+  background: rgba(51, 65, 85, 0.5) !important;
+  color: white !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+}
+
+/* Ensure all containers have proper dark theme */
+.section,
+.card,
+.panel {
+  background: rgba(51, 65, 85, 0.5) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 0.75rem !important;
+  color: white !important;
+}
+
+/* Fix any remaining white/gray backgrounds */
+[class*="bg-white"],
+[class*="bg-gray"],
+[class*="bg-slate-50"],
+[class*="bg-slate-100"] {
+  background: rgba(51, 65, 85, 0.5) !important;
+  color: white !important;
+}
+
+/* Fix text color in fixed containers */
+[class*="bg-slate-800"] *,
+[class*="bg-slate-700"] *,
+.container-fix * {
+  color: inherit !important;
+}
+
+/* Specific fixes for known problem areas */
+.mode-switcher-container {
+  max-width: 80rem !important;
+  margin: 0 auto !important;
+}
+
+.header-text-fix {
+  font-size: clamp(1.5rem, 4vw, 3rem) !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Animation improvements */
+.btn-fix:hover,
+button:hover:not(.no-fix) {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .btn-fix,
+  button:not(.no-fix) {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  .container-fix,
+  .section,
+  .card {
+    padding: 1rem !important;
+    margin: 0.5rem 0 !important;
+  }
+}
+
+/* Dark theme consistency */
+.dark-theme-fix {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a) !important;
+  color: white !important;
+  min-height: 100vh !important;
+}
+
+/* Remove any conflicting styles */
+.no-bg-conflict {
+  background: transparent !important;
+}
+
+.text-contrast-fix {
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+} 

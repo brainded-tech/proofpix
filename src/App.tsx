@@ -10,6 +10,7 @@ import './styles/enhanced-design-system.css';
 import './styles/dark-mode-overrides.css';
 import './styles/button-contrast-fixes.css';
 import './styles/container-background-fixes.css';
+import './styles/comprehensive-ui-fixes.css';
 import { ProofPix } from './ProofPix';
 import { AboutUs } from './components/AboutUs';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
@@ -18,7 +19,6 @@ import { Terms } from './components/Terms';
 import { Support } from './components/Support';
 import PricingPage from './components/PricingPage';
 import UnifiedPricingPage from './components/UnifiedPricingPage';
-import UnifiedPricingPageV2 from './components/UnifiedPricingPageV2';
 import DocumentIntelligencePricing from './components/DocumentIntelligencePricing';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { ImageComparisonPage } from './pages/ImageComparisonPage';
@@ -82,6 +82,8 @@ import { EnterpriseSSOPage } from './pages/EnterpriseSSOPage';
 import { ContactPage } from './pages/ContactPage';
 import SuccessPage from './components/SuccessPage';
 import { CheckoutPage } from './pages/CheckoutPage';
+import Blog from './pages/Blog';
+import BlogEditor from './pages/BlogEditor';
 
 // Priority 4: Enterprise SSO & Security Enhancement - New Imports
 import EnterpriseAuth from './components/auth/EnterpriseAuth';
@@ -186,6 +188,11 @@ import SmartDocumentAssistantGuide from './pages/docs/SmartDocumentAssistantGuid
 import ComprehensiveAPIGuide from './pages/docs/ComprehensiveAPIGuide';
 import SecurityComplianceGuide from './pages/docs/SecurityComplianceGuide';
 import EnterpriseIntegrationsGuide from './pages/docs/EnterpriseIntegrationsGuide';
+import BlogContentManagementGuide from './pages/docs/BlogContentManagementGuide';
+
+// New pages for header navigation
+import PrivacyMode from './pages/PrivacyMode';
+import UseCases from './pages/UseCases';
 
 // Redirect component for external documentation
 const RedirectComponent: React.FC<{ url: string; title: string }> = ({ url, title }) => {
@@ -279,8 +286,8 @@ export function App() {
             
             {/* UNIFIED PRICING SYSTEM - All pricing routes redirect to main /pricing */}
             <Route path="/pricing" element={<UnifiedPricingPage />} />
-            <Route path="/pricing-v2" element={<UnifiedPricingPageV2 />} />
-            <Route path="/unified-pricing" element={<UnifiedPricingPageV2 />} />
+            <Route path="/pricing-v2" element={<UnifiedPricingPage />} />
+            <Route path="/unified-pricing" element={<UnifiedPricingPage />} />
             
             {/* Checkout Route */}
             <Route path="/checkout" element={<CheckoutPage />} />
@@ -433,33 +440,37 @@ export function App() {
             <Route path="/settings" element={<SettingsPlaceholder />} />
             <Route path="/support" element={<Support />} />
             <Route path="/docs" element={<DocumentationIndex />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/terms" element={<Terms />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
-        
-        {/* Documentation Routes */}
-        <Route path="/docs/getting-started" element={<GettingStarted />} />
-        <Route path="/docs/privacy-guide" element={<PrivacyGuide />} />
-        <Route path="/docs/metadata-guide" element={<MetadataGuide />} />
+            
+            {/* New Header Navigation Pages */}
+            <Route path="/privacy-mode" element={<PrivacyMode />} />
+            <Route path="/use-cases" element={<UseCases />} />
+            
+            {/* Documentation Routes */}
+            <Route path="/docs/getting-started" element={<GettingStarted />} />
+            <Route path="/docs/privacy-guide" element={<PrivacyGuide />} />
+            <Route path="/docs/metadata-guide" element={<MetadataGuide />} />
             <Route path="/docs/api" element={<ApiReference />} />
             <Route path="/docs/index" element={<DocumentationIndex />} />
-        <Route path="/docs/architecture" element={<Architecture />} />
-        <Route path="/docs/testing" element={<TestingGuide />} />
-        <Route path="/docs/deployment" element={<DeploymentGuide />} />
-        <Route path="/docs/enterprise-security" element={<EnterpriseSecurity />} />
-        <Route path="/docs/security-faq" element={<SecurityFAQ />} />
-        <Route path="/docs/enterprise-api" element={<EnterpriseApiDocumentation />} />
-        <Route path="/docs/enterprise-deployment" element={<EnterpriseDeploymentGuide />} />
-        <Route path="/docs/security-architecture" element={<SecurityArchitectureOverview />} />
-        <Route path="/docs/compliance-templates" element={<ComplianceDocumentationTemplates />} />
-        <Route path="/docs/enterprise-security-faq" element={<EnterpriseSecurityFAQ />} />
-        <Route path="/docs/compliance-checklist" element={<ComplianceChecklist />} />
+            <Route path="/docs/architecture" element={<Architecture />} />
+            <Route path="/docs/testing" element={<TestingGuide />} />
+            <Route path="/docs/deployment" element={<DeploymentGuide />} />
+            <Route path="/docs/enterprise-security" element={<EnterpriseSecurity />} />
+            <Route path="/docs/security-faq" element={<SecurityFAQ />} />
+            <Route path="/docs/enterprise-api" element={<EnterpriseApiDocumentation />} />
+            <Route path="/docs/enterprise-deployment" element={<EnterpriseDeploymentGuide />} />
+            <Route path="/docs/security-architecture" element={<SecurityArchitectureOverview />} />
+            <Route path="/docs/compliance-templates" element={<ComplianceDocumentationTemplates />} />
+            <Route path="/docs/enterprise-security-faq" element={<EnterpriseSecurityFAQ />} />
+            <Route path="/docs/compliance-checklist" element={<ComplianceChecklist />} />
             <Route path="/docs/security-architecture-doc" element={<SecurityArchitectureDocument />} />
             <Route path="/docs/security-onepager" element={<SecurityOnePager />} />
-        <Route path="/docs/ciso-presentation" element={<CISOPresentationDeck />} />
-        <Route path="/docs/security-questionnaire" element={<SecurityQuestionnaireResponses />} />
+            <Route path="/docs/ciso-presentation" element={<CISOPresentationDeck />} />
+            <Route path="/docs/security-questionnaire" element={<SecurityQuestionnaireResponses />} />
             <Route path="/docs/competitive-security" element={<CompetitiveSecurityAnalysis />} />
-                    <Route path="/docs/ai-pricing" element={<AIDrivenPricing />} />
+            <Route path="/docs/ai-pricing" element={<AIDrivenPricing />} />
             <Route path="/docs/custom-branding" element={<CustomBranding />} />
             <Route path="/docs/implementation-status" element={<ImplementationStatus />} />
             <Route path="/docs/demo-walkthrough" element={<EnterpriseDemoWalkthrough />} />
@@ -475,6 +486,12 @@ export function App() {
             <Route path="/docs/comprehensive-api-guide" element={<ComprehensiveAPIGuide />} />
             <Route path="/docs/security-compliance-guide" element={<SecurityComplianceGuide />} />
             <Route path="/docs/enterprise-integrations-guide" element={<EnterpriseIntegrationsGuide />} />
+            
+            {/* Documentation Routes for Markdown Files */}
+            <Route path="/docs/blog-content-management" element={<BlogContentManagementGuide />} />
+            <Route path="/docs/workflow-template-implementation" element={<RedirectComponent url="/docs/WORKFLOW_TEMPLATE_IMPLEMENTATION_GUIDE.md" title="Workflow Template Implementation Guide" />} />
+            <Route path="/docs/marketplace-integration" element={<RedirectComponent url="/docs/MARKETPLACE_INTEGRATION_USER_GUIDE.md" title="Marketplace Integration User Guide" />} />
+            <Route path="/docs/enterprise-demo-features" element={<RedirectComponent url="/docs/ENTERPRISE_DEMO_FEATURES_GUIDE.md" title="Enterprise Demo Features Guide" />} />
             
             {/* Legacy Routes */}
             <Route path="/about" element={<AboutUs />} />
@@ -501,6 +518,11 @@ export function App() {
             <Route path="/solutions/insurance" element={<InsuranceSolution />} />
             <Route path="/solutions/healthcare" element={<HealthcareSolution />} />
             <Route path="/solutions/realestate" element={<RealEstateSolution />} />
+            
+            {/* Blog Routes */}
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/new" element={<ProtectedRoute><BlogEditor /></ProtectedRoute>} />
+            <Route path="/blog/edit/:id" element={<ProtectedRoute><BlogEditor /></ProtectedRoute>} />
             
             {/* AI-Enhanced Pricing Route */}
             <Route path="/ai-pricing" element={<AIEnhancedPricingPage />} />

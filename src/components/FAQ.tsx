@@ -12,9 +12,14 @@ import {
   Users,
   Settings,
   Lock,
-  Camera
+  Camera,
+  ArrowLeft,
+  Zap
 } from 'lucide-react';
-import { EnterpriseLayout } from './ui/EnterpriseLayout';
+import { analytics } from '../utils/analytics';
+import { ConsistentLayout } from './ui/ConsistentLayout';
+import { EnterpriseButton, EnterpriseCard, EnterpriseBadge, EnterpriseSection } from './ui/EnterpriseComponents';
+import DocumentationFooter from './DocumentationFooter';
 
 export const FAQ: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -252,7 +257,7 @@ export const FAQ: React.FC = () => {
   };
 
   return (
-    <EnterpriseLayout
+    <ConsistentLayout
       showHero
       title="Your Questions, Answered"
       description="Everything you need to know about unhackable photo analysis and why privacy-first actually works better."
@@ -459,6 +464,6 @@ export const FAQ: React.FC = () => {
           </button>
         </div>
       </div>
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 }; 

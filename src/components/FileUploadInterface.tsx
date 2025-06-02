@@ -45,6 +45,7 @@ export const FileUploadInterface: React.FC<FileUploadProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [uploadMode, setUploadMode] = useState<'single' | 'comparison'>('single');
   const [showComparisonTool, setShowComparisonTool] = useState(false);
+  const [isFileInputActive, setIsFileInputActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Check if user has access to chain of custody
@@ -226,15 +227,23 @@ export const FileUploadInterface: React.FC<FileUploadProps> = ({
   }, [handleFiles]);
 
   const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isFileInputActive) return; // Prevent multiple triggers
+    
     const selectedFiles = e.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
+      setIsFileInputActive(true);
       handleFiles(selectedFiles);
+      
+      // Reset after a short delay to prevent immediate re-triggering
+      setTimeout(() => {
+        setIsFileInputActive(false);
+        // Reset input value to allow selecting the same file again
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      }, 500);
     }
-    // Reset input value to allow selecting the same file again
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  }, [handleFiles]);
+  }, [handleFiles, isFileInputActive]);
 
   const removeFile = useCallback((fileToRemove: File) => {
     setFiles(prev => prev.filter(f => f.file !== fileToRemove));
@@ -376,12 +385,16 @@ export const FileUploadInterface: React.FC<FileUploadProps> = ({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
+          onClick={() => {
+            if (!isFileInputActive && !isProcessing) {
+              fileInputRef.current?.click();
+            }
+          }}
           role="button"
           tabIndex={0}
           aria-label="Upload image files"
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if ((e.key === 'Enter' || e.key === ' ') && !isFileInputActive && !isProcessing) {
               e.preventDefault();
               fileInputRef.current?.click();
             }

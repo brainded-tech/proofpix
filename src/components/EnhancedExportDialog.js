@@ -390,8 +390,8 @@ const EnhancedExportDialog = memo(({
                     checked={exportOptions.watermark}
                     onChange={(e) => setExportOptions(prev => ({ ...prev, watermark: e.target.checked }))}
                   />
-                  <span className="export-option-label">Add Watermark</span>
-                  <span className="export-option-description">Add ProofPix watermark to PDF</span>
+                  <span className="export-option-label">Remove Watermark</span>
+                  <span className="export-option-description">Remove ProofPix watermark from PDF (Pro feature)</span>
                 </label>
               )}
             </div>

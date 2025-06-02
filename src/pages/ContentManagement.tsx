@@ -14,7 +14,7 @@ import {
   Filter,
   RefreshCw
 } from 'lucide-react';
-import { EnterpriseLayout } from '../components/ui/EnterpriseLayout';
+import { ConsistentLayout } from '../components/ui/ConsistentLayout';
 import ContentQualityDashboard from '../components/content/ContentQualityDashboard';
 import { contentQualityService } from '../services/contentQualityService';
 import { useTestAuth } from '../components/auth/TestAuthProvider';
@@ -392,7 +392,7 @@ export const ContentManagement: React.FC = () => {
   }
 
   return (
-    <EnterpriseLayout>
+    <ConsistentLayout>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -448,7 +448,7 @@ export const ContentManagement: React.FC = () => {
           {activeTab === 'analytics' && renderAnalyticsTab()}
         </div>
       </div>
-    </EnterpriseLayout>
+    </ConsistentLayout>
   );
 };
 

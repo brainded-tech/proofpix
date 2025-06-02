@@ -427,13 +427,13 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
     const savingsPercentage = getSavingsPercentage(selectedPlan as 'starter' | 'professional');
     
     return (
-      <div className="bg-green-50 rounded-lg p-4 border border-green-200 flex items-start mb-6">
-        <div className="bg-green-100 p-2 rounded-full mr-3">
-          <DollarSign className="text-green-600" size={20} />
+      <div className="bg-green-900/20 border border-green-600/30 rounded-lg p-4 flex items-start mb-6">
+        <div className="bg-green-600/20 p-2 rounded-full mr-3">
+          <DollarSign className="text-green-400" size={20} />
         </div>
         <div>
-          <h4 className="font-semibold text-gray-900 mb-1">Save up to {savingsPercentage}% vs. Competitors</h4>
-          <p className="text-sm text-gray-600">
+          <h4 className="font-semibold text-white mb-1">Save up to {savingsPercentage}% vs. Competitors</h4>
+          <p className="text-sm text-slate-300">
             ProofPix's {selectedPlan} plan costs ${getOurPrice(selectedPlan as any)} vs. the industry average of 
             ${getCompetitorAvgPrice(selectedPlan as any)} while providing superior privacy and security.
           </p>
@@ -443,10 +443,10 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
   };
 
   return (
-    <div className={`bg-slate-700 rounded-xl border border-slate-600 p-6 ${className}`}>
+    <div className={`bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-xl p-6 ${className}`}>
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">How We Compare to the Competition</h2>
-        <p className="text-gray-600">
+        <h2 className="text-2xl font-bold text-white mb-2">How We Compare to the Competition</h2>
+        <p className="text-slate-300">
           See how ProofPix provides superior value compared to other solutions
         </p>
       </div>
@@ -456,10 +456,10 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
         <div className="inline-flex rounded-md shadow-sm">
           <button
             type="button"
-            className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
+            className={`px-4 py-2 text-sm font-medium rounded-l-lg transition-colors ${
               selectedPlan === 'starter'
                 ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                : 'bg-slate-700 text-slate-300 border border-slate-600 hover:bg-slate-600'
             }`}
             onClick={() => setSelectedPlan('starter')}
           >
@@ -467,10 +467,10 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
           </button>
           <button
             type="button"
-            className={`px-4 py-2 text-sm font-medium ${
+            className={`px-4 py-2 text-sm font-medium transition-colors ${
               selectedPlan === 'professional'
                 ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                : 'bg-slate-700 text-slate-300 border border-slate-600 hover:bg-slate-600'
             }`}
             onClick={() => setSelectedPlan('professional')}
           >
@@ -478,10 +478,10 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
           </button>
           <button
             type="button"
-            className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
+            className={`px-4 py-2 text-sm font-medium rounded-r-lg transition-colors ${
               selectedPlan === 'enterprise'
                 ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                : 'bg-slate-700 text-slate-300 border border-slate-600 hover:bg-slate-600'
             }`}
             onClick={() => setSelectedPlan('enterprise')}
           >
@@ -493,13 +493,13 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
       {renderSavingsHighlight()}
       
       {/* Security Warning */}
-      <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200 flex items-start mb-6">
-        <div className="bg-yellow-100 p-2 rounded-full mr-3">
-          <AlertTriangle className="text-yellow-600" size={20} />
+      <div className="bg-yellow-900/20 border border-yellow-600/30 rounded-lg p-4 flex items-start mb-6">
+        <div className="bg-yellow-600/20 p-2 rounded-full mr-3">
+          <AlertTriangle className="text-yellow-400" size={20} />
         </div>
         <div>
-          <h4 className="font-semibold text-gray-900 mb-1">Why Server-Side Processing is a Risk</h4>
-          <p className="text-sm text-gray-600">
+          <h4 className="font-semibold text-white mb-1">Why Server-Side Processing is a Risk</h4>
+          <p className="text-sm text-slate-300">
             Most competitors upload your sensitive images to their servers, creating privacy and security 
             vulnerabilities. ProofPix processes everything client-side, keeping your data on your device.
           </p>
@@ -552,7 +552,7 @@ const CompetitivePricingComparison: React.FC<CompetitivePricingComparisonProps> 
       <div className="mt-6 text-center">
         <button
           onClick={() => setShowDetailedComparison(!showDetailedComparison)}
-          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          className="px-4 py-2 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600/50 text-blue-400 hover:text-blue-300 text-sm font-medium rounded-lg transition-all duration-200 backdrop-blur-sm"
         >
           {showDetailedComparison ? 'Show Less' : 'Show Detailed Comparison'}
         </button>

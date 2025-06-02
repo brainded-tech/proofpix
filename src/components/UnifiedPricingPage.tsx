@@ -38,7 +38,7 @@ import {
   Building,
   Crown
 } from 'lucide-react';
-import { EnterpriseLayout } from './ui/EnterpriseLayout';
+import { ConsistentLayout } from './ui/ConsistentLayout';
 import { EnterpriseButton, EnterpriseCard, EnterpriseBadge } from './ui/EnterpriseComponents';
 import { EnhancedCTAButtons } from './ui/EnhancedCTAButtons';
 import PlanRecommenderQuiz from './PlanRecommenderQuiz';
@@ -2251,143 +2251,137 @@ export const UnifiedPricingPage: React.FC = () => {
   };
 
   return (
-    <EnterpriseLayout
-      showHero
-      title="Choose Your ProofPix Plan"
-      description="From quick session passes to enterprise solutions, find the perfect plan for your image verification needs."
-      maxWidth="7xl"
-    >
-      <TrustSignalsBar />
-      
-      {showUrgencyBanner && (
-        <div 
-          className="bg-red-600 text-white py-2 px-4 text-center"
-          onClick={() => {
-            urgencyBannerTest.trackEvent('banner_click');
-          }}
-        >
-          <span className="font-semibold">{bannerText}</span>
-        </div>
-      )}
+    <ConsistentLayout>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        {/* Hero Section */}
+        <section className="py-20 bg-gradient-to-br from-blue-900 via-slate-900 to-emerald-900 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-emerald-600/20"></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <TrustSignalsBar />
+            
+            {showUrgencyBanner && (
+              <div 
+                className="bg-red-600 text-white py-2 px-4 text-center rounded-lg mb-8"
+                onClick={() => {
+                  urgencyBannerTest.trackEvent('banner_click');
+                }}
+              >
+                <span className="font-semibold">{bannerText}</span>
+              </div>
+            )}
 
-      {/* Hero Section */}
-      <section 
-        className="py-20 bg-slate-900"
-        ref={(el) => sectionRefs.current['hero'] = el}
-        data-section="hero"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center bg-emerald-500/10 border border-emerald-500/20 rounded-full px-6 py-3 mb-8">
-              <Shield className="w-5 h-5 text-emerald-400 mr-2" />
-              <span className="text-emerald-400 font-medium">UNHACKABLE BY DESIGN • CATEGORY CREATOR</span>
-            </div>
-            <h1 className="text-5xl font-bold text-slate-100 mb-6">
-              <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                The Only Image Intelligence That Can't Be Breached
-              </span>
-            </h1>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Choose the plan that <span className="font-semibold text-emerald-400">eliminates data breach risk entirely</span> while delivering 
-              forensic-grade results your business needs. 
-              <span className="font-semibold text-slate-100"> No uploads, no exposure, no regrets.</span>
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-                <div className="text-2xl font-bold text-emerald-400 mb-1">$0</div>
-                <div className="text-sm text-slate-400">Data breach risk</div>
+            <div className="text-center">
+              <div className="inline-flex items-center bg-emerald-500/10 border border-emerald-500/20 rounded-full px-6 py-3 mb-8">
+                <Shield className="w-5 h-5 text-emerald-400 mr-2" />
+                <span className="text-emerald-400 font-medium">UNHACKABLE BY DESIGN • CATEGORY CREATOR</span>
               </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-                <div className="text-2xl font-bold text-emerald-400 mb-1">60 sec</div>
-                <div className="text-sm text-slate-400">To start protecting data</div>
-              </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-                <div className="text-2xl font-bold text-emerald-400 mb-1">500+</div>
-                <div className="text-sm text-slate-400">Teams already protected</div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                  Choose Your ProofPix Plan
+                </span>
+              </h1>
+              <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed mb-8">
+                From quick session passes to enterprise solutions, find the perfect plan for your image verification needs.
+                <span className="font-semibold text-white"> No uploads, no exposure, no regrets.</span>
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
+                  <div className="text-2xl font-bold text-emerald-400 mb-1">$0</div>
+                  <div className="text-sm text-blue-200">Data breach risk</div>
+                </div>
+                <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
+                  <div className="text-2xl font-bold text-emerald-400 mb-1">60 sec</div>
+                  <div className="text-sm text-blue-200">To start protecting data</div>
+                </div>
+                <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
+                  <div className="text-2xl font-bold text-emerald-400 mb-1">500+</div>
+                  <div className="text-sm text-blue-200">Teams already protected</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {renderSections()}
-      
-      <AIPackagesSection />
-      <CompetitiveDisplacementSection />
-      <ROIComparisonSection />
-      <IndustryPricingSection />
-      
-      <InteractiveToolsSection />
-      <FAQSection />
+        {/* Main Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {renderSections()}
+          
+          <AIPackagesSection />
+          <CompetitiveDisplacementSection />
+          <ROIComparisonSection />
+          <IndustryPricingSection />
+          
+          <InteractiveToolsSection />
+          <FAQSection />
 
-      {/* Final CTA */}
-      <section className="py-16 bg-blue-600 text-white text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-4">Every Day You Wait Is Another Day of Unnecessary Risk</h2>
-          <p className="text-xl mb-8">
-            Join 500+ teams who eliminated their data breach risk entirely. 
-            <span className="font-semibold"> Start protecting your data in the next 60 seconds.</span>
-          </p>
-          <div className="bg-blue-700/50 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="text-2xl font-bold text-blue-200">$4.45M</div>
-                <div className="text-sm text-blue-300">Average data breach cost</div>
+          {/* Final CTA */}
+          <section className="py-16 bg-gradient-to-r from-blue-600 to-emerald-600 text-white text-center rounded-2xl my-16">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-3xl font-bold mb-4">Every Day You Wait Is Another Day of Unnecessary Risk</h2>
+              <p className="text-xl mb-8">
+                Join 500+ teams who eliminated their data breach risk entirely. 
+                <span className="font-semibold"> Start protecting your data in the next 60 seconds.</span>
+              </p>
+              <div className="bg-blue-700/50 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                  <div>
+                    <div className="text-2xl font-bold text-blue-200">$4.45M</div>
+                    <div className="text-sm text-blue-300">Average data breach cost</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-blue-200">60 sec</div>
+                    <div className="text-sm text-blue-300">To start protecting data</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-blue-200">0</div>
+                    <div className="text-sm text-blue-300">ProofPix breaches ever</div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-blue-200">60 sec</div>
-                <div className="text-sm text-blue-300">To start protecting data</div>
+              <CTAButton plan="professional" position="final-cta" className="bg-white text-blue-600 hover:bg-blue-50" />
+            </div>
+          </section>
+
+          {/* Bottom Trust Signals */}
+          {trustSignalsConfig.trustSignalsBottom && (
+            <div className="bg-slate-800/50 rounded-2xl p-8 mb-16">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold text-white mb-2">Your Success Is Guaranteed</h3>
+                <p className="text-slate-300">We're so confident in ProofPix, we back it with ironclad guarantees</p>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-blue-200">0</div>
-                <div className="text-sm text-blue-300">ProofPix breaches ever</div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
+                  <div className="text-emerald-400 text-2xl mb-2">🔒</div>
+                  <div className="font-semibold text-white">Zero Breach Guarantee</div>
+                  <div className="text-sm text-slate-400">Technically impossible by design</div>
+                </div>
+                <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
+                  <div className="text-emerald-400 text-2xl mb-2">⚡</div>
+                  <div className="font-semibold text-white">99.9% Uptime SLA</div>
+                  <div className="text-sm text-slate-400">Or we credit your account</div>
+                </div>
+                <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
+                  <div className="text-emerald-400 text-2xl mb-2">🏆</div>
+                  <div className="font-semibold text-white">Court-Tested Accuracy</div>
+                  <div className="text-sm text-slate-400">99.9% legal admissibility rate</div>
+                </div>
+                <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
+                  <div className="text-emerald-400 text-2xl mb-2">📞</div>
+                  <div className="font-semibold text-white">30-Day Money Back</div>
+                  <div className="text-sm text-slate-400">No questions asked guarantee</div>
+                </div>
               </div>
             </div>
-          </div>
-          <CTAButton plan="professional" position="final-cta" className="bg-blue-600 text-white hover:bg-blue-700" />
-        </div>
-      </section>
+          )}
 
-      {/* Bottom Trust Signals */}
-      {trustSignalsConfig.trustSignalsBottom && (
-        <div className="bg-slate-800 py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold text-white mb-2">Your Success Is Guaranteed</h3>
-              <p className="text-slate-300">We're so confident in ProofPix, we back it with ironclad guarantees</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-              <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
-                <div className="text-emerald-400 text-2xl mb-2">🔒</div>
-                <div className="font-semibold text-white">Zero Breach Guarantee</div>
-                <div className="text-sm text-slate-400">Technically impossible by design</div>
-              </div>
-              <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
-                <div className="text-emerald-400 text-2xl mb-2">⚡</div>
-                <div className="font-semibold text-white">99.9% Uptime SLA</div>
-                <div className="text-sm text-slate-400">Or we credit your account</div>
-              </div>
-              <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
-                <div className="text-emerald-400 text-2xl mb-2">🏆</div>
-                <div className="font-semibold text-white">Court-Tested Accuracy</div>
-                <div className="text-sm text-slate-400">99.9% legal admissibility rate</div>
-              </div>
-              <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600/50">
-                <div className="text-emerald-400 text-2xl mb-2">📞</div>
-                <div className="font-semibold text-white">30-Day Money Back</div>
-                <div className="text-sm text-slate-400">No questions asked guarantee</div>
-              </div>
-            </div>
-          </div>
+          {/* Dynamic pricing upsell */}
+          <DynamicPricingUpsell 
+            currentPlan="starter" 
+            timeThreshold={45}
+          />
         </div>
-      )}
-
-      {/* Dynamic pricing upsell */}
-      <DynamicPricingUpsell 
-        currentPlan="starter" 
-        timeThreshold={45}
-      />
-    </EnterpriseLayout>
+      </div>
+    </ConsistentLayout>
   );
 };
 
