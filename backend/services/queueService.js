@@ -18,9 +18,16 @@ class QueueService {
 
       const redisClient = redisConfig.getClient();
       
-      // Create queues
+      // Create queues with REDIS_URL
+      const redisConfig = process.env.REDIS_URL || {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: process.env.REDIS_PORT || 6379,
+        password: process.env.REDIS_PASSWORD || undefined,
+        db: process.env.REDIS_DB || 0
+      };
+
       this.queues.set('file-processing', new Queue('file processing', {
-        redis: {
+        redis: process.env.REDIS_URL || {
           host: process.env.REDIS_HOST || 'localhost',
           port: process.env.REDIS_PORT || 6379,
           password: process.env.REDIS_PASSWORD || undefined,
@@ -38,7 +45,7 @@ class QueueService {
       }));
 
       this.queues.set('webhook-delivery', new Queue('webhook delivery', {
-        redis: {
+        redis: process.env.REDIS_URL || {
           host: process.env.REDIS_HOST || 'localhost',
           port: process.env.REDIS_PORT || 6379,
           password: process.env.REDIS_PASSWORD || undefined,
@@ -56,7 +63,7 @@ class QueueService {
       }));
 
       this.queues.set('email-notifications', new Queue('email notifications', {
-        redis: {
+        redis: process.env.REDIS_URL || {
           host: process.env.REDIS_HOST || 'localhost',
           port: process.env.REDIS_PORT || 6379,
           password: process.env.REDIS_PASSWORD || undefined,
@@ -74,7 +81,7 @@ class QueueService {
       }));
 
       this.queues.set('batch-processing', new Queue('batch processing', {
-        redis: {
+        redis: process.env.REDIS_URL || {
           host: process.env.REDIS_HOST || 'localhost',
           port: process.env.REDIS_PORT || 6379,
           password: process.env.REDIS_PASSWORD || undefined,
@@ -92,7 +99,7 @@ class QueueService {
       }));
 
       this.queues.set('cleanup', new Queue('cleanup', {
-        redis: {
+        redis: process.env.REDIS_URL || {
           host: process.env.REDIS_HOST || 'localhost',
           port: process.env.REDIS_PORT || 6379,
           password: process.env.REDIS_PASSWORD || undefined,

@@ -11,7 +11,7 @@ const { auditLog } = require('./auditService');
 class EphemeralProcessingService {
   constructor() {
     // Redis client for ephemeral storage
-    this.redis = new Redis({
+    this.redis = new Redis(process.env.REDIS_URL || {
       host: process.env.REDIS_HOST || 'localhost',
       port: process.env.REDIS_PORT || 6379,
       password: process.env.REDIS_PASSWORD,
