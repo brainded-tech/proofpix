@@ -40,18 +40,49 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-// Stripe webhook endpoint (essential for payments)
-app.use('/api/stripe', require('./routes/stripe'));
+// Load routes with error handling
+try {
+  // Stripe webhook endpoint (essential for payments)
+  app.use('/api/stripe', require('./routes/stripe'));
+  console.log('✅ Stripe routes loaded successfully');
+} catch (error) {
+  console.error('❌ Failed to load Stripe routes:', error.message);
+  // Create a fallback route
+  app.use('/api/stripe', (req, res) => {
+    res.status(503).json({
+      error: 'Stripe service temporarily unavailable',
+      message: 'Please try again later'
+    });
+  });
+}
 
-// Basic auth routes
-app.use('/api/auth', require('./routes/auth'));
+try {
+  // Basic auth routes
+  app.use('/api/auth', require('./routes/auth'));
+  console.log('✅ Auth routes loaded successfully');
+} catch (error) {
+  console.error('❌ Failed to load Auth routes:', error.message);
+  // Create a fallback route
+  app.use('/api/auth', (req, res) => {
+    res.status(503).json({
+      error: 'Auth service temporarily unavailable',
+      message: 'Please try again later'
+    });
+  });
+}
 
 // Catch all
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
     message: 'Endpoint not found',
-    path: req.originalUrl
+    path: req.originalUrl,
+    availableEndpoints: [
+      'GET /health',
+      'GET /test-db',
+      'POST /api/stripe/create-checkout-session',
+      'POST /api/stripe/webhook'
+    ]
   });
 });
 

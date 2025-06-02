@@ -66,7 +66,7 @@ export const PaymentStatusProvider: React.FC<PaymentStatusProviderProps> = ({ ch
     try {
       // In production, this would connect to your WebSocket server
       // For now, we'll simulate real-time updates
-      const ws = new WebSocket('wss://api.proofpixapp.com/payments/status');
+      const ws = new WebSocket('wss://app.proofpixapp.com/payments/status');
       
       ws.onopen = () => {
         console.log('Payment status WebSocket connected');

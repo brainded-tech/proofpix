@@ -471,7 +471,7 @@ class PricingAnalytics {
 
     try {
       // Only send to production analytics endpoint
-      const apiUrl = process.env.REACT_APP_API_URL || 'https://api.proofpixapp.com';
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://app.proofpixapp.com';
       
       await fetch(`${apiUrl}/api/analytics`, {
         method: 'POST',

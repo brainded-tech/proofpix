@@ -1,8 +1,9 @@
 // API Configuration for ProofPix Enterprise
-export const API_CONFIG = {
+const API_CONFIG = {
   // Base URLs
-  PRODUCTION_URL: 'https://api.proofpixapp.com',
-  DEVELOPMENT_URL: 'http://localhost:3001',
+  PRODUCTION_URL: 'https://app.proofpixapp.com',
+  DEVELOPMENT_URL: 'http://localhost:5000',
+  STAGING_URL: 'https://app.proofpixapp.com',
   
   // Get the appropriate base URL based on environment
   getBaseUrl: () => {

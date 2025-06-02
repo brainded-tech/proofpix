@@ -389,8 +389,8 @@ export const createCheckoutSession = async (priceId, successUrl, cancelUrl, meta
   try {
     const stripe = await stripePromise;
     
-    // Use Railway backend API instead of Netlify functions
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://api.proofpixapp.com';
+    // Use custom domain for cleaner URLs
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://app.proofpixapp.com';
     
     const response = await fetch(`${apiUrl}/api/stripe/create-checkout-session`, {
       method: 'POST',

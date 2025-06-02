@@ -30,6 +30,8 @@ export interface AppConfig {
   api: {
     baseUrl: string;
     timeout: number;
+    retries: number;
+    version: string;
   };
 
   limits: {
@@ -68,8 +70,10 @@ export const APP_CONFIG: AppConfig = {
   
   // API Endpoints (for future use)
   api: {
-    baseUrl: process.env.REACT_APP_API_URL || 'https://api.proofpixapp.com',
-    timeout: parseInt(process.env.REACT_APP_API_TIMEOUT as string) || 10000
+    baseUrl: process.env.REACT_APP_API_URL || 'https://app.proofpixapp.com',
+    timeout: 30000,
+    retries: 3,
+    version: 'v1'
   },
 
   limits: {
