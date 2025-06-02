@@ -1,0 +1,46 @@
+# Railway ignore file - exclude large and unnecessary files from deployment
+
+# Node modules (will be installed during build)
+node_modules/
+
+# Large documentation directory
+deployment-docs/
+
+# Development files
+coverage/
+dev-server.log
+*.log
+
+# Build artifacts (will be rebuilt)
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git/
+.gitignore
+
+# Environment files
+.env*
+
+# Test files
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Temporary files
+temp_*
+*.tmp
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Development scripts
+deploy-*.sh 
