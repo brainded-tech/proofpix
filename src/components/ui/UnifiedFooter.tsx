@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Mail, Phone, MapPin, Twitter, Linkedin, Github } from 'lucide-react';
+import { Shield, Mail, MapPin, Twitter, Linkedin, Github } from 'lucide-react';
 
 interface UnifiedFooterProps {
   variant?: 'default' | 'minimal';
@@ -90,14 +90,8 @@ export const UnifiedFooter: React.FC<UnifiedFooterProps> = ({ variant = 'default
                 </a>
               </div>
               <div className="flex items-center space-x-3 text-sm text-slate-400">
-                <Phone className="w-4 h-4" />
-                <a href="tel:+1-555-PROOF-PIX" className="hover:text-white transition-colors">
-                  +1 (555) PROOF-PIX
-                </a>
-              </div>
-              <div className="flex items-center space-x-3 text-sm text-slate-400">
                 <MapPin className="w-4 h-4" />
-                <span>San Francisco, CA</span>
+                <span>Philadelphia, PA</span>
               </div>
             </div>
           </div>

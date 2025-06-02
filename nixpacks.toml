@@ -1,11 +1,16 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm-9_x"]
+nixPkgs = ["nodejs_20", "npm-9_x", "python3", "gcc", "gnumake", "postgresql", "pkg-config", "openssl", "zlib", "libpng", "libjpeg", "giflib", "librsvg", "vips"]
 
 [phases.install]
-cmds = ["cd backend && npm ci --production"]
+cmds = ["cd backend && npm ci --production --verbose --unsafe-perm"]
 
 [phases.build]
 cmds = ["echo 'No build step needed for backend'"]
 
 [start]
-cmd = "cd backend && npm start" 
+cmd = "cd backend && npm start"
+
+[variables]
+NODE_ENV = "production"
+PYTHON = "python3"
+SHARP_IGNORE_GLOBAL_LIBVIPS = "1" 
