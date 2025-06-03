@@ -36,12 +36,20 @@ import {
   Pause,
   RefreshCw,
   ExternalLink,
-  CheckCircle,
   AlertCircle,
-  Info
+  Info,
+  ArrowRight
 } from 'lucide-react';
 import { useEnterpriseMarketplace } from '../../hooks/useEnterpriseMarketplace';
 import { APIMarketplace } from './APIMarketplace';
+import { ConsistentLayout } from '../ui/ConsistentLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../ui/EnterpriseComponents';
 
 interface MarketplaceDashboardProps {
   className?: string;

@@ -490,8 +490,8 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
   const EnhancedQuickStartOverlay = () => {
     const currentSteps = getOnboardingSteps(userType);
     const currentProfile = userTypeProfiles.find(p => p.id === userType);
-
-  return (
+    
+    return (
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           {showUserTypeSelection ? (
@@ -500,7 +500,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mx-auto mb-6">
                   <Target className="w-8 h-8 text-white" />
-        </div>
+                </div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">Welcome to ProofPix!</h2>
                 <p className="text-lg text-slate-600 mb-2">Let's personalize your experience</p>
                 <p className="text-sm text-slate-500">Choose your role to get a customized onboarding experience</p>
@@ -516,20 +516,20 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     <div className="flex items-start space-x-4">
                       <div className={`p-3 rounded-lg bg-${profile.color}-100 text-${profile.color}-600 group-hover:bg-${profile.color}-500 group-hover:text-white transition-colors`}>
                         {profile.icon}
-              </div>
+                      </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-slate-900 mb-2">{profile.title}</h3>
                         <p className="text-slate-600 text-sm mb-3">{profile.description}</p>
                         <div className="flex items-center text-xs text-slate-500">
                           <Clock className="w-3 h-3 mr-1" />
                           {profile.estimatedTime}
-              </div>
+                        </div>
                       </div>
                       <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
                     </div>
                   </div>
                 ))}
-            </div>
+              </div>
 
               <div className="text-center">
                 <button 
@@ -559,22 +559,22 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                <button 
+                  <button 
                     onClick={() => setShowUserTypeSelection(true)}
                     className="text-slate-500 hover:text-slate-700 text-sm flex items-center"
-                >
+                  >
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     Change Role
-                </button>
-                <button 
+                  </button>
+                  <button 
                     onClick={() => setShowQuickStart(false)}
                     className="text-slate-400 hover:text-slate-600 p-2"
-                >
+                  >
                     <X className="w-6 h-6" />
-                </button>
+                  </button>
                 </div>
               </div>
-              
+
               {/* Progress Bar */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-2">
@@ -587,7 +587,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     style={{ width: `${getProgressPercentage()}%` }}
                   ></div>
                 </div>
-            </div>
+              </div>
 
               {/* Primary Goals */}
               <div className="mb-8 p-4 bg-slate-50 rounded-lg">
@@ -643,7 +643,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                             </div>
                           </div>
                         </div>
-              <button
+                        <button
                           onClick={() => handleStepAction(step)}
                           disabled={isCompleted}
                           className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
@@ -653,22 +653,22 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                           }`}
                         >
                           {isCompleted ? 'Completed' : step.action}
-              </button>
-            </div>
-          </div>
+                        </button>
+                      </div>
+                    </div>
                   );
                 })}
-        </div>
+              </div>
 
               {/* Quick Actions */}
               <div className="flex flex-col sm:flex-row gap-3">
-              <button 
+                <button 
                   onClick={() => setShowQuickStart(false)}
                   className={`flex-1 bg-${currentProfile?.color}-600 hover:bg-${currentProfile?.color}-700 text-white px-6 py-3 rounded-lg font-medium transition-colors`}
-              >
+                >
                   Start Exploring
-              </button>
-              <button 
+                </button>
+                <button 
                   onClick={() => {
                     setShowQuickStart(false);
                     navigate('/docs');
@@ -677,7 +677,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                 >
                   <BookOpen className="w-4 h-4 inline mr-2" />
                   View All Docs
-              </button>
+                </button>
               </div>
             </div>
           )}
@@ -689,9 +689,9 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
   return (
     <>
       {/* Enhanced Quick Start Overlay */}
-      <AnimatePresence>
+        <AnimatePresence>
         {showQuickStart && <EnhancedQuickStartOverlay />}
-      </AnimatePresence>
+        </AnimatePresence>
 
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
       {/* Unified Header */}
@@ -713,18 +713,18 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-600/20 border border-blue-400/30 text-blue-300 text-sm font-medium mb-8">
             <Shield className="w-4 h-4 mr-2" />
             Complete Photo Analysis with Complete Privacy
-            </div>
+          </div>
 
-            {/* Main Headline */}
+          {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
             Don't Just Send a Photo—
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
               Send Proof of Everything
-              </span>
-            </h1>
-            
-            {/* Subheadline */}
+            </span>
+          </h1>
+
+          {/* Subheadline */}
           <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto leading-relaxed">
             Extract every hidden detail from your photos—location, timestamps, camera settings, and more. 
             Professional-grade analysis that happens entirely in your browser for complete privacy.
@@ -735,34 +735,34 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
               <span>Never Touches Our Servers</span>
-              </div>
+            </div>
             <div className="flex items-center">
               <Zap className="w-5 h-5 text-yellow-400 mr-2" />
               <span>Results in Seconds</span>
-              </div>
+            </div>
             <div className="flex items-center">
               <Users className="w-5 h-5 text-blue-400 mr-2" />
               <span>Trusted by 500+ Legal Teams</span>
-              </div>
             </div>
+          </div>
 
           {/* Primary CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <button
-                onClick={() => navigate('/enterprise/demo')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                <Eye className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <button
+              onClick={() => navigate('/enterprise/demo')}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <Eye className="w-5 h-5" />
               See How It Works
-              </button>
-              <button
-                onClick={() => navigate('/security')}
-                className="border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                <Shield className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => navigate('/security')}
+              className="border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <Shield className="w-5 h-5" />
               Why It's Secure
-              </button>
-            </div>
+            </button>
+          </div>
 
           {/* Enhanced stats display */}
           <div className="bg-slate-800/50 rounded-lg p-6 mb-12 max-w-3xl mx-auto border border-slate-700/50">
@@ -841,8 +841,8 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                     Choose File
                   </button>
                 </div>
-            </div>
-          </div>
+                </div>
+                </div>
         </div>
       </section>
 
@@ -885,12 +885,12 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                 >
                   <div className={`text-${feature.color}-400 mb-4 group-hover:scale-110 transition-transform`}>
                     {feature.icon}
-            </div>
+                </div>
                   <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
                   <p className="text-slate-300 mb-4 leading-relaxed">{feature.description}</p>
                   <div className={`text-${feature.color}-400 font-semibold text-sm`}>
                     {feature.stats}
-            </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -937,7 +937,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                   <div className="flex items-start space-x-4">
                     <div className={`p-3 rounded-lg bg-${solution.color}-500/10 text-${solution.color}-400 group-hover:bg-${solution.color}-500/20 transition-colors`}>
                       {solution.icon}
-              </div>
+          </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-white mb-3">{solution.title}</h3>
                       <p className="text-slate-300 mb-4 leading-relaxed">{solution.description}</p>
@@ -1049,18 +1049,18 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
                 it has to be built from the ground up, like we did.
               </p>
               <div className="flex items-center justify-center space-x-8">
-              <div className="text-center">
+                <div className="text-center">
                   <div className="text-2xl font-bold text-emerald-400">First</div>
                   <div className="text-slate-400 text-sm">To eliminate uploads</div>
-              </div>
-              <div className="text-center">
+                </div>
+                <div className="text-center">
                   <div className="text-2xl font-bold text-emerald-400">Only</div>
                   <div className="text-slate-400 text-sm">Unhackable solution</div>
-              </div>
-              <div className="text-center">
+                </div>
+                <div className="text-center">
                   <div className="text-2xl font-bold text-emerald-400">Leader</div>
                   <div className="text-slate-400 text-sm">Category we created</div>
-              </div>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -1069,7 +1069,7 @@ export const EnterpriseHomePage: React.FC<EnterpriseHomePageProps> = ({
 
       {/* Unified Footer */}
       <UnifiedFooter />
-    </div>
+                </div>
     </>
   );
 }; 

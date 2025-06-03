@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './styles/global.css';
 import './styles/main.css';
@@ -12,78 +12,87 @@ import './styles/button-contrast-fixes.css';
 import './styles/container-background-fixes.css';
 import './styles/comprehensive-ui-fixes.css';
 import { ProofPix } from './ProofPix';
-import { AboutUs } from './components/AboutUs';
-import { PrivacyPolicy } from './components/PrivacyPolicy';
-import { FAQ } from './components/FAQ';
-import { Terms } from './components/Terms';
-import { Support } from './components/Support';
-import PricingPage from './components/PricingPage';
-import UnifiedPricingPage from './components/UnifiedPricingPage';
-import DocumentIntelligencePricing from './components/DocumentIntelligencePricing';
-import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
-import { ImageComparisonPage } from './pages/ImageComparisonPage';
-import { BatchProcessingPage } from './pages/BatchProcessingPage';
-import { BatchManagementPage } from './components/BatchManagementPage';
-import { Enterprise } from './pages/Enterprise';
-import EnterpriseDemo from './pages/EnterpriseDemo';
-import EnterpriseBranding from './pages/EnterpriseBranding';
-import IndustryDemoConfigurations from './components/industry/IndustryDemoConfigurations';
 import ToastContainer from './components/EnhancedToastSystem';
-import { EnterpriseLayout } from './components/ui/EnterpriseLayout';
-import { StandardLayout } from './components/ui/StandardLayout';
-import { EnterpriseButton } from './components/ui/EnterpriseComponents';
-import GettingStarted from './pages/docs/GettingStarted';
-import PrivacyGuide from './pages/docs/PrivacyGuide';
-import MetadataGuide from './pages/docs/MetadataGuide';
-import ApiDocs from './pages/docs/ApiDocs';
-import DocumentationIndex from './pages/docs/DocumentationIndex';
-import Architecture from './pages/docs/Architecture';
-import ApiReference from './pages/docs/ApiReference';
-import TestingGuide from './pages/docs/TestingGuide';
-import DeploymentGuide from './pages/docs/DeploymentGuide';
-import EnterpriseSecurity from './pages/docs/EnterpriseSecurity';
-import SecurityFAQ from './pages/docs/SecurityFAQ';
-import EnterpriseApiDocumentation from './pages/docs/EnterpriseApiDocumentation';
-import EnterpriseDeploymentGuide from './pages/docs/EnterpriseDeploymentGuide';
-import SecurityArchitectureOverview from './pages/docs/SecurityArchitectureOverview';
-import { ChainOfCustodyPage } from './pages/ChainOfCustodyPage';
-import ComplianceDocumentationTemplates from './pages/docs/ComplianceDocumentationTemplates';
-import EnterpriseSecurityFAQ from './pages/docs/EnterpriseSecurityFAQ';
-import ComplianceChecklist from './pages/docs/ComplianceChecklist';
-import SecurityArchitectureDocument from './pages/docs/SecurityArchitectureDocument';
-import SecurityOnePager from './pages/docs/SecurityOnePager';
-import CISOPresentationDeck from './pages/docs/CISOPresentationDeck';
-import SecurityQuestionnaireResponses from './pages/docs/SecurityQuestionnaireResponses';
-import CompetitiveSecurityAnalysis from './pages/docs/CompetitiveSecurityAnalysis';
-import { AIDrivenPricing } from './pages/docs/AIDrivenPricing';
-import { CustomBranding } from './pages/docs/CustomBranding';
-import { ImplementationStatus } from './pages/docs/ImplementationStatus';
-import { EnterpriseDemoWalkthrough } from './pages/docs/EnterpriseDemoWalkthrough';
-import { SalesPlaybook } from './pages/docs/SalesPlaybook';
-import { ROICalculator } from './pages/docs/ROICalculator';
-import { CustomerSuccessStories } from './pages/docs/CustomerSuccessStories';
-import { ImplementationGuides } from './pages/docs/ImplementationGuides';
-import Security from './pages/Security';
-import { MainApp } from './pages/MainApp';
+import { errorHandler } from './utils/errorHandler';
+import { performanceOptimizer } from './utils/performanceOptimizer';
+import useEnhancedPdfGenerator from './utils/enhancedPdfGenerator';
+import { enhancedDataExporter } from './utils/enhancedDataExporter';
+
+// Keep essential components that are used immediately
 import { TestAuthProvider } from './components/auth/TestAuthProvider';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
-import { LoginPage } from './pages/auth/LoginPage';
-import { RegisterPage } from './pages/auth/RegisterPage';
-import { Dashboard } from './pages/Dashboard';
-import EnhancedDashboard from './pages/EnhancedDashboard';
-import { BillingPage } from './pages/BillingPage';
-import { LandingPage } from './pages/LandingPage';
-import { SecurityDashboardPage } from './pages/SecurityDashboardPage';
-import ContentQualityDashboard from './components/content/ContentQualityDashboard';
-import ContentManagement from './pages/ContentManagement';
-import { AdvancedAnalyticsPage } from './pages/AdvancedAnalyticsPage';
-import { AdvancedReportingPage } from './pages/AdvancedReportingPage';
-import { EnterpriseSSOPage } from './pages/EnterpriseSSOPage';
-import { ContactPage } from './pages/ContactPage';
-import SuccessPage from './components/SuccessPage';
-import { CheckoutPage } from './pages/CheckoutPage';
-import Blog from './pages/Blog';
-import BlogEditor from './pages/BlogEditor';
+import { SimpleTestLogin } from './components/auth/SimpleTestLogin';
+
+// Lazy load all major components for code splitting
+const AboutUs = React.lazy(() => import('./components/AboutUs'));
+const PrivacyPolicy = React.lazy(() => import('./components/PrivacyPolicy'));
+const FAQ = React.lazy(() => import('./components/FAQ'));
+const Terms = React.lazy(() => import('./components/Terms'));
+const Support = React.lazy(() => import('./components/Support'));
+const PricingPage = React.lazy(() => import('./components/PricingPage'));
+const UnifiedPricingPage = React.lazy(() => import('./components/UnifiedPricingPage'));
+const DocumentIntelligencePricing = React.lazy(() => import('./components/DocumentIntelligencePricing'));
+
+// Lazy load pages
+const AnalyticsDashboard = React.lazy(() => import('./pages/AnalyticsDashboard').then(module => ({ default: module.AnalyticsDashboard })));
+const ImageComparisonPage = React.lazy(() => import('./pages/ImageComparisonPage').then(module => ({ default: module.ImageComparisonPage })));
+const BatchProcessingPage = React.lazy(() => import('./pages/BatchProcessingPage'));
+const BatchManagementPage = React.lazy(() => import('./components/BatchManagementPage'));
+const Enterprise = React.lazy(() => import('./pages/Enterprise').then(module => ({ default: module.Enterprise })));
+const EnterpriseDemo = React.lazy(() => import('./pages/EnterpriseDemo'));
+const EnterpriseBranding = React.lazy(() => import('./pages/EnterpriseBranding'));
+const IndustryDemoConfigurations = React.lazy(() => import('./components/industry/IndustryDemoConfigurations'));
+
+// Lazy load documentation
+const GettingStarted = React.lazy(() => import('./pages/docs/GettingStarted'));
+const PrivacyGuide = React.lazy(() => import('./pages/docs/PrivacyGuide'));
+const MetadataGuide = React.lazy(() => import('./pages/docs/MetadataGuide'));
+const ApiDocs = React.lazy(() => import('./pages/docs/ApiDocs'));
+const DocumentationIndex = React.lazy(() => import('./pages/docs/DocumentationIndex'));
+const Architecture = React.lazy(() => import('./pages/docs/Architecture'));
+const ApiReference = React.lazy(() => import('./pages/docs/ApiReference'));
+const TestingGuide = React.lazy(() => import('./pages/docs/TestingGuide'));
+const DeploymentGuide = React.lazy(() => import('./pages/docs/DeploymentGuide'));
+
+// Lazy load enterprise components
+const EnterpriseLayout = React.lazy(() => import('./components/ui/EnterpriseLayout').then(module => ({ default: module.EnterpriseLayout })));
+const StandardLayout = React.lazy(() => import('./components/ui/StandardLayout').then(module => ({ default: module.StandardLayout })));
+const EnterpriseButton = React.lazy(() => import('./components/ui/EnterpriseComponents').then(module => ({ default: module.EnterpriseButton })));
+
+// Lazy load dashboard and main pages
+const Dashboard = React.lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })));
+const EnhancedDashboard = React.lazy(() => import('./pages/EnhancedDashboard'));
+const BillingPage = React.lazy(() => import('./pages/BillingPage').then(module => ({ default: module.BillingPage })));
+const LandingPage = React.lazy(() => import('./pages/LandingPage').then(module => ({ default: module.LandingPage })));
+const SecurityDashboardPage = React.lazy(() => import('./pages/SecurityDashboardPage'));
+const ContentManagement = React.lazy(() => import('./pages/ContentManagement'));
+const AdvancedAnalyticsPage = React.lazy(() => import('./pages/AdvancedAnalyticsPage').then(module => ({ default: module.AdvancedAnalyticsPage })));
+const AdvancedReportingPage = React.lazy(() => import('./pages/AdvancedReportingPage'));
+const EnterpriseSSOPage = React.lazy(() => import('./pages/EnterpriseSSOPage'));
+const ContactPage = React.lazy(() => import('./pages/ContactPage').then(module => ({ default: module.ContactPage })));
+const SuccessPage = React.lazy(() => import('./components/SuccessPage'));
+const CheckoutPage = React.lazy(() => import('./pages/CheckoutPage'));
+const Blog = React.lazy(() => import('./pages/Blog'));
+const BlogEditor = React.lazy(() => import('./pages/BlogEditor'));
+
+// Lazy load auth pages
+const LoginPage = React.lazy(() => import('./pages/auth/LoginPage').then(module => ({ default: module.LoginPage })));
+const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage').then(module => ({ default: module.RegisterPage })));
+
+// Lazy load solution pages
+const LegalSolution = React.lazy(() => import('./pages/solutions/LegalSolution'));
+const InsuranceSolution = React.lazy(() => import('./pages/solutions/InsuranceSolution'));
+const HealthcareSolution = React.lazy(() => import('./pages/solutions/HealthcareSolution'));
+const RealEstateSolution = React.lazy(() => import('./pages/solutions/RealEstateSolution'));
+const Features = React.lazy(() => import('./pages/Features'));
+const BatchProcessing = React.lazy(() => import('./pages/BatchProcessing'));
+const ImageComparison = React.lazy(() => import('./pages/ImageComparison'));
+
+// Lazy load AI and marketplace components
+const EnterpriseMarketplaceDashboard = React.lazy(() => import('./components/marketplace/EnterpriseMarketplaceDashboard').then(module => ({ default: module.EnterpriseMarketplaceDashboard })));
+const WorkflowBuilder = React.lazy(() => import('./components/marketplace/WorkflowBuilder').then(module => ({ default: module.WorkflowBuilder })));
+const MarketplaceDashboard = React.lazy(() => import('./components/marketplace/MarketplaceDashboard').then(module => ({ default: module.MarketplaceDashboard })));
+const APIMarketplace = React.lazy(() => import('./components/marketplace/APIMarketplace').then(module => ({ default: module.APIMarketplace })));
 
 // Priority 4: Enterprise SSO & Security Enhancement - New Imports
 import EnterpriseAuth from './components/auth/EnterpriseAuth';
@@ -104,10 +113,7 @@ import EnterpriseIntegrationsDashboard from './components/integrations/Enterpris
 import { DevOpsDashboard } from './components/devops/DevOpsDashboard';
 
 // Priority 14: Enterprise Marketplace & Ecosystem - New Import
-import { EnterpriseMarketplaceDashboard } from './components/marketplace/EnterpriseMarketplaceDashboard';
 import { WorkflowBuilder } from './components/marketplace/WorkflowBuilder';
-import { MarketplaceDashboard } from './components/marketplace/MarketplaceDashboard';
-import { APIMarketplace } from './components/marketplace/APIMarketplace';
 
 // Priority 16: Plugin Architecture & Marketplace Ecosystem - Frontend Components
 import { DeveloperPortal } from './components/marketplace/DeveloperPortal';
@@ -134,7 +140,6 @@ import HybridPricingPage from './pages/HybridPricingPage';
 import UIShowcase from './pages/UIShowcase';
 
 // Import enhanced systems for global access (development/testing)
-import { errorHandler } from './utils/errorHandler';
 import { performanceOptimizer } from './utils/performanceOptimizer';
 import useEnhancedPdfGenerator from './utils/enhancedPdfGenerator';
 import { enhancedDataExporter } from './utils/enhancedDataExporter';
@@ -232,6 +237,47 @@ declare global {
   }
 }
 
+// Lazy load major components
+const LandingPageLazy = React.lazy(() => import('./pages/LandingPage'));
+const DashboardLazy = React.lazy(() => import('./pages/Dashboard'));
+const FeaturesLazy = React.lazy(() => import('./pages/Features'));
+const EnterpriseLazy = React.lazy(() => import('./pages/Enterprise'));
+const EnterpriseDemoLazy = React.lazy(() => import('./pages/EnterpriseDemo'));
+const SecurityLazy = React.lazy(() => import('./pages/Security'));
+const PrivacyModeLazy = React.lazy(() => import('./pages/PrivacyMode'));
+const ContactPageLazy = React.lazy(() => import('./pages/ContactPage'));
+const FAQLazy = React.lazy(() => import('./components/FAQ'));
+const PrivacyPolicyLazy = React.lazy(() => import('./components/PrivacyPolicy'));
+const TermsLazy = React.lazy(() => import('./components/Terms'));
+const SupportLazy = React.lazy(() => import('./components/Support'));
+
+// Lazy load complex pages
+const BatchProcessingLazy = React.lazy(() => import('./pages/BatchProcessing'));
+const ImageComparisonLazy = React.lazy(() => import('./pages/ImageComparison'));
+const ImageComparisonPageLazy = React.lazy(() => import('./pages/ImageComparisonPage'));
+const AnalyticsDashboardLazy = React.lazy(() => import('./pages/AnalyticsDashboard'));
+const AdvancedAnalyticsPageLazy = React.lazy(() => import('./pages/AdvancedAnalyticsPage'));
+const BillingPageLazy = React.lazy(() => import('./pages/BillingPage'));
+const ContentManagementLazy = React.lazy(() => import('./pages/ContentManagement'));
+const BlogEditorLazy = React.lazy(() => import('./pages/BlogEditor'));
+
+// Lazy load documentation
+const DocumentationIndexLazy = React.lazy(() => import('./pages/docs/DocumentationIndex'));
+const GettingStartedLazy = React.lazy(() => import('./pages/docs/GettingStarted'));
+const ApiReferenceLazy = React.lazy(() => import('./pages/docs/ApiReference'));
+const MetadataGuideLazy = React.lazy(() => import('./pages/docs/MetadataGuide'));
+const PrivacyGuideLazy = React.lazy(() => import('./pages/docs/PrivacyGuide'));
+const TestingGuideLazy = React.lazy(() => import('./pages/docs/TestingGuide'));
+const DeploymentGuideLazy = React.lazy(() => import('./pages/docs/DeploymentGuide'));
+const ArchitectureLazy = React.lazy(() => import('./pages/docs/Architecture'));
+
+// Loading component
+const PageLoader = () => (
+  <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+    <LoadingSpinner size="lg" />
+  </div>
+);
+
 export function App() {
   return (
     <TestAuthProvider>
@@ -241,12 +287,12 @@ export function App() {
       <Routes>
             {/* Public Routes */}
         <Route path="/" element={<ProofPix />} />
-        <Route path="/features" element={<Features />} />
-        <Route path="/batch-processing" element={<BatchProcessing />} />
-        <Route path="/image-comparison" element={<ImageComparison />} />
+        <Route path="/features" element={<FeaturesLazy />} />
+        <Route path="/batch-processing" element={<BatchProcessingLazy />} />
+        <Route path="/image-comparison" element={<ImageComparisonLazy />} />
         <Route path="/ui-showcase" element={<UIShowcase />} />
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/landing" element={<LandingPageLazy />} />
+        <Route path="/contact" element={<ContactPageLazy />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/test-auth" element={<SimpleTestLogin />} />
@@ -276,14 +322,14 @@ export function App() {
             />
             
             {/* Enterprise Public Routes */}
-            <Route path="/enterprise" element={<Enterprise />} />
-            <Route path="/enterprise/demo" element={<EnterpriseDemo />} />
+            <Route path="/enterprise" element={<EnterpriseLazy />} />
+            <Route path="/enterprise/demo" element={<EnterpriseDemoLazy />} />
             <Route path="/enterprise/demo-selection" element={<IndustryDemoConfigurations />} />
             <Route path="/enterprise/ai-demo" element={<AIDocumentIntelligenceDashboard />} />
             <Route path="/enterprise/chain-of-custody" element={<ChainOfCustodyPage />} />
             <Route path="/enterprise/branding" element={<EnterpriseBranding />} />
             <Route path="/enterprise/industry-demos" element={<IndustryDemoConfigurations />} />
-            <Route path="/security" element={<Security />} />
+            <Route path="/security" element={<SecurityLazy />} />
             
             {/* 🚀 BILLION-DOLLAR HYBRID ARCHITECTURE ROUTES */}
             <Route path="/mode-comparison" element={<ModeComparisonPage />} />
@@ -319,7 +365,7 @@ export function App() {
               path="/dashboard" 
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <DashboardLazy />
                 </ProtectedRoute>
               } 
             />
@@ -343,7 +389,7 @@ export function App() {
               path="/billing" 
               element={
                 <ProtectedRoute>
-                  <BillingPage />
+                  <BillingPageLazy />
                 </ProtectedRoute>
               } 
             />
@@ -351,7 +397,7 @@ export function App() {
               path="/analytics" 
               element={
                 <ProtectedRoute>
-                  <AnalyticsDashboard />
+                  <AnalyticsDashboardLazy />
                 </ProtectedRoute>
               } 
             />
@@ -360,7 +406,7 @@ export function App() {
               path="/analytics/dashboard/:dashboardId" 
               element={
                 <ProtectedRoute>
-                  <AnalyticsDashboard />
+                  <AnalyticsDashboardLazy />
                 </ProtectedRoute>
               } 
             />
@@ -368,7 +414,7 @@ export function App() {
               path="/analytics/shared" 
               element={
                 <ProtectedRoute>
-                  <AnalyticsDashboard />
+                  <AnalyticsDashboardLazy />
                 </ProtectedRoute>
               } 
             />
@@ -376,7 +422,7 @@ export function App() {
               path="/analytics/preferences" 
               element={
                 <ProtectedRoute>
-                  <AnalyticsDashboard />
+                  <AnalyticsDashboardLazy />
                 </ProtectedRoute>
               } 
             />
@@ -384,7 +430,7 @@ export function App() {
               path="/advanced-analytics" 
               element={
                 <ProtectedRoute>
-                  <AdvancedAnalyticsPage />
+                  <AdvancedAnalyticsPageLazy />
                 </ProtectedRoute>
               } 
             />
@@ -404,7 +450,7 @@ export function App() {
                 </ProtectedRoute>
               } 
             />
-            <Route path="/image-comparison" element={<ImageComparisonPage />} />
+            <Route path="/image-comparison" element={<ImageComparisonPageLazy />} />
             <Route path="/batch-processing" element={<BatchProcessingPage />} />
             <Route 
               path="/advanced-reporting" 
@@ -422,7 +468,7 @@ export function App() {
                 </ProtectedRoute>
               } 
             />
-            <Route path="/content-management" element={<ProtectedRoute><ContentManagement /></ProtectedRoute>} />
+            <Route path="/content-management" element={<ProtectedRoute><ContentManagementLazy /></ProtectedRoute>} />
             
             {/* Enterprise Routes */}
             <Route 
@@ -445,25 +491,25 @@ export function App() {
             
             {/* Core Application Routes */}
             <Route path="/settings" element={<SettingsPlaceholder />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/docs" element={<DocumentationIndex />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/support" element={<SupportLazy />} />
+            <Route path="/docs" element={<DocumentationIndexLazy />} />
+            <Route path="/faq" element={<FAQLazy />} />
+            <Route path="/terms" element={<TermsLazy />} />
+            <Route path="/privacy" element={<PrivacyPolicyLazy />} />
             
             {/* New Header Navigation Pages */}
-            <Route path="/privacy-mode" element={<PrivacyMode />} />
+            <Route path="/privacy-mode" element={<PrivacyModeLazy />} />
             <Route path="/use-cases" element={<UseCases />} />
             
             {/* Documentation Routes */}
-            <Route path="/docs/getting-started" element={<GettingStarted />} />
-            <Route path="/docs/privacy-guide" element={<PrivacyGuide />} />
-            <Route path="/docs/metadata-guide" element={<MetadataGuide />} />
-            <Route path="/docs/api" element={<ApiReference />} />
-            <Route path="/docs/index" element={<DocumentationIndex />} />
-            <Route path="/docs/architecture" element={<Architecture />} />
-            <Route path="/docs/testing" element={<TestingGuide />} />
-            <Route path="/docs/deployment" element={<DeploymentGuide />} />
+            <Route path="/docs/getting-started" element={<GettingStartedLazy />} />
+            <Route path="/docs/privacy-guide" element={<PrivacyGuideLazy />} />
+            <Route path="/docs/metadata-guide" element={<MetadataGuideLazy />} />
+            <Route path="/docs/api" element={<ApiReferenceLazy />} />
+            <Route path="/docs/index" element={<DocumentationIndexLazy />} />
+            <Route path="/docs/architecture" element={<ArchitectureLazy />} />
+            <Route path="/docs/testing" element={<TestingGuideLazy />} />
+            <Route path="/docs/deployment" element={<DeploymentGuideLazy />} />
             <Route path="/docs/enterprise-security" element={<EnterpriseSecurity />} />
             <Route path="/docs/security-faq" element={<SecurityFAQ />} />
             <Route path="/docs/enterprise-api" element={<EnterpriseApiDocumentation />} />
@@ -502,10 +548,10 @@ export function App() {
             
             {/* Legacy Routes */}
             <Route path="/about" element={<AboutUs />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/faq-legacy" element={<FAQ />} />
-            <Route path="/terms-legacy" element={<Terms />} />
-            <Route path="/support-legacy" element={<Support />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyLazy />} />
+            <Route path="/faq-legacy" element={<FAQLazy />} />
+            <Route path="/terms-legacy" element={<TermsLazy />} />
+            <Route path="/support-legacy" element={<SupportLazy />} />
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/batch-management" element={<BatchManagementPage onBackToHome={() => window.location.href = '/'} />} />
             <Route path="/industry-demos" element={<IndustryDemoConfigurations />} />
@@ -528,8 +574,8 @@ export function App() {
             
             {/* Blog Routes */}
             <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/new" element={<ProtectedRoute><BlogEditor /></ProtectedRoute>} />
-            <Route path="/blog/edit/:id" element={<ProtectedRoute><BlogEditor /></ProtectedRoute>} />
+            <Route path="/blog/new" element={<ProtectedRoute><BlogEditorLazy /></ProtectedRoute>} />
+            <Route path="/blog/edit/:id" element={<ProtectedRoute><BlogEditorLazy /></ProtectedRoute>} />
             
             {/* AI-Enhanced Pricing Route */}
             <Route path="/ai-pricing" element={<AIEnhancedPricingPage />} />
@@ -642,7 +688,7 @@ export function App() {
             } />
             
             {/* Features page route */}
-            <Route path="/features" element={<Features />} />
+            <Route path="/features" element={<FeaturesLazy />} />
             
             {/* New routes for Performance Optimization and AI/ML Platform */}
             {/* Route path="/performance-optimization" element={<PerformanceOptimizationDashboard />} /> */}

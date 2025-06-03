@@ -4,36 +4,27 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Code,
   Key,
   Play,
   Copy,
-  ExternalLink,
-  Shield,
-  Zap,
-  Clock,
-  CheckCircle,
-  AlertCircle,
   Search,
-  Filter,
-  Download,
   Star,
   TrendingUp,
-  Database,
-  Globe,
-  Settings,
-  Eye,
-  Edit,
-  Trash2,
-  Plus,
-  RefreshCw,
-  Activity,
   BarChart3,
-  Users,
-  DollarSign
+  Plus
 } from 'lucide-react';
 import { useEnterpriseMarketplace } from '../../hooks/useEnterpriseMarketplace';
+import { ConsistentLayout } from '../ui/ConsistentLayout';
+import { 
+  EnterpriseButton, 
+  EnterpriseCard, 
+  EnterpriseBadge,
+  EnterpriseSection,
+  EnterpriseGrid
+} from '../ui/EnterpriseComponents';
 
 interface APIMarketplaceProps {
   className?: string;
