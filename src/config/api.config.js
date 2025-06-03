@@ -7,7 +7,9 @@ const API_CONFIG = {
   
   // Get the appropriate base URL based on environment
   getBaseUrl: () => {
-    if (process.env.REACT_APP_API_URL) {
+    // Force correct production URL - ignore environment variable if it's the old domain
+    if (process.env.REACT_APP_API_URL && 
+        !process.env.REACT_APP_API_URL.includes('proofpix-backend.onrender.com')) {
       return process.env.REACT_APP_API_URL;
     }
     
