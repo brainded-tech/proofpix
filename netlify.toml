@@ -24,7 +24,7 @@
   for = "/*"
   [headers.values]
     # 🔒 Content Security Policy - Prevent XSS and injection attacks
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://checkout.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://plausible.io; object-src 'none'; base-uri 'self'; form-action 'self' https://checkout.stripe.com; frame-ancestors 'none'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://checkout.stripe.com https://m.stripe.network https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://m.stripe.network https://plausible.io https://app.proofpixapp.com ws://localhost:3000; frame-src https://js.stripe.com https://checkout.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self' https://checkout.stripe.com; frame-ancestors 'none'; upgrade-insecure-requests"
     
     # 🔒 Frame Protection - Prevent clickjacking
     X-Frame-Options = "DENY"
@@ -41,13 +41,13 @@
     # 🔒 HSTS - Force HTTPS connections
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     
-    # 🔒 Permissions Policy - Control browser features
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), accelerometer=(), gyroscope=(), magnetometer=(), ambient-light-sensor=()"
+    # 🔒 Permissions Policy - Control browser features (allow payment for Stripe)
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=*, usb=(), bluetooth=(), accelerometer=(), gyroscope=(), magnetometer=(), ambient-light-sensor=()"
     
-    # 🔒 Cross-Origin Policies - Isolate origin
-    Cross-Origin-Embedder-Policy = "require-corp"
-    Cross-Origin-Opener-Policy = "same-origin"
-    Cross-Origin-Resource-Policy = "same-origin"
+    # 🔒 Cross-Origin Policies - Modified for Stripe compatibility
+    Cross-Origin-Embedder-Policy = "unsafe-none"
+    Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+    Cross-Origin-Resource-Policy = "cross-origin"
     
     # 🔒 Security Headers - Additional protection
     X-Permitted-Cross-Domain-Policies = "none"

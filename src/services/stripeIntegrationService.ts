@@ -1,7 +1,7 @@
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 
 // Initialize Stripe (use environment variable in production)
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_test_...');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'pk_live_51RSVJG2Llp3EL08qxey5Ko0SGvsiQYraVaoC9K0kG3FW7auDMjjnFjGFFYahbhRRI8wySRUYJoWlRNIrrhkL5eyP00hfGYzrgW');
 
 export interface PricingPlan {
   id: string;
