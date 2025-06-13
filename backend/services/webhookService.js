@@ -527,6 +527,94 @@ class WebhookService {
     }
   }
 
+  // Send test webhook with custom event and data
+  async sendTestWebhook(webhook, event, data = {}) {
+    try {
+      const testPayload = {
+        event,
+        data: {
+          ...data,
+          test: true,
+          webhook_id: webhook.id
+        },
+        timestamp: new Date().toISOString(),
+        webhook_id: webhook.id
+      };
+
+      const result = await this.deliverWebhook({
+        deliveryId: `test-${Date.now()}`,
+        webhookId: webhook.id,
+        url: webhook.url,
+        secret: webhook.secret,
+        payload: testPayload,
+        timeout: (webhook.timeout_seconds || 30) * 1000
+      });
+
+      return {
+        success: result.success,
+        statusCode: result.statusCode,
+        responseTime: result.responseTime,
+        error: result.error || null
+      };
+    } catch (error) {
+      logger.error('Send test webhook failed:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  // Get webhook delivery history
+  async getWebhookDeliveries(webhookId, options = {}) {
+    try {
+      const { limit = 50, status } = options;
+      
+      let whereClause = 'WHERE webhook_id = $1';
+      const params = [webhookId, limit];
+      let paramCount = 1;
+
+      if (status) {
+        whereClause += ` AND status = $${++paramCount}`;
+        params.splice(paramCount - 1, 0, status);
+      }
+
+      const deliveries = await db.query(`
+        SELECT 
+          id,
+          event_type,
+          status,
+          http_status_code,
+          response_time_ms,
+          attempt_count,
+          error_message,
+          created_at,
+          delivered_at,
+          next_retry_at
+        FROM webhook_deliveries
+        ${whereClause}
+        ORDER BY created_at DESC
+        LIMIT $${paramCount + 1}
+      `, params);
+
+      return deliveries.rows.map(delivery => ({
+        id: delivery.id,
+        eventType: delivery.event_type,
+        status: delivery.status,
+        httpStatusCode: delivery.http_status_code,
+        responseTime: delivery.response_time_ms,
+        attemptCount: delivery.attempt_count,
+        errorMessage: delivery.error_message,
+        createdAt: delivery.created_at,
+        deliveredAt: delivery.delivered_at,
+        nextRetryAt: delivery.next_retry_at
+      }));
+    } catch (error) {
+      logger.error('Failed to get webhook deliveries:', error);
+      throw error;
+    }
+  }
+
   // Webhook Analytics
   async getWebhookAnalytics(webhookId, userId, startDate, endDate) {
     try {

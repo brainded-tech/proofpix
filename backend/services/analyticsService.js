@@ -36,29 +36,40 @@ class AnalyticsService {
   }
 
   async collectSystemMetrics(startDate, endDate, granularity, userId) {
-    const metrics = {};
+    // PERFORMANCE OPTIMIZATION: Execute all metrics collection in parallel
+    const metricsPromises = [
+      this.getFileProcessingMetrics(startDate, endDate, granularity, userId),
+      this.getApiUsageMetrics(startDate, endDate, granularity, userId),
+      this.getUserActivityMetrics(startDate, endDate, granularity, userId),
+      this.getSystemPerformanceMetrics(startDate, endDate, granularity),
+      this.getStorageMetrics(startDate, endDate, granularity, userId)
+    ];
 
-    // File Processing Metrics
-    metrics.fileProcessing = await this.getFileProcessingMetrics(startDate, endDate, granularity, userId);
-    
-    // API Usage Metrics
-    metrics.apiUsage = await this.getApiUsageMetrics(startDate, endDate, granularity, userId);
-    
-    // User Activity Metrics
-    metrics.userActivity = await this.getUserActivityMetrics(startDate, endDate, granularity, userId);
-    
-    // System Performance Metrics
-    metrics.systemPerformance = await this.getSystemPerformanceMetrics(startDate, endDate, granularity);
-    
-    // Storage Metrics
-    metrics.storage = await this.getStorageMetrics(startDate, endDate, granularity, userId);
-    
-    // Revenue Metrics (if applicable)
+    // Add revenue metrics for global queries
     if (!userId) {
-      metrics.revenue = await this.getRevenueMetrics(startDate, endDate, granularity);
+      metricsPromises.push(this.getRevenueMetrics(startDate, endDate, granularity));
     }
 
-    return metrics;
+    try {
+      const results = await Promise.all(metricsPromises);
+      
+      const metrics = {
+        fileProcessing: results[0],
+        apiUsage: results[1],
+        userActivity: results[2],
+        systemPerformance: results[3],
+        storage: results[4]
+      };
+
+      if (!userId && results[5]) {
+        metrics.revenue = results[5];
+      }
+
+      return metrics;
+    } catch (error) {
+      logger.error('Failed to collect system metrics in parallel:', error);
+      throw error;
+    }
   }
 
   async getFileProcessingMetrics(startDate, endDate, granularity, userId) {
@@ -67,50 +78,55 @@ class AnalyticsService {
       const params = [startDate, endDate];
       if (userId) params.push(userId);
 
-      // Total files processed
-      const totalFiles = await db.query(`
-        SELECT COUNT(*) as total
-        FROM files f
-        WHERE f.upload_date >= $1 AND f.upload_date <= $2 ${userFilter}
-      `, params);
-
-      // Files by status
-      const filesByStatus = await db.query(`
-        SELECT f.processing_status, COUNT(*) as count
-        FROM files f
-        WHERE f.upload_date >= $1 AND f.upload_date <= $2 ${userFilter}
-        GROUP BY f.processing_status
-      `, params);
-
-      // Processing time series data
+      // PERFORMANCE OPTIMIZATION: Execute all file processing queries in parallel
       const timeSeriesQuery = this.buildTimeSeriesQuery('files', 'upload_date', granularity, userFilter);
-      const timeSeries = await db.query(timeSeriesQuery, params);
-
-      // Average processing time
-      const avgProcessingTime = await db.query(`
-        SELECT AVG(EXTRACT(EPOCH FROM (f.updated_at - f.upload_date))) as avg_seconds
-        FROM files f
-        WHERE f.upload_date >= $1 AND f.upload_date <= $2 
-          AND f.processing_status = 'completed' ${userFilter}
-      `, params);
-
-      // File types distribution
-      const fileTypes = await db.query(`
-        SELECT f.mime_type, COUNT(*) as count
-        FROM files f
-        WHERE f.upload_date >= $1 AND f.upload_date <= $2 ${userFilter}
-        GROUP BY f.mime_type
-        ORDER BY count DESC
-        LIMIT 10
-      `, params);
-
-      // Processing errors
-      const processingErrors = await db.query(`
-        SELECT COUNT(*) as error_count
-        FROM files f
-        WHERE f.upload_date >= $1 AND f.upload_date <= $2 
-          AND f.processing_status = 'failed' ${userFilter}
-      `, params);
+      
+      const [
+        totalFiles,
+        filesByStatus,
+        timeSeries,
+        avgProcessingTime,
+        fileTypes,
+        processingErrors
+      ] = await Promise.all([
+        db.query(`
+          SELECT COUNT(*) as total
+          FROM files f
+          WHERE f.upload_date >= $1 AND f.upload_date <= $2 ${userFilter}
+        `, params),
+        
+        db.query(`
+          SELECT f.processing_status, COUNT(*) as count
+          FROM files f
+          WHERE f.upload_date >= $1 AND f.upload_date <= $2 ${userFilter}
+          GROUP BY f.processing_status
+        `, params),
+        
+        db.query(timeSeriesQuery, params),
+        
+        db.query(`
+          SELECT AVG(EXTRACT(EPOCH FROM (f.updated_at - f.upload_date))) as avg_seconds
+          FROM files f
+          WHERE f.upload_date >= $1 AND f.upload_date <= $2 
+            AND f.processing_status = 'completed' ${userFilter}
+        `, params),
+        
+        db.query(`
+          SELECT f.mime_type, COUNT(*) as count
+          FROM files f
+          WHERE f.upload_date >= $1 AND f.upload_date <= $2 ${userFilter}
+          GROUP BY f.mime_type
+          ORDER BY count DESC
+          LIMIT 10
+        `, params),
+        
+        db.query(`
+          SELECT COUNT(*) as error_count
+          FROM files f
+          WHERE f.upload_date >= $1 AND f.upload_date <= $2 
+            AND f.processing_status = 'failed' ${userFilter}
+        `, params)
+      ]);
 
       return {
         totalFiles: parseInt(totalFiles.rows[0].total),
@@ -722,6 +738,246 @@ class AnalyticsService {
     ws.on('close', () => {
       this.realTimeSubscribers.delete(ws);
     });
+  }
+
+  // Performance Metrics
+  async getPerformanceMetrics(timeRange = '24h', metric = null) {
+    try {
+      const { startDate, endDate } = this.parseTimeRange(timeRange);
+      
+      const performanceData = {};
+      
+      if (!metric || metric === 'response_time') {
+        performanceData.responseTime = await this.getResponseTimeMetrics(startDate, endDate);
+      }
+      
+      if (!metric || metric === 'throughput') {
+        performanceData.throughput = await this.getThroughputMetrics(startDate, endDate);
+      }
+      
+      if (!metric || metric === 'error_rate') {
+        performanceData.errorRate = await this.getErrorRateMetrics(startDate, endDate);
+      }
+      
+      if (!metric || metric === 'cpu') {
+        performanceData.cpu = await this.getCpuMetrics(startDate, endDate);
+      }
+      
+      if (!metric || metric === 'memory') {
+        performanceData.memory = await this.getMemoryMetrics(startDate, endDate);
+      }
+      
+      return performanceData;
+    } catch (error) {
+      logger.error('Failed to get performance metrics:', error);
+      throw error;
+    }
+  }
+
+  async getResponseTimeMetrics(startDate, endDate) {
+    const result = await db.query(`
+      SELECT 
+        AVG(response_time) as avg_response_time,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY response_time) as median_response_time,
+        PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY response_time) as p95_response_time,
+        PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY response_time) as p99_response_time,
+        MIN(response_time) as min_response_time,
+        MAX(response_time) as max_response_time
+      FROM api_usage
+      WHERE created_at BETWEEN $1 AND $2
+    `, [startDate, endDate]);
+
+    return result.rows[0];
+  }
+
+  async getThroughputMetrics(startDate, endDate) {
+    const result = await db.query(`
+      SELECT 
+        COUNT(*) as total_requests,
+        COUNT(*) / EXTRACT(EPOCH FROM ($2 - $1)) * 3600 as requests_per_hour
+      FROM api_usage
+      WHERE created_at BETWEEN $1 AND $2
+    `, [startDate, endDate]);
+
+    return result.rows[0];
+  }
+
+  async getErrorRateMetrics(startDate, endDate) {
+    const result = await db.query(`
+      SELECT 
+        COUNT(*) as total_requests,
+        COUNT(CASE WHEN status_code >= 400 THEN 1 END) as error_requests,
+        (COUNT(CASE WHEN status_code >= 400 THEN 1 END)::float / COUNT(*) * 100) as error_rate_percent
+      FROM api_usage
+      WHERE created_at BETWEEN $1 AND $2
+    `, [startDate, endDate]);
+
+    return result.rows[0];
+  }
+
+  async getCpuMetrics(startDate, endDate) {
+    // Mock CPU metrics - in production, this would come from system monitoring
+    return {
+      average: Math.random() * 50 + 25,
+      peak: Math.random() * 30 + 70,
+      current: Math.random() * 40 + 30
+    };
+  }
+
+  async getMemoryMetrics(startDate, endDate) {
+    // Mock memory metrics - in production, this would come from system monitoring
+    return {
+      used: Math.random() * 2048 + 1024,
+      total: 4096,
+      percentage: Math.random() * 30 + 40
+    };
+  }
+
+  // Export Job Management
+  async createExportJob(jobData) {
+    try {
+      const result = await db.query(`
+        INSERT INTO export_jobs (
+          user_id, export_type, format, time_range, filters, 
+          status, requested_by, created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+        RETURNING id, created_at
+      `, [
+        jobData.userId,
+        jobData.exportType,
+        jobData.format,
+        jobData.timeRange,
+        JSON.stringify(jobData.filters),
+        'pending',
+        jobData.requestedBy
+      ]);
+
+      const job = result.rows[0];
+      
+      // Estimate completion time based on export type
+      const estimatedTime = this.estimateExportTime(jobData.exportType, jobData.format);
+      
+      // Queue the export job for processing
+      await this.queueExportJob(job.id);
+      
+      return {
+        id: job.id,
+        status: 'pending',
+        createdAt: job.created_at,
+        estimatedTime
+      };
+    } catch (error) {
+      logger.error('Failed to create export job:', error);
+      throw error;
+    }
+  }
+
+  async getExportJobs(userId, options = {}) {
+    try {
+      const { status, limit = 20 } = options;
+      
+      let whereClause = 'WHERE user_id = $1';
+      const params = [userId, limit];
+      let paramCount = 1;
+
+      if (status) {
+        whereClause += ` AND status = $${++paramCount}`;
+        params.splice(paramCount - 1, 0, status);
+      }
+
+      const result = await db.query(`
+        SELECT 
+          id, export_type, format, time_range, status, 
+          progress, file_path, error_message, 
+          created_at, started_at, completed_at
+        FROM export_jobs
+        ${whereClause}
+        ORDER BY created_at DESC
+        LIMIT $${paramCount + 1}
+      `, params);
+
+      return result.rows.map(job => ({
+        id: job.id,
+        exportType: job.export_type,
+        format: job.format,
+        timeRange: job.time_range,
+        status: job.status,
+        progress: job.progress || 0,
+        filePath: job.file_path,
+        errorMessage: job.error_message,
+        createdAt: job.created_at,
+        startedAt: job.started_at,
+        completedAt: job.completed_at
+      }));
+    } catch (error) {
+      logger.error('Failed to get export jobs:', error);
+      throw error;
+    }
+  }
+
+  async getExportJobStatus(jobId, userId) {
+    try {
+      const result = await db.query(`
+        SELECT 
+          id, export_type, format, status, progress, 
+          file_path, error_message, created_at, 
+          started_at, completed_at, estimated_completion
+        FROM export_jobs
+        WHERE id = $1 AND user_id = $2
+      `, [jobId, userId]);
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const job = result.rows[0];
+      
+      return {
+        id: job.id,
+        exportType: job.export_type,
+        format: job.format,
+        status: job.status,
+        progress: job.progress || 0,
+        filePath: job.file_path,
+        errorMessage: job.error_message,
+        createdAt: job.created_at,
+        startedAt: job.started_at,
+        completedAt: job.completed_at,
+        estimatedCompletion: job.estimated_completion
+      };
+    } catch (error) {
+      logger.error('Failed to get export job status:', error);
+      throw error;
+    }
+  }
+
+  estimateExportTime(exportType, format) {
+    // Estimate based on export type and format
+    const baseTime = {
+      'metrics': 30,
+      'usage': 60,
+      'queue': 15,
+      'all': 120
+    };
+    
+    const formatMultiplier = {
+      'csv': 1,
+      'excel': 1.5,
+      'json': 1.2,
+      'pdf': 2
+    };
+    
+    return (baseTime[exportType] || 60) * (formatMultiplier[format] || 1);
+  }
+
+  async queueExportJob(jobId) {
+    // In a real implementation, this would queue the job for background processing
+    // For now, we'll just update the status
+    await db.query(`
+      UPDATE export_jobs 
+      SET status = 'queued', started_at = NOW()
+      WHERE id = $1
+    `, [jobId]);
   }
 }
 

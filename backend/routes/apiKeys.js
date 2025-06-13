@@ -4,6 +4,22 @@ const { authenticateToken } = require('../middleware/auth');
 const apiKeyService = require('../services/apiKeyService');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
+const winston = require('winston');
+
+// Configure logger
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'logs/apiKeys.log' })
+  ]
+});
+
 
 // Rate limiting for API key operations
 const apiKeyLimit = rateLimit({
@@ -577,9 +593,60 @@ router.get('/analytics/global',
   }
 );
 
+// Get API key analytics
+router.get('/analytics',
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { timeRange = '24h' } = req.query;
+      
+      // Calculate date range
+      const endDate = new Date();
+      const startDate = new Date();
+      
+      switch (timeRange) {
+        case '1h':
+          startDate.setHours(startDate.getHours() - 1);
+          break;
+        case '24h':
+          startDate.setDate(startDate.getDate() - 1);
+          break;
+        case '7d':
+          startDate.setDate(startDate.getDate() - 7);
+          break;
+        case '30d':
+          startDate.setDate(startDate.getDate() - 30);
+          break;
+        default:
+          startDate.setDate(startDate.getDate() - 1);
+      }
+
+      const analytics = await apiKeyService.getApiKeyAnalytics(req.user.id, startDate, endDate);
+
+      res.json({
+        success: true,
+        data: {
+          usage: analytics,
+          timeRange,
+          period: {
+            start: startDate.toISOString(),
+            end: endDate.toISOString()
+          }
+        }
+      });
+    } catch (error) {
+      logger.error('Failed to get API key analytics:', error);
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+);
+
 // Error handling middleware
 router.use((error, req, res, next) => {
-  console.error('API key route error:', error);
+  logger.error('API key route error:', { error: error.message, stack: error.stack });
   res.status(500).json({
     success: false,
     error: 'Internal server error'

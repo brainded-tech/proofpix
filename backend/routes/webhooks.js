@@ -5,12 +5,28 @@ const { requireFeature } = require('../middleware/quota');
 const webhookService = require('../services/webhookService');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
+const { query } = require('express-validator');
+const winston = require('winston');
 
 // Rate limiting for webhook operations
 const webhookLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 30, // limit each IP to 30 requests per windowMs
   message: { error: 'Too many webhook requests, please try again later' }
+});
+
+// Configure logger
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'logs/webhooks.log' })
+  ]
 });
 
 // Authentication middleware that supports both JWT and API key
@@ -229,22 +245,51 @@ router.delete('/:webhookId',
 
 // Webhook Testing
 
-// Test webhook
+// Test webhook delivery
 router.post('/:webhookId/test',
   authenticate,
   webhookLimit,
   requireFeature('webhooks:manage'),
+  [
+    body('event')
+      .isString()
+      .withMessage('Event type is required'),
+    body('data')
+      .optional()
+      .isObject()
+      .withMessage('Data must be an object')
+  ],
+  handleValidationErrors,
   async (req, res) => {
     try {
       const { webhookId } = req.params;
-      const result = await webhookService.testWebhook(webhookId, req.user.id);
+      const { event, data = {} } = req.body;
+
+      const webhooks = await webhookService.getUserWebhooks(req.user.id);
+      const webhook = webhooks.find(w => w.id === parseInt(webhookId));
+
+      if (!webhook) {
+        return res.status(404).json({
+          success: false,
+          error: 'Webhook not found'
+        });
+      }
+
+      // Send test webhook
+      const testResult = await webhookService.sendTestWebhook(webhook, event, data);
 
       res.json({
         success: true,
-        test: result
+        data: {
+          webhookId: webhook.id,
+          event,
+          testResult,
+          timestamp: new Date().toISOString()
+        }
       });
     } catch (error) {
-      res.status(400).json({
+      logger.error('Failed to test webhook:', error);
+      res.status(500).json({
         success: false,
         error: error.message
       });
@@ -254,26 +299,51 @@ router.post('/:webhookId/test',
 
 // Webhook Analytics
 
-// Get webhook analytics
-router.get('/:webhookId/analytics',
+// Get webhook delivery history
+router.get('/:webhookId/deliveries',
   authenticate,
   requireFeature('webhooks:manage'),
+  [
+    query('limit')
+      .optional()
+      .isInt({ min: 1, max: 100 })
+      .withMessage('Limit must be between 1 and 100'),
+    query('status')
+      .optional()
+      .isIn(['success', 'failed', 'pending'])
+      .withMessage('Invalid status filter')
+  ],
+  handleValidationErrors,
   async (req, res) => {
     try {
       const { webhookId } = req.params;
-      const { startDate, endDate } = req.query;
+      const { limit = 50, status } = req.query;
 
-      // Default to last 30 days if no dates provided
-      const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-      const end = endDate ? new Date(endDate) : new Date();
+      const webhooks = await webhookService.getUserWebhooks(req.user.id);
+      const webhook = webhooks.find(w => w.id === parseInt(webhookId));
 
-      const analytics = await webhookService.getWebhookAnalytics(webhookId, req.user.id, start, end);
+      if (!webhook) {
+        return res.status(404).json({
+          success: false,
+          error: 'Webhook not found'
+        });
+      }
+
+      const deliveries = await webhookService.getWebhookDeliveries(webhookId, {
+        limit: parseInt(limit),
+        status
+      });
 
       res.json({
         success: true,
-        analytics
+        data: {
+          deliveries,
+          webhookId: webhook.id,
+          filters: { limit, status }
+        }
       });
     } catch (error) {
+      logger.error('Failed to get webhook deliveries:', error);
       res.status(500).json({
         success: false,
         error: error.message
@@ -282,54 +352,67 @@ router.get('/:webhookId/analytics',
   }
 );
 
-// Get webhook delivery history
-router.get('/:webhookId/deliveries',
+// Get webhook analytics
+router.get('/:webhookId/analytics',
   authenticate,
   requireFeature('webhooks:manage'),
+  [
+    query('timeRange')
+      .optional()
+      .isIn(['1h', '24h', '7d', '30d'])
+      .withMessage('Invalid time range')
+  ],
+  handleValidationErrors,
   async (req, res) => {
     try {
       const { webhookId } = req.params;
-      const { page = 1, limit = 20, status } = req.query;
-      const offset = (page - 1) * limit;
+      const { timeRange = '24h' } = req.query;
 
-      let whereClause = 'WHERE w.id = $1 AND w.user_id = $2';
-      const params = [webhookId, req.user.id, limit, offset];
-      let paramCount = 2;
+      const webhooks = await webhookService.getUserWebhooks(req.user.id);
+      const webhook = webhooks.find(w => w.id === parseInt(webhookId));
 
-      if (status) {
-        whereClause += ` AND wd.status = $${++paramCount}`;
-        params.splice(paramCount - 1, 0, status);
+      if (!webhook) {
+        return res.status(404).json({
+          success: false,
+          error: 'Webhook not found'
+        });
       }
 
-      const db = require('../config/database');
-      const deliveries = await db.query(`
-        SELECT wd.id, wd.event_type, wd.status, wd.http_status_code,
-               wd.attempt_count, wd.created_at, wd.delivered_at, wd.next_retry_at
-        FROM webhook_deliveries wd
-        JOIN webhooks w ON wd.webhook_id = w.id
-        ${whereClause}
-        ORDER BY wd.created_at DESC
-        LIMIT $${paramCount + 1} OFFSET $${paramCount + 2}
-      `, params);
+      // Calculate date range
+      const endDate = new Date();
+      const startDate = new Date();
+      
+      switch (timeRange) {
+        case '1h':
+          startDate.setHours(startDate.getHours() - 1);
+          break;
+        case '24h':
+          startDate.setDate(startDate.getDate() - 1);
+          break;
+        case '7d':
+          startDate.setDate(startDate.getDate() - 7);
+          break;
+        case '30d':
+          startDate.setDate(startDate.getDate() - 30);
+          break;
+      }
 
-      const totalCount = await db.query(`
-        SELECT COUNT(*) as count
-        FROM webhook_deliveries wd
-        JOIN webhooks w ON wd.webhook_id = w.id
-        ${whereClause}
-      `, params.slice(0, paramCount));
+      const analytics = await webhookService.getWebhookAnalytics(webhookId, startDate, endDate);
 
       res.json({
         success: true,
-        deliveries: deliveries.rows,
-        pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
-          total: parseInt(totalCount.rows[0].count),
-          pages: Math.ceil(parseInt(totalCount.rows[0].count) / limit)
+        data: {
+          webhookId: webhook.id,
+          analytics,
+          timeRange,
+          period: {
+            start: startDate.toISOString(),
+            end: endDate.toISOString()
+          }
         }
       });
     } catch (error) {
+      logger.error('Failed to get webhook analytics:', error);
       res.status(500).json({
         success: false,
         error: error.message
@@ -691,7 +774,7 @@ router.post('/:webhookId/resume',
 
 // Error handling middleware
 router.use((error, req, res, next) => {
-  console.error('Webhook route error:', error);
+  logger.error('Webhook route error:', { error: error.message, stack: error.stack });
   res.status(500).json({
     success: false,
     error: 'Internal server error'

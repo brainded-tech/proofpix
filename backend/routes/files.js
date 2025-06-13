@@ -8,6 +8,22 @@ const webhookService = require('../services/webhookService');
 const { auditLog } = require('../services/auditService');
 const db = require('../config/database');
 const rateLimit = require('express-rate-limit');
+const winston = require('winston');
+
+// Configure logger
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'logs/files.log' })
+  ]
+});
+
 
 // Rate limiting for file operations
 const fileUploadLimit = rateLimit({
@@ -679,6 +695,147 @@ router.get('/stats/overview',
   }
 );
 
+// Get file metadata (EXIF, processing details, etc.)
+router.get('/:fileId/metadata',
+  authenticate,
+  async (req, res) => {
+    try {
+      const { fileId } = req.params;
+
+      const file = await db.query(`
+        SELECT * FROM files
+        WHERE id = $1 AND user_id = $2
+      `, [fileId, req.user.id]);
+
+      if (file.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'File not found'
+        });
+      }
+
+      const fileRecord = file.rows[0];
+
+      // Get EXIF data if available
+      let exifData = null;
+      if (fileRecord.exif_data) {
+        try {
+          exifData = JSON.parse(fileRecord.exif_data);
+        } catch (e) {
+          logger.warn('Failed to parse EXIF data for file', fileId);
+        }
+      }
+
+      // Get processing metadata
+      const metadata = {
+        fileId: fileRecord.id,
+        originalName: fileRecord.original_name,
+        mimeType: fileRecord.mime_type,
+        fileSize: fileRecord.file_size,
+        processingStatus: fileRecord.processing_status,
+        virusScanStatus: fileRecord.virus_scan_status,
+        uploadDate: fileRecord.upload_date,
+        processingCompletedAt: fileRecord.processing_completed_at,
+        exifData: exifData,
+        dimensions: fileRecord.image_width && fileRecord.image_height ? {
+          width: fileRecord.image_width,
+          height: fileRecord.image_height
+        } : null,
+        colorProfile: fileRecord.color_profile,
+        compression: fileRecord.compression_type,
+        quality: fileRecord.image_quality,
+        hasWatermark: fileRecord.has_watermark || false,
+        processingTime: fileRecord.processing_time_ms,
+        checksums: {
+          md5: fileRecord.md5_hash,
+          sha256: fileRecord.sha256_hash
+        }
+      };
+
+      res.json({
+        success: true,
+        metadata
+      });
+    } catch (error) {
+      logger.error('Failed to get file metadata:', error);
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+);
+
+// Get file processing status
+router.get('/:fileId/status',
+  authenticate,
+  async (req, res) => {
+    try {
+      const { fileId } = req.params;
+
+      const file = await db.query(`
+        SELECT id, processing_status, virus_scan_status, processing_progress,
+               processing_error, processing_started_at, processing_completed_at,
+               processing_time_ms, queue_position
+        FROM files
+        WHERE id = $1 AND user_id = $2
+      `, [fileId, req.user.id]);
+
+      if (file.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'File not found'
+        });
+      }
+
+      const fileRecord = file.rows[0];
+
+      // Calculate progress percentage
+      let progress = 0;
+      switch (fileRecord.processing_status) {
+        case 'pending':
+          progress = 0;
+          break;
+        case 'processing':
+          progress = fileRecord.processing_progress || 50;
+          break;
+        case 'completed':
+          progress = 100;
+          break;
+        case 'failed':
+          progress = 0;
+          break;
+        default:
+          progress = 0;
+      }
+
+      const status = {
+        fileId: fileRecord.id,
+        status: fileRecord.processing_status,
+        progress: progress,
+        virusScanStatus: fileRecord.virus_scan_status,
+        error: fileRecord.processing_error,
+        startedAt: fileRecord.processing_started_at,
+        completedAt: fileRecord.processing_completed_at,
+        processingTime: fileRecord.processing_time_ms,
+        queuePosition: fileRecord.queue_position,
+        estimatedTimeRemaining: fileRecord.queue_position ? fileRecord.queue_position * 30 : null // 30 seconds per file estimate
+      };
+
+      res.json({
+        success: true,
+        data: status
+      });
+    } catch (error) {
+      logger.error('Failed to get file status:', error);
+      res.status(500).json({
+        success: false,
+        error: error.message
+      });
+    }
+  }
+);
+
 // Error handling middleware
 router.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
@@ -696,7 +853,7 @@ router.use((error, req, res, next) => {
     }
   }
 
-  console.error('File route error:', error);
+  logger.error('File route error:', { error: error.message, stack: error.stack });
   res.status(500).json({
     success: false,
     error: 'Internal server error'

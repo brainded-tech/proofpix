@@ -673,6 +673,90 @@ class FilteringService {
       throw error;
     }
   }
+
+  // Get user's saved filters
+  async getUserFilters(userId) {
+    try {
+      const result = await db.query(`
+        SELECT 
+          id, name, description, conditions, base_table, 
+          is_public, created_at, updated_at, usage_count
+        FROM saved_filters
+        WHERE user_id = $1 OR is_public = true
+        ORDER BY created_at DESC
+      `, [userId]);
+
+      return result.rows.map(filter => ({
+        id: filter.id,
+        name: filter.name,
+        description: filter.description,
+        conditions: filter.conditions,
+        baseTable: filter.base_table,
+        isPublic: filter.is_public,
+        createdAt: filter.created_at,
+        updatedAt: filter.updated_at,
+        usageCount: filter.usage_count
+      }));
+    } catch (error) {
+      logger.error('Failed to get user filters:', error);
+      throw error;
+    }
+  }
+
+  // Get specific filter by ID
+  async getFilter(filterId, userId) {
+    try {
+      const result = await db.query(`
+        SELECT 
+          id, name, description, conditions, base_table, 
+          is_public, user_id, created_at, updated_at
+        FROM saved_filters
+        WHERE id = $1 AND (user_id = $2 OR is_public = true)
+      `, [filterId, userId]);
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const filter = result.rows[0];
+      
+      return {
+        id: filter.id,
+        name: filter.name,
+        description: filter.description,
+        conditions: filter.conditions,
+        baseTable: filter.base_table,
+        isPublic: filter.is_public,
+        userId: filter.user_id,
+        createdAt: filter.created_at,
+        updatedAt: filter.updated_at
+      };
+    } catch (error) {
+      logger.error('Failed to get filter:', error);
+      throw error;
+    }
+  }
+
+  // Apply filter with simplified interface
+  async applyFilter(options) {
+    try {
+      const { conditions, baseTable, limit = 100, offset = 0, userId } = options;
+      
+      const filterConfig = {
+        conditions,
+        logic: 'AND',
+        pagination: { page: Math.floor(offset / limit) + 1, limit },
+        sorting: []
+      };
+      
+      const result = await this.applyFilters(filterConfig, baseTable, userId);
+      
+      return result.data;
+    } catch (error) {
+      logger.error('Failed to apply filter:', error);
+      throw error;
+    }
+  }
 }
 
 const filteringService = new FilteringService();
